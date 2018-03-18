@@ -5,7 +5,9 @@
         "start": "next start",
         "deploy": "now rm test3 --token $NOW_TOKEN --yes && now --public -e NODE_ENV=production --token $NOW_TOKEN --npm",
         "alias": "now alias --token=$NOW_TOKEN",
-        "lint": "eslint ."
+        "lint": "eslint .",
+        "precommit": "npm run lint",
+        "prepush": "npm run lint"
     },
     "dependencies": {
         "body-parser": "1.18.2",
@@ -25,6 +27,7 @@
     "devDependencies": {
         "eslint": "^4.19.0",
         "eslint-plugin-import": "^2.9.0",
-        "eslint-plugin-react": "^7.7.0"
+        "eslint-plugin-react": "^7.7.0",
+        "husky": "^0.14.3"
     }
 }
