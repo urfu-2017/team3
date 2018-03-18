@@ -3,7 +3,7 @@
         "dev": "next",
         "build": "next build",
         "start": "next start",
-        "deploy": "now rm test3 --token $NOW_TOKEN --yes && now -e NODE_ENV=production --token $NOW_TOKEN --npm",
+        "deploy": "now rm test3 --token $NOW_TOKEN --yes && now --public -e NODE_ENV=production --token $NOW_TOKEN --npm",
         "alias": "now alias --token=$NOW_TOKEN"
     },
     "dependencies": {
