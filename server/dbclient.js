@@ -6,7 +6,7 @@ const dbUrl = process.env.DATABASE_API_URL;
 const url = require('url');
 const fetch = require('node-fetch');
 
-exports.put = (key, value) => {
+function put(key, value) {
     const putHeaders = Object.assign({ 'Content-Type': 'plain/text' }, headers);
 
     return fetch(`${dbUrl}/${key}`, {
@@ -14,9 +14,8 @@ exports.put = (key, value) => {
         headers: putHeaders,
         body: value
     });
-};
-
-exports.post = (key, value) => {
+}
+function post(key, value) {
     const postHeaders = Object.assign({ 'Content-Type': 'plain/text' }, headers);
 
     return fetch(`${dbUrl}/${key}`, {
@@ -24,14 +23,20 @@ exports.post = (key, value) => {
         headers: postHeaders,
         body: value
     });
-};
+}
 
-exports.getLast = key => fetch(`${dbUrl}/${key}`, {
-    method: 'GET',
-    headers
-});
+function postJson(key, value) {
+    return post(key, JSON.stringify(value));
+}
 
-exports.getAll = (key, options) => {
+function getLast(key) {
+    fetch(`${dbUrl}/${key}`, {
+        method: 'GET',
+        headers
+    }).then(resp => JSON.parse(resp.text()));
+}
+
+function getAll(key, options) {
     const getAllUrl = url.parse(`${dbUrl}/${key}/all`);
 
     getAllUrl.query = options;
@@ -40,10 +45,14 @@ exports.getAll = (key, options) => {
     return fetch(dbUrl, {
         method: 'GET',
         headers
-    });
-};
+    }).then(resp => resp.json().map(JSON.parse));
+}
 
-exports.delete = key => fetch(`${dbUrl}/${key}`, {
-    method: 'DELETE',
-    headers
-});
+function deleteByKey(key) {
+    fetch(`${dbUrl}/${key}`, {
+        method: 'DELETE',
+        headers
+    });
+}
+
+module.exports = { put, post, postJson, getAll, getLast, deleteByKey };

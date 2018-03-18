@@ -3,20 +3,16 @@
 const uuid = require('uuid/v4');
 
 class Chat {
-    constructor({ id, meta, messageIds }) {
-        this.id = id;
-        this.meta = meta;
-        this.messageIds = messageIds;
+    constructor() {
+        this.id = uuid();
+        this.meta = {
+            createTime: Date.now()
+        };
+        this.messageIds = [];
     }
 
-    static create() {
-        return new Chat({
-            id: uuid(),
-            meta: {
-                createTime: Date.now()
-            },
-            messageIds = []
-        })
+    save(dbclient) {
+        return dbclient.postJson('chats', this);
     }
 }
 
