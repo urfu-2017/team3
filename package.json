@@ -2,7 +2,9 @@
     "scripts": {
         "dev": "next",
         "build": "next build",
-        "start": "next start"
+        "start": "next start",
+        "deploy": "now rm test3 && now -e NODE_ENV=production --token $NOW_TOKEN --npm",
+        "alias": "now alias --token=$NOW_TOKEN"
     },
     "dependencies": {
         "body-parser": "1.18.2",
@@ -11,10 +13,11 @@
         "next": "5.0.0",
         "node-fetch": "^2.1.1",
         "react": "16.3.0-alpha.0",
-        "react-dom": "16.3.0-alpha.0"
+        "react-dom": "16.3.0-alpha.0",
+        "now": "10.2.1"
     },
     "now": {
-    "name": "test3",
-    "alias": "https://test3-xawghdcfst.now.sh"
+        "name": "test3",
+        "alias": "https://test3-xawghdcfst.now.sh"
     }
 }
