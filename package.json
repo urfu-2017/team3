@@ -11,6 +11,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "now -e NODE_ENV=production --token $NOW_TOKEN --npm",
+    "alias": "now alias --token=$NOW_TOKEN"
+  },
+  "now": {
+    "name": "test3",
+    "alias": "https://test3-xawghdcfst.now.sh"
   }
 }
