@@ -10,14 +10,14 @@ class Message {
     }
 
     static create(userId, content) {
-        return new Message({ 
+        return new Message({
             id: uuid(),
-            content: content,
+            content,
             meta: {
                 author: userId,
                 date: Date.now()
             }
-        })
+        });
     }
 }
 
