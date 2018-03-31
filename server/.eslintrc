@@ -1,3 +1,6 @@
 {
-    "extends": "iddqd/node"
+    "extends": "iddqd/node",
+    "parserOptions": {
+        "ecmaVersion":2017
+    }
 }

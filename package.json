@@ -18,7 +18,8 @@
         "node-fetch": "^2.1.1",
         "react": "16.3.0-alpha.0",
         "react-dom": "16.3.0-alpha.0",
-        "now": "10.2.1"
+        "now": "10.2.1",
+        "uuid": "^3.2.1"
     },
     "now": {
         "name": "test3",
