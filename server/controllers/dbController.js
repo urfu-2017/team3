@@ -4,6 +4,7 @@ const dbclient = require('../dbclient');
 const Chat = require('../models/Chat');
 const ChatToUser = require('../models/ChatToUser');
 const Message = require('../models/Message');
+const User = require('../models/User');
 
 async function getChats(req, res) {
     try {
@@ -80,10 +81,19 @@ async function createChat(req, res) {
     }
 }
 
-// eslint-disable-next-line no-warning-comments
-// TODO после авторизиции
-// Exports.createUser = async (req, res) => {
-// Dbclient.post();
-// };
+async function createUser(req, res) {
+    if (req.body === undefined) {
+        res.status(400).send('empty body');
+    }
 
-module.exports = { getChats, getMessages, createMessage, getUser, createChat };
+    try {
+        const newUser = new User(req.body);
+        const response = await newUser.save(dbclient);
+
+        res.sendStatus(response.status);
+    } catch (err) {
+        res.sendStatus(500);
+    }
+}
+
+module.exports = { getChats, getMessages, createMessage, getUser, createChat, createUser };
