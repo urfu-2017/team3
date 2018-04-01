@@ -5,6 +5,7 @@ const dbUrl = process.env.DATABASE_API_URL;
 
 const url = require('url');
 const fetch = require('node-fetch');
+const querystring = require('querystring');
 
 function put(key, value) {
     const putHeaders = Object.assign({ 'Content-Type': 'plain/text' }, headers);
@@ -36,16 +37,18 @@ function getLast(key) {
     }).then(resp => JSON.parse(resp.text()));
 }
 
-function getAll(key, options) {
+async function getAll(key, options) {
     const getAllUrl = url.parse(`${dbUrl}/${key}/all`);
 
-    getAllUrl.query = options;
-    url.format(getAllUrl);
-
-    return fetch(dbUrl, {
+    getAllUrl.search = querystring.stringify(options);
+    const response = await fetch(getAllUrl, {
         method: 'GET',
         headers
-    }).then(resp => resp.json().map(JSON.parse));
+    });
+
+    const values = await response.json();
+
+    return values.map(JSON.parse);
 }
 
 function deleteByKey(key) {
