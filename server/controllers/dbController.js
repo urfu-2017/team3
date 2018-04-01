@@ -84,6 +84,8 @@ async function createChat(req, res) {
 async function createUser(req, res) {
     if (req.body === undefined) {
         res.status(400).send('empty body');
+
+        return;
     }
 
     try {
