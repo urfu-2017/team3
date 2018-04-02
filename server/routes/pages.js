@@ -4,9 +4,7 @@ module.exports = (server, app) => {
     server
         .get('/', (req, res) => {
             app.render(req, res, '/index');
-        });
-
-    server
+        })
         .get('/profile', (req, res) => {
             if (req.user) {
                 app.render(req, res, '/profile');
