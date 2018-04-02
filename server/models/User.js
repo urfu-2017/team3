@@ -2,7 +2,7 @@
 
 const fetch = require('node-fetch');
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = `${process.env.HOST}:${process.env.PORT}/api`;
 
 class User {
     constructor({ id, nickname, avatar }) {

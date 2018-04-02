@@ -36,5 +36,6 @@ app.prepare().then(() => {
     setupPagesRoutes(server, app);
     setupApiRoutes(server);
 
-    server.listen(3000, () => console.log('Listening on http://localhost:3000'));
+    server.listen(parseInt(process.env.PORT, 10), () =>
+        console.log(`Listening on ${process.env.HOST}:${process.env.PORT}`));
 });

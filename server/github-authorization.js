@@ -5,11 +5,13 @@ const passportGithub = require('passport-github');
 const fetch = require('node-fetch');
 const User = require('./models/User');
 
+const URL = `${process.env.HOST}:${process.env.PORT}`;
+
 const strategy = new passportGithub.Strategy(
     {
         clientID: process.env.GITHUB_CLIENT_ID,
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
-        callbackURL: 'http://localhost:3000/login/return'
+        callbackURL: `${URL}/login/return`
     },
 
     /* eslint max-params: ["error", 4] */
@@ -30,7 +32,7 @@ passport.serializeUser((profile, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const response = await fetch(`http://localhost:3000/api/users/${id}`);
+        const response = await fetch(`${URL}/api/users/${id}`);
         const user = await response.json();
 
         done(null, user);
