@@ -10,6 +10,7 @@
         "prepush": "npm run lint"
     },
     "dependencies": {
+        "now": "10.2.1",
         "body-parser": "1.18.2",
         "config": "1.30.0",
         "connect-ensure-login": "0.1.1",
