@@ -5,4 +5,13 @@ module.exports = (server, app) => {
         .get('/', (req, res) => {
             app.render(req, res, '/index');
         });
+
+    server
+        .get('/profile', (req, res) => {
+            if (req.user) {
+                app.render(req, res, '/profile');
+            } else {
+                res.redirect('/');
+            }
+        });
 };
