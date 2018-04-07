@@ -2,10 +2,10 @@ language: node_js
 node_js:
 - "node"
 cache: npm
-script: bash deploy.sh dev
+script: bash deploy.sh dev $NOW_TOKEN
 deploy:
   - provider: script
-    script: bash deploy.sh prod
+    script: bash deploy.sh prod $NOW_TOKEN
     on:
       branch: master
 env:

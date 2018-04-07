@@ -2,18 +2,20 @@
 set -ev
 
 firstArg=$1
+nowToken=$2
 buildAlias='team-3-'${firstArg}'.now.sh'
 buildPostfixPattern=${firstArg}'.now.sh\>'
-echo $NOW_TOKEN
-currentTestBuild=$(now alias ls --token $NOW_TOKEN | grep $buildPostfixPattern | awk '{print $1}')
+echo $nowToken
+
+currentTestBuild=$(now alias ls --token $nowToken | grep $buildPostfixPattern | awk '{print $1}')
 if [ ! -z $currentTestBuild ]
 then
     echo 'start remove old build ' $currentTestBuild
-    echo $(now rm $currentTestBuild --token $NOW_TOKEN -y)
+    echo $(now rm $currentTestBuild --token $nowToken -y)
 fi
 
 echo 'start build'
-echo $(now --public -e NODE_ENV=production --token $NOW_TOKEN --npm --dotenv=.env.production)
+echo $(now --public -e NODE_ENV=production --token $nowToken --npm --dotenv=.env.production)
 echo 'start creating alias'
-newBuild=$(now ls --token $NOW_TOKEN | head -5 | tail -1 | awk '{print $1}')
+newBuild=$(now ls --token $nowToken | head -5 | tail -1 | awk '{print $1}')
 echo $(now alias $newBuild $buildAlias)
