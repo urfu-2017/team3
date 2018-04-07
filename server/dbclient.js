@@ -4,8 +4,22 @@ const headers = { 'Authorization': process.env.DATABASE_API_TOKEN };
 const dbUrl = process.env.DATABASE_API_URL;
 
 const url = require('url');
-const fetch = require('node-fetch');
+const nodeFetch = require('node-fetch');
 const querystring = require('querystring');
+
+async function fetch(requestUrl, options) {
+    let response = null;
+
+    for (let i = 0; i <= process.env.NUMBER_OF_RETRY_REQUEST; i += 1) {
+        response = await nodeFetch(requestUrl, options);
+
+        if (response.status >= 200 && response.status < 300) {
+            return response;
+        }
+    }
+
+    return response;
+}
 
 function put(key, value) {
     const putHeaders = Object.assign({ 'Content-Type': 'plain/text' }, headers);
