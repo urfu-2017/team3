@@ -2,5 +2,8 @@
     "extends": "iddqd/node",
     "parserOptions": {
         "ecmaVersion":2017
+    },
+    "rules": {
+        "capitalized-comments": 0
     }
 }

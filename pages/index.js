@@ -3,6 +3,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import LogInPage from '../blocks/main-pages/not-authorized/MainPage';
+import UserPage from '../blocks/main-pages/authorized/MainPage';
+
 export default class StartPage extends Component {
     static getInitialProps({ req }) {
         const { user } = req;
@@ -13,17 +16,7 @@ export default class StartPage extends Component {
     render() {
         const { user } = this.props;
 
-        if (user) {
-            return (
-                <p>Hello, {user.nickname}. View your <a href="/profile">profile</a>.
-                    Or <a href="/logout">log out</a>
-                </p>
-            );
-        }
-
-        return (
-            <p>Welcome! Please <a href="/login">log in with GitHub</a>.</p>
-        );
+        return user ? <UserPage nickname={user.nickname} /> : <LogInPage />;
     }
 }
 
