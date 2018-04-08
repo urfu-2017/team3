@@ -1,3 +1,6 @@
 {
-    "extends": "iddqd/base"
+    "extends": "iddqd/base",
+    "rules": {
+        "capitalized-comments": 0
+    }
 }
