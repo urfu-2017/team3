@@ -13,9 +13,10 @@ const URL = `${process.env.HOST}:${process.env.PORT}`;
 import ChatWindow from '../blocks/chats-page/ChatWindow';
 
 export default class ProfilePage extends Component {
-    state = { chats: null, activeChat: null };
+    // РАСКОММЕНТИ ЭТО ОБЯЗАТЕЛЬНО
+    // state = { chats: null, activeChat: null };
 
-    click = id => this.setState({ activeChat: id });
+    // click = id => this.setState({ activeChat: id });
 
     // search = event => {
     //     const filterChats = this.state.chats.filter(el => el.name.indexOf(event.target.value) !== -1);
