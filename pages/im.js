@@ -13,25 +13,26 @@ const URL = `${process.env.HOST}:${process.env.PORT}`;
 import ChatWindow from '../blocks/chats-page/ChatWindow';
 
 export default class ProfilePage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {activeChat: null};
-    }
+    state = { chats: null, activeChat: null };
 
-    componentWillMount() {
-        // Ставлю активный диалог перед рендером просто
-        this.setState({activeChat: 22222});
-    }
+    click = id => this.setState({ activeChat: id });
+
+    // search = event => {
+    //     const filterChats = this.state.chats.filter(el => el.name.indexOf(event.target.value) !== -1);
+    //     this.setState({ chats: filterChats });
+    // }
     
     render() {
-        const { chats } = this.props;
+        const { chats } = this.state;
+        const { activeChat } = this.state;
+
         return (
             <React.Fragment>
                 <Header />
                 <article className="chats">
                     <input type="search" className="chats__search"/>
                     <div className="chats__list">
-                        <Chats chatsList={chats}/>
+                        <Chats chatsList={chats} click={this.click}/>
                     </div>
                 </article>
                 <ChatWindow chatid={this.state.activeChat}/>
@@ -53,17 +54,22 @@ ProfilePage.getInitialProps =  () => {
     //     });
 
     chats = [{
-        id: 123,
+        id: 11111,
         name: 'bobby',
         lastMessage: 'Привет!'
     },
     {
-        id: 321321,
+        id: 22222,
         name: 'sergey',
         lastMessage: 'доделывать будем?'
     }]
 
     return { chats };
 };
+
+// Перекладываем в state сразу из props
+ProfilePage.getDerivedStateFromProps = ({ chats }) => {
+    return { chats };
+}
 
 ProfilePage.propTypes = { user: PropTypes.object };

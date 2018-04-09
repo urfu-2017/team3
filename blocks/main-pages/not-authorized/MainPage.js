@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 
 import Greeting from './Greeting-not-auth';
 
-import './MainPage.css';
-
 export default class MainPage extends Component {
     render() {
         return (
