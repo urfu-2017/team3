@@ -3,8 +3,8 @@
         "dev": "node server/index.js",
         "build": "next build",
         "start": "node server/index.js",
-        "deploy": "now rm test3 --token $NOW_TOKEN --yes && now --public -e NODE_ENV=production --token $NOW_TOKEN --npm --dotenv=.env.production",
-        "alias": "now alias team3.now.sh --token=$NOW_TOKEN",
+        "devDeploy": "bash deploy.sh dev $NOW_TOKEN",
+        "prodDeploy": "bash deploy.sh prod $NOW_TOKEN",
         "lint": "eslint .",
         "precommit": "npm run lint",
         "prepush": "npm run lint"
@@ -27,10 +27,7 @@
         "react-dom": "16.3.0-alpha.0",
         "uuid": "^3.2.1"
     },
-    "now": {
-        "name": "test3",
-        "alias": "https://test3-xawghdcfst.now.sh"
-    },
+
     "devDependencies": {
         "eslint": "^4.19.0",
         "eslint-plugin-import": "^2.9.0",
