@@ -1,3 +1,5 @@
-// const withCSS = require('@zeit/next-css');
+'use strict';
 
-// module.exports = withCSS();
+// const withCSS = require('@zeit/next-css')
+
+// module.exports = withCSS({ useFileSystemPublicRoutes: false });
