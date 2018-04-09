@@ -1,11 +1,9 @@
 #!/bin/bash
-set -ev
 
 firstArg=$1
 nowToken=$2
 buildAlias='team-3-'${firstArg}'.now.sh'
 buildPostfixPattern=${firstArg}'.now.sh\>'
-echo $nowToken
 
 currentTestBuild=$(now alias ls --token $nowToken | grep $buildPostfixPattern | awk '{print $1}')
 if [ ! -z $currentTestBuild ]
