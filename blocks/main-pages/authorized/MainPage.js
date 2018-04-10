@@ -7,12 +7,15 @@ import Button from '../../common-components/Button';
 
 import Greeting from './Greeting-auth';
 
+import './MainPage.css';
+import '../MainPage-common.css';
+
 export default class Main extends Component {
     render() {
         const { nickname } = this.props;
 
         const sizeBtn = {
-            width: '100px',
+            width: '110px',
             height: '50px'
         };
 
@@ -36,16 +39,16 @@ export default class Main extends Component {
         };
 
         return (
-            <React.Fragment>
-                <div className="user-greeting">
+            <main className="authorized-page">
+                <header className="user-greeting">
                     <Greeting nickname={nickname} className="user-greeting__text" />
-                </div>
-                <div className="manage-frame">
+                </header>
+                <nav className="manage-frame">
                     <Button btnParams={goToProfile} />
                     <Button btnParams={goToChats} />
                     <Button btnParams={logoutProps} />
-                </div>
-            </React.Fragment>
+                </nav>
+            </main>
         );
     }
 }

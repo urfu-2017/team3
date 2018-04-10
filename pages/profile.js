@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import Header from '../blocks/profile/Header';
 import Profile from '../blocks/profile/Profile';
 
+import './global-const.css';
+
 export default class ProfilePage extends Component {
     static getInitialProps({ req }) {
         const { user } = req;

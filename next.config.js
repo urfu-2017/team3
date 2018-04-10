@@ -1,5 +1,7 @@
 'use strict';
 
-// const withCSS = require('@zeit/next-css')
+/* eslint-disable */
 
-// module.exports = withCSS({ useFileSystemPublicRoutes: false });
+withCSS = require('@zeit/next-css')
+
+module.exports = withCSS({ useFileSystemPublicRoutes: false });

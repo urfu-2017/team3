@@ -1,0 +1,32 @@
+.profile
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 2fr 2fr;
+    margin: 3vw;
+    background-color: var(--neutral-color);
+    border-radius: 10px;
+}
+
+.profile__nickname {
+    grid-area: 1 / 2 / 2 / end;
+    text-align: center;
+}
+
+.profile__avatar
+{
+    grid-area: 1 / 1 / end / 2;
+}
+
+.profile__info
+{
+    grid-area: 2 / 2 / 3 / end;
+}
+
+.profile__btns
+{
+    grid-area: 3 / 2 / 4 / end;
+    display: flex;
+    justify-content: space-evenly;
+    align-self: center;
+}

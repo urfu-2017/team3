@@ -1,4 +1,9 @@
-.login
+.log-in__welcome
 {
-    color: red;
+    text-align: center;
+}
+
+.log-in__github-link
+{
+    margin: 0 auto;
 }

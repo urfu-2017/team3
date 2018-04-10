@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 
 import Message from '../common-components/Message';
 
+import './ChatWindow.css';
+
 export default class ChatWindow extends Component {
     // state = { haveOpenedChat: false }
 
     render() {
-        // const { haveOpenedChat } = this.state
+        // const { haveOpenedChat } = this.state;
         const { chatid } = this.props;
 
         const messages = [
@@ -28,17 +30,19 @@ export default class ChatWindow extends Component {
         ];
 
         return (
-            <div className="dialog">
+            <nav className="dialog">
                 {chatid === null
                     ?
                         <span>Пусто! Выбери диалог</span>
                     :
-                        <div>
-                            <span>Открыт диалог {chatid}</span>
-                            {messages.map(message => (<Message key="2" message={message} />))}
-                        </div>
+                        <section className="chat-window">
+                            <h3 className="chat-window__title">Открыт диалог {chatid}</h3>
+                            <div className="chat-window__messages">
+                                {messages.map(message => (<Message key="2" message={message} />))}
+                            </div>
+                        </section>
                 }
-            </div>
+            </nav>
         );
     }
 }

@@ -1,5 +1,12 @@
 .message
 {
-    background: lightblue;
-    width: 200px;
+    width: 90%;
+    margin: .5em 5%;
+}
+
+.message__sender
+{
+    margin-right: 10px;
+    font-weight: 600;
+    color: red;
 }
