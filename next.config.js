@@ -2,6 +2,14 @@
 
 /* eslint-disable */
 
-withCSS = require('@zeit/next-css')
+const withCSS = require('@zeit/next-css')
 
-module.exports = withCSS({ useFileSystemPublicRoutes: false });
+module.exports = withCSS({
+    useFileSystemPublicRoutes: false,
+    webpack(config, { dev }) {
+        if(dev) {
+            config.devtool = 'cheap-module-eval-source-map'
+        }
+        return config;
+    } 
+});
