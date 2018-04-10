@@ -8,7 +8,6 @@ class Chat {
         this.meta = {
             createTime: Date.now()
         };
-        this.messageIds = [];
     }
 
     save(dbclient) {
