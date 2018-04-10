@@ -3,9 +3,8 @@
 const dbController = require('../controllers/dbController');
 
 module.exports = server => {
-    server.route('/api/chats')
-        .get(dbController.getChats)
-        .post(dbController.createChat);
+    server.get('/api/chats', dbController.getChats);
+    server.post('/api/chats/:nick', dbController.createChat);
 
     server.route('/api/chats/:id/messages')
         .get(dbController.getMessages)

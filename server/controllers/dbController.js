@@ -69,10 +69,10 @@ async function getUser(req, res) {
 async function createChat(req, res) {
     try {
         const users = await dbclient.getAll('users');
-        const user = users.find(u => u.nick === req.params.nick);
+        const user = users.find(u => u.nickname === req.params.nick);
         const chat = new Chat();
 
-        chat.save();
+        chat.save(dbclient);
         new ChatToUser(chat.id, user.id).save(dbclient);
         new ChatToUser(chat.id, req.user.id).save(dbclient);
         res.sendStatus(201);
