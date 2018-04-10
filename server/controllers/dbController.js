@@ -40,10 +40,11 @@ async function getMessages(req, res) {
 }
 
 async function createMessage(req, res) {
-    const message = new Message(req.body.message, req.user.id);
+    const message = new Message(req.user.id, req.body.message);
 
     try {
-        await message.save(dbclient, req.params.chatId);
+        await message.save(dbclient, req.params.id);
+        res.sendStatus(200);
     } catch (e) {
         res.sendStatus(404);
     }
