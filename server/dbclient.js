@@ -7,10 +7,12 @@ const url = require('url');
 const nodeFetch = require('node-fetch');
 const querystring = require('querystring');
 
+const numberOfRetryRequest = 3;
+
 async function fetch(requestUrl, options) {
     let response = null;
 
-    for (let i = 0; i <= process.env.NUMBER_OF_RETRY_REQUEST; i += 1) {
+    for (let i = 0; i <= numberOfRetryRequest; i += 1) {
         response = await nodeFetch(requestUrl, options);
 
         if (response.status >= 200 && response.status < 300) {
