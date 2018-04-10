@@ -19,12 +19,27 @@ import './im.css';
 export default class ProfilePage extends Component {
     // раскомментировать
     // state = { 
-    //     chats: null, 
-    //     activeChat: null 
+    //     chats: null,
+    //     user: null,
+    //     chatProps: null 
     // };
 
+    // раскомментировать
+    /*
+    click = chatProps => this.setState({ chatProps: chatProps });
 
-    // click = id => this.setState({ activeChat: id });
+    changeLastMessage = (id, msg) => {
+        const chats = this.state.chats;
+        chats.forEach(chat => {
+            if (chat.id == id) {
+                chat.lastMessage = msg;
+                return;
+            }
+        });
+
+        this.setState({chats: chats});
+    }
+    */
 
     // search = event => {
     //     const filterChats = this.state.chats.filter(el => el.name.indexOf(event.target.value) !== -1);
@@ -32,8 +47,7 @@ export default class ProfilePage extends Component {
     // }
     
     render() {
-        const { chats } = this.state;
-        const { activeChat } = this.state;
+        const { chats, user, chatProps } = this.state;
 
         return (
             <React.Fragment>
@@ -45,7 +59,7 @@ export default class ProfilePage extends Component {
                             <Chats chatsList={chats} click={this.click}/>
                         </div>
                     </article>
-                    <ChatWindow chatid={this.state.activeChat}/>
+                    <ChatWindow user={user} chatProps={chatProps} changeLastMessage={this.changeLastMessage}/>
                 </main>
             </React.Fragment>
         );
@@ -54,7 +68,8 @@ export default class ProfilePage extends Component {
 
 // здесь линтер даже с дизейблом ругается на async/await, 
 // хотя у Гоголева ТАКОЙ ЖЕ КОМЬЮТЕР И ВСЕ РАБОТАЕТ
-ProfilePage.getInitialProps =  () => {
+ProfilePage.getInitialProps = ({ req }) => {
+    const { user } = req;
     let chats = null;
     // await fetch(`${URL}/api/chats`)
     //     .then((res)=>{
@@ -63,7 +78,6 @@ ProfilePage.getInitialProps =  () => {
     //     .then((data)=>{
     //         chats = data;
     //     });
-
     chats = [{
         id: 11111,
         name: 'bobby',
@@ -75,12 +89,12 @@ ProfilePage.getInitialProps =  () => {
         lastMessage: 'доделывать будем?'
     }]
 
-    return { chats };
+    return { chats, user };
 };
 
 // Перекладываем в state сразу из props
-ProfilePage.getDerivedStateFromProps = ({ chats }) => {
-    return { chats };
+ProfilePage.getDerivedStateFromProps = ({ chats, user }) => {
+    return { chats, user };
 }
 
 ProfilePage.propTypes = { user: PropTypes.object };
