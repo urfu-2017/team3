@@ -2,15 +2,30 @@
 
 import React, { Component } from 'react';
 
+import Button from '../../common-components/Button';
+
 import Greeting from './Greeting-not-auth';
+
+import './MainPage.css';
+import '../MainPage-common.css';
 
 export default class MainPage extends Component {
     render() {
+        const logIn = {
+            link: '/login',
+            text: 'Войти через Github',
+            class: 'log-in__github-link',
+            size: {
+                width: '150px',
+                height: '50px'
+            }
+        };
+
         return (
-            <React.Fragment className="log-in">
+            <main className="log-in">
                 <Greeting />
-                <a href="/login" className="log-in__github-link">Войти через Github</a>
-            </React.Fragment>
+                <Button btnParams={logIn} />
+            </main>
         );
     }
 }

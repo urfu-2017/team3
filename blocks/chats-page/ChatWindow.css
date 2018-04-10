@@ -1,0 +1,11 @@
+.chat-window__title
+{
+    text-align: center;
+}
+
+.chat-window__messages
+{
+    display: flex;
+    flex-direction: column;
+    
+}

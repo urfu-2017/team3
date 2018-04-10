@@ -1,0 +1,33 @@
+.chat-icon
+{
+    display: grid;
+    margin: 5px 0;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr 2fr;
+    background-color: var(--spare-color);
+    border-radius: 10px;
+}
+
+.chat-icon:hover{
+    cursor: pointer;
+    background: radial-gradient(closest-side, #0001, var(--spare-color));
+    transition: .1s;
+}
+
+.chat-icon__avatar
+{
+    grid-area: 1 / 1 / end / 2;
+}
+
+.chat-icon__name
+{
+    grid-area: 1 / 2 / 2 / end;
+    font-weight: 900;
+}
+
+.chat-icon__last-message
+{
+    grid-area: 2 / 2 / end / end;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

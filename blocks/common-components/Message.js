@@ -14,8 +14,8 @@ export default class Message extends Component {
 
         return (
             <div className="message">
-                <p>{userid}</p>
-                <p>{text}</p>
+                <span className="message__sender">{userid}:</span>
+                <span className="message__content">{text}</span>
             </div>
         );
     }

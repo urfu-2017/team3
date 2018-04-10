@@ -6,6 +6,8 @@ import PropTypes from 'prop-types';
 import LogInPage from '../blocks/main-pages/not-authorized/MainPage';
 import UserPage from '../blocks/main-pages/authorized/MainPage';
 
+import './global-const.css';
+
 export default class StartPage extends Component {
     static getInitialProps({ req }) {
         const { user } = req;

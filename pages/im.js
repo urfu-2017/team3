@@ -8,13 +8,21 @@ import PropTypes from 'prop-types';
 import Header from '../blocks/chats-page/Header';
 import Chats from '../blocks/chats-page/Chats';
 
+/* eslint-disable */
 const fetch = require('node-fetch');
 const URL = `${process.env.HOST}:${process.env.PORT}`;
 import ChatWindow from '../blocks/chats-page/ChatWindow';
 
+import './global-const.css';
+import './im.css';
+
 export default class ProfilePage extends Component {
-    // РАСКОММЕНТИ ЭТО ОБЯЗАТЕЛЬНО
-    // state = { chats: null, activeChat: null };
+    // раскомментировать
+    // state = { 
+    //     chats: null, 
+    //     activeChat: null 
+    // };
+
 
     // click = id => this.setState({ activeChat: id });
 
@@ -30,13 +38,15 @@ export default class ProfilePage extends Component {
         return (
             <React.Fragment>
                 <Header />
-                <article className="chats">
-                    <input type="search" className="chats__search"/>
-                    <div className="chats__list">
-                        <Chats chatsList={chats} click={this.click}/>
-                    </div>
-                </article>
-                <ChatWindow chatid={this.state.activeChat}/>
+                <main className="main">
+                    <article className="chats">
+                        <input type="search" className="chats__search"/>
+                        <div className="chats__list">
+                            <Chats chatsList={chats} click={this.click}/>
+                        </div>
+                    </article>
+                    <ChatWindow chatid={this.state.activeChat}/>
+                </main>
             </React.Fragment>
         );
     }

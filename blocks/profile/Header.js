@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 
 import Button from '../common-components/Button';
 
+import './Header.css';
+import '../header/Header-common.css';
+
 export default class Header extends Component {
     render() {
         const goToProfile = {
@@ -17,14 +20,15 @@ export default class Header extends Component {
         };
 
         return (
-            <React.Fragment>
+            <header className="header">
                 <img
-                    src="/static/kg64.svg"
+                    src="/static/main-label.svg"
                     width="64px" height="64px"
                     className="header__label"
                 />
-                <Button btnParams={goToProfile} />;
-            </React.Fragment>
+                <span className="header__name">|&lt; |/| /\ 0 |` /&gt; 4 /^\</span>
+                <Button btnParams={goToProfile} />
+            </header>
         );
     }
 }

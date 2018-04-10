@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import Button from '../common-components/Button';
 
+import './Profile.css';
+
 export default class Profile extends Component {
     render() {
         const { user } = this.props;
@@ -45,14 +47,20 @@ export default class Profile extends Component {
             <React.Fragment>
                 <article className="profile">
                     <h2 className="profile__nickname">{user.nickname}</h2>
-                    <img src={avatarSrc} width="100px" height="100px" alt="user avatar" />
+                    <img
+                        src={avatarSrc}
+                        width="100px"
+                        height="100px"
+                        alt="user avatar"
+                        className="profile__avatar"
+                    />
                     <ul className="profile__info">
                         <h3 className="profile__info-title">Информация о пользователе:</h3>
                         <li className="profile__info-item">ID: {user.id}</li>
                         <li className="profile__info-item">Еще информация:</li>
                         <li className="profile__info-item">Еще информация:</li>
                     </ul>
-                    <section className="profile-page-btns">
+                    <section className="profile__btns">
                         <Button btnParams={chatWithUser} />
                         <Button btnParams={githubPageUser} />
                         <Button btnParams={logoutProps} />
