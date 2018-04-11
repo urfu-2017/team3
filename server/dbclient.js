@@ -1,16 +1,19 @@
 'use strict';
 
-const headers = { 'Authorization': process.env.DATABASE_API_TOKEN };
-const dbUrl = process.env.DATABASE_API_URL;
-
 const url = require('url');
 const nodeFetch = require('node-fetch');
 const querystring = require('querystring');
 
+const headers = { 'Authorization': process.env.DATABASE_API_TOKEN };
+const DB_URL = process.env.DATABASE_API_URL;
+const NUMBER_OF_REQUEST_ATTEMPTS = 3;
+const REQUEST_TIMEOUT = 3000;
+
 async function fetch(requestUrl, options) {
     let response = null;
 
-    for (let i = 0; i <= process.env.NUMBER_OF_RETRY_REQUEST; i += 1) {
+    options.timeout = options.timeout || REQUEST_TIMEOUT;
+    for (let i = 0; i <= NUMBER_OF_REQUEST_ATTEMPTS; i += 1) {
         response = await nodeFetch(requestUrl, options);
 
         if (response.status >= 200 && response.status < 300) {
@@ -24,7 +27,7 @@ async function fetch(requestUrl, options) {
 function put(key, value) {
     const putHeaders = Object.assign({ 'Content-Type': 'plain/text' }, headers);
 
-    return fetch(`${dbUrl}/${key}`, {
+    return fetch(`${DB_URL}/${key}`, {
         method: 'PUT',
         headers: putHeaders,
         body: value
@@ -33,7 +36,7 @@ function put(key, value) {
 function post(key, value) {
     const postHeaders = Object.assign({ 'Content-Type': 'plain/text' }, headers);
 
-    return fetch(`${dbUrl}/${key}`, {
+    return fetch(`${DB_URL}/${key}`, {
         method: 'POST',
         headers: postHeaders,
         body: value
@@ -45,14 +48,14 @@ function postJson(key, value) {
 }
 
 function getLast(key) {
-    fetch(`${dbUrl}/${key}`, {
+    fetch(`${DB_URL}/${key}`, {
         method: 'GET',
         headers
     }).then(resp => JSON.parse(resp.text()));
 }
 
 async function getAll(key, options) {
-    const getAllUrl = url.parse(`${dbUrl}/${key}/all`);
+    const getAllUrl = url.parse(`${DB_URL}/${key}/all`);
 
     getAllUrl.search = querystring.stringify(options);
     const response = await fetch(getAllUrl, {
@@ -66,7 +69,7 @@ async function getAll(key, options) {
 }
 
 function deleteByKey(key) {
-    fetch(`${dbUrl}/${key}`, {
+    fetch(`${DB_URL}/${key}`, {
         method: 'DELETE',
         headers
     });

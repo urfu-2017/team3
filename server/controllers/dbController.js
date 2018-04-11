@@ -40,10 +40,11 @@ async function getMessages(req, res) {
 }
 
 async function createMessage(req, res) {
-    const message = new Message(req.body.message, req.user.id);
+    const message = new Message(req.user.id, req.body.message);
 
     try {
-        await message.save(dbclient, req.params.chatId);
+        await message.save(dbclient, req.params.id);
+        res.sendStatus(200);
     } catch (e) {
         res.sendStatus(404);
     }
@@ -69,10 +70,10 @@ async function getUser(req, res) {
 async function createChat(req, res) {
     try {
         const users = await dbclient.getAll('users');
-        const user = users.find(u => u.nick === req.params.nick);
+        const user = users.find(u => u.nickname === req.params.nick);
         const chat = new Chat();
 
-        chat.save();
+        chat.save(dbclient);
         new ChatToUser(chat.id, user.id).save(dbclient);
         new ChatToUser(chat.id, req.user.id).save(dbclient);
         res.sendStatus(201);
