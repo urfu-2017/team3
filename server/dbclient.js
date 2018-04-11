@@ -7,10 +7,12 @@ const querystring = require('querystring');
 const headers = { 'Authorization': process.env.DATABASE_API_TOKEN };
 const DB_URL = process.env.DATABASE_API_URL;
 const NUMBER_OF_REQUEST_ATTEMPTS = 3;
+const REQUEST_TIMEOUT = 3000;
 
 async function fetch(requestUrl, options) {
     let response = null;
 
+    options.timeout = options.timeout || REQUEST_TIMEOUT;
     for (let i = 0; i <= NUMBER_OF_REQUEST_ATTEMPTS; i += 1) {
         response = await nodeFetch(requestUrl, options);
 
