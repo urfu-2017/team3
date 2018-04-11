@@ -1,12 +1,35 @@
 .message
 {
-    width: 90%;
-    margin: .5em 5%;
+   width: 160px;
+   margin-top: 8px;
+   display: flex;
+   flex-direction: column;
+   padding: 8px;
+}
+
+.my
+{
+    align-self: flex-start;
+    background: #ffffff;
+    border-radius: 16px;
+    border-bottom-left-radius: 0;
+}
+
+.friend
+{
+    align-self: flex-end;
+    background: #fff7f3;
+    border-radius: 16px;
+    border-bottom-right-radius: 0;
 }
 
 .message__sender
 {
-    margin-right: 10px;
-    font-weight: 600;
-    color: red;
+    font-size: 12px;
+    color: lightgray;
+}
+
+.message__content
+{
+    word-break: break-all;
 }
