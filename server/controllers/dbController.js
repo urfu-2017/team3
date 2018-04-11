@@ -52,10 +52,9 @@ async function createMessage(req, res) {
 
 async function getUser(req, res) {
     try {
-        const users = await dbclient.getAll('users');
-        const user = users.find(u => u.id === req.params.id);
+        const user = await User.findById(dbclient, req.params.id);
 
-        if (!user) {
+        if (user === null) {
             res.sendStatus(404);
 
             return;

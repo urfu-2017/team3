@@ -48,10 +48,10 @@ function postJson(key, value) {
 }
 
 function getLast(key) {
-    fetch(`${DB_URL}/${key}`, {
+    return fetch(`${DB_URL}/${key}`, {
         method: 'GET',
         headers
-    }).then(resp => JSON.parse(resp.text()));
+    });
 }
 
 async function getAll(key, options) {

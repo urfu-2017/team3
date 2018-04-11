@@ -29,6 +29,16 @@ class User {
         return await response.json();
     }
 
+    static async findById(dbclient, id) {
+        const response = await dbclient.getLast(`user_${id}`);
+
+        if (response.status === 404) {
+            return null;
+        }
+
+        return response.json();
+    }
+
     static create(id, githubNickname) {
         const avatarInBase64 = 'TODO';
 
@@ -36,7 +46,7 @@ class User {
     }
 
     save(dbclient) {
-        return dbclient.postJson('users', this);
+        return dbclient.postJson(`user_${this.id}`, this);
     }
 }
 
