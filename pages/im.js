@@ -25,25 +25,19 @@ export default class ProfilePage extends Component {
     // };
 
     // раскомментировать
-    /*
-    click = chatProps => this.setState({ chatProps: chatProps });
 
-    changeLastMessage = (id, msg) => {
-        const chats = this.state.chats;
-        chats.forEach(chat => {
-            if (chat.id == id) {
-                chat.lastMessage = msg;
-                return;
-            }
-        });
+    // click = chatProps => this.setState({ chatProps: chatProps });
 
-        this.setState({chats: chats});
-    }
-    */
+    // changeLastMessage = (id, msg) => {
+    //     const chats = this.state.chats;
+    //     chats.forEach(chat => {
+    //         if (chat.id == id) {
+    //             chat.lastMessage = msg;
+    //             return;
+    //         }
+    //     });
 
-    // search = event => {
-    //     const filterChats = this.state.chats.filter(el => el.name.indexOf(event.target.value) !== -1);
-    //     this.setState({ chats: filterChats });
+    //     this.setState({chats: chats});
     // }
     
     render() {
@@ -54,7 +48,9 @@ export default class ProfilePage extends Component {
                 <Header />
                 <main className="main">
                     <article className="chats">
-                        <input type="search" className="chats__search"/>
+                        <div className="chats__search">
+                            <input type="text" className="chats__search-input"/>
+                        </div>
                         <div className="chats__list">
                             <Chats chatsList={chats} click={this.click}/>
                         </div>

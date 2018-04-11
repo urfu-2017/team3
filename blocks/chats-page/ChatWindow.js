@@ -51,31 +51,31 @@ export default class ChatWindow extends Component {
         }
     }
     // раскомментировать
-    /*
-    change = event => this.setState({ msgText: event.target.value });
 
-    submit = event => {
-        // Здесь делаем отправку на сервер
-        // Если пришло 201 то добавляем локально
-        // id сообщения подписываем из ответа
-        // const res = await fetch(`${URL}/api/ОТПРАВИТЬ_СООБЩЕНИЕ`);
-        const res = {status: 201, id: Math.floor(Math.random()*10000)};
-        if (res.status === 201) {
-            const messages = this.state.messages;
-            messages.push({
-                id: res.id,
-                content: this.state.msgText,
-                meta: {
-                    author: this.state.user.id,
-                    date: new Date()
-                }
-            });
-            // Это функция из im - меняет lastMessage локально
-            this.props.changeLastMessage(this.state.id, this.state.msgText);
-            this.setState({ messages: messages, msgText: '' });
-        }
-    }
-    */
+    // change = event => this.setState({ msgText: event.target.value });
+
+    // submit = event => {
+    //     // Здесь делаем отправку на сервер
+    //     // Если пришло 201 то добавляем локально
+    //     // id сообщения подписываем из ответа
+    //     // const res = await fetch(`${URL}/api/ОТПРАВИТЬ_СООБЩЕНИЕ`);
+    //     const res = {status: 201, id: Math.floor(Math.random()*10000)};
+    //     if (res.status === 201) {
+    //         const messages = this.state.messages;
+    //         messages.push({
+    //             id: res.id,
+    //             content: this.state.msgText,
+    //             meta: {
+    //                 author: this.state.user.id,
+    //                 date: new Date()
+    //             }
+    //         });
+    //         // Это функция из im - меняет lastMessage локально
+    //         this.props.changeLastMessage(this.state.id, this.state.msgText);
+    //         this.setState({ messages: messages, msgText: '' });
+    //     }
+    // }
+
 
     render() {
         const { user, id, name, messages, msgText } = this.state;
@@ -85,17 +85,21 @@ export default class ChatWindow extends Component {
             <nav className="dialog">
                 {id === null || id === undefined
                     ?
-                        <span>Пусто! Выбери диалог</span>
+                        <section className="chat-window">
+                            <div className="chat-window__title">Открой диалог</div>
+                        </section>
                     :
                         <section className="chat-window">
-                            <h3 className="chat-window__title">Открыт диалог с {name}</h3>
+                            <div className="chat-window__title">Открыт диалог с {name}</div>
                             <div className="chat-window__messages">
                                 {messages.map(message => (
                                     <Message key={message.id} message={message} user={user} name={name}/>
                                 ))}
                             </div>
-                            <input value={msgText} onChange={this.change} type="text"/>
-                            <button onClick={this.submit}>Отправить</button>
+                            <div className="chat-window__write">
+                                <input value={msgText} onChange={this.change} type="text" className="chat-window__input"/>
+                                <div onClick={this.submit} className="chat-window__send-btn">send</div>
+                            </div>
                         </section>
                 }
             </nav>
