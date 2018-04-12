@@ -79,7 +79,7 @@ async function getAll(key, options) {
 }
 
 function deleteByKey(key) {
-    fetch(`${DB_URL}/${key}`, {
+    return fetch(`${DB_URL}/${key}`, {
         method: 'DELETE',
         headers
     });

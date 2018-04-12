@@ -11,7 +11,7 @@ const server = require('../server');
 setupServer(server);
 let currentUserId = 0;
 
-describe('messanger API tests', () => {
+describe('messenger API tests', () => {
     beforeEach(async () => {
         await Promise.all([
             db.deleteByKey('user_1'),
