@@ -14,7 +14,9 @@ let currentUserId = 0;
 describe('messanger API tests', () => {
     beforeEach(async () => {
         await Promise.all([
-            db.deleteByKey('users'),
+            db.deleteByKey('user_1'),
+            db.deleteByKey('user_2'),
+            db.deleteByKey('user_3'),
             db.deleteByKey('user_1_chats'),
             db.deleteByKey('user_2_chats'),
             db.deleteByKey('user_3_chats')
@@ -65,6 +67,17 @@ describe('messanger API tests', () => {
             .expect(res => {
                 res.body.should.have.length(3);
             });
+    });
+
+    it('return 404 when try create chat with unexists user', async () => {
+        await createUser(3);
+        await request(server)
+            .post('/api/chats')
+            .send({
+                title: 'title',
+                interlocutorId: 2
+            })
+            .expect(404);
     });
 });
 

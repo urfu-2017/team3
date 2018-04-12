@@ -1,10 +1,8 @@
 'use strict';
 
-const uuid = require('uuid/v4');
-
 class Chat {
     constructor(id, title) {
-        this.id = uuid();
+        this.id = id;
         this.title = title;
         this.date = Date.now();
     }

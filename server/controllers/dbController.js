@@ -55,7 +55,7 @@ async function getUser(req, res) {
 
 async function createChat(req, res) {
     try {
-        if (!await User.exists(req.body.interlocutorId)) {
+        if (!await User.findById(dbclient, req.body.interlocutorId)) {
             res.sendStatus(404);
 
             return;
