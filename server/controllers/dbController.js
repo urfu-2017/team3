@@ -2,36 +2,23 @@
 
 const dbclient = require('../dbclient');
 const Chat = require('../models/Chat');
-const ChatToUser = require('../models/ChatToUser');
 const Message = require('../models/Message');
 const User = require('../models/User');
+const uuid = require('uuid/v4');
 
 async function getChats(req, res) {
     try {
-        const chatToUserMap = await dbclient.getAll('chatToUserMap');
-        const userChatIds = chatToUserMap
-            .filter(chatToUser => chatToUser.userId === req.user.id)
-            .map(chatToUser => chatToUser.chatId);
+        const chats = await Chat.getAll(dbclient, req.user.id);
 
-        const chats = (await dbclient.getAll('chats'))
-            .filter(chat => userChatIds.includes(chat.id));
-
-        const chatsWithLastMessage = await Promise.all(chats.map(chat => {
-            return {
-                chat,
-                lastMessage: dbclient.getLast(`chats_${chat.id}_messages`)
-            };
-        }));
-
-        res.status(200).json(chatsWithLastMessage);
+        res.status(200).json(chats);
     } catch (e) {
-        res.sendStatus(404);
+        res.sendStatus(400);
     }
 }
 
 async function getMessages(req, res) {
     try {
-        const chatMessages = await dbclient.getAll(`chats_${req.params.id}_messages`);
+        const chatMessages = await dbclient.getAll(`chat_${req.params.id}_messages`);
 
         res.status(200).json(chatMessages);
     } catch (e) {
@@ -68,16 +55,23 @@ async function getUser(req, res) {
 
 async function createChat(req, res) {
     try {
-        const users = await dbclient.getAll('users');
-        const user = users.find(u => u.nickname === req.params.nick);
-        const chat = new Chat();
+        if (!await User.exists(req.body.interlocutorId)) {
+            res.sendStatus(404);
 
-        chat.save(dbclient);
-        new ChatToUser(chat.id, user.id).save(dbclient);
-        new ChatToUser(chat.id, req.user.id).save(dbclient);
+            return;
+        }
+
+        const chatId = uuid();
+        const currentUserChat = new Chat(chatId, req.body.title);
+        const interlocutorChat = new Chat(chatId, req.user.nickname);
+
+        await Promise.all([
+            currentUserChat.save(dbclient, req.user.id),
+            interlocutorChat.save(dbclient, req.body.interlocutorId)]);
+
         res.sendStatus(201);
     } catch (e) {
-        res.sendStatus(404);
+        res.sendStatus(400);
     }
 }
 

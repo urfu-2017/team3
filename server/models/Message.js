@@ -6,14 +6,13 @@ class Message {
     constructor(userId, content) {
         this.id = uuid();
         this.content = content;
-        this.meta = {
-            author: userId,
-            date: Date.now()
-        };
+        this.author = userId;
+        this.date = Date.now();
+        this.meta = { };
     }
 
     save(dbclient, chatId) {
-        return dbclient.postJson(`chats_${chatId}_messages`, this);
+        return dbclient.postJson(`chat_${chatId}_messages`, this);
     }
 }
 

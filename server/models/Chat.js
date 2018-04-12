@@ -3,15 +3,18 @@
 const uuid = require('uuid/v4');
 
 class Chat {
-    constructor() {
+    constructor(id, title) {
         this.id = uuid();
-        this.meta = {
-            createTime: Date.now()
-        };
+        this.title = title;
+        this.date = Date.now();
     }
 
-    save(dbclient) {
-        return dbclient.postJson('chats', this);
+    save(dbclient, userId) {
+        return dbclient.postJson(`user_${userId}_chats`, this);
+    }
+
+    static getAll(dbclient, userId) {
+        return dbclient.getAll(`user_${userId}_chats`);
     }
 }
 
