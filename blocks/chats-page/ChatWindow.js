@@ -1,4 +1,5 @@
 'use strict';
+/* eslint-disable */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -8,37 +9,96 @@ import Message from '../common-components/Message';
 import './ChatWindow.css';
 
 export default class ChatWindow extends Component {
-    // state = { haveOpenedChat: false }
+    // user - я, id/name - собеседника ид и имя
+    // раскомментировать
+    // state = { user: null, id: null, name: null, messages: [], msgText: '' };
+
+    componentWillReceiveProps(nextProps) {
+        // Если приходят chatProps - значит нажали на диалог, отсекаем первый холостой
+        // И отрезаем нажатие на открытый диалог
+        if (nextProps.chatProps && nextProps.chatProps.id !== this.state.id) {
+            const chatProps = nextProps.chatProps;
+            const user = nextProps.user;
+            const { id, name } = chatProps;
+            this.setState({ user: user, id: id, name: name, msgText: '' });
+            // await fetch(`${URL}/api/id/messages`)
+            //     .then((res)=>{
+            //         return res.json();
+            //     })
+            //     .then((data)=>{
+            //         messages = data;
+            //     });
+            const messages = [
+                {
+                    id: 1,
+                    content: 'Привет!',
+                    meta: {
+                        author: 11111,
+                        date: '12-08-1997'
+                    }
+                },
+                {
+                    id: 2,
+                    content: 'Как дела?',
+                    meta: {
+                        author: 11111,
+                        date: '12-08-1997'
+                    }
+                }
+            ];
+
+            this.setState({messages: messages});
+        }
+    }
+    // раскомментировать
+
+    // change = event => this.setState({ msgText: event.target.value });
+
+    // submit = event => {
+    //     // Здесь делаем отправку на сервер
+    //     // Если пришло 201 то добавляем локально
+    //     // id сообщения подписываем из ответа
+    //     // const res = await fetch(`${URL}/api/ОТПРАВИТЬ_СООБЩЕНИЕ`);
+    //     const res = {status: 201, id: Math.floor(Math.random()*10000)};
+    //     if (res.status === 201) {
+    //         const messages = this.state.messages;
+    //         messages.push({
+    //             id: res.id,
+    //             content: this.state.msgText,
+    //             meta: {
+    //                 author: this.state.user.id,
+    //                 date: new Date()
+    //             }
+    //         });
+    //         // Это функция из im - меняет lastMessage локально
+    //         this.props.changeLastMessage(this.state.id, this.state.msgText);
+    //         this.setState({ messages: messages, msgText: '' });
+    //     }
+    // }
+
 
     render() {
-        // const { haveOpenedChat } = this.state;
-        const { chatid } = this.props;
-
-        const messages = [
-            {
-                text: 'Привет!',
-                userid: 123
-            },
-            {
-                text: 'Как дела?',
-                userid: 123
-            },
-            {
-                text: 'Отлично!',
-                userid: 888
-            }
-        ];
+        const { user, id, name, messages, msgText } = this.state;
+        // const { changeLastMessage } = this.props;
 
         return (
             <nav className="dialog">
-                {chatid === null
+                {id === null || id === undefined
                     ?
-                        <span>Пусто! Выбери диалог</span>
+                        <section className="chat-window">
+                            <div className="chat-window__title">Открой диалог</div>
+                        </section>
                     :
                         <section className="chat-window">
-                            <h3 className="chat-window__title">Открыт диалог {chatid}</h3>
+                            <div className="chat-window__title">Открыт диалог с {name}</div>
                             <div className="chat-window__messages">
-                                {messages.map(message => (<Message key="2" message={message} />))}
+                                {messages.map(message => (
+                                    <Message key={message.id} message={message} user={user} name={name}/>
+                                ))}
+                            </div>
+                            <div className="chat-window__write">
+                                <input value={msgText} onChange={this.change} type="text" className="chat-window__input"/>
+                                <div onClick={this.submit} className="chat-window__send-btn">send</div>
                             </div>
                         </section>
                 }
@@ -47,16 +107,8 @@ export default class ChatWindow extends Component {
     }
 }
 
-ChatWindow.getInitialProps = ({ chatid }) => {
-    // await fetch(`${URL}/api/СЮДАidЧАТА/messages`)
-    //     .then((res)=>{
-    //         return res.json();
-    //     })
-    //     .then((data)=>{
-    //         chats = data;
-    //     });
-
-    return { chatid };
+ChatWindow.getInitialProps = () => {
+    // Пустует
 };
 
-ChatWindow.propTypes = { chatid: PropTypes.number };
+ChatWindow.propTypes = { messages: PropTypes.array };

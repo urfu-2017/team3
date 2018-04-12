@@ -13,10 +13,14 @@ export default class ChatIcon extends Component {
         const { chatProps, click } = this.props;
 
         return (
-            <li className="chat-icon" onClick={() => click(chatProps.id)}>
-                <img src={chatProps.avatarsrc} className="chat-icon__avatar" />
-                <span className="chat-icon__name">{chatProps.name}</span>
-                <span className="chat-icon__last-message">{chatProps.lastMessage}</span>
+            <li className="chat-icon" onClick={() => click(chatProps)}>
+                <div className="chat-icon__a-box">
+                    <img src={chatProps.avatarsrc} className="chat-icon__avatar" alt="avatar" />
+                </div>
+                <div className="chat-icon__i-box">
+                    <span className="chat-icon__name">{chatProps.name}</span>
+                    <span className="chat-icon__last-message">{chatProps.lastMessage}</span>
+                </div>
             </li>
         );
     }
