@@ -6,7 +6,7 @@ const querystring = require('querystring');
 
 const headers = { 'Authorization': process.env.DATABASE_API_TOKEN };
 const DB_URL = process.env.DATABASE_API_URL;
-const NUMBER_OF_REQUEST_ATTEMPTS = 5;
+const NUMBER_OF_REQUEST_ATTEMPTS = 3;
 const REQUEST_TIMEOUT = 3000;
 
 /* eslint-disable-next-line complexity */
