@@ -1,6 +1,7 @@
 'use strict';
 
 const fetch = require('node-fetch');
+const createIdenticon = require('../utils/identicon');
 
 const API_URL = `${process.env.HOST}:${process.env.PORT}/api`;
 
@@ -40,7 +41,7 @@ class User {
     }
 
     static create(id, githubNickname) {
-        const avatarInBase64 = 'TODO';
+        const avatarInBase64 = createIdenticon();
 
         return new User({ id, nickname: githubNickname, avatar: avatarInBase64 });
     }

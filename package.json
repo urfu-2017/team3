@@ -19,6 +19,7 @@
         "eslint-config-iddqd": "^1.2.0",
         "express": "4.16.3",
         "express-session": "1.15.6",
+        "identicon.js": "^2.3.2",
         "next": "5.0.0",
         "node-fetch": "^2.1.1",
         "now": "10.2.1",
