@@ -5,9 +5,6 @@
 require('dotenv').config();
 
 const next = require('next');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
 
 const setupPagesRoutes = require('./routes/pages');
@@ -16,13 +13,9 @@ const setupAuthRoutes = require('./routes/auth');
 const passport = require('./github-authorization');
 
 const app = next({ dev: process.env.NODE_ENV !== 'production' });
-const server = express();
+const server = require('./server');
 
 app.prepare().then(() => {
-    server.use(bodyParser.json());
-
-    server.use(cookieParser());
-
     server.use(expressSession({
         secret: process.env.EXPRESS_SESSION_SECRET,
         resave: false,

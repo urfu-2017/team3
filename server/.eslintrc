@@ -2,5 +2,9 @@
     "extends": "iddqd/node",
     "parserOptions": {
         "ecmaVersion":2017
+    },
+    "env": {
+        "node": true,
+        "mocha": true
     }
 }

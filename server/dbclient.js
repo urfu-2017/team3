@@ -9,15 +9,25 @@ const DB_URL = process.env.DATABASE_API_URL;
 const NUMBER_OF_REQUEST_ATTEMPTS = 3;
 const REQUEST_TIMEOUT = 3000;
 
+/* eslint-disable-next-line complexity */
 async function fetch(requestUrl, options) {
+    /* eslint-disable max-depth */
     let response = null;
 
     options.timeout = options.timeout || REQUEST_TIMEOUT;
-    for (let i = 0; i <= NUMBER_OF_REQUEST_ATTEMPTS; i += 1) {
-        response = await nodeFetch(requestUrl, options);
+    for (let i = 0; i < NUMBER_OF_REQUEST_ATTEMPTS; i += 1) {
+        try {
+            response = await nodeFetch(requestUrl, options);
 
-        if (response.status >= 200 && response.status < 300) {
-            return response;
+            if (response.status === 404) {
+                return response;
+            }
+
+            if (response.status >= 200 && response.status < 300) {
+                return response;
+            }
+        } catch (e) {
+            // Ignore fetch timeout because hrudb
         }
     }
 
@@ -48,10 +58,10 @@ function postJson(key, value) {
 }
 
 function getLast(key) {
-    fetch(`${DB_URL}/${key}`, {
+    return fetch(`${DB_URL}/${key}`, {
         method: 'GET',
         headers
-    }).then(resp => JSON.parse(resp.text()));
+    });
 }
 
 async function getAll(key, options) {
@@ -69,7 +79,7 @@ async function getAll(key, options) {
 }
 
 function deleteByKey(key) {
-    fetch(`${DB_URL}/${key}`, {
+    return fetch(`${DB_URL}/${key}`, {
         method: 'DELETE',
         headers
     });
