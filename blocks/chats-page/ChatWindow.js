@@ -10,10 +10,10 @@ import './ChatWindow.css';
 
 export default class ChatWindow extends Component {
     // user - я, id/name - собеседника ид и имя
-    // раскомментировать
-    // state = { user: null, id: null, name: null, messages: [], msgText: '' };
 
-    componentWillReceiveProps(nextProps) {
+    state = { user: null, id: null, name: null, messages: [], msgText: '' };
+
+    async componentWillReceiveProps(nextProps) {
         // Если приходят chatProps - значит нажали на диалог, отсекаем первый холостой
         // И отрезаем нажатие на открытый диалог
         if (nextProps.chatProps && nextProps.chatProps.id !== this.state.id) {
@@ -21,65 +21,35 @@ export default class ChatWindow extends Component {
             const user = nextProps.user;
             const { id, name } = chatProps;
             this.setState({ user: user, id: id, name: name, msgText: '' });
-            // await fetch(`${URL}/api/id/messages`)
-            //     .then((res)=>{
-            //         return res.json();
-            //     })
-            //     .then((data)=>{
-            //         messages = data;
-            //     });
-            const messages = [
-                {
-                    id: 1,
-                    content: 'Привет!',
-                    meta: {
-                        author: 11111,
-                        date: '12-08-1997'
-                    }
-                },
-                {
-                    id: 2,
-                    content: 'Как дела?',
-                    meta: {
-                        author: 11111,
-                        date: '12-08-1997'
-                    }
-                }
-            ];
-
+            
+            const response = await fetch(`${URL}/api/chats/${id}/messages`);
+            const messages = await response.json();
+           
             this.setState({messages: messages});
         }
     }
-    // раскомментировать
+   
+    change = event => this.setState({ msgText: event.target.value });
 
-    // change = event => this.setState({ msgText: event.target.value });
+    submit = async event => {
+        const response = await fetch(`${URL}/api/chats/${this.state.id}/messages`, {
+            method: 'PUT',
+            headers: {'Content-Type' : application/json},
+            body: JSON.stringify({message: this.state.msgText})
+        });
 
-    // submit = event => {
-    //     // Здесь делаем отправку на сервер
-    //     // Если пришло 201 то добавляем локально
-    //     // id сообщения подписываем из ответа
-    //     // const res = await fetch(`${URL}/api/ОТПРАВИТЬ_СООБЩЕНИЕ`);
-    //     const res = {status: 201, id: Math.floor(Math.random()*10000)};
-    //     if (res.status === 201) {
-    //         const messages = this.state.messages;
-    //         messages.push({
-    //             id: res.id,
-    //             content: this.state.msgText,
-    //             meta: {
-    //                 author: this.state.user.id,
-    //                 date: new Date()
-    //             }
-    //         });
-    //         // Это функция из im - меняет lastMessage локально
-    //         this.props.changeLastMessage(this.state.id, this.state.msgText);
-    //         this.setState({ messages: messages, msgText: '' });
-    //     }
-    // }
+        if (res.status === 201) {
+            const createdMessage = await response.json();
+            this.state.messages.push(createdMessage);
+            this.props.changeLastMessage(this.state.id, this.state.msgText);
+            this.setState({ messages: messages, msgText: '' });
+        }
+    }
 
 
     render() {
         const { user, id, name, messages, msgText } = this.state;
-        // const { changeLastMessage } = this.props;
+        //const { changeLastMessage } = this.props;
 
         return (
             <nav className="dialog">

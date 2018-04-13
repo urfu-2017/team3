@@ -22,9 +22,12 @@ module.exports = (server, app) => {
             connectEnsureLogin.ensureLoggedIn('/'),
             (req, res) => app.render(req, res, '/profile')
         )
-        .get('/im', (req, res) => {
-            app.render(req, res, '/im');
-        })
+        .get('/im',
+            connectEnsureLogin.ensureLoggedIn('/'),
+            (req, res) => {
+                app.render(req, res, '/im');
+            }
+        )
         .get('/_next/*', handleRequest)
         .get('/static/*', handleRequest);
 };

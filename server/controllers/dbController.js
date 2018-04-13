@@ -31,7 +31,7 @@ async function createMessage(req, res) {
 
     try {
         await message.save(dbclient, req.params.id);
-        res.sendStatus(200);
+        res.json(message);
     } catch (e) {
         res.sendStatus(404);
     }

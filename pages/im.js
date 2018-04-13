@@ -7,41 +7,53 @@ import PropTypes from 'prop-types';
 
 import Header from '../blocks/chats-page/Header';
 import Chats from '../blocks/chats-page/Chats';
-
 /* eslint-disable */
 const fetch = require('node-fetch');
 const URL = `${process.env.HOST}:${process.env.PORT}`;
 import ChatWindow from '../blocks/chats-page/ChatWindow';
-
 import './global-const.css';
 import './im.css';
 
+import { Route, Redirect } from 'react-router'
+
 export default class ProfilePage extends Component {
-    // раскомментировать
-    // state = { 
-    //     chats: null,
-    //     user: null,
-    //     chatProps: null 
-    // };
+    state = {
+        chats: null,
+        user: null,
+        chatProps: null,
+        isRedirect: false,
+    };
 
-    // раскомментировать
+    click = chatProps => this.setState({ chatProps: chatProps });
 
-    // click = chatProps => this.setState({ chatProps: chatProps });
+    changeLastMessage = (id, msg) => {
+        const chats = this.state.chats;
+        chats.forEach(chat => {
+            if (chat.id == id) {
+                chat.lastMessage = msg;
+                return;
+            }
+        });
 
-    // changeLastMessage = (id, msg) => {
-    //     const chats = this.state.chats;
-    //     chats.forEach(chat => {
-    //         if (chat.id == id) {
-    //             chat.lastMessage = msg;
-    //             return;
-    //         }
-    //     });
-
-    //     this.setState({chats: chats});
-    // }
+        this.setState({chats: chats});
+    }
     
+    searchUser = async e => {
+        const value = e.target.value.toLowerCase();
+        const response = await fetch(`http://localhost:3000/api/users/${value}`);
+        if(response.status === 200) {
+            this.setState({isRedirect: true});            
+        }
+    }
+
     render() {
-        const { chats, user, chatProps } = this.state;
+        const { chats, user, chatProps, isRedirect} = this.state;
+        
+        if(isRedirect) {
+            return (
+                <Redirect to="/profile"/>
+            );
+        }
 
         return (
             <React.Fragment>
@@ -49,7 +61,12 @@ export default class ProfilePage extends Component {
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">
-                            <input type="text" className="chats__search-input"/>
+                            <input 
+                                type="text" 
+                                className="chats__search-input"
+                                placeholder="Найти пользователя по id..."
+                                onChange={this.searchUser}
+                            />
                         </div>
                         <div className="chats__list">
                             <Chats chatsList={chats} click={this.click}/>
@@ -64,26 +81,16 @@ export default class ProfilePage extends Component {
 
 // здесь линтер даже с дизейблом ругается на async/await, 
 // хотя у Гоголева ТАКОЙ ЖЕ КОМЬЮТЕР И ВСЕ РАБОТАЕТ
-ProfilePage.getInitialProps = ({ req }) => {
+ProfilePage.getInitialProps = async ({ req }) => {
     const { user } = req;
-    let chats = null;
-    // await fetch(`${URL}/api/chats`)
-    //     .then((res)=>{
-    //         return res.json();
-    //     })
-    //     .then((data)=>{
-    //         chats = data;
-    //     });
-    chats = [{
-        id: 11111,
-        name: 'bobby',
-        lastMessage: 'Привет!'
-    },
-    {
-        id: 22222,
-        name: 'sergey',
-        lastMessage: 'доделывать будем?'
-    }]
+    
+    const response = await fetch(`${URL}/api/chats`, { 
+        credentials: 'include', headers:{
+        cookie: req.headers.cookie,
+        }, 
+    });
+
+    let chats = await response.json();
 
     return { chats, user };
 };
