@@ -88,11 +88,13 @@ export default class ProfilePage extends Component {
                             <Chats chatsList={chats} click={this.click} />
                         </div>
                     </article>
-                    <ChatWindow
-                        user={user}
-                        chatProps={chatProps}
-                        changeLastMessage={this.changeLastMessage}
-                    />
+                    <article className="dialog">
+                        <ChatWindow
+                            user={user}
+                            chatProps={chatProps}
+                            changeLastMessage={this.changeLastMessage}
+                        />
+                    </article>
                 </main>
             </React.Fragment>
         );
