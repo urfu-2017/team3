@@ -11,10 +11,10 @@ export default class Message extends Component {
 
     render() {
         const { message, user, title } = this.props;
-        const { content, meta } = message;
+        const { content, author } = message;
 
         // Если сообщение свое
-        if (user.id === meta.author) {
+        if (user.id === author) {
             return (
                 <div className="message my">
                     <span className="message__sender">{user.nickname}</span>
