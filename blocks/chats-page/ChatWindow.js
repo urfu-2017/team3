@@ -36,6 +36,16 @@ export default class ChatWindow extends Component {
         }
     }
 
+    componentDidMount() {
+        setInterval(async () => {
+            console.log('Привет');
+            const response = await fetch(`/api/chats/${this.state.id}/messages`);
+            const messages = await response.json();
+
+            this.setState({ messages });
+        }, 1000);
+    }
+
     change = event => this.setState({ msgText: event.target.value });
 
     submit = async () => {
@@ -57,7 +67,6 @@ export default class ChatWindow extends Component {
             this.setState({ messages: messagesNow, msgText: '' });
         }
     };
-
     render() {
         const { user, id, title, messages, msgText } = this.state;
         // const { changeLastMessage } = this.props;
