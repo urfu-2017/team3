@@ -1,9 +1,9 @@
 .message {
+    z-index: 1;
     max-width: 40%;
     height: 100px;
     margin-top: 8px;
     padding: 10px 20px;
-    z-index: 1;
 }
 
 .my {
@@ -21,9 +21,9 @@
 }
 
 .message__sender {
+    display: block;
     color: lightgray;
     font-size: 12px;
-    display: block;
 }
 
 .message__content {
