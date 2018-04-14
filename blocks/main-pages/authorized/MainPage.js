@@ -39,16 +39,21 @@ export default class Main extends Component {
         };
 
         return (
-            <main className="authorized-page">
-                <header className="user-greeting">
-                    <Greeting nickname={nickname} className="user-greeting__text" />
-                </header>
-                <nav className="manage-frame">
-                    <Button btnParams={goToProfile} />
-                    <Button btnParams={goToChats} />
-                    <Button btnParams={logoutProps} />
-                </nav>
-            </main>
+            <React.Fragment>
+                <head>
+                    <title>K1logram</title>
+                </head>
+                <main className="authorized-page">
+                    <header className="user-greeting">
+                        <Greeting nickname={nickname} className="user-greeting__text" />
+                    </header>
+                    <nav className="manage-frame">
+                        <Button btnParams={goToProfile} />
+                        <Button btnParams={goToChats} />
+                        <Button btnParams={logoutProps} />
+                    </nav>
+                </main>
+            </React.Fragment>
         );
     }
 }

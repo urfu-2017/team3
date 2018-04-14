@@ -58,6 +58,9 @@ export default class ProfilePage extends Component {
 
         return (
             <React.Fragment>
+                <head>
+                    <title>K1loCha7</title>
+                </head>
                 <Header />
                 <main className="main">
                     <article className="chats">

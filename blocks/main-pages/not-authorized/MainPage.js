@@ -22,10 +22,15 @@ export default class MainPage extends Component {
         };
 
         return (
-            <main className="log-in">
-                <Greeting />
-                <Button btnParams={logIn} />
-            </main>
+            <React.Fragment>
+                <head>
+                    <title>K1logram</title>
+                </head>
+                <main className="log-in">
+                    <Greeting />
+                    <Button btnParams={logIn} />
+                </main>
+            </React.Fragment>
         );
     }
 }

@@ -32,6 +32,9 @@ export default class ProfilePage extends Component {
 
         return (
             <React.Fragment>
+                <head>
+                    <title>Ki1oPr0fi1e</title>
+                </head>
                 <Header />
                 <Profile user={user} />
             </React.Fragment>
