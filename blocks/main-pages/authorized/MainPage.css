@@ -1,10 +1,8 @@
-.user-greeting
-{
+.user-greeting {
     text-align: center;
 }
 
-.manage-frame
-{
+.manage-frame {
     display: flex;
     justify-content: space-evenly;
 }

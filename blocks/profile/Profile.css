@@ -1,11 +1,16 @@
-.profile
-{
+.profile {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
     grid-template-rows: 1fr 2fr 2fr;
     margin: 3vw;
-    background-color: var(--neutral-color);
     border-radius: 10px;
+    background-color: var(--neutral-color);
+}
+
+.profile__avatar {
+    height: 80%;
+    margin: 5% auto;
+    border-radius: 25%;
 }
 
 .profile__nickname {
@@ -13,20 +18,17 @@
     text-align: center;
 }
 
-.profile__avatar
-{
+.profile__avatar {
     grid-area: 1 / 1 / end / 2;
 }
 
-.profile__info
-{
+.profile__info {
     grid-area: 2 / 2 / 3 / end;
 }
 
-.profile__btns
-{
-    grid-area: 3 / 2 / 4 / end;
+.profile__btns {
     display: flex;
-    justify-content: space-evenly;
+    grid-area: 3 / 2 / 4 / end;
     align-self: center;
+    justify-content: space-evenly;
 }

@@ -63,22 +63,19 @@ export default class ProfilePage extends Component {
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">
-                            <input
-                                type="text"
-                                className="chats__search-input"
-                                placeholder="Найти пользователя по id..."
-                                onChange={this.searchUser}
-                            />
+                            <input type="text" className="chats__search-input" />
                         </div>
                         <div className="chats__list">
                             <Chats chatsList={chats} click={this.click} />
                         </div>
                     </article>
-                    <ChatWindow
-                        user={user}
-                        chatProps={chatProps}
-                        changeLastMessage={this.changeLastMessage}
-                    />
+                    <article className="dialog">
+                        <ChatWindow
+                            user={user}
+                            chatProps={chatProps}
+                            changeLastMessage={this.changeLastMessage}
+                        />
+                    </article>
                 </main>
             </React.Fragment>
         );

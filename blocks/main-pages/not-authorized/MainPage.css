@@ -1,9 +1,7 @@
-.log-in__welcome
-{
+.log-in__welcome {
     text-align: center;
 }
 
-.log-in__github-link
-{
+.log-in__github-link {
     margin: 0 auto;
 }

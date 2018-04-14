@@ -1,8 +1,8 @@
 .header {
-    background-color: var(--base-color);
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+    background-color: var(--base-color);
 }
 
 .header__menu-link,

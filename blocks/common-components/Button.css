@@ -1,14 +1,15 @@
 .custom-button {
     display: flex;
+    box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
-    background-color: var(--secondary-color);
     border-radius: 15px;
-    cursor: pointer;
-    color: white;
+    border: 1px solid #3AA94A;
+    background-color: var(--secondary-color);
+    color: #000;
     text-align: center;
     text-decoration: none;
-    box-sizing: border-box;
+    cursor: pointer;
 }
 
 .custom-button:hover {

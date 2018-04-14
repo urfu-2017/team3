@@ -59,11 +59,14 @@ export default class ChatWindow extends Component {
         // const { changeLastMessage } = this.props;
 
         return (
-            <nav className="dialog">
+            <React.Fragment>
                 {id === null
                     ?
                         <section className="chat-window">
-                            <div className="chat-window__title">Открой диалог</div>
+                            <img
+                                src="/static/main-label-bw.svg"
+                                className="chat-window__stub"
+                            />
                         </section>
                     :
                         <section className="chat-window">
@@ -94,7 +97,7 @@ export default class ChatWindow extends Component {
                             </div>
                         </section>
                 }
-            </nav>
+            </React.Fragment>
         );
     }
 }
