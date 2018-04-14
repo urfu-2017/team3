@@ -4,7 +4,9 @@
 // Подробнее: https://github.com/zeit/next-plugins/tree/master/packages/next-css
 
 import Document, { Head, Main, NextScript } from 'next/document';
-/* eslint react/react-in-jsx-scope: 0 */
+
+/* eslint-disable react/react-in-jsx-scope */
+
 export default class MyDocument extends Document {
     render() {
         return (

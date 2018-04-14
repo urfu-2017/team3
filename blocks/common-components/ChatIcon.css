@@ -1,42 +1,36 @@
-.chat-icon
-{
+.chat-icon {
     display: flex;
     flex-direction: row;
-    background-color: var(--spare-color);
     height: 80px;
+    background-color: var(--spare-color);
 }
 
-.chat-icon:hover{
+.chat-icon:hover {
     background: var(--neutral-color);
 }
 
-.chat-icon__a-box
-{
+.chat-icon__a-box {
     padding: 8px;
 }
 
-.chat-icon__i-box
-{
+.chat-icon__i-box {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     padding: 8px;
 }
 
-.chat-icon__avatar
-{
+.chat-icon__avatar {
     width: 64px;
     height: 64px;
-    background: grey;
     border-radius: 32px;
+    background: grey;
 }
 
-.chat-icon__name
-{
+.chat-icon__name {
     font-weight: bold;
 }
 
-.chat-icon__last-message
-{
+.chat-icon__last-message {
     color: rgb(150, 150, 150);
 }

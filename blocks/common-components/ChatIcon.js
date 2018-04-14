@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import Link from 'next/link';
-/* eslint react/jsx-no-bind: 0 */
+
+/* eslint-disable react/jsx-no-bind */
 
 import './ChatIcon.css';
 

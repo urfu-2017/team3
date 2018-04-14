@@ -5,7 +5,6 @@ import React, { Component } from 'react';
 import Button from '../common-components/Button';
 
 import './Header.css';
-import '../header/Header-common.css';
 
 export default class Header extends Component {
     render() {

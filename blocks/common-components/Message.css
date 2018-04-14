@@ -1,32 +1,32 @@
 .message
 {
-   width: 160px;
-   margin-top: 8px;
    display: flex;
    flex-direction: column;
+   width: 160px;
+   margin-top: 8px;
    padding: 8px;
 }
 
-.my
-{
+.my{
+
     align-self: flex-start;
-    background: #ffffff;
     border-radius: 16px;
     border-bottom-left-radius: 0;
+    background: #ffffff;
 }
 
 .friend
 {
     align-self: flex-end;
-    background: #fff7f3;
     border-radius: 16px;
     border-bottom-right-radius: 0;
+    background: #fff7f3;
 }
 
 .message__sender
 {
-    font-size: 12px;
     color: lightgray;
+    font-size: 12px;
 }
 
 .message__content

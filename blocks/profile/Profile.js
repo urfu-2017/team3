@@ -49,8 +49,6 @@ export default class Profile extends Component {
                     <h2 className="profile__nickname">{user.nickname}</h2>
                     <img
                         src={avatarSrc}
-                        width="100px"
-                        height="100px"
                         alt="user avatar"
                         className="profile__avatar"
                     />
