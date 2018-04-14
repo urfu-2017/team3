@@ -4,7 +4,8 @@
 
 .chat-window__stub {
     height: 50vh;
-    margin: calc((100vh - 64px - 2*20px - 2*10px - 50vh) / 2) 0;
+    margin: calc((100vh - 64px - 2*20px - 2*10px - 50vh - 2*20px) / 2);
+    margin-left: calc(50% - 25vh);
     opacity: .1;
 }
 
