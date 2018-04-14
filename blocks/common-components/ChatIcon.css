@@ -1,37 +1,21 @@
 .chat-icon {
-    display: flex;
-    flex-direction: row;
-    height: 80px;
-    background-color: var(--spare-color);
+    display: block;
+    height: 40px;
+    margin: 10px 0;
+    padding-left: 20px;
+    background-color: var(--neutral-color);
+    font-weight: bold;
+    line-height: 40px;
     cursor: pointer;
 }
 
 .chat-icon:hover {
-    background: var(--neutral-color);
+    margin: 10px;
+    transition: .1s;
+    background-color: snow;
+    box-shadow: 0 0 10px var(--secondary-color);
 }
 
-.chat-icon__a-box {
-    padding: 8px;
-}
-
-.chat-icon__i-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 8px;
-}
-
-.chat-icon__avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 32px;
-    background: grey;
-}
-
-.chat-icon__name {
-    font-weight: bold;
-}
-
-.chat-icon__last-message {
-    color: rgb(150, 150, 150);
+.chat-icon:active {
+    transform: scale(.95, .95);
 }

@@ -23,8 +23,8 @@
     height: 64px;
     padding: 0;
     border-width: 0;
-    background-color: var(--secondary-color);
-    box-shadow: 0 0 5px grey;
+    outline: none;
+    background-color: var(--spare-color);
     font-size: 40px;
     text-align: center;
 }
@@ -34,9 +34,14 @@
     vertical-align: center;
 }
 
+.chats__search-input:focus::placeholder {
+    color: #7777;
+}
+
 .chats__list {
     display: flex;
     flex-direction: column;
+    height: calc(100% - 64px);
     margin: 0 var(--margin);
     overflow: auto;
 }
