@@ -9,7 +9,7 @@ import './Profile.css';
 
 export default class Profile extends Component {
     render() {
-        const { user } = this.props;
+        const { user, cookie } = this.props;
 
         const sizeBtn = {
             width: '100px',
@@ -21,11 +21,16 @@ export default class Profile extends Component {
             text: 'Написать',
             class: 'profile-page-btns__chat-link',
             onClick: async () => {
-                const response = await fetch('/api/chats', {
+                const response = await fetch('/api/chats/', {
                     method: 'POST',
-                    body: {
+                    credentials: 'include',
+                    headers: {
+                        cookie,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
                         interlocutorId: user.id
-                    }
+                    })
                 });
 
                 const json = await response.json();
@@ -83,4 +88,7 @@ export default class Profile extends Component {
     }
 }
 
-Profile.propTypes = { user: PropTypes.object };
+Profile.propTypes = {
+    cookie: PropTypes.string,
+    user: PropTypes.object
+};

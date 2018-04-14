@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 import Header from '../blocks/chats-page/Header';
 import Chats from '../blocks/chats-page/Chats';
@@ -17,8 +17,7 @@ export default class ProfilePage extends Component {
     state = {
         chats: null,
         user: null,
-        currentChatProps: null,
-        currentChat: null
+        chatProps: null
     };
 
     click = chatProps => this.setState({ chatProps });
@@ -52,17 +51,21 @@ export default class ProfilePage extends Component {
         }
     }
 
+    componentWillUpdate() {
+        this.props.chatProps = JSON.parse(this.state.currentChat);
+    }
+
     componentDidMount() {
-        const value = localStorage.getItem('chatProps');
+        const chatProps = localStorage.getItem('chatProps');
 
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({
-            currentChat: value
+            chatProps
         });
     }
 
     render() {
-        const { chats, user, currentChatProps } = this.state;
+        const { chats, user, chatProps } = this.state;
 
         return (
             <React.Fragment>
@@ -70,9 +73,7 @@ export default class ProfilePage extends Component {
                     <title>K1loCha7</title>
                 </head>
                 <Header />
-                <div>
-                    {this.state.currentChat}
-                </div>
+                <div>{ chatProps }</div>
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">
@@ -89,7 +90,7 @@ export default class ProfilePage extends Component {
                     </article>
                     <ChatWindow
                         user={user}
-                        chatProps={currentChatProps}
+                        chatProps={chatProps}
                         changeLastMessage={this.changeLastMessage}
                     />
                 </main>
@@ -118,4 +119,6 @@ ProfilePage.getDerivedStateFromProps = ({ chats, user }) => {
     return { chats, user };
 };
 
-ProfilePage.propTypes = { };
+ProfilePage.propTypes = {
+    chatProps: PropTypes.object
+};
