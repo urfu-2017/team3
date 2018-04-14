@@ -18,9 +18,11 @@ module.exports = (server, app) => {
         .get('/', (req, res) => {
             app.render(req, res, '/index');
         })
-        .get('/profile',
+        .get('/profile/:id(\\d+)?',
             connectEnsureLogin.ensureLoggedIn('/'),
-            (req, res) => app.render(req, res, '/profile')
+            (req, res) => {
+                app.render(req, res, '/profile');
+            }
         )
         .get('/im',
             connectEnsureLogin.ensureLoggedIn('/'),

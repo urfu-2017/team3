@@ -45,7 +45,7 @@ export default class ChatWindow extends Component {
             body: JSON.stringify({ message: this.state.msgText })
         });
 
-        if (res.status === 201) {
+        if (response.status === 201) {
             const createdMessage = await response.json();
 
             this.state.messages.push(createdMessage);

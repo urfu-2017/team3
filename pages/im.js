@@ -5,7 +5,6 @@
 import fetch from 'node-fetch';
 
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
 
 import Header from '../blocks/chats-page/Header';
 import Chats from '../blocks/chats-page/Chats';
@@ -20,8 +19,7 @@ export default class ProfilePage extends Component {
     state = {
         chats: null,
         user: null,
-        chatProps: null,
-        isRedirect: false
+        chatProps: null
     };
 
     click = chatProps => this.setState({ chatProps });
@@ -39,23 +37,24 @@ export default class ProfilePage extends Component {
 
         this.setState({ chats });
     }
-    searchUser = async e => {
-        const value = e.target.value.toLowerCase();
-        const response = await fetch(`http://localhost:3000/api/users/${value}`);
 
-        if (response.status === 200) {
-            this.setState({ isRedirect: true });
+    searchUser = async e => {
+        if (e.key !== 'Enter') {
+            return;
+        }
+
+        const value = e.target.value.toLowerCase();
+        const response = await fetch(`/api/users/${value}`);
+
+        if (response.status === 404) {
+            console.info('User not found'); // show not found message here
+        } else if (response.status === 200) {
+            window.location.href = `/profile/${value}`;
         }
     }
 
     render() {
-        const { chats, user, chatProps, isRedirect } = this.state;
-
-        if (isRedirect) {
-            return (
-                <Redirect to="/profile" />
-            );
-        }
+        const { chats, user, chatProps } = this.state;
 
         return (
             <React.Fragment>
@@ -63,7 +62,12 @@ export default class ProfilePage extends Component {
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">
-                            <input type="text" className="chats__search-input" />
+                            <input
+                                type="text"
+                                placeholder="Найти пользователя по id..."
+                                className="chats__search-input"
+                                onKeyPress={this.searchUser}
+                            />
                         </div>
                         <div className="chats__list">
                             <Chats chatsList={chats} click={this.click} />
@@ -88,7 +92,8 @@ ProfilePage.getInitialProps = async ({ req }) => {
     const { user } = req;
 
     const response = await fetch(`${URL}/api/chats`, {
-        credentials: 'include', headers: {
+        credentials: 'include',
+        headers: {
             cookie: req.headers.cookie
         }
     });
@@ -98,9 +103,6 @@ ProfilePage.getInitialProps = async ({ req }) => {
     return { chats, user };
 };
 
-// Перекладываем в state сразу из props
 ProfilePage.getDerivedStateFromProps = ({ chats, user }) => {
     return { chats, user };
 };
-
-// ProfilePage.propTypes = { user: PropTypes.object };
