@@ -33,7 +33,7 @@ export default class Main extends Component {
         };
         const logoutProps = {
             link: '/logout',
-            text: 'Выйти из профиля',
+            text: 'Выйти',
             class: 'manage-frame__logout-link',
             size: sizeBtn
         };

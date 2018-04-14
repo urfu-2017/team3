@@ -9,9 +9,8 @@ export default class Greeting extends Component {
         return (
             <header className="log-in__welcome">
                 <p className="log-in__welcome-text">
-                Добро пожаловать в наш мессенджер! Здесь ты сможешь
-                общаться со своими друзьями и делиться с ними самыми
-                свежими новостями о своей личной (яичной) жизни!
+                Добро пожаловать в наш мессенджер! K1logram -
+                общение без границ.
                 </p>
             </header>
         );

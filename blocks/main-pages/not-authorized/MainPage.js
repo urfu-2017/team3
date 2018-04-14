@@ -13,7 +13,7 @@ export default class MainPage extends Component {
     render() {
         const logIn = {
             link: '/login',
-            text: 'Войти через Github',
+            text: 'Войти через GitHub',
             class: 'log-in__github-link',
             size: {
                 width: '150px',
