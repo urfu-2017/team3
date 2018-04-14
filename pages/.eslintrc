@@ -1,0 +1,7 @@
+{
+    "extends": "iddqd/react",
+    "parser": "babel-eslint",
+    "rules": {
+        "capitalized-comments": 0
+    }
+}

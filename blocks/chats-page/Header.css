@@ -1,0 +1,11 @@
+.header {
+    background-color: var(--base-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__menu-link,
+.header__profile-link {
+    margin: 10px 20px;
+}
