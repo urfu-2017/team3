@@ -79,7 +79,6 @@ export default class ProfilePage extends Component {
                     <title>K1loCha7</title>
                 </head>
                 <Header />
-                <div>{ chatProps }</div>
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">
