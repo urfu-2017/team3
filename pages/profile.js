@@ -3,30 +3,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class ProfilePage extends Component {
+import Header from '../blocks/profile/Header';
+import Profile from '../blocks/profile/Profile';
 
-    static getInitialProps({ req }) {
-        const { user } = req;
+import 'isomorphic-fetch';
+import './global-const.css';
+
+/* eslint-disable no-undef */
+
+const URL = `${process.env.HOST}:${process.env.PORT}`;
+
+export default class ProfilePage extends Component {
+    static async getInitialProps({ req }) {
+        const { id } = req.params;
+
+        if (!id) {
+            return { user: req.user };
+        }
+
+        const response = await fetch(`${URL}/api/users/${id}`);
+        const user = await response.json();
 
         return { user };
     }
 
     render() {
         const { user } = this.props;
-        const avatarSrc = `data:image/svg+xml;base64,${user.avatar}`;
 
         return (
-            <div>
-                <p>
-                    <a href="/">Home</a>
-                </p>
-
-                <img src={avatarSrc} width="100" height="100" alt="user avatar" />
-                <dl>
-                    <dt>ID: </dt><dd>{user.id }</dd>
-                    <dt>Username: </dt><dd>{user.nickname}</dd>
-                </dl>
-            </div>
+            <React.Fragment>
+                <Header />
+                <Profile user={user} />
+            </React.Fragment>
         );
     }
 }

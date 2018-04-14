@@ -1,0 +1,34 @@
+.profile {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 2fr 2fr;
+    margin: 3vw;
+    border-radius: 10px;
+    background-color: var(--neutral-color);
+}
+
+.profile__avatar {
+    height: 80%;
+    margin: 5% auto;
+    border-radius: 25%;
+}
+
+.profile__nickname {
+    grid-area: 1 / 2 / 2 / end;
+    text-align: center;
+}
+
+.profile__avatar {
+    grid-area: 1 / 1 / end / 2;
+}
+
+.profile__info {
+    grid-area: 2 / 2 / 3 / end;
+}
+
+.profile__btns {
+    display: flex;
+    grid-area: 3 / 2 / 4 / end;
+    align-self: center;
+    justify-content: space-evenly;
+}

@@ -1,7 +1,5 @@
 'use strict';
 
-/* eslint-disable capitalized-comments */
-
 require('dotenv').config();
 
 const next = require('next');

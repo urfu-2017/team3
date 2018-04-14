@@ -1,3 +1,7 @@
 {
-    "extends": "iddqd/base"
+    "extends": "iddqd/base",
+    "parser": "babel-eslint",
+    "rules": {
+        "capitalized-comments": 0
+    }
 }

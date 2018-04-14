@@ -1,0 +1,12 @@
+main {
+    --height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30vw;
+    height: var(--height);
+    margin: auto;
+    margin: calc(50vh - var(--height) / 2) auto;
+    border-radius: 10px;
+    background: var(--neutral-color);
+}
