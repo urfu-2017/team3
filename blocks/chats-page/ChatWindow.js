@@ -94,7 +94,7 @@ export default class ChatWindow extends Component {
                                     onClick={this.submit}
                                     className="chat-window__send-btn"
                                     >
-                                    send
+                                    Отправить
                                 </div>
                             </div>
                         </section>

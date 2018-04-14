@@ -14,13 +14,7 @@ export default class ChatIcon extends Component {
 
         return (
             <li className="chat-icon" onClick={() => click(chatProps)}>
-                <div className="chat-icon__a-box">
-                    <img src={chatProps.avatarsrc} className="chat-icon__avatar" alt="avatar" />
-                </div>
-                <div className="chat-icon__i-box">
-                    <span className="chat-icon__name">{chatProps.title}</span>
-                    <span className="chat-icon__last-message">Чат</span>
-                </div>
+                {chatProps.title}
             </li>
         );
     }

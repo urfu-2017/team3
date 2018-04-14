@@ -22,8 +22,8 @@
 
 .custom-button:hover {
     transform: translate(0, 0);
-    background-color: snow;
     transition: .1s;
+    background-color: snow;
 }
 
 .custom-button:active {

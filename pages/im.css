@@ -23,10 +23,10 @@
     height: 64px;
     padding: 0;
     border-width: 0;
-    background-color: var(--secondary-color);
-    box-shadow: 0 0 5px grey;
+    background-color: var(--spare-color);
     font-size: 40px;
     text-align: center;
+    outline: none;
 }
 
 .chats__search-input::placeholder {
@@ -34,11 +34,16 @@
     vertical-align: center;
 }
 
+.chats__search-input:focus::placeholder {
+    color: #7777;
+}
+
 .chats__list {
     display: flex;
     flex-direction: column;
     margin: 0 var(--margin);
     overflow: auto;
+    height: calc(100% - 64px);
 }
 
 .dialog {

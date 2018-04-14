@@ -18,7 +18,7 @@
     padding-left: 16px;
     background: var(--base-color);
     color: white;
-    font-size: 16px;
+    font-size: 24px;
     font-weight: bold;
 }
 
@@ -32,23 +32,38 @@
 
 .chat-window__write {
     display: flex;
-    flex-direction: row;
     height: 48px;
     background: var(--neutral-color);
+    margin: 0 0 10px 10px;
 }
 
 .chat-window__input {
     width: 100%;
     height: 100%;
-    padding: 0;
-    border-width: 0;
+    padding: 0 0 0 20px;
+    border: 1px solid var(--secondary-color);
+    box-sizing: border-box;
+    outline: none;
+    font-size: 170%;
+}
+
+.chat-window__input:focus {
+    background-color: var(--neutral-color);
 }
 
 .chat-window__send-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 120px;
-    height: 100%;
-    background: var(--base-color);
+    width: 104px;
+    height: 40px;
+    align-self: center;
+    background: var(--secondary-color);
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    margin: 4px 8px;
+    outline: none;
+}
+
+.chat-window__send-btn:hover {
+    transform: scale(1.20, 1.20);
+    transition: .05s;
 }
