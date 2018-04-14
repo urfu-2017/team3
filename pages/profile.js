@@ -9,8 +9,6 @@ import Profile from '../blocks/profile/Profile';
 import 'isomorphic-fetch';
 import './global-const.css';
 
-/* eslint-disable no-undef */
-
 const URL = `${process.env.HOST}:${process.env.PORT}`;
 
 export default class ProfilePage extends Component {
@@ -24,11 +22,11 @@ export default class ProfilePage extends Component {
         const response = await fetch(`${URL}/api/users/${id}`);
         const user = await response.json();
 
-        return { user };
+        return { user, cookie: req.headers.cookie };
     }
 
     render() {
-        const { user } = this.props;
+        const { user, cookie } = this.props;
 
         return (
             <React.Fragment>
@@ -36,10 +34,13 @@ export default class ProfilePage extends Component {
                     <title>Ki1oPr0fi1e</title>
                 </head>
                 <Header />
-                <Profile user={user} />
+                <Profile user={user} cookie={cookie} />
             </React.Fragment>
         );
     }
 }
 
-ProfilePage.propTypes = { user: PropTypes.object };
+ProfilePage.propTypes = {
+    user: PropTypes.object,
+    cookie: PropTypes.string
+};
