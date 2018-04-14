@@ -31,6 +31,8 @@ describe('messenger API tests', () => {
         await createChat('my first chat', 2);
 
         currentUserId = 1; // Получение чатов пользователя '1'
+        let chatId = null;
+
         await request(server)
             .get('/api/chats')
             .expect(res => {
@@ -38,6 +40,7 @@ describe('messenger API tests', () => {
                 res.body[0].should.have.properties({
                     title: 'my first chat'
                 });
+                chatId = res.body[0].id;
             });
 
         currentUserId = 2; // Получение чатов пользователя '2'
@@ -48,24 +51,39 @@ describe('messenger API tests', () => {
                 res.body[0].should.have.properties({
                     title: 'usernick1'
                 });
+                res.body[0].id.should.equal(chatId);
             });
     });
 
-    it('create many chats and get them', async () => {
+    it('only one chat with user', async () => {
         await createUser(2);
         await createUser(3);
 
         currentUserId = 3;
-        await Promise.all([
-            createChat('first', 2),
-            createChat('second', 2),
-            createChat('third', 2)
-        ]);
+        await createChat('first', 2);
+        await createChat('second', 2);
+        await createChat('third', 2);
 
         await request(server)
             .get('/api/chats')
             .expect(res => {
-                res.body.should.have.length(3);
+                res.body.should.have.length(1);
+            });
+    });
+
+    it('many chats', async () => {
+        await createUser(1);
+        await createUser(2);
+        await createUser(3);
+
+        currentUserId = 3;
+        await createChat('first', 1);
+        await createChat('second', 2);
+
+        await request(server)
+            .get('/api/chats')
+            .expect(res => {
+                res.body.should.have.length(2);
             });
     });
 
@@ -95,7 +113,7 @@ async function createChat(title, interlocutorId) {
             title,
             interlocutorId
         })
-        .expect(201);
+        .expect(200);
 }
 
 function generateUser(id) {
