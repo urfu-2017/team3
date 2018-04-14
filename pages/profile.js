@@ -9,8 +9,6 @@ import Profile from '../blocks/profile/Profile';
 import 'isomorphic-fetch';
 import './global-const.css';
 
-/* eslint-disable no-undef */
-
 const URL = `${process.env.HOST}:${process.env.PORT}`;
 
 export default class ProfilePage extends Component {

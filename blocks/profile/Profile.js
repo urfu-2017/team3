@@ -17,9 +17,13 @@ export default class Profile extends Component {
         };
 
         const chatWithUser = {
-            link: `/im/${user.id}`,
+            link: `/im`,
             text: 'Написать',
             class: 'profile-page-btns__chat-link',
+            onClick: () => {
+                localStorage.setItem('_current', user.id);
+                window.location.href = '/im';
+            },
             size: sizeBtn
         };
         const githubPageUser = {

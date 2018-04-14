@@ -17,6 +17,7 @@ export default class Button extends Component {
                 href={btnParams.link}
                 style={{ width: btnParams.size.width, height: btnParams.size.height }}
                 tabIndex={1}
+                onClick={btnParams.onClick}
                 >
                 {btnParams.text}
             </a>
