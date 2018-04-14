@@ -86,8 +86,6 @@ export default class ProfilePage extends Component {
     }
 }
 
-// здесь линтер даже с дизейблом ругается на async/await,
-// хотя у Гоголева ТАКОЙ ЖЕ КОМЬЮТЕР И ВСЕ РАБОТАЕТ
 ProfilePage.getInitialProps = async ({ req }) => {
     const { user } = req;
 

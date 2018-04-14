@@ -3,8 +3,9 @@
     box-sizing: border-box;
     flex-direction: column;
     justify-content: center;
-    border-radius: 15px;
     border: 1px solid #3AA94A;
+    border-radius: 15px;
+    outline: none;
     background-color: var(--secondary-color);
     color: #000;
     text-align: center;
@@ -12,12 +13,19 @@
     cursor: pointer;
 }
 
+.custom-button:focus {
+    transform: scale(1.05, 1.05);
+    transition: .1s;
+    background-color: snow;
+    box-shadow: 0 0 10px var(--secondary-color);
+}
+
 .custom-button:hover {
-    transform: translate(1px, 2px);
+    transform: translate(0, 0);
+    background-color: snow;
     transition: .1s;
 }
 
 .custom-button:active {
-    transform: translate(2px, 4px);
-    transition: .1s;
+    transform: scale(.95, .95);
 }
