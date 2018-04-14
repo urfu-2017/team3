@@ -23,6 +23,7 @@ export default class ChatWindow extends Component {
         // Если приходят chatProps - значит нажали на диалог, отсекаем первый холостой
         // И отрезаем нажатие на открытый диалог
         if (nextProps.chatProps && nextProps.chatProps.id !== this.state.id) {
+            this.setState({ messages: [] });
             const { chatProps, user } = nextProps;
             const { id, title } = chatProps;
 
@@ -39,6 +40,7 @@ export default class ChatWindow extends Component {
 
     submit = async () => {
         const response = await fetch(`/api/chats/${this.state.id}/messages`, {
+            credentials: 'include',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: this.state.msgText })
@@ -109,5 +111,5 @@ ChatWindow.getInitialProps = () => {
 };
 
 ChatWindow.propTypes = { chatProps: PropTypes.object };
-ChatWindow.propTypes = { user: PropTypes.string };
+ChatWindow.propTypes = { user: PropTypes.object };
 // ChatWindow.propTypes = { changeLastMessage: PropTypes.function };

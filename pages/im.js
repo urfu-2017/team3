@@ -14,13 +14,19 @@ import './im.css';
 const URL = `${process.env.HOST}:${process.env.PORT}`;
 
 export default class ProfilePage extends Component {
-    state = {
-        chats: null,
-        user: null,
-        chatProps: null
-    };
+    constructor(props) {
+        super(props);
+        this.setState({
+            chats: null,
+            user: null,
+            chatProps: null
+        });
+    }
 
-    click = chatProps => this.setState({ chatProps });
+    click = chatProps => {
+        localStorage.setItem('chatProps', JSON.stringify(chatProps));
+        this.setState({ chatProps });
+    };
 
     changeLastMessage = (id, msg) => {
         const { chats } = this.state;
@@ -52,15 +58,15 @@ export default class ProfilePage extends Component {
     }
 
     componentWillUpdate() {
-        this.props.chatProps = JSON.parse(this.state.currentChat);
+        this.props.chatProps = JSON.parse(this.state.chatProps);
     }
 
     componentDidMount() {
-        const chatProps = localStorage.getItem('chatProps');
+        const chatPropsFromLS = localStorage.getItem('chatProps');
 
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({
-            chatProps
+            chatProps: JSON.parse(chatPropsFromLS)
         });
     }
 
