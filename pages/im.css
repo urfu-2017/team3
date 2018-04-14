@@ -23,10 +23,10 @@
     height: 64px;
     padding: 0;
     border-width: 0;
+    outline: none;
     background-color: var(--spare-color);
     font-size: 40px;
     text-align: center;
-    outline: none;
 }
 
 .chats__search-input::placeholder {
@@ -41,9 +41,9 @@
 .chats__list {
     display: flex;
     flex-direction: column;
+    height: calc(100% - 64px);
     margin: 0 var(--margin);
     overflow: auto;
-    height: calc(100% - 64px);
 }
 
 .dialog {
