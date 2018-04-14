@@ -18,7 +18,10 @@ export default class Message extends Component {
             return (
                 <div className="message my">
                     <span className="message__sender">{user.nickname}</span>
-                    <span className="message__content">{content}</span>
+                    <span
+                        className="message__content"
+                        dangerouslySetInnerHTML={{ __html: content }}
+                    />
                 </div>
             );
         }
