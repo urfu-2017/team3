@@ -1,9 +1,10 @@
 'use strict';
 
 class Chat {
-    constructor(id, title) {
+    constructor({ id, title, members }) {
         this.id = id;
         this.title = title;
+        this.members = members;
         this.date = Date.now();
     }
 

@@ -53,26 +53,48 @@ async function getUser(req, res) {
     }
 }
 
+/* eslint-disable-next-line max-statements */
 async function createChat(req, res) {
     try {
-        if (!await User.findById(dbclient, req.body.interlocutorId)) {
-            res.sendStatus(404);
+        const userChats = await Chat.getAll(dbclient, req.user.id.toString());
+        const interlocutorId = req.body.interlocutorId.toString();
+        const existsChat = userChats.find(c => c.members.includes(interlocutorId));
 
-            return;
+        if (existsChat) {
+            return res.status(200).json(existsChat);
+        }
+        const interlocutor = await User.findById(dbclient, req.body.interlocutorId);
+
+        if (!interlocutor) {
+            return res.sendStatus(404);
         }
 
-        const chatId = uuid();
-        const currentUserChat = new Chat(chatId, req.body.title);
-        const interlocutorChat = new Chat(chatId, req.user.nickname);
+        const currentUserChat = await createBothChats(req.user, interlocutor, req.body.title);
 
-        await Promise.all([
-            currentUserChat.save(dbclient, req.user.id),
-            interlocutorChat.save(dbclient, req.body.interlocutorId)]);
-
-        res.sendStatus(201);
+        res.status(200).json(currentUserChat);
     } catch (e) {
         res.sendStatus(400);
     }
+}
+
+async function createBothChats(user, interlocator, title) {
+    const chatId = uuid();
+    const firstUserChat = new Chat({
+        id: chatId,
+        title: title || interlocator.nickname,
+        members: [user.id, interlocator.id]
+    });
+    const interlocutorChat = new Chat({
+        id: chatId,
+        title: user.nickname,
+        members: [user.id, interlocator.id]
+    });
+
+    await Promise.all([
+        firstUserChat.save(dbclient, user.id),
+        interlocutorChat.save(dbclient, interlocator.id)]);
+
+    return firstUserChat;
 }
 
 async function createUser(req, res) {

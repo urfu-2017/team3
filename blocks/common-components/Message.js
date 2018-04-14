@@ -10,7 +10,7 @@ import './Message.css';
 export default class Message extends Component {
 
     render() {
-        const { message, user, name } = this.props;
+        const { message, user, title } = this.props;
         const { content, meta } = message;
 
         // Если сообщение свое
@@ -26,11 +26,11 @@ export default class Message extends Component {
 
         return (
             <div className="message friend">
-                <span className="message__sender">{name}</span>
+                <span className="message__sender">{title}</span>
                 <span className="message__content">{content}</span>
             </div>
         );
     }
 }
 
-Message.propTypes = { message: PropTypes.object, user: PropTypes.object, name: PropTypes.string };
+Message.propTypes = { message: PropTypes.object, user: PropTypes.object, title: PropTypes.string };
