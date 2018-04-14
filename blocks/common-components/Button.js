@@ -16,6 +16,7 @@ export default class Button extends Component {
                 className={`custom-button  ${btnParams.class}`}
                 href={btnParams.link}
                 style={{ width: btnParams.size.width, height: btnParams.size.height }}
+                tabIndex={1}
                 >
                 {btnParams.text}
             </a>
