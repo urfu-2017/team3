@@ -18,8 +18,8 @@ export default class ChatIcon extends Component {
                     <img src={chatProps.avatarsrc} className="chat-icon__avatar" alt="avatar" />
                 </div>
                 <div className="chat-icon__i-box">
-                    <span className="chat-icon__name">{chatProps.name}</span>
-                    <span className="chat-icon__last-message">{chatProps.lastMessage}</span>
+                    <span className="chat-icon__name">{chatProps.title}</span>
+                    <span className="chat-icon__last-message">Чат</span>
                 </div>
             </li>
         );

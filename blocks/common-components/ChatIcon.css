@@ -3,6 +3,7 @@
     flex-direction: row;
     height: 80px;
     background-color: var(--spare-color);
+    cursor: pointer;
 }
 
 .chat-icon:hover {
