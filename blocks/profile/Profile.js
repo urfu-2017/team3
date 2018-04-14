@@ -20,8 +20,17 @@ export default class Profile extends Component {
             link: `/im`,
             text: 'Написать',
             class: 'profile-page-btns__chat-link',
-            onClick: () => {
-                localStorage.setItem('_current', user.id);
+            onClick: async () => {
+                const response = await fetch('/api/chats', {
+                    method: 'POST',
+                    body: {
+                        interlocutorId: user.id
+                    }
+                });
+
+                const json = await response.json();
+
+                localStorage.setItem('chatProps', JSON.stringify(json));
                 window.location.href = '/im';
             },
             size: sizeBtn

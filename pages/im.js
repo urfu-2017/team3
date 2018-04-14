@@ -17,7 +17,7 @@ export default class ProfilePage extends Component {
     state = {
         chats: null,
         user: null,
-        chatProps: null,
+        currentChatProps: null,
         currentChat: null
     };
 
@@ -53,7 +53,7 @@ export default class ProfilePage extends Component {
     }
 
     componentDidMount() {
-        const value = localStorage.getItem('test');
+        const value = localStorage.getItem('chatProps');
 
         /* eslint-disable-next-line react/no-did-mount-set-state */
         this.setState({
@@ -62,7 +62,7 @@ export default class ProfilePage extends Component {
     }
 
     render() {
-        const { chats, user, chatProps } = this.state;
+        const { chats, user, currentChatProps } = this.state;
 
         return (
             <React.Fragment>
@@ -89,7 +89,7 @@ export default class ProfilePage extends Component {
                     </article>
                     <ChatWindow
                         user={user}
-                        chatProps={chatProps}
+                        chatProps={currentChatProps}
                         changeLastMessage={this.changeLastMessage}
                     />
                 </main>
