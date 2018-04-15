@@ -73,8 +73,6 @@ export default class Profile extends Component {
                     <ul className="profile__info">
                         <h3 className="profile__info-title">Информация о пользователе:</h3>
                         <li className="profile__info-item">ID: {user.id}</li>
-                        <li className="profile__info-item">Еще информация:</li>
-                        <li className="profile__info-item">Еще информация:</li>
                     </ul>
                     <section className="profile__btns">
                         <Button btnParams={chatWithUser} />
