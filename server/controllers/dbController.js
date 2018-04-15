@@ -27,7 +27,7 @@ async function getMessages(req, res) {
 }
 
 async function createMessage(req, res) {
-    const meta = Message.extractMeta(req.body.message);
+    const meta = await Message.extractMeta(req.body.message);
     const message = new Message(req.user.id, req.body.message, meta);
 
     try {
