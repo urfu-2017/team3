@@ -11,7 +11,8 @@ export default class Message extends Component {
 
     render() {
         const { message, user, title } = this.props;
-        const { content, author } = message;
+        const { content, author, meta } = message;
+        console.log(content, meta);
 
         // Если сообщение свое
         if (user.id === author) {
@@ -22,19 +23,39 @@ export default class Message extends Component {
                         className="message__content"
                         dangerouslySetInnerHTML={{ __html: content }}
                     />
+                    <a className="metadata" href={meta.url}>
+                        <img
+                            src={meta.image}
+                            className="metadata__image"
+                        />
+                        <h3 className="metadata__header">{meta.title || meta.author}</h3>
+                        <div className="metadata__description">{meta.description}</div>
+                        {/* {Object.keys(meta)} */}
+                    </a>
                 </div>
             );
         }
         // Если сообщение собеседника
 
         return (
-            <div className="message friend">
-                <span className="message__sender">{title}</span>
-                <span
-                    className="message__content"
-                    dangerouslySetInnerHTML={{ __html: content }}
-                />
-            </div>
+            <React.Fragment>
+                <div className="message friend">
+                    <span className="message__sender">{title}</span>
+                    <span
+                        className="message__content"
+                        dangerouslySetInnerHTML={{ __html: content }}
+                    />
+                    <a className="metadata" href={meta.url}>
+                        <img
+                            src={meta.image}
+                            className="metadata__image"
+                        />
+                        <h3 className="metadata__header">{meta.title || meta.author}</h3>
+                        <div className="metadata__description">{meta.description}</div>
+                        {/* {Object.keys(meta)} */}
+                    </a>
+                </div>
+            </React.Fragment>
         );
     }
 }

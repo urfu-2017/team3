@@ -38,7 +38,6 @@ export default class ChatWindow extends Component {
 
     componentDidMount() {
         setInterval(async () => {
-            console.log('Привет');
             const response = await fetch(`/api/chats/${this.state.id}/messages`);
             const messages = await response.json();
 
