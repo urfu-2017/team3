@@ -1,7 +1,7 @@
 .message {
     z-index: 1;
     max-width: 40%;
-    height: 100px;
+    /* height: 100px; */
     margin-top: 8px;
     padding: 10px 20px;
 }
@@ -31,12 +31,23 @@
 }
 
 .metadata {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    grid-template-rows: 1fr 3fr;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .metadata__image {
-    grid-area: 1 / 1 / end / 2;
-    width: 25%;
+    width: 100%;
+}
+
+.metadata__header {
+    font-size: 80%;
+    text-align: center;
+}
+
+.metadata__description {
+    font-size: 80%;
+    text-decoration: none !important;
 }
