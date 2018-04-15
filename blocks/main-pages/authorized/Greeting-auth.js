@@ -9,7 +9,7 @@ export default class Greeting extends Component {
 
         return (
             <p className={className}>
-                Привет, <strong>{nickname}</strong>!👋🏼<br />Мы рады, что ты пользуешься
+                Привет, <strong>{nickname}</strong>!<br />Мы рады, что ты пользуешься
                 нашим приложением, оставайся с нами!
             </p>
         );

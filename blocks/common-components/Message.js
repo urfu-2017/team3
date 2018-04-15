@@ -11,7 +11,17 @@ export default class Message extends Component {
 
     render() {
         const { message, user, title } = this.props;
-        const { content, author } = message;
+        const { content, author, meta } = message;
+        /* eslint-disable react/jsx-closing-tag-location */
+        const metadata = Object.keys(meta).length === 0 ? <React.Fragment /> :
+            (<a className="metadata" href={meta.url}>
+                <img
+                    src={meta.image}
+                    className="metadata__image"
+                />
+                <h3 className="metadata__header">{meta.title || meta.author}</h3>
+                <div className="metadata__description">{meta.description}</div>
+            </a>);
 
         // Если сообщение свое
         if (user.id === author) {
@@ -22,19 +32,23 @@ export default class Message extends Component {
                         className="message__content"
                         dangerouslySetInnerHTML={{ __html: content }}
                     />
+                    {metadata}
                 </div>
             );
         }
         // Если сообщение собеседника
 
         return (
-            <div className="message friend">
-                <span className="message__sender">{title}</span>
-                <span
-                    className="message__content"
-                    dangerouslySetInnerHTML={{ __html: content }}
-                />
-            </div>
+            <React.Fragment>
+                <div className="message friend">
+                    <span className="message__sender">{title}</span>
+                    <span
+                        className="message__content"
+                        dangerouslySetInnerHTML={{ __html: content }}
+                    />
+                    {metadata}
+                </div>
+            </React.Fragment>
         );
     }
 }
