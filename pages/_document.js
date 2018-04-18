@@ -6,6 +6,7 @@
 import Document, { Head, Main, NextScript } from 'next/document';
 
 /* eslint-disable react/react-in-jsx-scope */
+/* eslint-disable max-len */
 
 export default class MyDocument extends Document {
     render() {

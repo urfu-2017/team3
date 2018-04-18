@@ -1,6 +1,8 @@
 'use strict';
 
 /* eslint react/jsx-no-bind: 0 */
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
