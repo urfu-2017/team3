@@ -1,0 +1,31 @@
+.profile {
+    display: flex;
+    flex-direction: row;
+    width: 320px;
+    height: 164px;
+    padding: 32px;
+    box-sizing: border-box;
+    background: white;
+    border-radius: 8px;
+}
+
+.profile__avatar-box {
+    width: 100px;
+    height: 100px;
+}
+
+.profile__avatar {
+    border-radius: 50px;
+}
+
+.profile__info-box {
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+}
+
+.profile__nickname {
+    color: #444444;
+    font-size: 18px;
+    font-weight: bold;
+}
