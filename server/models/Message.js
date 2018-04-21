@@ -1,38 +1,38 @@
 'use strict';
 
-const uuid = require('uuid/v4');
-const getUrls = require('get-urls');
-const got = require('got');
-const metascraper = require('metascraper');
 const { markdown } = require('markdown');
 const sanitizeHtml = require('sanitize-html');
+const extractMeta = require('../utils/metaExtractor');
+const mongoose = require('mongoose');
 
-class Message {
-    constructor(userId, content, meta) {
-        this.id = uuid();
-        this.content = processMarkdownAndSanitize(content);
-        this.author = userId;
-        this.date = Date.now();
-        this.meta = meta;
-    }
+const mongoSchema = new mongoose.Schema({
+    author: {
+        type: String,
+        index: true
+    },
+    date: {
+        type: Date,
+        default: Date.now,
+        index: true
+    },
+    text: String,
+    meta: {
+        type: Object,
+        default: null
+    },
+    attachmentsIds: [mongoose.Schema.Types.ObjectId]
+});
 
-    static async extractMeta(message) {
-        const urlsSet = getUrls(message);
+class MessageClass {
+    static async initialize({ author, text }) {
+        const meta = await extractMeta(text);
 
-        if (urlsSet.size === 0) {
-            return {};
-        }
-
-        for (const targetUrl of urlsSet) {
-            const { body: html, url } = await got(targetUrl);
-            const metadata = await metascraper({ html, url });
-
-            return metadata;
-        }
-    }
-
-    save(dbclient, chatId) {
-        return dbclient.postJson(`chat_${chatId}_messages`, this);
+        return {
+            author,
+            meta,
+            data: Date.now(),
+            text: processMarkdownAndSanitize(text)
+        };
     }
 }
 
@@ -46,5 +46,8 @@ function processMarkdownAndSanitize(text) {
 
     return santizedHtml;
 }
+
+mongoSchema.loadClass(MessageClass);
+const Message = mongoose.model('Message', mongoSchema);
 
 module.exports = Message;
