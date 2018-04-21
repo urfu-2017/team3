@@ -1,16 +1,16 @@
 'use strict';
 
-const dbclient = require('../dbclient');
 const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const User = require('../models/User');
-const uuid = require('uuid/v4');
 
 async function getChats(req, res) {
     try {
-        const chats = await Chat.getAll(dbclient, req.user.id);
+        const chats = await Chat.find({
+            members: { $in: [req.user.nickname, req.user.nickname.toLocaleLowerCase()] }
+        }).populate('members');
 
-        res.status(200).json(chats);
+        res.status(200).json(chats.map(chat => Chat.setCorrectFields(req.user.nickname, chat)));
     } catch (e) {
         res.sendStatus(400);
     }
@@ -18,31 +18,73 @@ async function getChats(req, res) {
 
 async function getMessages(req, res) {
     try {
-        const chatMessages = await dbclient.getAll(`chat_${req.params.id}_messages`);
+        if (!req.user || !req.user.nickname) {
+            res.sendStatus(401);
 
-        res.status(200).json(chatMessages);
+            return;
+        }
+
+        const chat = await Chat.findOne({
+            _id: req.params.id,
+            members: req.user.nickname
+        }).select('messages');
+
+        if (chat === null) {
+            res.sendStatus(400);
+        } else {
+            res.status(200).json(chat.messages);
+        }
     } catch (e) {
-        res.sendStatus(404);
+        res.status(500).send(e.message);
     }
 }
 
 async function createMessage(req, res) {
-    const meta = await Message.extractMeta(req.body.message);
-    const message = new Message(req.user.id, req.body.message, meta);
-
     try {
-        await message.save(dbclient, req.params.id);
-        res.json(message);
+        if (!req.user || !req.user.nickname) {
+            res.sendStatus(401);
+
+            return;
+        }
+
+        const message = await Message.initialize({
+            author: req.user.nickname,
+            text: req.body.text
+        });
+
+        const chat = await Chat.findOneAndUpdate(
+            { _id: req.params.id, members: req.user.nickname },
+            { $push: { messages: message } }
+        );
+
+        res.sendStatus(chat === null ? 400 : 200);
     } catch (e) {
-        res.sendStatus(404);
+        res.sendStatus(500);
+    }
+}
+
+async function createChat(req, res) {
+    try {
+        if (!Chat.isValid(req.body)) {
+            res.sendStatus(400);
+
+            return;
+        }
+        const newChat = await Chat.findOrCreate(req.body);
+
+        res.status(200).json(newChat);
+    } catch (e) {
+        res.status(500).send(e.message);
     }
 }
 
 async function getUser(req, res) {
     try {
-        const user = await User.findById(dbclient, req.params.id);
+        const user = await User
+            .findOne({ _id: { $regex: `^${req.params.nickname}$`, $options: 'i' } })
+            .select('nickname avatar');
 
-        if (user === null) {
+        if (!user) {
             res.sendStatus(404);
 
             return;
@@ -54,65 +96,87 @@ async function getUser(req, res) {
     }
 }
 
-/* eslint-disable-next-line max-statements */
-async function createChat(req, res) {
-    try {
-        const userChats = await Chat.getAll(dbclient, req.user.id.toString());
-        const interlocutorId = req.body.interlocutorId.toString();
-        const existsChat = userChats.find(c => c.members.includes(interlocutorId));
-
-        if (existsChat) {
-            return res.status(200).json(existsChat);
-        }
-        const interlocutor = await User.findById(dbclient, req.body.interlocutorId);
-
-        if (!interlocutor) {
-            return res.sendStatus(404);
-        }
-
-        const currentUserChat = await createBothChats(req.user, interlocutor, req.body.title);
-
-        res.status(200).json(currentUserChat);
-    } catch (e) {
-        res.sendStatus(400);
-    }
-}
-
-async function createBothChats(user, interlocator, title) {
-    const chatId = uuid();
-    const firstUserChat = new Chat({
-        id: chatId,
-        title: title || interlocator.nickname,
-        members: [user.id, interlocator.id]
-    });
-    const interlocutorChat = new Chat({
-        id: chatId,
-        title: user.nickname,
-        members: [user.id, interlocator.id]
-    });
-
-    await Promise.all([
-        firstUserChat.save(dbclient, user.id),
-        interlocutorChat.save(dbclient, interlocator.id)]);
-
-    return firstUserChat;
-}
-
 async function createUser(req, res) {
-    if (req.body === undefined) {
-        res.status(400).send('empty body');
-
-        return;
-    }
-
     try {
-        const newUser = new User(req.body);
-        const response = await newUser.save(dbclient);
+        const user = await User.findOrCreate({ nickname: req.params.nickname });
 
-        res.sendStatus(response.status);
+        res.status(200).json(user);
     } catch (err) {
-        res.sendStatus(500);
+        res.status(500).send(err.message);
     }
 }
 
-module.exports = { getChats, getMessages, createMessage, getUser, createChat, createUser };
+async function updateUserAvatar(req, res) {
+    try {
+        const user = await User.findOneAndUpdate(
+            { _id: req.params.nickname },
+            { $set: { avatar: req.body.avatar } }
+        );
+
+        res.sendStatus(user === null ? 400 : 200);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+async function updateChatAvatar(req, res) {
+    try {
+        const user = await Chat.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: { avatar: req.body.avatar } }
+        );
+
+        res.sendStatus(user === null ? 400 : 200);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+async function updateChatTitle(req, res) {
+    try {
+        const user = await Chat.findOneAndUpdate(
+            { _id: req.params.id },
+            { $set: { title: req.body.title } }
+        );
+
+        res.sendStatus(user === null ? 400 : 200);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+async function addUserToChat(req, res) {
+    try {
+        const user = await User.findOne({
+            _id: { $regex: `^${req.params.nickname}$`, $options: 'i' }
+        });
+
+        if (!user) {
+            return res.sendStatus(400);
+        }
+
+        const chat = await Chat.findOneAndUpdate(
+            { _id: req.params.id, type: 'group' },
+            { $push: { members: req.params.nickname } }
+        );
+
+        res.sendStatus(chat === null ? 400 : 200);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
+async function deleteUserFromChat(req, res) {
+    const chat = await Chat.findOneAndUpdate(
+        { _id: req.params.id, type: 'group' },
+        { $pull: { members: req.params.nickname } }
+    );
+
+    res.sendStatus(chat === null ? 400 : 200);
+}
+
+module.exports = {
+    getChats, getMessages, createMessage, updateUserAvatar,
+    getUser, createChat, createUser, addUserToChat, deleteUserFromChat,
+    updateChatAvatar, updateChatTitle
+};
