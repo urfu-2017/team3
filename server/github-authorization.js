@@ -2,7 +2,6 @@
 
 const passport = require('passport');
 const passportGithub = require('passport-github');
-const fetch = require('node-fetch');
 const User = require('./models/User');
 
 const URL = `${process.env.HOST}:${process.env.PORT}`;
@@ -17,7 +16,7 @@ const strategy = new passportGithub.Strategy(
     /* eslint max-params: ["error", 4] */
     async (accessToken, refreshToken, profile, done) => {
         try {
-            const user = await User.findOrCreate(profile);
+            const user = await User.findOrCreate({ nickname: profile.username });
 
             done(null, user);
         } catch (err) {
@@ -26,14 +25,13 @@ const strategy = new passportGithub.Strategy(
     }
 );
 
-passport.serializeUser((profile, done) => {
-    done(null, profile.id);
+passport.serializeUser((user, done) => {
+    done(null, user._id);
 });
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const response = await fetch(`${URL}/api/users/${id}`);
-        const user = await response.json();
+        const user = await User.findOne({ _id: id });
 
         done(null, user);
     } catch (err) {
