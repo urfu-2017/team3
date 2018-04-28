@@ -21,7 +21,7 @@ const mongoSchema = new mongoose.Schema({
         type: Object,
         default: null
     },
-    attachmentsIds: [mongoose.Schema.Types.ObjectId]
+    attachmentIds: [mongoose.Schema.Types.ObjectId]
 });
 
 class MessageClass {
