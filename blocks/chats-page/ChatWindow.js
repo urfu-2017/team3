@@ -12,6 +12,8 @@ import PropTypes from 'prop-types';
 
 import Message from '../common-components/Message';
 
+import Preview from './Preview';
+
 import './ChatWindow.css';
 
 // const URL = `${process.env.HOST}:${process.env.PORT}`;
@@ -19,7 +21,7 @@ import './ChatWindow.css';
 export default class ChatWindow extends Component {
     state = { user: null, openChat: null, messages: [], msgText: '' };
 
-    change = e => this.setState({ msgText: e.target.value });
+    changeText = e => this.setState({ msgText: e.target.value });
 
     componentWillReceiveProps({ user, openChat }) {
         // const response = await fetch(`/api/chats/${openChat.id}/messages`);
@@ -130,61 +132,114 @@ export default class ChatWindow extends Component {
         });
     }
 
+    togglePreview(newFiles, oldfiles) {
+        const messages = document.querySelector('.messages');
+        const chatInput = document.querySelector('.chat-input');
+
+        messages.classList.remove(
+            'messages_grid_large',
+            'messages_grid_small'
+        );
+        chatInput.classList.remove(
+            'chat-input_separator_box-shadow',
+            'chat-input_separator_border'
+        );
+
+        if (oldfiles.length) {
+            messages.classList.add('messages_grid_small');
+            chatInput.classList.add('chat-input_separator_border');
+        } else {
+            messages.classList.add('messages_grid_large');
+            chatInput.classList.add('chat-input_separator_box-shadow');
+        }
+    }
+
+    onChange = e => {
+        const attachments = this.state.attachments || [];
+
+        const { currentTarget: { files } } = e;
+
+        [...files].forEach(file => {
+            attachments.push(file);
+        });
+
+        this.setState({ attachments });
+        this.togglePreview([...files], attachments);
+    }
+
     render() {
         const { showProfile } = this.props;
         const { user, openChat, messages, msgText } = this.state;
 
         return (
             <React.Fragment>
-                {openChat === null
-                    ?
-                        <section className="chat-window">
+                {openChat === null ? (
+                    <section className="chat-window">
+                        <img src="/static/main-label-bw.svg" className="chat-window__stub" />
+                    </section>
+                ) : (
+                    <section className="chat-window">
+                        <div className="chat-header">
                             <img
-                                src="/static/main-label-bw.svg"
-                                className="chat-window__stub"
+                                className="chat-header__img"
+                                alt="chatavatar"
+                                src={`data:image/svg+xml;base64,${openChat.avatar}`}
+                                onClick={() => showProfile(openChat)}
                             />
-                        </section>
-                    :
-                        <section className="chat-window">
-                            <div className="chat-window__title">
-                                <img
-                                    className="chat-window__avatar"
-                                    alt="chatavatar"
-                                    src={`data:image/svg+xml;base64,${openChat.avatar}`}
-                                    onClick={() => showProfile(openChat)}
+                            <span
+                                className="chat-header__name"
+                                onClick={() => showProfile(openChat)}
+                                >
+                                {openChat.title}
+                            </span>
+                        </div>
+                        <div className="messages messages_grid_large">
+                            {messages.map(message => (
+                                <Message
+                                    key={message.id}
+                                    message={message}
+                                    user={user}
+                                    title={openChat.title}
                                 />
-                                <span
-                                    className="chat-window__name"
-                                    onClick={() => showProfile(openChat)}
-                                    >
-                                    {openChat.title}
-                                </span>
-                            </div>
-                            <div className="chat-window__messages">
-                                {messages.map(message => (
-                                    <Message
-                                        key={message.id}
-                                        message={message}
-                                        user={user}
-                                        title={openChat.title}
-                                    />
-                                ))}
-                            </div>
-                            <div className="chat-window__write">
+                            ))}
+                        </div>
+                        <Preview files={this.state.attachments} />
+                        <div className="chat-input chat-input_separator_box-shadow">
+                            <input
+                                value={msgText}
+                                onChange={this.changeText}
+                                type="text"
+                                className="chat-input__write-field"
+                            />
+                            <label className="chat-input__emoji-btn chat-input__button">
                                 <input
-                                    value={msgText}
-                                    onChange={this.change}
-                                    type="text"
-                                    className="chat-window__input"
+                                    type="button"
+                                    className="chat-input__not-visual"
                                 />
-                                <div
-                                    onClick={this.submit}
-                                    className="chat-window__send-btn"
-                                    >
-                                </div>
-                            </div>
-                        </section>
-                }
+                                <img
+                                    src="/static/emoji.svg"
+                                    className="chat-input__emoji-icon"
+                                />
+                            </label>
+                            <label className="chat-input__attachment-btn chat-input__button">
+                                <input
+                                    type="file"
+                                    className="chat-input__not-visual"
+                                    multiple
+                                    onChange={this.onChange}
+                                />
+                                <img
+                                    src="/static/camera.svg"
+                                    className="chat-input__attachment-icon"
+                                />
+                            </label>
+                            <div
+                                onClick={this.submit}
+                                className="chat-input__send-btn chat-input__button"
+                            />
+                        </div>
+                    </section>
+                )}
             </React.Fragment>
         );
     }

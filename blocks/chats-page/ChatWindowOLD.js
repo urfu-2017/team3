@@ -40,7 +40,6 @@ export default class ChatWindow extends Component {
         // setInterval(async () => {
         //     const response = await fetch(`/api/chats/${this.state.id}/messages`);
         //     const messages = await response.json();
-
         //     this.setState({ messages });
         // }, 1000);
     }
@@ -72,43 +71,36 @@ export default class ChatWindow extends Component {
 
         return (
             <React.Fragment>
-                {id === null
-                    ?
-                        <section className="chat-window">
-                            <img
-                                src="/static/main-label-bw.svg"
-                                className="chat-window__stub"
-                            />
-                        </section>
-                    :
-                        <section className="chat-window">
-                            <div className="chat-window__title">Открыт диалог с {title}</div>
-                            <div className="chat-window__messages">
-                                {messages.map(message => (
-                                    <Message
-                                        key={message.id}
-                                        message={message}
-                                        user={user}
-                                        title={title}
-                                    />
-                                ))}
-                            </div>
-                            <div className="chat-window__write">
-                                <input
-                                    value={msgText}
-                                    onChange={this.change}
-                                    type="text"
-                                    className="chat-window__input"
+                {id === null ? (
+                    <section className="chat-window">
+                        <img src="/static/main-label-bw.svg" className="chat-window__stub" />
+                    </section>
+                ) : (
+                    <section className="chat-window">
+                        <div className="chat-window__title">Открыт диалог с {title}</div>
+                        <div className="chat-window__messages">
+                            {messages.map(message => (
+                                <Message
+                                    key={message.id}
+                                    message={message}
+                                    user={user}
+                                    title={title}
                                 />
-                                <div
-                                    onClick={this.submit}
-                                    className="chat-window__send-btn"
-                                    >
-                                    Отправить
-                                </div>
+                            ))}
+                        </div>
+                        <div className="chat-window__write">
+                            <input
+                                value={msgText}
+                                onChange={this.change}
+                                type="text"
+                                className="chat-window__input"
+                            />
+                            <div onClick={this.submit} className="chat-window__send-btn">
+                                Отправить
                             </div>
-                        </section>
-                }
+                        </div>
+                    </section>
+                )}
             </React.Fragment>
         );
     }
