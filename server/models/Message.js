@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const mongoSchema = new mongoose.Schema({
     author: {
         type: String,
+        ref: 'User',
         index: true
     },
     date: {
