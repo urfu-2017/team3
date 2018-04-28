@@ -26,12 +26,12 @@ class ChatClass {
         return await this.create({ title, members, type });
     }
 
-    static setCorrectFields(userNickname, chat) {
+    static setChatInfo(userNickname, chat) {
         if (chat.type === 'group') {
             return chat;
         }
 
-        const [interlocutor] = chat.members.filter(
+        const interlocutor = chat.members.find(
             member => member.nickname !== userNickname
         );
 

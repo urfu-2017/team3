@@ -16,7 +16,7 @@ async function getChats(req, res) {
             members: { $elemMatch: { $regex: `^${req.user.nickname}$`, $options: 'i' } }
         }).populate('members');
 
-        res.status(200).json(chats.map(chat => Chat.setCorrectFields(req.user.nickname, chat)));
+        res.status(200).json(chats.map(chat => Chat.setChatInfo(req.user.nickname, chat)));
     } catch (e) {
         res.sendStatus(400);
     }
@@ -35,10 +35,10 @@ async function getMessages(req, res) {
             members: req.user.nickname
         }).select('messages');
 
-        if (chat === null) {
-            res.sendStatus(400);
-        } else {
+        if (chat) {
             res.status(200).json(chat.messages);
+        } else {
+            res.sendStatus(400);
         }
     } catch (e) {
         res.status(500).send(e.message);
