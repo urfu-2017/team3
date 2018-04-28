@@ -217,11 +217,11 @@ describe('messenger API tests', () => {
                 .expect(checkChats);
         });
 
-        it('should return 400 when session user is undefined', async () => {
+        it('should return 401 when session user is undefined', async () => {
             currentUser = undefined;
             await request(server)
                 .get('/api/chats')
-                .expect(400);
+                .expect(401);
         });
     });
 

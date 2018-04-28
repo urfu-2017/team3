@@ -6,6 +6,12 @@ const User = require('../models/User');
 
 async function getChats(req, res) {
     try {
+        if (!req.user || !req.user.nickname) {
+            res.sendStatus(401);
+
+            return;
+        }
+
         const chats = await Chat.find({
             members: { $in: [req.user.nickname, req.user.nickname.toLocaleLowerCase()] }
         }).populate('members');
