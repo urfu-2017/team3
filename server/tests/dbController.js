@@ -44,21 +44,21 @@ describe('messenger API tests', () => {
             };
 
             await request(server)
-                .post(`/api/users/user_1`)
+                .post('/api/users/user_1')
                 .expect('Content-type', /json/)
                 .expect(200)
                 .expect(checkBody);
         });
 
         it('should not create user twice', async () => {
-            const firstResponse = await request(server).post(`/api/users/user_1`);
+            const firstResponse = await request(server).post('/api/users/user_1');
             const checkBody = res => {
                 res.body.should.have.property('nickname', 'user_1');
                 res.body.should.have.property('avatar', firstResponse.body.avatar);
             };
 
             await request(server)
-                .post(`/api/users/user_1`)
+                .post('/api/users/user_1')
                 .expect('Content-type', /json/)
                 .expect(200)
                 .expect(checkBody);
@@ -68,13 +68,13 @@ describe('messenger API tests', () => {
     describe('/GET /api/users/:nickname', () => {
         it('should return 404 when user doesn\'t exists', async () => {
             await request(server)
-                .get(`/api/users/user_1`)
+                .get('/api/users/user_1')
                 .expect(404);
         });
 
         it('should return user when user exists', async () => {
             await request(server)
-                .post(`/api/users/user_1`)
+                .post('/api/users/user_1')
                 .expect(200);
 
             const checkBody = res => {
@@ -85,7 +85,7 @@ describe('messenger API tests', () => {
             };
 
             await request(server)
-                .get(`/api/users/user_1`)
+                .get('/api/users/user_1')
                 .expect('Content-type', /json/)
                 .expect(200)
                 .expect(checkBody);
@@ -102,7 +102,7 @@ describe('messenger API tests', () => {
 
         it('should update user avatar', async () => {
             await request(server)
-                .post(`/api/users/user_1`)
+                .post('/api/users/user_1')
                 .expect(200);
 
             await request(server)
