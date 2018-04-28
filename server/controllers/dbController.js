@@ -13,7 +13,7 @@ async function getChats(req, res) {
         }
 
         const chats = await Chat.find({
-            members: { $in: [req.user.nickname, req.user.nickname.toLocaleLowerCase()] }
+            members: { $elemMatch: { $regex: `^${req.user.nickname}$`, $options: 'i' } }
         }).populate('members');
 
         res.status(200).json(chats.map(chat => Chat.setCorrectFields(req.user.nickname, chat)));
