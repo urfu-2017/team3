@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 
 import Message from '../common-components/Message';
 
-// import Emoji from './Emoji';
+import Emoji from './Emoji';
 
 import Preview from './Preview';
 
@@ -124,6 +124,47 @@ export default class ChatWindow extends Component {
                 text: 'Го',
                 picture: null,
                 meta: {}
+            },
+            {
+                id: '2302132',
+                author: '14900963',
+                date: '2232132695',
+                text: 'привет :blush: ! как твои дела? :santa: как поживаешь?',
+                picture: null,
+                meta: {}
+            },
+            {
+                id: '2302133',
+                author: '14900963',
+                date: '2232132695',
+                text: 'привет :100: ! как твои дела? :santa:',
+                picture: null,
+                meta: {}
+            },
+            {
+                id: '2302134',
+                author: '14900963',
+                date: '2232132695',
+                text: ':blush: ! как твои дела? :santa: как поживаешь?',
+                picture: null,
+                meta: {}
+            },
+            {
+                id: '2302135',
+                author: '14900963',
+                date: '2232132695',
+                text: ':santa: ! как твои дела? :santa: как поживаешь?:100::santa::100:',
+                picture: null,
+                meta: {}
+            },
+            {
+                id: '2302136',
+                author: '14900963',
+                date: '2232132695',
+                text: ':kissing_heart::face_with_rolling_eyes::guards' +
+                'man::raised_hands::sparkles::flag-ao::flag-rw::flag-vc:',
+                picture: null,
+                meta: {}
             }
         ];
 
@@ -170,7 +211,7 @@ export default class ChatWindow extends Component {
     }
 
     showEmoji = () => {
-        const showEmoji = true;
+        const showEmoji = !this.state.showEmoji;
 
         this.setState({ showEmoji });
     }
@@ -211,7 +252,7 @@ export default class ChatWindow extends Component {
                                 />
                             ))}
                         </div>
-                        {/* <Emoji showEmoji={this.state.showEmoji} /> */}
+                        <Emoji showEmoji={this.state.showEmoji} />
                         <Preview files={this.state.attachments} />
                         <div className="chat-input chat-input_separator_box-shadow">
                             <input

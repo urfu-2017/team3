@@ -1,51 +1,44 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import EmojiPicker from 'react-emoji-picker';
-// import './Preview.css';
+import { Picker } from 'emoji-mart';
+
+import '../../node_modules/emoji-mart/css/emoji-mart.css';
 
 export default class Emoji extends Component {
 
-    // getInitialState = () => {
-    //     return {
-    //         emoji: null,
-    //         showEmojiPicker: false
-    //     };
-    // }
+    addEmoji = emoji => {
+        const input = document.querySelector('.chat-input__write-field')
+        let currentValue = input.value;
 
-    // onEmojiCkick = (code, data) => {
-    //     console.log(code, data);
-    // }
-
-    // setEmoji = emoji => {
-    //     this.setState({ emoji });
-    // }
+        currentValue += `${emoji.colons}`;
+        input.value = currentValue;
+    }
 
     render() {
         const { showEmoji } = this.props;
-        // console.log(showEmoji);
 
         if (!showEmoji) {
             return <div />;
         }
 
-        // const emojiPickerStyles = {
-        //     position: 'absolute',
-        //     left: 0, top: '3.9rem',
-        //     backgroundColor: 'white',
-        //     width: '100%',
-        //     padding: '.3em .6em',
-        //     border: '1px solid #0074d9',
-        //     borderTop: 'none',
-        //     zIndex: '2'
-        // };
+        const paletteStyle = {
+            position: 'absolute',
+            bottom: 'calc(48px + 5px)',
+            right: 'calc(32px + 16px + 24px)',
+            width: '25%',
+            minWidth: '300px'
+        };
 
         return (
-            <div className="emoji">
-                {/* <EmojiPicker
-                    style={emojiPickerStyles} onSelect={this.setEmoji}
-                    query={this.state.emoji}
-                /> */}
-            </div>
+            <Picker
+                set="emojione"
+                onSelect={this.addEmoji}
+                emoji="point_up"
+                style={paletteStyle}
+                showPreview={false}
+                showSkinTones={false}
+                autoFocus
+            />
         );
     }
 }
