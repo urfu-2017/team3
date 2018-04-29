@@ -37,6 +37,7 @@
         "passport-github": "1.1.0",
         "react": "^16.3.1",
         "react-dom": "^16.3.1",
+        "react-emoji-picker": "^1.0.13",
         "react-preview-file": "^0.1.2",
         "sanitize-html": "^1.18.2",
         "style-loader": "^0.20.3",

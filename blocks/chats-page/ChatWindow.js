@@ -12,6 +12,8 @@ import PropTypes from 'prop-types';
 
 import Message from '../common-components/Message';
 
+// import Emoji from './Emoji';
+
 import Preview from './Preview';
 
 import './ChatWindow.css';
@@ -19,7 +21,7 @@ import './ChatWindow.css';
 // const URL = `${process.env.HOST}:${process.env.PORT}`;
 
 export default class ChatWindow extends Component {
-    state = { user: null, openChat: null, messages: [], msgText: '' };
+    state = { user: null, openChat: null, messages: [], msgText: '', showEmoji: false };
 
     changeText = e => this.setState({ msgText: e.target.value });
 
@@ -167,6 +169,12 @@ export default class ChatWindow extends Component {
         this.togglePreview([...files], attachments);
     }
 
+    showEmoji = () => {
+        const showEmoji = true;
+
+        this.setState({ showEmoji });
+    }
+
     render() {
         const { showProfile } = this.props;
         const { user, openChat, messages, msgText } = this.state;
@@ -203,6 +211,7 @@ export default class ChatWindow extends Component {
                                 />
                             ))}
                         </div>
+                        {/* <Emoji showEmoji={this.state.showEmoji} /> */}
                         <Preview files={this.state.attachments} />
                         <div className="chat-input chat-input_separator_box-shadow">
                             <input
@@ -214,6 +223,7 @@ export default class ChatWindow extends Component {
                             <label className="chat-input__emoji-btn chat-input__button">
                                 <input
                                     type="button"
+                                    onClick={this.showEmoji}
                                     className="chat-input__not-visual"
                                 />
                                 <img

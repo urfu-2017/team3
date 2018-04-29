@@ -41,8 +41,6 @@ export default class Preview extends Component {
         const { files } = this.props;
 
         if (!files) {
-            console.log('bodryachkom');
-
             return <div className="img-preview" />;
         }
 
