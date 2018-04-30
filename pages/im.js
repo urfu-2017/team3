@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Chats from '../blocks/chats-page/Chats';
+import Search from '../blocks/chats-page/Search';
 import ChatWindow from '../blocks/chats-page/ChatWindow';
 import Profile from '../blocks/pfl/profile';
 
@@ -54,12 +55,7 @@ export default class MainPage extends Component {
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">
-                            <div className="chats__box-burger" onClick={() => this.showProfile(user)}>a</div>
-                            <input
-                                type="text"
-                                className="chats__search-input"
-                                placeholder="Найти пользователя"
-                            />
+                            <Search user={user} showProfile={this.showProfile} />
                         </div>
                         <div className="chats__list">
                             <Chats chatsList={chats} clickToOpenChat={this.clickToOpenChat} />
