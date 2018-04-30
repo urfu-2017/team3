@@ -20,12 +20,16 @@ export default class Search extends Component {
         }
     }
 
-    render() {
+    showProfile() {
         const { user } = this.props;
+
+        this.props.showProfile(user);
+    }
+    render() {
 
         return (
             <React.Fragment>
-                <div className="chats__box-burger" onClick={() => this.props.showProfile(user)}>a</div>
+                <div className="chats__box-burger" onClick={this.showProfile}>a</div>
                 <input
                     type="text"
                     className="chats__search-input"

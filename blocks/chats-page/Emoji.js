@@ -7,7 +7,7 @@ import '../../node_modules/emoji-mart/css/emoji-mart.css';
 export default class Emoji extends Component {
 
     addEmoji = emoji => {
-        const input = document.querySelector('.chat-input__write-field')
+        const input = document.querySelector('.chat-input__write-field');
         let currentValue = input.value;
 
         currentValue += `${emoji.colons}`;
