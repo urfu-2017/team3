@@ -18,7 +18,7 @@ module.exports = (server, app) => {
         .get('/', (req, res) => {
             app.render(req, res, '/index');
         })
-        .get('/profile/:id(\\d+)?',
+        .get('/profile/:nickname?',
             connectEnsureLogin.ensureLoggedIn('/'),
             (req, res) => {
                 app.render(req, res, '/profile');

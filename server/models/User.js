@@ -1,54 +1,32 @@
 'use strict';
 
-const fetch = require('node-fetch');
 const createIdenticon = require('../utils/identicon');
+const mongoose = require('mongoose');
 
-const API_URL = `${process.env.HOST}:${process.env.PORT}/api`;
+const mongoSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        alias: 'nickname'
+    },
+    avatar: String
+}, { toJSON: { virtuals: true } });
 
-class User {
-    constructor({ id, nickname, avatar }) {
-        this.id = id;
-        this.nickname = nickname;
-        this.avatar = avatar;
-    }
+class UserClass {
+    static async findOrCreate({ nickname }) {
+        const user = await this.findOne({ _id: nickname });
 
-    static async findOrCreate({ id, username }) {
-        const response = await fetch(`${API_URL}/users/${id}`);
-
-        if (response.status === 404) {
-            const newUser = User.create(id, username);
-
-            fetch(`${API_URL}/users`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newUser)
-            });
-
-            return newUser;
-        }
-
-        return await response.json();
-    }
-
-    static async findById(dbclient, id) {
-        const response = await dbclient.getLast(`user_${id}`);
-
-        if (response.status === 404) {
-            return null;
-        }
-
-        return response.json();
-    }
-
-    static create(id, githubNickname) {
-        const avatarInBase64 = createIdenticon();
-
-        return new User({ id, nickname: githubNickname, avatar: avatarInBase64 });
-    }
-
-    save(dbclient) {
-        return dbclient.postJson(`user_${this.id}`, this);
+        return user ? user : await this.create({ nickname });
     }
 }
+
+/* eslint-disable no-invalid-this */
+mongoSchema.pre('save', function () {
+    this.avatar = createIdenticon();
+
+    return this;
+});
+
+mongoSchema.loadClass(UserClass);
+const User = mongoose.model('User', mongoSchema);
 
 module.exports = User;

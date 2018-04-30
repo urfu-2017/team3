@@ -1,131 +1,149 @@
 'use strict';
 
+/* eslint react/jsx-no-bind: 0 */
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
+
+import fetch from 'node-fetch';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Header from '../blocks/chats-page/Header';
 import Chats from '../blocks/chats-page/Chats';
+import Search from '../blocks/chats-page/Search';
 import ChatWindow from '../blocks/chats-page/ChatWindow';
+import Profile from '../blocks/pfl/profile';
+import PureProfile from '../blocks/common-components/PureProfileForList';
 
 import 'isomorphic-fetch';
 import './global-const.css';
 import './im.css';
 
-const URL = `${process.env.HOST}:${process.env.PORT}`;
+// const URL = `${process.env.HOST}:${process.env.PORT}`;
 
-export default class ProfilePage extends Component {
-    constructor(props) {
-        super(props);
-        this.setState({
-            chats: null,
-            user: null,
-            chatProps: null
+export default class MainPage extends Component {
+    // showUserProfile - хранит или null или юзера котрого нужно показать!
+    state = { user: null, chats: null, showUserProfile: null, openChat: null, foundUsersList: false }
+    createChat = async interlocutor => {
+        const response = await fetch('api/chats/', {
+            credentials: 'include',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                members: [interlocutor, this.props.user.nickname],
+                type: 'private'
+            })
+        });
+
+        if (response.status === 200) {
+            const createdChat = await response.json();
+
+            this.state.chats.push(createdChat);
+        }
+    }
+
+    showProfile = user => this.setState({ showUserProfile: user });
+    hideProfile = e => this.setState({ showUserProfile: null });
+
+    clickToOpenChat = chatProps => this.setState({ openChat: chatProps });
+
+    showFoundResults = userList => this.setState({ foundUsersList: userList });
+
+    showFoundUsers = () => {
+        return this.state.foundUsersList.map(user => {
+            return (
+                <PureProfile
+                    key={user.nickname}
+                    user={user}
+                    createChat={this.createChat}
+                />
+            );
         });
     }
 
-    click = chatProps => {
-        localStorage.setItem('chatProps', JSON.stringify(chatProps));
-        this.setState({ chatProps });
-    };
+    // static getInitialState = async () => {
+    //     const { user } = this.props;
 
-    changeLastMessage = (id, msg) => {
-        const { chats } = this.state;
+    //     const response = await fetch('api/chats/', {
+    //         credentials: 'include',
+    //         method: 'GET',
+    //         headers: { 'Content-Type': 'application/json' }
+    //     });
 
-        chats.forEach(chat => {
-            if (chat.id === id) {
-                chat.lastMessage = msg;
+    //     const chats = await response.json();
+    //         this.state.chats.push(createdChat);
+    //     }
 
-                return;
+    //     return { user: null, chats: null, showUserProfile: null, openChat: null, foundUsersList: false }
+    // }
+    static getInitialProps = async ({ user, headers }) => {
+        const response = await fetch(`/api/chats`, {
+            credentials: 'include',
+            headers: {
+                cookie: headers.cookie
             }
         });
 
-        this.setState({ chats });
+        const chats = await response.json();
+
+        return { user, chats };
     }
 
-    searchUser = async e => {
-        if (e.key !== 'Enter') {
-            return;
-        }
-
-        const value = e.target.value.toLowerCase();
-        const response = await fetch(`/api/users/${value}`);
-
-        if (response.status === 404) {
-            console.info('User not found'); // show not found message here
-        } else if (response.status === 200) {
-            window.location.href = `/profile/${value}`;
-        }
-    }
-
-    componentWillUpdate() {
-        this.props.chatProps = JSON.parse(this.state.chatProps);
-    }
-
-    componentDidMount() {
-        const chatPropsFromLS = localStorage.getItem('chatProps');
-
-        /* eslint-disable-next-line react/no-did-mount-set-state */
-        this.setState({
-            chatProps: JSON.parse(chatPropsFromLS)
-        });
+    static getDerivedStateFromProps = ({ user, chats }) => {
+        return { user, chats };
     }
 
     render() {
-        const { chats, user, chatProps } = this.state;
+        const { user, chats, showUserProfile, openChat } = this.state;
 
         return (
             <React.Fragment>
                 <head>
-                    <title>K1loCha7</title>
+                    <title>{user.nickname}</title>
                 </head>
-                <Header />
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">
-                            <input
-                                type="text"
-                                className="chats__search-input"
-                                placeholder="Найти пользователя по id..."
-                                onKeyPress={this.searchUser}
+                            <Search
+                                user={user}
+                                showProfile={this.showProfile}
+                                findUsers={this.showFoundResults}
                             />
                         </div>
                         <div className="chats__list">
-                            <Chats chatsList={chats} click={this.click} />
+                            <Chats chatsList={chats} clickToOpenChat={this.clickToOpenChat} />
                         </div>
+                        {this.state.foundUsersList
+                            ?
+                                <div className="chats__found-users">
+                                    {this.showFoundUsers()}
+                                </div>
+                            :
+                            null
+                        }
+
                     </article>
                     <article className="dialog">
                         <ChatWindow
                             user={user}
-                            chatProps={chatProps}
-                            changeLastMessage={this.changeLastMessage}
+                            openChat={openChat}
+                            showProfile={this.showProfile}
                         />
                     </article>
                 </main>
+                {/* Показываем профиль юзера или нет */}
+                { showUserProfile
+                    ?
+                        <div className="darkness" onClick={() => this.hideProfile()}>
+                            <Profile user={showUserProfile} />
+                        </div>
+                    :
+                    null
+                }
             </React.Fragment>
         );
     }
 }
 
-ProfilePage.getInitialProps = async ({ req }) => {
-    const { user } = req;
-
-    const response = await fetch(`${URL}/api/chats`, {
-        credentials: 'include',
-        headers: {
-            cookie: req.headers.cookie
-        }
-    });
-
-    const chats = await response.json();
-
-    return { chats, user };
-};
-
-// Перекладываем в state сразу из props
-ProfilePage.getDerivedStateFromProps = ({ chats, user }) => {
-    return { chats, user };
-};
-
-ProfilePage.propTypes = {
-    chatProps: PropTypes.object
+MainPage.propTypes = {
+    user: PropTypes.object
 };
