@@ -216,6 +216,26 @@ export default class ChatWindow extends Component {
         this.setState({ showEmoji });
     }
 
+    submitMessage = async () => {
+        const response = await fetch(`/api/chats/5ae717583575fc2688d32744/messages`, {
+            credentials: 'include',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: 'ghbdtn' })
+        });
+
+        if (response.status === 200 || response.status === 201) {
+            /* eslint prefer-const: 0*/
+            const createdMessage = await response.json();
+
+            let messagesNow = this.state.messages;
+
+            messagesNow.push(createdMessage);
+            // this.props.changeLastMessage(this.state.id, this.state.msgText);
+            this.setState({ messages: messagesNow, msgText: '' });
+        }
+    };
+
     render() {
         const { showProfile } = this.props;
         const { user, openChat, messages, msgText } = this.state;
@@ -285,7 +305,7 @@ export default class ChatWindow extends Component {
                                 />
                             </label>
                             <div
-                                onClick={this.submit}
+                                onClick={this.submitMessage}
                                 className="chat-input__send-btn chat-input__button"
                             />
                         </div>
