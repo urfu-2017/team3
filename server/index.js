@@ -14,6 +14,8 @@ const passport = require('./github-authorization');
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING);
 const app = next({ dev: process.env.NODE_ENV !== 'production' });
 const server = require('./server');
+const httpServer = require('http').Server(server);
+const io = require('socket.io')(httpServer);
 
 app.prepare().then(() => {
     server.use(expressSession({
@@ -28,7 +30,15 @@ app.prepare().then(() => {
     setupAuthRoutes(server);
     setupPagesRoutes(server, app);
     setupApiRoutes(server);
+    setupSocket(io);
 
-    server.listen(parseInt(process.env.PORT, 10), () =>
+    httpServer.listen(parseInt(process.env.PORT, 10), () =>
         console.log(`Listening on ${process.env.HOST}:${process.env.PORT}`));
+
 });
+
+function setupSocket(ws) {
+    ws.on('connection', socket => {
+        socket.emit('news', { hello: 'world' });
+    });
+}

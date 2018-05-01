@@ -7,6 +7,7 @@
 import fetch from 'node-fetch';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Chats from '../blocks/chats-page/Chats';
 import Search from '../blocks/chats-page/Search';
@@ -20,7 +21,7 @@ import './im.css';
 
 // const URL = `${process.env.HOST}:${process.env.PORT}`;
 
-export default class MainPage extends Component {
+class MainPage extends Component {
     // showUserProfile - хранит или null или юзера котрого нужно показать!
     state = { user: null, chats: null, showUserProfile: null, openChat: null, foundUsersList: false }
     createChat = async interlocutor => {
@@ -75,32 +76,18 @@ export default class MainPage extends Component {
 
     //     return { user: null, chats: null, showUserProfile: null, openChat: null, foundUsersList: false }
     // }
-    static getInitialProps = async ({ user, headers }) => {
-        const response = await fetch(`/api/chats`, {
-            credentials: 'include',
-            headers: {
-                cookie: headers.cookie
-            }
-        });
-
-        const chats = await response.json();
-
-        return { user, chats };
-    }
-
-    static getDerivedStateFromProps = ({ user, chats }) => {
-        return { user, chats };
-    }
 
     render() {
-        const { user, chats, showUserProfile, openChat } = this.state;
-
+        const showUserProfile = false;
+        const { user, chats } = this.props;
+        alert(user)
         return (
             <React.Fragment>
                 <head>
                     <title>{user.nickname}</title>
                 </head>
                 <main className="main">
+                    <div>{ this.props.store }</div>
                     <article className="chats">
                         <div className="chats__search">
                             <Search
@@ -125,7 +112,6 @@ export default class MainPage extends Component {
                     <article className="dialog">
                         <ChatWindow
                             user={user}
-                            openChat={openChat}
                             showProfile={this.showProfile}
                         />
                     </article>
@@ -145,5 +131,13 @@ export default class MainPage extends Component {
 }
 
 MainPage.propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    store: PropTypes.string
 };
+
+export default connect(
+    state => ({
+        user: state.user
+    }),
+    dispatch => ({})
+)(MainPage);

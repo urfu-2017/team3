@@ -9,6 +9,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Message from '../common-components/Message';
 
@@ -20,16 +21,14 @@ import './ChatWindow.css';
 
 // const URL = `${process.env.HOST}:${process.env.PORT}`;
 
-export default class ChatWindow extends Component {
+class ChatWindow extends Component {
     constructor(props) {
         super(props);
         this.state = {
             user: this.props.user,
             chats: null,
             showProfile: this.props.showProfile,
-            messages: [],
             msgText: '',
-            openChat: this.props.openChat,
             foundUsersList: false,
             showEmoji: false
         };
@@ -126,17 +125,18 @@ export default class ChatWindow extends Component {
     }
 
     render() {
-        const { showProfile, openChat } = this.props;
-        const { user, messages, msgText } = this.state;
+        const { showProfile, activeChat } = this.props;
+        const { user, msgText } = this.state;
 
-        if (openChat === null) {
+        if (activeChat === null) {
             return (
                 <section className="chat-window">
                     <img src="/static/main-label-bw.svg" className="chat-window__stub" />
                 </section>
             );
         }
-        this.getMessages();
+
+        const chat = activeChat;
 
         return (
             <section className="chat-window">
@@ -144,24 +144,24 @@ export default class ChatWindow extends Component {
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
-                        src={`data:image/svg+xml;base64,${openChat.avatar}`}
-                        onClick={() => showProfile(openChat)}
+                        src={`data:image/svg+xml;base64,${chat.avatar}`}
+                        onClick={() => showProfile(chat)}
                     />
                     <span
                         className="chat-header__name"
-                        onClick={() => showProfile(openChat)}
+                        onClick={() => showProfile(chat)}
                         >
-                        {openChat.title}
+                        {chat.title}
                     </span>
                 </div>
                 <div className="messages messages_grid_large">
                     {}
-                    {messages.map(message => (
+                    {chat.messages.map(message => (
                         <Message
                             key={message.id}
                             message={message}
                             user={user}
-                            title={openChat.title}
+                            title={chat.title}
                         />
                     ))}
                 </div>
@@ -211,5 +211,13 @@ export default class ChatWindow extends Component {
 ChatWindow.propTypes = {
     user: PropTypes.object,
     openChat: PropTypes.object,
-    showProfile: PropTypes.func
+    showProfile: PropTypes.func,
+    activeChat: PropTypes.object
 };
+
+export default connect(
+    state => ({
+        activeChat: state.activeChat
+    }),
+    dispatch => ({})
+)(ChatWindow);

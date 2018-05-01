@@ -31,9 +31,13 @@ class ChatClass {
             return chat;
         }
 
-        const interlocutor = chat.members.find(
+        let interlocutor = chat.members.find(
             member => member.nickname !== userNickname
         );
+
+        if (!interlocutor) {
+            [interlocutor] = chat.members;
+        }
 
         chat.avatar = interlocutor.avatar;
         chat.title = interlocutor.nickname;

@@ -3,28 +3,43 @@
 import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 
+import { Provider } from 'react-redux';
+
 import LogInPage from '../blocks/main-pages/not-authorized/MainPage';
+import store from '../store';
 
-import MainPage from './im.js';
-
+import MainPage from './MainPage.js';
 import './global-const.css';
 
 export default class StartPage extends Component {
-    state = { user: null, headers: null }
-
     static getInitialProps({ req }) {
-        const { user, headers } = req;
+        const { user } = req;
 
-        return { user, headers };
+        return { user };
     }
 
-    static getDerivedStateFromProps = ({ user, headers }) => {
-        return { user, headers };
+    async componentDidMount() {
+        // Загружаем чатики и кидаем событие после загрузки
+        const res = await fetch('/api/chats', { credentials: 'include' });
+        const chats = await res.json();
+
+        store.dispatch({ type: 'LOAD_CHATS', chats });
+
+        // Если есть юзер кидаем событие, что юзер залогинен
+        if (this.props.user) {
+            store.dispatch({ type: 'LOGIN_USER', user: this.props.user });
+        }
     }
 
     render() {
-        const { user, headers } = this.state;
+        const { user } = this.props;
 
-        return user ? <MainPage user={user} headers={headers} /> : <LogInPage />;
+        return (
+            <Provider store={store}>
+                { user
+                    ? <MainPage />
+                    : <LogInPage /> }
+            </Provider>
+        );
     }
 }
