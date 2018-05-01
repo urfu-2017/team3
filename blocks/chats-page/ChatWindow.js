@@ -21,160 +21,37 @@ import './ChatWindow.css';
 // const URL = `${process.env.HOST}:${process.env.PORT}`;
 
 export default class ChatWindow extends Component {
-    state = { user: null, openChat: null, messages: [], msgText: '', showEmoji: false };
-
-    changeText = e => this.setState({ msgText: e.target.value });
-
-    componentWillReceiveProps({ user, openChat }) {
-        // const response = await fetch(`/api/chats/${openChat.id}/messages`);
-        // const messages = await response.json();
-        const messages = [
-            {
-                id: '2302123',
-                author: '14900963',
-                date: '2232132123',
-                text: 'Привет! Сегодня встречаемся?',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302124',
-                author: '14900963',
-                date: '2232132695',
-                text: 'или?',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302125',
-                author: '15300194',
-                date: '2232132123',
-                text: 'Давай на месте разберемся',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302126',
-                author: '15300194',
-                date: '2232132123',
-                text: 'либо, если тебе нужно заранее это узнать',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302127',
-                author: '14900963',
-                date: '2232132695',
-                text: 'Да нет, без разницы!',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302112',
-                author: '14900963',
-                date: '2232132123',
-                text: 'Сегодня в 20:20 всреча в офисе Яндекса',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302165',
-                author: '14900963',
-                date: '2232132695',
-                text: 'и там будет...',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302175',
-                author: '15300194',
-                date: '2232132123',
-                text: 'кто?',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302176',
-                author: '15300194',
-                date: '2232132123',
-                text: 'Я просто все прослушал',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302197',
-                author: '14900963',
-                date: '2232132695',
-                text: 'Скажу тебе потом лично',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302111',
-                author: '15300194',
-                date: '2232132123',
-                text: 'Пойдем в кино',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302131',
-                author: '14900963',
-                date: '2232132695',
-                text: 'Го',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302132',
-                author: '14900963',
-                date: '2232132695',
-                text: 'привет :blush: ! как твои дела? :santa: как поживаешь?',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302133',
-                author: '14900963',
-                date: '2232132695',
-                text: 'привет :100: ! как твои дела? :santa:',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302134',
-                author: '14900963',
-                date: '2232132695',
-                text: ':blush: ! как твои дела? :santa: как поживаешь?',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302135',
-                author: '14900963',
-                date: '2232132695',
-                text: ':santa: ! как твои дела? :santa: как поживаешь?:100::santa::100:',
-                picture: null,
-                meta: {}
-            },
-            {
-                id: '2302136',
-                author: '14900963',
-                date: '2232132695',
-                text: ':kissing_heart::face_with_rolling_eyes::guards' +
-                'man::raised_hands::sparkles::flag-ao::flag-rw::flag-vc:',
-                picture: null,
-                meta: {}
-            }
-        ];
-
-        this.setState({
-            user,
-            openChat,
-            messages
-        });
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: this.props.user,
+            chats: null,
+            showProfile: this.props.showProfile,
+            messages: [],
+            msgText: '',
+            openChat: this.props.openChat,
+            foundUsersList: false,
+            showEmoji: false
+        };
     }
 
+    // добавляем сообщения в список при клике на чат
+    getMessages = async () => {
+        // console.log('llok', this.props, this.state);
+        const response = await fetch(`/api/chats/5ae717583575fc2688d32744/messages`, {
+            credentials: 'include',
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const messages = await response.json();
+
+        this.setState({ messages });
+    }
+
+    // при вводе добавляем с state
+    changeText = e => this.setState({ msgText: e.target.value });
+
+    // при подгрузке картинок меняем css
     togglePreview(newFiles, oldfiles) {
         const messages = document.querySelector('.messages');
         const chatInput = document.querySelector('.chat-input');
@@ -197,7 +74,8 @@ export default class ChatWindow extends Component {
         }
     }
 
-    onChange = e => {
+    // добавляем новые файлы в превью
+    onFilesChange = e => {
         const attachments = this.state.attachments || [];
 
         const { currentTarget: { files } } = e;
@@ -210,108 +88,122 @@ export default class ChatWindow extends Component {
         this.togglePreview([...files], attachments);
     }
 
+    // клик на рожицу, используется в <Emoji.../>
     showEmoji = () => {
         const showEmoji = !this.state.showEmoji;
 
         this.setState({ showEmoji });
     }
 
+    // отправка сообщения
     submitMessage = async () => {
-        const response = await fetch(`/api/chats/5ae717583575fc2688d32744/messages`, {
+        await fetch(`/api/chats/${this.props.openChat.id}/messages`, {
             credentials: 'include',
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text: 'ghbdtn' })
+            body: JSON.stringify({ text: this.state.msgText })
         });
+        document.querySelector('.chat-input__write-field').value = '';
 
-        if (response.status === 200 || response.status === 201) {
-            /* eslint prefer-const: 0*/
-            const createdMessage = await response.json();
+        // if (response.status === 200 || response.status === 201) {
+        //     /* eslint prefer-const: 0*/
+        //     const createdMessage = await response.json();
 
-            let messagesNow = this.state.messages;
+        //     let messagesNow = this.state.messages;
 
-            messagesNow.push(createdMessage);
-            // this.props.changeLastMessage(this.state.id, this.state.msgText);
-            this.setState({ messages: messagesNow, msgText: '' });
-        }
+        //     messagesNow.push(createdMessage);
+        //     // this.props.changeLastMessage(this.state.id, this.state.msgText);
+        //     this.setState({ messages: messagesNow, msgText: '' });
+        // }
     };
 
+    // прослушка отправки на Enter
+    keySubmitMessage = e => {
+        console.log(e.keyCode);
+        if (e.keyCode === 13) {
+            this.submitMessage();
+        }
+    }
+
     render() {
-        const { showProfile } = this.props;
-        const { user, openChat, messages, msgText } = this.state;
+        const { showProfile, openChat } = this.props;
+        const { user, messages, msgText } = this.state;
+
+        if (openChat === null) {
+            return (
+                <section className="chat-window">
+                    <img src="/static/main-label-bw.svg" className="chat-window__stub" />
+                </section>
+            );
+        }
+        this.getMessages();
 
         return (
-            <React.Fragment>
-                {openChat === null ? (
-                    <section className="chat-window">
-                        <img src="/static/main-label-bw.svg" className="chat-window__stub" />
-                    </section>
-                ) : (
-                    <section className="chat-window">
-                        <div className="chat-header">
-                            <img
-                                className="chat-header__img"
-                                alt="chatavatar"
-                                src={`data:image/svg+xml;base64,${openChat.avatar}`}
-                                onClick={() => showProfile(openChat)}
-                            />
-                            <span
-                                className="chat-header__name"
-                                onClick={() => showProfile(openChat)}
-                                >
-                                {openChat.title}
-                            </span>
-                        </div>
-                        <div className="messages messages_grid_large">
-                            {messages.map(message => (
-                                <Message
-                                    key={message.id}
-                                    message={message}
-                                    user={user}
-                                    title={openChat.title}
-                                />
-                            ))}
-                        </div>
-                        <Emoji showEmoji={this.state.showEmoji} />
-                        <Preview files={this.state.attachments} />
-                        <div className="chat-input chat-input_separator_box-shadow">
-                            <input
-                                value={msgText}
-                                onChange={this.changeText}
-                                type="text"
-                                className="chat-input__write-field"
-                            />
-                            <label className="chat-input__emoji-btn chat-input__button">
-                                <input
-                                    type="button"
-                                    onClick={this.showEmoji}
-                                    className="chat-input__not-visual"
-                                />
-                                <img
-                                    src="/static/emoji.svg"
-                                    className="chat-input__emoji-icon"
-                                />
-                            </label>
-                            <label className="chat-input__attachment-btn chat-input__button">
-                                <input
-                                    type="file"
-                                    className="chat-input__not-visual"
-                                    multiple
-                                    onChange={this.onChange}
-                                />
-                                <img
-                                    src="/static/camera.svg"
-                                    className="chat-input__attachment-icon"
-                                />
-                            </label>
-                            <div
-                                onClick={this.submitMessage}
-                                className="chat-input__send-btn chat-input__button"
-                            />
-                        </div>
-                    </section>
-                )}
-            </React.Fragment>
+            <section className="chat-window">
+                <div className="chat-header">
+                    <img
+                        className="chat-header__img"
+                        alt="chatavatar"
+                        src={`data:image/svg+xml;base64,${openChat.avatar}`}
+                        onClick={() => showProfile(openChat)}
+                    />
+                    <span
+                        className="chat-header__name"
+                        onClick={() => showProfile(openChat)}
+                        >
+                        {openChat.title}
+                    </span>
+                </div>
+                <div className="messages messages_grid_large">
+                    {}
+                    {messages.map(message => (
+                        <Message
+                            key={message.id}
+                            message={message}
+                            user={user}
+                            title={openChat.title}
+                        />
+                    ))}
+                </div>
+                <Emoji showEmoji={this.state.showEmoji} />
+                <Preview files={this.state.attachments} />
+                <div className="chat-input chat-input_separator_box-shadow">
+                    <input
+                        value={msgText}
+                        onChange={this.changeText}
+                        onKeyDown={this.keySubmitMessage}
+                        type="text"
+                        className="chat-input__write-field"
+                    />
+                    <label className="chat-input__emoji-btn chat-input__button">
+                        <input
+                            type="button"
+                            onClick={this.showEmoji}
+                            className="chat-input__not-visual"
+                        />
+                        <img
+                            src="/static/emoji.svg"
+                            className="chat-input__emoji-icon"
+                        />
+                    </label>
+                    <label className="chat-input__attachment-btn chat-input__button">
+                        <input
+                            type="file"
+                            className="chat-input__not-visual"
+                            multiple
+                            onChange={this.onFilesChange}
+                        />
+                        <img
+                            src="/static/camera.svg"
+                            className="chat-input__attachment-icon"
+                        />
+                    </label>
+                    <div
+                        onClick={this.submitMessage}
+                        className="chat-input__send-btn chat-input__button"
+                    />
+                </div>
+            </section>
         );
     }
 }

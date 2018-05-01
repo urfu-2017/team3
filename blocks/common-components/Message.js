@@ -41,7 +41,7 @@ export default class Message extends Component {
         const { message, user, title } = this.props;
         const { text, author, date, meta } = message;
         /* eslint-disable react/jsx-closing-tag-location */
-        const metadata = Object.keys(meta).length === 0 ? <React.Fragment /> :
+        const metadata = Object.keys(meta || {}).length === 0 ? <React.Fragment /> :
             (<a className="metadata" href={meta.url}>
                 <img
                     src={meta.image}
