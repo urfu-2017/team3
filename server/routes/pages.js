@@ -4,6 +4,8 @@ const connectEnsureLogin = require('connect-ensure-login');
 
 const { parse } = require('url');
 
+const { getChats } = require('../controllers/dbController');
+
 module.exports = (server, app) => {
     function handleRequest(req, res) {
         const parsedUrl = parse(req.url, true);
@@ -12,24 +14,18 @@ module.exports = (server, app) => {
     }
 
     server
-        .get('', (req, res) => {
-            app.render(req, res, '/index');
-        })
-        .get('/', (req, res) => {
-            app.render(req, res, '/index');
-        })
-        .get('/profile/:nickname?',
-            connectEnsureLogin.ensureLoggedIn('/'),
+        .get('',
+            connectEnsureLogin.ensureLoggedIn('/auth'),
+            async (req, res) => {
+                app.render(req, res, '/index');
+            })
+        .get('/', connectEnsureLogin.ensureLoggedIn('/auth'),
             (req, res) => {
-                app.render(req, res, '/profile');
-            }
-        )
-        .get('/im',
-            connectEnsureLogin.ensureLoggedIn('/'),
-            (req, res) => {
-                app.render(req, res, '/im');
-            }
-        )
+                app.render(req, res, '/index');
+            })
+        .get('/auth', (req, res) => {
+            app.render(req, res, '/auth');
+        })
         .get('/_next/*', handleRequest)
         .get('/static/*', handleRequest);
 };

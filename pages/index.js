@@ -1,45 +1,132 @@
 'use strict';
 
-import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+/* eslint react/jsx-no-bind: 0 */
+/* eslint-disable max-len */
+/* eslint-disable no-unused-vars */
 
+import fetch from 'node-fetch';
+import React from 'react';
+import PropTypes from 'prop-types';
+import withRedux from 'next-redux-wrapper';
 import { Provider } from 'react-redux';
 
-import LogInPage from '../blocks/main-pages/not-authorized/MainPage';
-import store from '../store';
+import makeStore from '../store';
+import Chats from '../blocks/chats-page/Chats';
+import Search from '../blocks/chats-page/Search';
+import ChatWindow from '../blocks/chats-page/ChatWindow';
+import Profile from '../blocks/pfl/profile';
+import PureProfile from '../blocks/common-components/PureProfileForList';
 
-import MainPage from './MainPage.js';
+import 'isomorphic-fetch';
 import './global-const.css';
+import './im.css';
 
-export default class StartPage extends Component {
-    static getInitialProps({ req }) {
-        const { user } = req;
+async function loadChats(req) {
+    const res = await fetch('http://localhost:3000/api/chats', {
+        credentials: 'include',
+        headers: {
+            cookie: req.headers.cookie
+        }
+    });
+    const chats = await res.json();
 
-        return { user };
+    return { type: 'LOAD_CHATS', chats };
+}
+
+class MainPage extends React.Component {
+    static async getInitialProps({ store, req }) {
+        store.dispatch({ type: 'LOGIN_USER', user: req.user });
+        store.dispatch(await loadChats(req));
+
+        return { };
     }
 
-    async componentDidMount() {
-        // Загружаем чатики и кидаем событие после загрузки
-        const res = await fetch('/api/chats', { credentials: 'include' });
-        const chats = await res.json();
+    // showUserProfile - хранит или null или юзера котрого нужно показать!
+    state = { user: null, chats: null, showUserProfile: null, openChat: null, foundUsersList: false }
+    createChat = async interlocutor => {
+        const response = await fetch('api/chats/', {
+            credentials: 'include',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                members: [interlocutor, this.props.user.nickname],
+                type: 'private'
+            })
+        });
 
-        store.dispatch({ type: 'LOAD_CHATS', chats });
+        if (response.status === 200) {
+            const createdChat = await response.json();
 
-        // Если есть юзер кидаем событие, что юзер залогинен
-        if (this.props.user) {
-            store.dispatch({ type: 'LOGIN_USER', user: this.props.user });
+            this.state.chats.push(createdChat);
         }
     }
 
+    showProfile = user => this.setState({ showUserProfile: user });
+
+    clickToOpenChat = chatProps => this.setState({ openChat: chatProps });
+
+    showFoundResults = userList => this.setState({ foundUsersList: userList });
+
+    showFoundUsers = () => {
+        return this.state.foundUsersList.map(user => {
+            return (
+                <PureProfile
+                    key={user.nickname}
+                    user={user}
+                    createChat={this.createChat}
+                />
+            );
+        });
+    }
+
     render() {
-        const { user } = this.props;
+        const showUserProfile = false;
+        const { user, chats } = this.props;
 
         return (
-            <Provider store={store}>
-                { user
-                    ? <MainPage />
-                    : <LogInPage /> }
-            </Provider>
+            <React.Fragment>
+                <head>
+                    <title>{user.nickname}</title>
+                </head>
+                <main className="main">
+                    <div>{ this.props.store }</div>
+                    <article className="chats">
+                        <div className="chats__search">
+                            <Search
+                                user={user}
+                                showProfile={this.showProfile}
+                                findUsers={this.showFoundResults}
+                            />
+                        </div>
+                        <div className="chats__list">
+                            <Chats chatsList={chats} clickToOpenChat={this.clickToOpenChat} />
+                        </div>
+                        {this.state.foundUsersList
+                            ?
+                                <div className="chats__found-users">
+                                    {this.showFoundUsers()}
+                                </div>
+                            :
+                            null
+                        }
+
+                    </article>
+                    <article className="dialog">
+                        <ChatWindow
+                            user={user}
+                            showProfile={this.showProfile}
+                        />
+                    </article>
+                </main>
+                <Profile />
+            </React.Fragment>
         );
     }
 }
+
+MainPage.propTypes = {
+    user: PropTypes.object,
+    store: PropTypes.string
+};
+
+export default withRedux(makeStore, state => state)(MainPage);

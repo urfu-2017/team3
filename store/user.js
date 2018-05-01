@@ -3,8 +3,25 @@
 const initialState = null;
 
 export default function user(state = initialState, action) {
-    if (action.state === 'LOGIN_USER') {
-        return action.user;
+    if (action.type === 'LOGIN_USER') {
+        return {
+            ...state,
+            user: action.user
+        };
+    }
+
+    if (action.type === 'SHOW_PROFILE') {
+        return {
+            ...state,
+            profile: action.profile
+        };
+    }
+
+    if (action.type === 'HIDE_PROFILE') {
+        return {
+            ...state,
+            profile: null
+        };
     }
 
     return state;

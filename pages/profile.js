@@ -12,21 +12,21 @@ import './global-const.css';
 const URL = `${process.env.HOST}:${process.env.PORT}`;
 
 export default class ProfilePage extends Component {
-    static async getInitialProps({ req }) {
-        const { id } = req.params;
+    // static async getInitialProps({ req }) {
+    //     const { id } = req.params;
 
-        if (!id) {
-            return { user: req.user };
-        }
+    //     if (!id) {
+    //         return { user: req.user };
+    //     }
 
-        const response = await fetch(`${URL}/api/users/${id}`);
-        const user = await response.json();
+    //     const response = await fetch(`${URL}/api/users/${id}`);
+    //     const user = await response.json();
 
-        return { user, cookie: req.headers.cookie };
-    }
+    //     return { user, cookie: req.headers.cookie };
+    // }
 
     render() {
-        const { user, cookie } = this.props;
+        const { profile } = this.props;
 
         return (
             <React.Fragment>
@@ -44,3 +44,5 @@ ProfilePage.propTypes = {
     user: PropTypes.object,
     cookie: PropTypes.string
 };
+
+

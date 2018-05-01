@@ -13,7 +13,8 @@ let initialState = [
 
 export default function chats(state = initialState, action) {
     if (action.type === 'LOAD_CHATS') {
-        return action.payload;
+        console.info(1213123123);
+        return action.chats;
     }
 
     return state;

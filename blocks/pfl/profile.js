@@ -5,23 +5,33 @@ import PropTypes from 'prop-types';
 
 import '../../pages/global-const.css';
 import './profile.css';
+import { connect } from 'react-redux';
 
-export default class Profile extends Component {
-    static getInitialProps = ({ user }) => {
-        return { user };
+class Profile extends Component {
+    hideProfile = () => {
+        this.props.onHideProfile();
     }
 
     render() {
-        const { user } = this.props;
-        const avatalLink = `data:image/svg+xml;base64,${user.avatar}`;
+        const { profile } = this.props;
+
+        if (!profile) {
+            return (<div />);
+        }
+
+        const avatalLink = `data:image/svg+xml;base64,${profile.avatar}`;
 
         return (
-            <div className="profile">
-                <div className="profile__avatar-box">
-                    <img className="profile__avatar" src={avatalLink} alt="avatar" />
-                </div>
-                <div className="profile__info-box">
-                    <span className="profile__nickname">{user.nickname || user.title}</span>
+            <div className="darkness" onClick={this.hideProfile}>
+                <div className="profile">
+                    <div className="profile__avatar-box">
+                        <img className="profile__avatar" src={avatalLink} alt="avatar" />
+                    </div>
+                    <div className="profile__info-box">
+                        <span className="profile__nickname">
+                            {profile.nickname || profile.title}
+                        </span>
+                    </div>
                 </div>
             </div>
         );
@@ -29,5 +39,15 @@ export default class Profile extends Component {
 }
 
 Profile.propTypes = {
-    user: PropTypes.object
+    profile: PropTypes.object,
+    onHideProfile: PropTypes.func
 };
+
+export default connect(
+    state => ({ profile: state.profile }),
+    dispatch => ({
+        onHideProfile: () => {
+            dispatch({ type: 'HIDE_PROFILE' });
+        }
+    })
+)(Profile);
