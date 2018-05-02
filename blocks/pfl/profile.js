@@ -44,7 +44,7 @@ Profile.propTypes = {
 };
 
 export default connect(
-    state => ({ profile: state.profile }),
+    state => ({ profile: state.modal.profile }),
     dispatch => ({
         onHideProfile: () => {
             dispatch({ type: 'HIDE_PROFILE' });

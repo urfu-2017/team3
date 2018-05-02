@@ -1,26 +1,42 @@
 'use strict';
 
-const intitialState = null;
-const defaultMessages = [
-    {
-        id: '1',
-        text: 'Привет перец',
-        author: '14900963',
-        date: Date.now(),
-        meta: null
-    },
-    {
-        id: '2',
-        text: 'Привет перец!!!',
-        date: Date.now(),
-        author: '14900963',
-        meta: null
-    }
-];
-
-export default function activeChat(state = intitialState, action) {
+/* eslint-disable complexity */
+/* eslint-disable max-statements */
+export default function activeChat(state = null, action) {
     if (action.type === 'OPEN_CHAT') {
-        return action.chat;
+        return {
+            ...state,
+            ...action.chat
+        };
+    }
+
+    if (action.type === 'SHOW_EMOJI') {
+        return {
+            ...state,
+            showEmoji: true
+        };
+    }
+
+    if (action.type === 'HIDE_EMOJI') {
+        return {
+            ...state,
+            showEmoji: false
+        };
+    }
+
+    if (action.type === 'RECIVE_MESSAGE') {
+        return {
+            ...state,
+            messages: [...state.messages, action.message]
+        };
+    }
+
+    if (action.type === 'ADD_ATTACHMENT') {
+        // Обработка добавляение атачмента
+    }
+
+    if (action.type === 'DELETE_ATTACHMENT') {
+        // Обработка удаления атачмента
     }
 
     return state;

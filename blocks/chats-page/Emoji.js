@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Picker } from 'emoji-mart';
 
 import '../../node_modules/emoji-mart/css/emoji-mart.css';
+import { connect } from 'react-redux';
 
-export default class Emoji extends Component {
+class Emoji extends Component {
 
     addEmoji = emoji => {
         const input = document.querySelector('.chat-input__write-field');
@@ -46,3 +47,8 @@ export default class Emoji extends Component {
 Emoji.propTypes = {
     showEmoji: PropTypes.bool
 };
+
+export default connect(
+    state => ({
+        showEmoji: state.activeChat && state.activeChat.showEmoji
+    }))(Emoji);

@@ -37,8 +37,31 @@ app.prepare().then(() => {
 
 });
 
+const Message = require('./models/Message');
+const Chat = require('./models/Chat');
+
 function setupSocket(ws) {
     ws.on('connection', socket => {
         socket.emit('news', { hello: 'world' });
+
+        socket.on('join', chats => {
+            chats.forEach(c => socket.join(c));
+            console.info('joined to', chats);
+        });
+
+        socket.on('message', async data => {
+            const { chatId, message } = data;
+
+            // Сохраняем сообщение в монгу
+            const msg = await Message.initialize(message);
+
+            await Chat.update(
+                { _id: chatId },
+                { $push: { messages: msg } }
+            );
+
+            // Отправляем сообщение всем юзерам, включая отправителя (для единообразия)
+            ws.to(chatId).emit('message', { chatId, message: msg });
+        });
     });
 }

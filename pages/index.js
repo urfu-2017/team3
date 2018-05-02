@@ -21,6 +21,8 @@ import 'isomorphic-fetch';
 import './global-const.css';
 import './im.css';
 
+import getSocket from './socket';
+
 async function loadChats(req) {
     const res = await fetch('http://localhost:3000/api/chats', {
         credentials: 'include',
@@ -39,6 +41,21 @@ class MainPage extends React.Component {
         store.dispatch(await loadChats(req));
 
         return { };
+    }
+
+    componentDidMount() {
+        const socket = getSocket();
+
+        // Подключение ко всем комнатам с чатиками
+        socket.emit('join', this.props.chats.map(c => c._id));
+
+        socket.on('message', data => {
+            const { chatId, message } = data;
+
+            this.props.onReciveMessage(chatId, message);
+        });
+
+        socket.emit('message', { message: '123' });
     }
 
     // showUserProfile - хранит или null или юзера котрого нужно показать!
@@ -60,10 +77,6 @@ class MainPage extends React.Component {
             this.state.chats.push(createdChat);
         }
     }
-
-    showProfile = user => this.setState({ showUserProfile: user });
-
-    clickToOpenChat = chatProps => this.setState({ openChat: chatProps });
 
     showFoundResults = userList => this.setState({ foundUsersList: userList });
 
@@ -112,10 +125,7 @@ class MainPage extends React.Component {
 
                     </article>
                     <article className="dialog">
-                        <ChatWindow
-                            user={user}
-                            showProfile={this.showProfile}
-                        />
+                        <ChatWindow />
                     </article>
                 </main>
                 <Profile />
@@ -126,7 +136,15 @@ class MainPage extends React.Component {
 
 MainPage.propTypes = {
     user: PropTypes.object,
-    store: PropTypes.string
+    store: PropTypes.string,
+    chats: PropTypes.array
 };
 
-export default withRedux(makeStore, state => state)(MainPage);
+export default withRedux(makeStore,
+    state => state,
+    dispatch => ({
+        onReciveMessage: (chatId, message) => {
+            dispatch({ type: 'RECIVE_MESSAGE', chatId, message });
+        }
+    })
+)(MainPage);
