@@ -54,7 +54,7 @@ export default connect(
     () => ({}),
     dispatch => ({
         onOpenChat: chat => {
-            dispatch({ type: 'OPEN_CHAT', chat });
+            dispatch({ type: 'OPEN_CHAT', id: chat._id });
         }
     })
 )(ChatIcon);

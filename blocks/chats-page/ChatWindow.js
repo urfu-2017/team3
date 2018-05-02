@@ -103,7 +103,7 @@ class ChatWindow extends Component {
     render() {
         const { activeChat, user } = this.props;
 
-        if (activeChat === null) {
+        if (!activeChat) {
             return (
                 <section className="chat-window">
                     <img src="/static/main-label-bw.svg" className="chat-window__stub" />
@@ -191,7 +191,7 @@ ChatWindow.propTypes = {
 
 export default connect(
     state => ({
-        activeChat: state.activeChat,
+        activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id),
         user: state.user,
         showEmoji: state.activeChat && state.activeChat.showEmoji
     }),

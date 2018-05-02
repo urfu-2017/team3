@@ -6,7 +6,7 @@ export default function activeChat(state = null, action) {
     if (action.type === 'OPEN_CHAT') {
         return {
             ...state,
-            ...action.chat
+            id: action.id
         };
     }
 
@@ -21,13 +21,6 @@ export default function activeChat(state = null, action) {
         return {
             ...state,
             showEmoji: false
-        };
-    }
-
-    if (action.type === 'RECIVE_MESSAGE' && state && action.chatId === state._id) {
-        return {
-            ...state,
-            messages: [...state.messages, action.message]
         };
     }
 
