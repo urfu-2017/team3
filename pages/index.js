@@ -88,7 +88,6 @@ class MainPage extends React.Component {
     }
 
     render() {
-        const showUserProfile = false;
         const { user } = this.props;
 
         return (
@@ -116,7 +115,6 @@ class MainPage extends React.Component {
                             :
                             null
                         }
-
                     </article>
                     <article className="dialog">
                         <ChatWindow />

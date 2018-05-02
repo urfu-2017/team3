@@ -6,18 +6,22 @@ export default function chats(state = [], action) {
     }
 
     if (action.type === 'RECIVE_MESSAGE') {
-        const newState = [...state];
-        const chatIndex = newState.findIndex(c => c._id === action.chatId);
-        const oldChat = newState[chatIndex];
-        const newChat = {
-            ...oldChat,
-            messages: [...oldChat.messages, action.message]
-        };
-
-        newState[chatIndex] = newChat;
-
-        return newState;
+        return pushMessageImmutable(state, action.chatId, action.message);
     }
 
     return state;
+}
+
+function pushMessageImmutable(oldChats, chatId, message) {
+    const newChats = [...oldChats];
+    const chatIndex = newChats.findIndex(c => c._id === chatId);
+    const oldChat = newChats[chatIndex];
+    const newChat = {
+        ...oldChat,
+        messages: [...oldChat.messages, message]
+    };
+
+    newChats[chatIndex] = newChat;
+
+    return newChats;
 }

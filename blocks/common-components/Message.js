@@ -6,6 +6,8 @@ import { Emoji } from 'emoji-mart';
 
 import './Message.css';
 
+import moment from 'moment';
+
 /* eslint-disable react/jsx-no-bind */
 
 export default class Message extends Component {
@@ -27,14 +29,7 @@ export default class Message extends Component {
     }
 
     prettyDate(date) {
-        const today = new Date();
-        const chatDate = new Date(date);
-
-        if (today.getDate() === chatDate.getDate()) {
-            return `${chatDate.getHours()}:${chatDate.getMinutes()}`;
-        }
-
-        return '10:20';
+        return moment(date).fromNow();
     }
 
     render() {

@@ -4,18 +4,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import moment from 'moment';
+
 import './ChatIcon.css';
 
 class ChatIcon extends Component {
     prettyDate(date) {
-        const today = new Date();
-        const chatDate = new Date(date);
-
-        if (today.getDate() === chatDate.getDate()) {
-            return `${chatDate.getHours()}:${chatDate.getMinutes()}`;
-        }
-
-        return '10:20';
+        return moment(date).fromNow();
     }
 
     openChat = () => {
@@ -25,6 +20,9 @@ class ChatIcon extends Component {
     render() {
         const { chatProps } = this.props;
         const avatalLink = `data:image/svg+xml;base64,${chatProps.avatar}`;
+        const lastMessage = chatProps.messages.length
+            ? chatProps.messages[chatProps.messages.length - 1]
+            : null;
 
         return (
             <div className="chat-icon" onClick={this.openChat}>
@@ -34,10 +32,10 @@ class ChatIcon extends Component {
                 <div className="chat-icon__info-box">
                     <div className="chat-icon__upper-box">
                         <div className="chat-icon__title">{chatProps.title}</div>
-                        <div className="chat-icon__date">{this.prettyDate(chatProps.date)}</div>
+                        <div className="chat-icon__date">{lastMessage && this.prettyDate(lastMessage.date)}</div>
                     </div>
                     <div className="chat-icon__lower-box">
-                        <div className="chat-icon__lastmsg">{chatProps.lastMessage}</div>
+                        <div className="chat-icon__lastmsg">{lastMessage && lastMessage.text}</div>
                     </div>
                 </div>
             </div>
