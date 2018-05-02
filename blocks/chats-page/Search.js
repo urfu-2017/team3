@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'node-fetch';
+import { connect } from 'react-redux';
 
-export default class Search extends Component {
-    findUser = async pressEvent => {
+class Search extends Component {
+    findUsers = async pressEvent => {
         if (pressEvent.keyCode !== 13) {
             return;
         }
@@ -16,25 +17,24 @@ export default class Search extends Component {
         if (response.status === 200) {
             const user = await response.json();
 
-            this.props.findUsers([user]);
+            this.props.onUsersFound([user, user, user]); // ТУДУ дубликаты для нагдядности
         }
     }
 
-    showProfile() {
+    showProfile = () => {
         const { user } = this.props;
 
-        this.props.showProfile(user);
+        this.props.onShowProfile(user);
     }
     render() {
-
         return (
             <React.Fragment>
-                <div className="chats__box-burger" onClick={this.showProfile}>a</div>
+                <div className="chats__box-burger" onClick={this.showProfile}>{'I\'m'}</div>
                 <input
                     type="text"
                     className="chats__search-input"
                     placeholder="Найти пользователя"
-                    onKeyDown={this.findUser}
+                    onKeyDown={this.findUsers}
                 />
             </React.Fragment>
         );
@@ -43,6 +43,20 @@ export default class Search extends Component {
 
 Search.propTypes = {
     user: PropTypes.object,
-    showProfile: PropTypes.func,
-    findUsers: PropTypes.func
+    onUsersFound: PropTypes.func,
+    onShowProfile: PropTypes.func
 };
+
+export default connect(
+    state => ({
+        user: state.user
+    }),
+    dispatch => ({
+        onUsersFound: users => {
+            dispatch({ type: 'FOUND_USERS', foundUsers: users });
+        },
+        onShowProfile: profile => {
+            dispatch({ type: 'SHOW_PROFILE', profile });
+        }
+    })
+)(Search);

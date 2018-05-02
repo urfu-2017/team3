@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class PureProfile extends Component {
+import { connect } from 'react-redux';
+
+class PureProfile extends Component {
     createChat = () => {
         const { user } = this.props;
 
-        this.props.createChat(user.nickname);
+        this.props.onCreateChat(user.nickname);
     }
 
     render() {
@@ -30,5 +32,14 @@ export default class PureProfile extends Component {
 
 PureProfile.propTypes = {
     user: PropTypes.object,
-    createChat: PropTypes.func
+    onCreateChat: PropTypes.func
 };
+
+export default connect(
+    () => ({}),
+    dispatch => ({
+        onCreateChat: interlocutor => {
+            dispatch({ type: 'CREATE_CHAT', interlocutor }); // ТУДУ update sore
+        }
+    })
+)(PureProfile);

@@ -17,6 +17,9 @@ const server = require('./server');
 const httpServer = require('http').Server(server);
 const io = require('socket.io')(httpServer);
 
+const Message = require('./models/Message');
+const Chat = require('./models/Chat');
+
 app.prepare().then(() => {
     server.use(expressSession({
         secret: process.env.EXPRESS_SESSION_SECRET,
@@ -36,9 +39,6 @@ app.prepare().then(() => {
         console.log(`Listening on ${process.env.HOST}:${process.env.PORT}`));
 
 });
-
-const Message = require('./models/Message');
-const Chat = require('./models/Chat');
 
 function setupSocket(ws) {
     ws.on('connection', socket => {

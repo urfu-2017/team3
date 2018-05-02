@@ -29,7 +29,9 @@ export default class Message extends Component {
     }
 
     prettyDate(date) {
-        return moment(date).fromNow();
+        return moment(date)
+            .locale('ru')
+            .fromNow();
     }
 
     render() {

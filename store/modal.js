@@ -15,5 +15,12 @@ export default function modal(state = {}, action) {
         };
     }
 
+    if (action.type === 'FOUND_USERS') {
+        return {
+            ...state,
+            foundUsers: action.foundUsers
+        };
+    }
+
     return state;
 }

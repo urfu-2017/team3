@@ -13,7 +13,7 @@ class Chats extends React.Component {
         const { chats } = this.props;
 
         return chats.map(chat => (
-            <ChatIcon key={chat.id} chatProps={chat} />
+            <ChatIcon key={chat._id} chatProps={chat} />
         ));
     }
 }

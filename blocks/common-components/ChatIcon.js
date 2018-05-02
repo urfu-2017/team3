@@ -10,7 +10,9 @@ import './ChatIcon.css';
 
 class ChatIcon extends Component {
     prettyDate(date) {
-        return moment(date).fromNow();
+        return moment(date)
+            .locale('ru')
+            .fromNow();
     }
 
     openChat = () => {
@@ -32,9 +34,12 @@ class ChatIcon extends Component {
                 <div className="chat-icon__info-box">
                     <div className="chat-icon__upper-box">
                         <div className="chat-icon__title">{chatProps.title}</div>
-                        <div className="chat-icon__date">{lastMessage && this.prettyDate(lastMessage.date)}</div>
+                        <div className="chat-icon__date">
+                            {lastMessage && this.prettyDate(lastMessage.date)}
+                        </div>
                     </div>
                     <div className="chat-icon__lower-box">
+                        {/* ТУДУ оверфлоу не работает */}
                         <div className="chat-icon__lastmsg">{lastMessage && lastMessage.text}</div>
                     </div>
                 </div>

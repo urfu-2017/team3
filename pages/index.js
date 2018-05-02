@@ -88,7 +88,7 @@ class MainPage extends React.Component {
     }
 
     render() {
-        const { user } = this.props;
+        const { user, modal: { foundUsers } } = this.props;
 
         return (
             <React.Fragment>
@@ -98,23 +98,28 @@ class MainPage extends React.Component {
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">
-                            <Search
-                                user={user}
-                                showProfile={this.showProfile}
-                                findUsers={this.showFoundResults}
-                            />
+                            <Search />
                         </div>
-                        <div className="chats__list">
-                            <Chats />
-                        </div>
-                        {this.state.foundUsersList
+                        {foundUsers
                             ?
                                 <div className="chats__found-users">
-                                    {this.showFoundUsers()}
+                                    { foundUsers.map(foundUser => {
+                                        return (
+                                            <PureProfile
+                                                key={user.nickname}
+                                                user={foundUser}
+                                                createChat={this.createChat}
+                                            />
+                                        );
+                                    })}
                                 </div>
                             :
                             null
                         }
+                        <hr />
+                        <div className="chats__list">
+                            <Chats />
+                        </div>
                     </article>
                     <article className="dialog">
                         <ChatWindow />
@@ -129,7 +134,8 @@ class MainPage extends React.Component {
 MainPage.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    onReciveMessage: PropTypes.func
+    onReciveMessage: PropTypes.func,
+    foundUsers: PropTypes.array
 };
 
 export default withRedux(makeStore,
