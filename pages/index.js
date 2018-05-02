@@ -1,14 +1,9 @@
 'use strict';
 
-/* eslint react/jsx-no-bind: 0 */
-/* eslint-disable max-len */
-/* eslint-disable no-unused-vars */
-
 import fetch from 'node-fetch';
 import React from 'react';
 import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
-import { Provider } from 'react-redux';
 
 import makeStore from '../store';
 import Chats from '../blocks/chats-page/Chats';
@@ -54,12 +49,12 @@ class MainPage extends React.Component {
 
             this.props.onReciveMessage(chatId, message);
         });
-
-        socket.emit('message', { message: '123' });
     }
 
-    // showUserProfile - хранит или null или юзера котрого нужно показать!
-    state = { user: null, chats: null, showUserProfile: null, openChat: null, foundUsersList: false }
+    // ТУДУ создание нового чатика
+    // ТУДУ добавления юзера в контакты
+    state = { foundUsersList: false }
+
     createChat = async interlocutor => {
         const response = await fetch('api/chats/', {
             credentials: 'include',
@@ -94,7 +89,7 @@ class MainPage extends React.Component {
 
     render() {
         const showUserProfile = false;
-        const { user, chats } = this.props;
+        const { user } = this.props;
 
         return (
             <React.Fragment>
@@ -102,7 +97,6 @@ class MainPage extends React.Component {
                     <title>{user.nickname}</title>
                 </head>
                 <main className="main">
-                    <div>{ this.props.store }</div>
                     <article className="chats">
                         <div className="chats__search">
                             <Search
@@ -112,7 +106,7 @@ class MainPage extends React.Component {
                             />
                         </div>
                         <div className="chats__list">
-                            <Chats chatsList={chats} clickToOpenChat={this.clickToOpenChat} />
+                            <Chats />
                         </div>
                         {this.state.foundUsersList
                             ?
@@ -136,8 +130,8 @@ class MainPage extends React.Component {
 
 MainPage.propTypes = {
     user: PropTypes.object,
-    store: PropTypes.string,
-    chats: PropTypes.array
+    chats: PropTypes.array,
+    onReciveMessage: PropTypes.func
 };
 
 export default withRedux(makeStore,

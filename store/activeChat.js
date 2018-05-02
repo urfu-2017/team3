@@ -24,7 +24,7 @@ export default function activeChat(state = null, action) {
         };
     }
 
-    if (action.type === 'RECIVE_MESSAGE') {
+    if (action.type === 'RECIVE_MESSAGE' && state && action.chatId === state._id) {
         return {
             ...state,
             messages: [...state.messages, action.message]

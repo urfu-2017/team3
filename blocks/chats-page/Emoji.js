@@ -51,4 +51,5 @@ Emoji.propTypes = {
 export default connect(
     state => ({
         showEmoji: state.activeChat && state.activeChat.showEmoji
-    }))(Emoji);
+    })
+)(Emoji);

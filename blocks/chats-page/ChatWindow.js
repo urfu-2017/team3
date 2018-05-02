@@ -5,45 +5,27 @@
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/self-closing-comp */
 
-// import fetch from 'node-fetch';
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import getSocket from '../../pages/socket';
+
 import Message from '../common-components/Message';
 
 import Emoji from './Emoji';
-
 import Preview from './Preview';
 
 import './ChatWindow.css';
-
-import getSocket from '../../pages/socket';
-// const URL = `${process.env.HOST}:${process.env.PORT}`;
 
 class ChatWindow extends Component {
     constructor(props) {
         super(props);
         this.state = {
             msgText: '',
-            foundUsersList: false,
-            showEmoji: false
+            foundUsersList: false
         };
     }
-
-    // добавляем сообщения в список при клике на чат
-    // getMessages = async () => {
-    //     // console.log('llok', this.props, this.state);
-    //     const response = await fetch(`/api/chats/5ae717583575fc2688d32744/messages`, {
-    //         credentials: 'include',
-    //         method: 'GET',
-    //         headers: { 'Content-Type': 'application/json' }
-    //     });
-    //     const messages = await response.json();
-
-    //     this.setState({ messages });
-    // }
 
     // при вводе добавляем с state
     changeText = e => this.setState({ msgText: e.target.value });
@@ -86,7 +68,7 @@ class ChatWindow extends Component {
     }
 
     // клик на рожицу, используется в <Emoji.../>
-    showEmoji = () => {
+    toggleEmoji = () => {
         if (this.props.showEmoji) {
             this.props.onHideEmoji();
         } else {
@@ -168,7 +150,7 @@ class ChatWindow extends Component {
                     <label className="chat-input__emoji-btn chat-input__button">
                         <input
                             type="button"
-                            onClick={this.showEmoji}
+                            onClick={this.toggleEmoji}
                             className="chat-input__not-visual"
                         />
                         <img

@@ -10,26 +10,20 @@ import './Chats.css';
 
 class Chats extends React.Component {
     render() {
-        const { chats, onChatClick } = this.props;
+        const { chats } = this.props;
 
         return chats.map(chat => (
-            <ChatIcon key={chat.id} chatProps={chat} clickToOpenChat={onChatClick} />
+            <ChatIcon key={chat.id} chatProps={chat} />
         ));
     }
 }
 
 Chats.propTypes = {
-    chats: PropTypes.arrayOf(PropTypes.object),
-    onChatClick: PropTypes.func
+    chats: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default connect(
     state => ({
         chats: state.chats
-    }),
-    dispatch => ({
-        onChatClick: chat => {
-            dispatch({ type: 'OPEN_CHAT', chat });
-        }
     })
 )(Chats);

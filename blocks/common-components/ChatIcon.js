@@ -2,12 +2,11 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-/* eslint-disable react/jsx-no-bind */
+import { connect } from 'react-redux';
 
 import './ChatIcon.css';
 
-export default class ChatIcon extends Component {
+class ChatIcon extends Component {
     prettyDate(date) {
         const today = new Date();
         const chatDate = new Date(date);
@@ -19,12 +18,16 @@ export default class ChatIcon extends Component {
         return '10:20';
     }
 
+    openChat = () => {
+        this.props.onOpenChat(this.props.chatProps);
+    }
+
     render() {
-        const { chatProps, clickToOpenChat } = this.props;
+        const { chatProps } = this.props;
         const avatalLink = `data:image/svg+xml;base64,${chatProps.avatar}`;
 
         return (
-            <div className="chat-icon" onClick={() => clickToOpenChat(chatProps)}>
+            <div className="chat-icon" onClick={this.openChat}>
                 <div className="chat-icon__logo-box">
                     <img className="chat-icon__logo" src={avatalLink} />
                 </div>
@@ -42,4 +45,16 @@ export default class ChatIcon extends Component {
     }
 }
 
-ChatIcon.propTypes = { chatProps: PropTypes.object, clickToOpenChat: PropTypes.func };
+ChatIcon.propTypes = {
+    chatProps: PropTypes.object,
+    onOpenChat: PropTypes.func
+};
+
+export default connect(
+    () => ({}),
+    dispatch => ({
+        onOpenChat: chat => {
+            dispatch({ type: 'OPEN_CHAT', chat });
+        }
+    })
+)(ChatIcon);
