@@ -54,7 +54,6 @@ function setupSocket(ws) {
 
         socket.on('join', chats => {
             chats.forEach(c => socket.join(c));
-            console.info('joined to', chats);
         });
 
         socket.on('message', async data => {

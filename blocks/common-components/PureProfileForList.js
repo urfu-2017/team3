@@ -31,7 +31,7 @@ class PureProfile extends Component {
                 <div className="profile__avatar-box">
                     <img
                         className="profile__avatar"
-                        src={`data:image/svg+xml;base64,${user.avatar}`}
+                        src={user.avatar}
                         alt="avatar"
                     />
                 </div>

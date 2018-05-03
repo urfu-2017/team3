@@ -17,11 +17,8 @@ async function getChats(req, res) {
             members: { $elemMatch: { $regex: `^${req.user.nickname}$`, $options: 'i' } }
         }).populate('members');
 
-        console.info(chats);
-
         res.status(200).json(chats.map(chat => Chat.setChatInfo(req.user.nickname, chat)));
     } catch (e) {
-        console.info(e);
         res.sendStatus(400);
     }
 }
@@ -164,6 +161,7 @@ async function updateChatTitle(req, res) {
 
         res.sendStatus(user === null ? 400 : 200);
     } catch (err) {
+        console.log(err.message);
         res.status(500).send(err.message);
     }
 }
