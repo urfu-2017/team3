@@ -117,7 +117,7 @@ class ChatWindow extends Component {
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
-                        src={activeChat.avatar}
+                        src={`data:image/svg+xml;base64,${activeChat.avatar}`}
                         onClick={() => this.showProfile(activeChat)}
                     />
                     <span
@@ -146,7 +146,6 @@ class ChatWindow extends Component {
                         onKeyDown={this.keySubmitMessage}
                         type="text"
                         className="chat-input__write-field"
-                        autoFocus
                     />
                     <label className="chat-input__emoji-btn chat-input__button">
                         <input
