@@ -21,7 +21,6 @@ class ChatIcon extends Component {
 
     render() {
         const { chatProps } = this.props;
-        const avatalLink = `data:image/svg+xml;base64,${chatProps.avatar}`;
         const lastMessage = chatProps.messages.length
             ? chatProps.messages[chatProps.messages.length - 1]
             : null;
@@ -29,7 +28,7 @@ class ChatIcon extends Component {
         return (
             <div className="chat-icon" onClick={this.openChat}>
                 <div className="chat-icon__logo-box">
-                    <img className="chat-icon__logo" src={avatalLink} />
+                    <img className="chat-icon__logo" src={chatProps.avatar} />
                 </div>
                 <div className="chat-icon__info-box">
                     <div className="chat-icon__upper-box">
