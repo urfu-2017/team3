@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 class PureProfile extends Component {
     createChat = async () => {
-        console.log('qqq');
         const { user, myUser } = this.props;
         const response = await fetch('api/chats/', {
             credentials: 'include',

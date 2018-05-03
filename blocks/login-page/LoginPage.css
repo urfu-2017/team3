@@ -1,5 +1,4 @@
-.log-in,
-.authorized-page {
+.log-in {
     --height: 40vh;
     display: flex;
     flex-direction: column;

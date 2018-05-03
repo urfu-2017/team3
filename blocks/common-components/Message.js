@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Emoji } from 'emoji-mart';
+import ReactMarkdown from 'react-markdown';
 
 import './Message.css';
 
@@ -24,7 +25,13 @@ export default class Message extends Component {
                 );
             }
 
-            return chunk;
+            return (
+                <ReactMarkdown
+                    renderers={{ root: 'span', paragraph: 'span' }}
+                    key={Math.floor(Math.random() * 1000000)}
+                    source={chunk}
+                />
+            );
         });
     }
 
@@ -50,14 +57,11 @@ export default class Message extends Component {
         const newText = this.formatToEmoji(text);
 
         // Если сообщение свое
-        if (user.id === author) {
+        if (user.id !== author) {
             return (
                 <div className="message my">
                     <span className="message__sender">{user.nickname}</span>
-                    <span
-                        className="message__content"
-                        dangerouslySetInnerHTML={{ __html: text }}
-                    />
+                    {newText}
                     <span className="message__date">{this.prettyDate(date)}</span>
                     {metadata}
                 </div>
@@ -66,25 +70,18 @@ export default class Message extends Component {
         // Если сообщение собеседника
 
         return (
-            <React.Fragment>
-                <div className="message friend">
-                    <span className="message__sender">{title}</span>
-                    {newText}
-                    {/* <span dangerouslySetInnerHTML={{
-                        __html: Emoji({
-                            html: true,
-                            set: 'emojione',
-                            emoji: 'santa',
-                            size: 16
-                        })
-                    }}
-                    /> */}
-                    <span className="message__date">{this.prettyDate(date)}</span>
-                    {metadata}
-                </div>
-            </React.Fragment>
+            <div className="message friend">
+                <span className="message__sender">{title}</span>
+                {newText}
+                <span className="message__date">{this.prettyDate(date)}</span>
+                {metadata}
+            </div>
         );
     }
 }
 
-Message.propTypes = { message: PropTypes.object, user: PropTypes.object, title: PropTypes.string };
+Message.propTypes = {
+    message: PropTypes.object,
+    user: PropTypes.object,
+    title: PropTypes.string
+};
