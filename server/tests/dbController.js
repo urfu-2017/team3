@@ -7,11 +7,16 @@ require('should');
 const setupApiRoutes = require('../routes/api');
 const server = require('../server');
 const mongoose = require('mongoose');
-
 const Chat = require('../models/Chat');
 const User = require('../models/User');
+const cloudinary = require('cloudinary');
 
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING);
+cloudinary.config({
+    'cloud_name': 'team3',
+    'api_key': process.env.CLOUDINARY_API_KEY,
+    'api_secret': process.env.CLOUDINARY_API_SECRET
+});
 
 setupServer(server);
 
@@ -27,7 +32,10 @@ describe('messenger API tests', () => {
             }),
             Chat.remove({
                 title: { $in: ['apiTest', 'apiTest2'] }
-            })
+            }),
+            cloudinary.v2.uploader.destroy('user_1_profile'),
+            cloudinary.v2.uploader.destroy('user_2_profile'),
+            cloudinary.v2.uploader.destroy('user_3_profile')
         ]);
 
         currentUser = 'user_1';

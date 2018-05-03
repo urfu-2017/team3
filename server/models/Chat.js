@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-
+const cloudinary = require('cloudinary');
 const Message = require('./Message');
 const createIdenticon = require('../utils/identicon');
 
@@ -57,10 +57,15 @@ class ChatClass {
 }
 
 /* eslint-disable no-invalid-this */
-mongoSchema.pre('save', function () {
-    if (this.type === 'group') {
-        this.avatar = createIdenticon();
+mongoSchema.pre('save', async function () {
+    if (this.type !== 'group') {
+        return this;
     }
+
+    const avatarInBase64 = createIdenticon();
+    const response = await cloudinary.v2.uploader.upload(`data:image/png;base64,${avatarInBase64}`);
+
+    this.avatar = response.url;
 
     return this;
 });
