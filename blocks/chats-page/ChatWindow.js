@@ -2,122 +2,208 @@
 
 /* eslint-disable no-undef */
 /* eslint-disable react/jsx-closing-bracket-location */
-
-import fetch from 'node-fetch';
+/* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/self-closing-comp */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import getSocket from '../../pages/socket';
 
 import Message from '../common-components/Message';
 
+import Emoji from './Emoji';
+import Preview from './Preview';
+
 import './ChatWindow.css';
 
-// const URL = `${process.env.HOST}:${process.env.PORT}`;
+class ChatWindow extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            msgText: '',
+            foundUsersList: false
+        };
+    }
 
-export default class ChatWindow extends Component {
-    // user - я, id/title - собеседника ид и имя
+    // при вводе добавляем с state
+    changeText = e => this.setState({ msgText: e.target.value });
 
-    state = { user: null, id: null, title: null, messages: [], msgText: '' };
+    // при подгрузке картинок меняем css
+    togglePreview(newFiles, oldfiles) {
+        const messages = document.querySelector('.messages');
+        const chatInput = document.querySelector('.chat-input');
 
-    async componentWillReceiveProps(nextProps) {
-        // Если приходят chatProps - значит нажали на диалог, отсекаем первый холостой
-        // И отрезаем нажатие на открытый диалог
-        if (nextProps.chatProps && nextProps.chatProps.id !== this.state.id) {
-            this.setState({ messages: [] });
-            const { chatProps, user } = nextProps;
-            const { id, title } = chatProps;
+        messages.classList.remove(
+            'messages_grid_large',
+            'messages_grid_small'
+        );
+        chatInput.classList.remove(
+            'chat-input_separator_box-shadow',
+            'chat-input_separator_border'
+        );
 
-            this.setState({ user, id, title, msgText: '' });
-
-            const response = await fetch(`/api/chats/${id}/messages`);
-            const messages = await response.json();
-
-            this.setState({ messages });
+        if (oldfiles.length) {
+            messages.classList.add('messages_grid_small');
+            chatInput.classList.add('chat-input_separator_border');
+        } else {
+            messages.classList.add('messages_grid_large');
+            chatInput.classList.add('chat-input_separator_box-shadow');
         }
     }
 
-    componentDidMount() {
-        setInterval(async () => {
-            const response = await fetch(`/api/chats/${this.state.id}/messages`);
-            const messages = await response.json();
+    // добавляем новые файлы в превью
+    onFilesChange = e => {
+        const attachments = this.state.attachments || [];
 
-            this.setState({ messages });
-        }, 1000);
-    }
+        const { currentTarget: { files } } = e;
 
-    change = event => this.setState({ msgText: event.target.value });
-
-    submit = async () => {
-        const response = await fetch(`/api/chats/${this.state.id}/messages`, {
-            credentials: 'include',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: this.state.msgText })
+        [...files].forEach(file => {
+            attachments.push(file);
         });
 
-        if (response.status === 200 || response.status === 201) {
-            /* eslint prefer-const: 0*/
-            const createdMessage = await response.json();
+        this.setState({ attachments });
+        this.togglePreview([...files], attachments);
+    }
 
-            let messagesNow = this.state.messages;
-
-            messagesNow.push(createdMessage);
-            // this.props.changeLastMessage(this.state.id, this.state.msgText);
-            this.setState({ messages: messagesNow, msgText: '' });
+    // клик на рожицу, используется в <Emoji.../>
+    toggleEmoji = () => {
+        if (this.props.showEmoji) {
+            this.props.onHideEmoji();
+        } else {
+            this.props.onShowEmoji();
         }
-    };
+    }
+
+    submitMessage = () => {
+        const text = document.querySelector('.chat-input__write-field').value;
+        const socket = getSocket();
+
+        socket.emit('message', {
+            message: {
+                text,
+                author: this.props.user.nickname
+            },
+            chatId: this.props.activeChat._id
+        });
+    }
+
+    // прослушка отправки на Enter
+    keySubmitMessage = e => {
+        if (e.keyCode === 13) {
+            this.submitMessage();
+        }
+    }
+
+    showProfile = profile => {
+        this.props.onShowProfile(profile);
+    }
+
     render() {
-        const { user, id, title, messages, msgText } = this.state;
-        // const { changeLastMessage } = this.props;
+        const { activeChat, user } = this.props;
+
+        if (!activeChat) {
+            return (
+                <section className="chat-window">
+                    <img src="/static/main-label-bw.svg" className="chat-window__stub" />
+                </section>
+            );
+        }
 
         return (
-            <React.Fragment>
-                {id === null
-                    ?
-                        <section className="chat-window">
-                            <img
-                                src="/static/main-label-bw.svg"
-                                className="chat-window__stub"
-                            />
-                        </section>
-                    :
-                        <section className="chat-window">
-                            <div className="chat-window__title">Открыт диалог с {title}</div>
-                            <div className="chat-window__messages">
-                                {messages.map(message => (
-                                    <Message
-                                        key={message.id}
-                                        message={message}
-                                        user={user}
-                                        title={title}
-                                    />
-                                ))}
-                            </div>
-                            <div className="chat-window__write">
-                                <input
-                                    value={msgText}
-                                    onChange={this.change}
-                                    type="text"
-                                    className="chat-window__input"
-                                />
-                                <div
-                                    onClick={this.submit}
-                                    className="chat-window__send-btn"
-                                    >
-                                    Отправить
-                                </div>
-                            </div>
-                        </section>
-                }
-            </React.Fragment>
+            <section className="chat-window">
+                <div className="chat-header">
+                    <img
+                        className="chat-header__img"
+                        alt="chatavatar"
+                        src={`data:image/svg+xml;base64,${activeChat.avatar}`}
+                        onClick={() => this.showProfile(activeChat)}
+                    />
+                    <span
+                        className="chat-header__name"
+                        onClick={() => this.showProfile(activeChat)}
+                        >
+                        {activeChat.title}
+                    </span>
+                </div>
+                <div className="messages messages_grid_large">
+                    {activeChat.messages.map(message => (
+                        <Message
+                            key={message.id || '0'}
+                            message={message}
+                            user={user}
+                            title={activeChat.title}
+                        />
+                    ))}
+                </div>
+                <Emoji />
+                <Preview files={this.state.attachments} />
+                <div className="chat-input chat-input_separator_box-shadow">
+                    <input
+                        // value={msgText}
+                        onChange={this.changeText}
+                        onKeyDown={this.keySubmitMessage}
+                        type="text"
+                        className="chat-input__write-field"
+                    />
+                    <label className="chat-input__emoji-btn chat-input__button">
+                        <input
+                            type="button"
+                            onClick={this.toggleEmoji}
+                            className="chat-input__not-visual"
+                        />
+                        <img
+                            src="/static/emoji.svg"
+                            className="chat-input__emoji-icon"
+                        />
+                    </label>
+                    <label className="chat-input__attachment-btn chat-input__button">
+                        <input
+                            type="file"
+                            className="chat-input__not-visual"
+                            multiple
+                            onChange={this.onFilesChange}
+                        />
+                        <img
+                            src="/static/camera.svg"
+                            className="chat-input__attachment-icon"
+                        />
+                    </label>
+                    <div
+                        onClick={this.submitMessage}
+                        className="chat-input__send-btn chat-input__button"
+                    />
+                </div>
+            </section>
         );
     }
 }
 
-ChatWindow.getInitialProps = () => {
-    // Пустует
+ChatWindow.propTypes = {
+    user: PropTypes.object,
+    onShowProfile: PropTypes.func,
+    onShowEmoji: PropTypes.func,
+    onHideEmoji: PropTypes.func,
+    showEmoji: PropTypes.bool,
+    activeChat: PropTypes.object
 };
 
-ChatWindow.propTypes = { chatProps: PropTypes.object };
-ChatWindow.propTypes = { user: PropTypes.object };
-// ChatWindow.propTypes = { changeLastMessage: PropTypes.function };
+export default connect(
+    state => ({
+        activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id),
+        user: state.user,
+        showEmoji: state.activeChat && state.activeChat.showEmoji
+    }),
+    dispatch => ({
+        onShowProfile: profile => {
+            dispatch({ type: 'SHOW_PROFILE', profile });
+        },
+        onShowEmoji: () => {
+            dispatch({ type: 'SHOW_EMOJI' });
+        },
+        onHideEmoji: () => {
+            dispatch({ type: 'HIDE_EMOJI' });
+        }
+    })
+)(ChatWindow);

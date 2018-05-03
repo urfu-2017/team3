@@ -14,6 +14,11 @@ const passport = require('./github-authorization');
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING);
 const app = next({ dev: process.env.NODE_ENV !== 'production' });
 const server = require('./server');
+const httpServer = require('http').Server(server);
+const io = require('socket.io')(httpServer);
+
+const Message = require('./models/Message');
+const Chat = require('./models/Chat');
 
 app.prepare().then(() => {
     server.use(expressSession({
@@ -28,7 +33,35 @@ app.prepare().then(() => {
     setupAuthRoutes(server);
     setupPagesRoutes(server, app);
     setupApiRoutes(server);
+    setupSocket(io);
 
-    server.listen(parseInt(process.env.PORT, 10), () =>
+    httpServer.listen(parseInt(process.env.PORT, 10), () =>
         console.log(`Listening on ${process.env.HOST}:${process.env.PORT}`));
+
 });
+
+function setupSocket(ws) {
+    ws.on('connection', socket => {
+        socket.emit('news', { hello: 'world' });
+
+        socket.on('join', chats => {
+            chats.forEach(c => socket.join(c));
+            console.info('joined to', chats);
+        });
+
+        socket.on('message', async data => {
+            const { chatId, message } = data;
+
+            // Сохраняем сообщение в монгу
+            const msg = await Message.initialize(message);
+
+            await Chat.update(
+                { _id: chatId },
+                { $push: { messages: msg } }
+            );
+
+            // Отправляем сообщение всем юзерам, включая отправителя (для единообразия)
+            ws.to(chatId).emit('message', { chatId, message: msg });
+        });
+    });
+}

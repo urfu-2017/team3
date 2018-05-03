@@ -1,26 +1,29 @@
 'use strict';
 
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import ChatIcon from '../common-components/ChatIcon';
 
 import './Chats.css';
 
-export default function Chats({ chatsList, click }) {
-    if (!chatsList) {
-        chatsList = [
-            {
-                id: 1,
-                name: 'first'
-            },
-            {
-                id: 2,
-                name: 'first'
-            }
-        ];
-    }
+class Chats extends React.Component {
+    render() {
+        const { chats } = this.props;
 
-    return chatsList.map(chat => (
-        <ChatIcon key={chat.id} chatProps={chat} click={click} />
-    ));
+        return chats.map(chat => (
+            <ChatIcon key={chat._id} chatProps={chat} />
+        ));
+    }
 }
+
+Chats.propTypes = {
+    chats: PropTypes.arrayOf(PropTypes.object)
+};
+
+export default connect(
+    state => ({
+        chats: state.chats
+    })
+)(Chats);

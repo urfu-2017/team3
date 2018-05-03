@@ -11,3 +11,11 @@
     border-radius: 10px;
     background: var(--neutral-color);
 }
+
+.log-in__welcome {
+    text-align: center;
+}
+
+.log-in__github-link {
+    margin: 0 auto;
+}
