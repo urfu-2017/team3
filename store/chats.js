@@ -10,7 +10,7 @@ export default function chats(state = [], action) {
     }
 
     if (action.type === 'CREATE_CHAT') {
-        return [...state, action.chat] 
+        return [...state, action.chat];
     }
 
     return state;

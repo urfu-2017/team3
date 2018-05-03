@@ -4,8 +4,6 @@ const connectEnsureLogin = require('connect-ensure-login');
 
 const { parse } = require('url');
 
-const { getChats } = require('../controllers/dbController');
-
 module.exports = (server, app) => {
     function handleRequest(req, res) {
         const parsedUrl = parse(req.url, true);
@@ -16,7 +14,7 @@ module.exports = (server, app) => {
     server
         .get('',
             connectEnsureLogin.ensureLoggedIn('/auth'),
-            async (req, res) => {
+            (req, res) => {
                 app.render(req, res, '/index');
             })
         .get('/', connectEnsureLogin.ensureLoggedIn('/auth'),
