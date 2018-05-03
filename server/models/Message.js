@@ -1,6 +1,5 @@
 'use strict';
 
-const { markdown } = require('markdown');
 const sanitizeHtml = require('sanitize-html');
 const extractMeta = require('../utils/metaExtractor');
 const mongoose = require('mongoose');
@@ -38,8 +37,7 @@ class MessageClass {
 }
 
 function processMarkdownAndSanitize(text) {
-    const html = markdown.toHTML(text);
-    const santizedHtml = sanitizeHtml(html, {
+    const santizedHtml = sanitizeHtml(text, {
         allowedTags: ['p', 'strong', 'em', 'a', 'code'],
         allowedAttributes: {
             'a': ['href']

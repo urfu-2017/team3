@@ -14,11 +14,11 @@
 }
 
 .friend {
+    align-items: flex-end;
     align-self: flex-end;
     border-radius: 16px;
     border-bottom-right-radius: 0;
     background: #eeeeee;
-    align-items: flex-end;
 }
 
 .message__sender {

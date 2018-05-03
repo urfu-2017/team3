@@ -6,8 +6,6 @@ import { connect } from 'react-redux';
 
 import ChatIcon from '../common-components/ChatIcon';
 
-import './Chats.css';
-
 class Chats extends React.Component {
     render() {
         const { chats } = this.props;

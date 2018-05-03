@@ -146,6 +146,7 @@ class ChatWindow extends Component {
                         onKeyDown={this.keySubmitMessage}
                         type="text"
                         className="chat-input__write-field"
+                        autoFocus
                     />
                     <label className="chat-input__emoji-btn chat-input__button">
                         <input
