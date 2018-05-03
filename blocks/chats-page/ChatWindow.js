@@ -117,7 +117,7 @@ class ChatWindow extends Component {
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
-                        src={`data:image/svg+xml;base64,${activeChat.avatar}`}
+                        src={activeChat.avatar}
                         onClick={() => this.showProfile(activeChat)}
                     />
                     <span
