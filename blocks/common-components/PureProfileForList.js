@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 class PureProfile extends Component {
     createChat = async () => {
-        console.log('qqq');
         const { user, myUser } = this.props;
         const response = await fetch('api/chats/', {
             credentials: 'include',
@@ -32,7 +31,7 @@ class PureProfile extends Component {
                 <div className="profile__avatar-box">
                     <img
                         className="profile__avatar"
-                        src={`data:image/svg+xml;base64,${user.avatar}`}
+                        src={user.avatar}
                         alt="avatar"
                     />
                 </div>
