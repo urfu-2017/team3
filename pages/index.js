@@ -14,7 +14,7 @@ import PureProfile from '../blocks/common-components/PureProfileForList';
 
 import 'isomorphic-fetch';
 import './global-const.css';
-import './im.css';
+import './index.css';
 
 import getSocket from './socket';
 

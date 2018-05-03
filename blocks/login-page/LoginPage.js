@@ -2,14 +2,11 @@
 
 import React, { Component } from 'react';
 
-import Button from '../../common-components/Button';
+import Button from '../common-components/Button';
 
-import Greeting from './Greeting-not-auth';
+import './LoginPage.css';
 
-import './MainPage.css';
-import '../MainPage-common.css';
-
-export default class MainPage extends Component {
+export default class LoginPage extends Component {
     render() {
         const logIn = {
             link: '/login',
@@ -27,7 +24,12 @@ export default class MainPage extends Component {
                     <title>K1logram</title>
                 </head>
                 <main className="log-in">
-                    <Greeting />
+                    <header className="log-in__welcome">
+                        <p className="log-in__welcome-text">
+                        Добро пожаловать в наш мессенджер!<br />K1logram -
+                        общение без границ.
+                        </p>
+                    </header>
                     <Button btnParams={logIn} />
                 </main>
             </React.Fragment>
