@@ -9,6 +9,10 @@ export default function chats(state = [], action) {
         return pushMessageImmutable(state, action.chatId, action.message);
     }
 
+    if (action.type === 'CREATE_CHAT') {
+        return [...state, action.chat] 
+    }
+
     return state;
 }
 

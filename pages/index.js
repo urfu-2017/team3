@@ -108,7 +108,6 @@ class MainPage extends React.Component {
                                             <PureProfile
                                                 key={user.nickname}
                                                 user={foundUser}
-                                                createChat={this.createChat}
                                             />
                                         );
                                     })}
@@ -135,7 +134,7 @@ MainPage.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
     onReciveMessage: PropTypes.func,
-    foundUsers: PropTypes.array
+    modal: PropTypes.object
 };
 
 export default withRedux(makeStore,

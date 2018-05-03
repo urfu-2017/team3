@@ -4,10 +4,24 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 class PureProfile extends Component {
-    createChat = () => {
-        const { user } = this.props;
+    createChat = async () => {
+        console.log('qqq');
+        const { user, myUser } = this.props;
+        const response = await fetch('api/chats/', {
+            credentials: 'include',
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                members: [user.nickname, myUser.nickname],
+                type: 'private'
+            })
+        });
 
-        this.props.onCreateChat(user.nickname);
+        if (response.status === 200) {
+            const createdChat = await response.json();
+
+            this.props.onCreateChat(createdChat);
+        }
     }
 
     render() {
@@ -36,10 +50,12 @@ PureProfile.propTypes = {
 };
 
 export default connect(
-    () => ({}),
+    state => ({
+        myUser: state.user
+    }),
     dispatch => ({
-        onCreateChat: interlocutor => {
-            dispatch({ type: 'CREATE_CHAT', interlocutor }); // ТУДУ update sore
+        onCreateChat: chat => {
+            dispatch({ type: 'CREATE_CHAT', chat }); // ТУДУ update sore
         }
     })
 )(PureProfile);
