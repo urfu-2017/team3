@@ -129,7 +129,7 @@ export default class Message extends Component {
     }
 
     render() {
-        const { message, user, title } = this.props;
+        const { message, user } = this.props;
         const { text, author, date, meta } = message;
         const { showEmojiToMsg, reactions } = this.state;
         const attachmentIds = [
@@ -141,7 +141,7 @@ export default class Message extends Component {
             this.formatting({ text, attachmentIds, date, reactions, meta });
 
         // Если сообщение свое
-        if (user.id !== author) {
+        if (user.id === author) {
             return (
                 <div className="message my">
                     <EmojiPicker
@@ -179,7 +179,7 @@ export default class Message extends Component {
                     showEmojiToMsg={this.state.showEmojiToMsg}
                 />
                 <div className="message__data">
-                    <span className="message__sender">{title}</span>
+                    <span className="message__sender">{author}</span>
                     <span className="message__date">{goodDate}</span>
                 </div>
                 {newText}
