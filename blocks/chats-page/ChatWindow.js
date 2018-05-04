@@ -155,7 +155,8 @@ class ChatWindow extends Component {
                             key={message.id || '0'}
                             message={message}
                             user={user}
-                            toggleEmoji={this.toggleEmoji}
+                            activeChat={activeChat}
+                            showEmojiToMsg={false}
                         />
                     ))}
                 </div>
