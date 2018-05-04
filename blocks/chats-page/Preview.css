@@ -2,7 +2,7 @@
     display: flex;
     z-index: 1;
     grid-area: 3 / 1 / 4 / 2;
-    box-shadow: 1px -2px 2px 1px lightgray;
+    border-top: 1px solid lightgray;
 }
 
 .preview {
