@@ -135,7 +135,6 @@ export default class Message extends Component {
         const attachmentIds = [
             'https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'
         ];
-
         /* eslint-disable react/jsx-closing-tag-location */
 
         const { newText, attachments, goodDate, peopleEmoji, metadata } =
