@@ -11,6 +11,7 @@ import Search from '../blocks/chats-page/Search';
 import ChatWindow from '../blocks/chats-page/ChatWindow';
 import Profile from '../blocks/pfl/profile';
 import AddUser from '../blocks/common-components/AddUser';
+import CreateGroup from '../blocks/common-components/CreateGroup';
 import PureProfile from '../blocks/common-components/PureProfileForList';
 
 import 'isomorphic-fetch';
@@ -127,6 +128,7 @@ class MainPage extends React.Component {
                 </main>
                 <Profile />
                 <AddUser />
+                <CreateGroup />
             </React.Fragment>
         );
     }

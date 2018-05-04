@@ -42,7 +42,7 @@ export default class Message extends Component {
     }
 
     render() {
-        const { message, user, title } = this.props;
+        const { message, user } = this.props;
         const { text, author, date, meta } = message;
         /* eslint-disable react/jsx-closing-tag-location */
         const metadata = Object.keys(meta || {}).length === 0 ? <React.Fragment /> :
@@ -57,7 +57,7 @@ export default class Message extends Component {
         const newText = this.formatToEmoji(text);
 
         // Если сообщение свое
-        if (user.id !== author) {
+        if (user.id === author) {
             return (
                 <div className="message my">
                     <span className="message__sender">{user.nickname}</span>
@@ -71,7 +71,7 @@ export default class Message extends Component {
 
         return (
             <div className="message friend">
-                <span className="message__sender">{title}</span>
+                <span className="message__sender">{author}</span>
                 {newText}
                 <span className="message__date">{this.prettyDate(date)}</span>
                 {metadata}
@@ -82,6 +82,5 @@ export default class Message extends Component {
 
 Message.propTypes = {
     message: PropTypes.object,
-    user: PropTypes.object,
-    title: PropTypes.string
+    user: PropTypes.object
 };
