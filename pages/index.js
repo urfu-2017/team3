@@ -10,6 +10,7 @@ import Chats from '../blocks/chats-page/Chats';
 import Search from '../blocks/chats-page/Search';
 import ChatWindow from '../blocks/chats-page/ChatWindow';
 import Profile from '../blocks/pfl/profile';
+import AddUser from '../blocks/common-components/AddUser';
 import PureProfile from '../blocks/common-components/PureProfileForList';
 
 import 'isomorphic-fetch';
@@ -125,6 +126,7 @@ class MainPage extends React.Component {
                     </article>
                 </main>
                 <Profile />
+                <AddUser />
             </React.Fragment>
         );
     }

@@ -1,0 +1,43 @@
+.adduser {
+    width: 400px;
+    padding: 16px;
+    box-sizing: border-box;
+    background: white;
+    border-radius: 8px;
+}
+
+.adduser__input {
+    padding: 0 16px;
+    height: 48px;
+    width: calc(100% - 32px);
+    border-width: 0;
+    border-radius: 4px;
+    outline: none;
+    background-color: #ebebeb;
+    font-size: 12px;
+}
+
+.adduser__list {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.adduser__user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 48px;
+    padding: 8px;
+    width: calc(100% - 16px);
+}
+
+.adduser__user:hover {
+    background: #ebebeb;
+}
+
+.adduser__user-avatar {
+    height: 48px;
+    width: 48px;
+    border-radius: 24px;
+    margin-right: 8px;
+}

@@ -73,6 +73,7 @@ class Search extends Component {
                     <img
                         src="/static/controls/adduser.svg"
                         className="control-img"
+                        onClick={this.props.onShowAddUser}
                     />
                     <img
                         src="/static/controls/group.svg"
@@ -102,7 +103,8 @@ class Search extends Component {
 Search.propTypes = {
     user: PropTypes.object,
     onUsersFound: PropTypes.func,
-    onShowProfile: PropTypes.func
+    onShowProfile: PropTypes.func,
+    onShowAddUser: PropTypes.func
 };
 
 export default connect(
@@ -115,6 +117,9 @@ export default connect(
         },
         onShowProfile: profile => {
             dispatch({ type: 'SHOW_PROFILE', profile });
+        },
+        onShowAddUser: () => {
+            dispatch({ type: 'SHOW_ADDUSER' });
         }
     })
 )(Search);
