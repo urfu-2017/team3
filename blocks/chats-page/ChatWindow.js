@@ -93,6 +93,7 @@ class ChatWindow extends Component {
     keySubmitMessage = e => {
         if (e.keyCode === 13) {
             this.submitMessage();
+            e.target.value = '';
         }
     }
 
@@ -117,7 +118,7 @@ class ChatWindow extends Component {
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
-                        src={`data:image/svg+xml;base64,${activeChat.avatar}`}
+                        src={`${activeChat.avatar}`}
                         onClick={() => this.showProfile(activeChat)}
                     />
                     <span
@@ -141,7 +142,6 @@ class ChatWindow extends Component {
                 <Preview files={this.state.attachments} />
                 <div className="chat-input chat-input_separator_box-shadow">
                     <input
-                        // value={msgText}
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
                         type="text"

@@ -60,7 +60,7 @@ export default class Message extends Component {
         if (user.id !== author) {
             return (
                 <div className="message my">
-                    <span className="message__sender">{user.nickname}</span>
+                    <span className="message__sender">{title}</span>
                     {newText}
                     <span className="message__date">{this.prettyDate(date)}</span>
                     {metadata}
@@ -71,7 +71,7 @@ export default class Message extends Component {
 
         return (
             <div className="message friend">
-                <span className="message__sender">{title}</span>
+                <span className="message__sender">{user.nickname}</span>
                 {newText}
                 <span className="message__date">{this.prettyDate(date)}</span>
                 {metadata}
