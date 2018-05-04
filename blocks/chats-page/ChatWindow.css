@@ -22,7 +22,7 @@
     z-index: 1;
     grid-area: 1 / 1 / 2 / 2;
     align-items: center;
-    box-shadow: 3px 0 4px 2px lightgray;
+    border-bottom: 1px solid lightgray;
     font-size: 20px;
     font-weight: bold;
 }
@@ -69,11 +69,11 @@
     grid-column-gap: 24px;
     grid-area: 4 / 1 / 5 / 2;
     padding: 8px 16px;
-    border-top: 1px solid transparent;
+    border-top: 1px solid lightgray;
 }
 
 .chat-input_separator_box-shadow {
-    box-shadow: 3px 0 4px 2px lightgray;
+    /* box-shadow: 3px 0 4px 2px lightgray; */
 }
 
 .chat-input_separator_border {

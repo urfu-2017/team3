@@ -20,37 +20,52 @@
     background: #eeeeee;
 }
 
-.message__sender {
-    display: block;
-    color: lightgray;
+.message__data {
+    display: flex;
+    justify-content: space-between;
     font-size: 12px;
-}
-
-.message__date {
-    display: inline-block;
-    margin-top: 10px;
     color: lightgray;
-    font-size: 12px;
-    line-height: 30px;
-}
-
-.message__add-emoji {
-    margin-top: 10px;
-    margin-left: 10px;
-    width: 30px;
-    float: right;
-    cursor: pointer;
-}
-
-.message__attachment {
-    display: block;
-    margin-top: 10px;
-    max-width: 300px;
-    max-height: 200px;
 }
 
 .message__content {
     word-break: break-all;
+    margin: 10px 0;
+}
+
+.message__attachment {
+    display: block;
+    margin: 10px;
+    max-width: 300px;
+    max-height: 200px;
+}
+
+.message__reactions {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    margin: 10px 0;
+}
+
+.message__reactions_to-left {
+    display: flex;
+}
+
+.message__add-emoji {
+    margin-left: 10px;
+    width: 30px;
+    cursor: pointer;
+}
+
+.reaction {
+    border: 1px solid var(--secondary-color);
+    border-radius: 10%;
+    margin: 0 10px;
+    padding: 3px 5px;
+}
+
+.reaction__number-peoples {
+    margin: 0 5px;
+    font-weight: bold;
 }
 
 .metadata {
