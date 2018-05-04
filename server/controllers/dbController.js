@@ -1,5 +1,6 @@
 'use strict';
 
+const cloudinary = require('cloudinary');
 const Chat = require('../models/Chat');
 const Message = require('../models/Message');
 const User = require('../models/User');
@@ -16,11 +17,8 @@ async function getChats(req, res) {
             members: { $elemMatch: { $regex: `^${req.user.nickname}$`, $options: 'i' } }
         }).populate('members');
 
-        console.info(chats);
-
         res.status(200).json(chats.map(chat => Chat.setChatInfo(req.user.nickname, chat)));
     } catch (e) {
-        console.info(e);
         res.sendStatus(400);
     }
 }
@@ -117,9 +115,11 @@ async function createUser(req, res) {
 
 async function updateUserAvatar(req, res) {
     try {
+        const { url } = await _updateImage(`${req.params.nickname}_profile`, req.file.buffer);
+
         const user = await User.findOneAndUpdate(
             { _id: req.params.nickname },
-            { $set: { avatar: req.body.avatar } }
+            { $set: { avatar: url } }
         );
 
         res.sendStatus(user === null ? 400 : 200);
@@ -130,15 +130,26 @@ async function updateUserAvatar(req, res) {
 
 async function updateChatAvatar(req, res) {
     try {
+        const { url } = await _updateImage(req.params.id, req.file.buffer);
+
         const user = await Chat.findOneAndUpdate(
             { _id: req.params.id },
-            { $set: { avatar: req.body.avatar } }
+            { $set: { avatar: url } }
         );
 
         res.sendStatus(user === null ? 400 : 200);
     } catch (err) {
         res.status(500).send(err.message);
     }
+}
+
+async function _updateImage(publicId, fileBuffer) {
+    await cloudinary.v2.uploader.destroy(publicId);
+
+    return await cloudinary.v2.uploader.upload(
+        `data:image/png;base64,${fileBuffer.toString('base64')}`,
+        { 'public_id': publicId }
+    );
 }
 
 async function updateChatTitle(req, res) {
@@ -150,6 +161,7 @@ async function updateChatTitle(req, res) {
 
         res.sendStatus(user === null ? 400 : 200);
     } catch (err) {
+        console.log(err.message);
         res.status(500).send(err.message);
     }
 }

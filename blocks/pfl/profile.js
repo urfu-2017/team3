@@ -19,13 +19,11 @@ class Profile extends Component {
             return (<div />);
         }
 
-        const avatalLink = `data:image/svg+xml;base64,${profile.avatar}`;
-
         return (
             <div className="darkness" onClick={this.hideProfile}>
                 <div className="profile">
                     <div className="profile__avatar-box">
-                        <img className="profile__avatar" src={avatalLink} alt="avatar" />
+                        <img className="profile__avatar" src={profile.avatar} alt="avatar" />
                     </div>
                     <div className="profile__info-box">
                         <span className="profile__nickname">
