@@ -16,33 +16,25 @@ const mongoSchema = new mongoose.Schema({
 class ChatClass {
     static async findOrCreate({ title, members, type }) {
         if (type === 'private') {
-            const chat = await this.findOne({ members });
+            const chat = await this.findOne({
+                members,
+                type: 'private'
+            }).populate('members');
 
             if (chat) {
                 return chat;
             }
         }
 
-        return await this.create({ title, members, type });
-    }
+        return await this.findOneAndUpdate(
+            { _id: mongoose.Types.ObjectId() },
+            { title, members, type },
+            {
+                new: true,
+                upsert: true,
+                populate: ['members']
+            });
 
-    static setChatInfo(userNickname, chat) {
-        if (chat.type === 'group') {
-            return chat;
-        }
-
-        let interlocutor = chat.members.find(
-            member => member.nickname !== userNickname
-        );
-
-        if (!interlocutor) {
-            [interlocutor] = chat.members;
-        }
-
-        chat.avatar = interlocutor.avatar;
-        chat.title = interlocutor.nickname;
-
-        return chat;
     }
 
     static isValid({ members, type }) {

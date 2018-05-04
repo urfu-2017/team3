@@ -3,24 +3,22 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import getSocket from '../../pages/socket';
+
 class PureProfile extends Component {
-    createChat = async () => {
+    createChat = () => {
+        const socket = getSocket();
+
         const { user, myUser } = this.props;
-        const response = await fetch('api/chats/', {
-            credentials: 'include',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                members: [user.nickname, myUser.nickname],
-                type: 'private'
-            })
+
+        socket.emit('chat', {
+            members: [myUser.nickname, user.nickname], // Важно! создатель первый в списке
+            type: 'private'
+        }, chat => {
+            if (chat) {
+                this.props.onCreateChat(chat);
+            }
         });
-
-        if (response.status === 200) {
-            const createdChat = await response.json();
-
-            this.props.onCreateChat(createdChat);
-        }
     }
 
     render() {
@@ -45,6 +43,7 @@ class PureProfile extends Component {
 
 PureProfile.propTypes = {
     user: PropTypes.object,
+    myUser: PropTypes.object,
     onCreateChat: PropTypes.func
 };
 

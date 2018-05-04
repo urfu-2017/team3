@@ -11,7 +11,6 @@ import Search from '../blocks/chats-page/Search';
 import ChatWindow from '../blocks/chats-page/ChatWindow';
 import Profile from '../blocks/pfl/profile';
 import AddUser from '../blocks/common-components/AddUser';
-import PureProfile from '../blocks/common-components/PureProfileForList';
 
 import 'isomorphic-fetch';
 import './global-const.css';
@@ -42,49 +41,21 @@ class MainPage extends React.Component {
     componentDidMount() {
         const socket = getSocket();
 
+        const { user } = this.props;
         // Подключение ко всем комнатам с чатиками
-        socket.emit('join', this.props.chats.map(c => c._id));
+        const rooms = this.props.chats.map(c => c._id);
+
+        rooms.push(user.nickname);
+        socket.emit('join', rooms);
 
         socket.on('message', data => {
             const { chatId, message } = data;
 
             this.props.onReceiveMessage(chatId, message);
         });
-    }
 
-    // ТУДУ создание нового чатика
-    // ТУДУ добавления юзера в контакты
-    state = { foundUsersList: false }
-
-    createChat = async interlocutor => {
-        const response = await fetch('api/chats/', {
-            credentials: 'include',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                members: [interlocutor, this.props.user.nickname],
-                type: 'private'
-            })
-        });
-
-        if (response.status === 200) {
-            const createdChat = await response.json();
-
-            this.state.chats.push(createdChat);
-        }
-    }
-
-    showFoundResults = userList => this.setState({ foundUsersList: userList });
-
-    showFoundUsers = () => {
-        return this.state.foundUsersList.map(user => {
-            return (
-                <PureProfile
-                    key={user.nickname}
-                    user={user}
-                    createChat={this.createChat}
-                />
-            );
+        socket.on('chat', chat => {
+            this.props.onCreateChat(chat);
         });
     }
 
@@ -119,7 +90,8 @@ class MainPage extends React.Component {
 MainPage.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    onReceiveMessage: PropTypes.func
+    onReceiveMessage: PropTypes.func,
+    onCreateChat: PropTypes.func
 };
 
 export default withRedux(makeStore,
@@ -127,6 +99,9 @@ export default withRedux(makeStore,
     dispatch => ({
         onReceiveMessage: (chatId, message) => {
             dispatch({ type: 'RECEIVE_MESSAGE', chatId, message });
+        },
+        onCreateChat: chat => {
+            dispatch({ type: 'CREATE_CHAT', chat });
         }
     })
 )(MainPage);

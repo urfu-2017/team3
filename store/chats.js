@@ -10,6 +10,12 @@ export default function chats(state = [], action) {
     }
 
     if (action.type === 'CREATE_CHAT') {
+        // Не добавляем чатик, если он уже сущесвует
+        // На случай если два пользователя одновременно создали чат
+        if (state.find(chat => chat._id === action.chat._id)) {
+            return state;
+        }
+
         return [...state, action.chat];
     }
 
