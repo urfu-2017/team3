@@ -5,12 +5,11 @@ const path = require('path');
 
 require('should');
 
-const setupApiRoutes = require('../routes/api');
-const server = require('../server');
 const mongoose = require('mongoose');
 const Chat = require('../models/Chat');
 const User = require('../models/User');
 const cloudinary = require('cloudinary');
+const utils = require('./utils/testHelpers');
 
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING);
 cloudinary.config({
@@ -19,9 +18,10 @@ cloudinary.config({
     'api_secret': process.env.CLOUDINARY_API_SECRET
 });
 
-setupServer(server);
-
 let currentUser = 'user_1';
+
+const server = utils.setupServer(currentUser);
+
 let chatId = null;
 const testAvatarPath = path.resolve(__dirname, 'testAvatar.svg');
 
@@ -502,16 +502,4 @@ function checkChat(type, title, members, messages) {
         res.body.should.have.property('members').with.lengthOf(members.length);
         res.body.should.have.property('messages', messages);
     };
-}
-
-function setupServer(s) {
-    s.use((req, res, next) => {
-        req.user = { nickname: currentUser };
-        next();
-    });
-
-    setupApiRoutes(s);
-    s.listen(8080);
-
-    return s;
 }
