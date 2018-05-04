@@ -6,14 +6,38 @@ import PropTypes from 'prop-types';
 import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
 
-import EmojiPicker from '../chats-page/Emoji';
+import EmojiPicker from './EmojiToMessage';
 import './Message.css';
 
 /* eslint-disable react/jsx-no-bind */
 
 export default class Message extends Component {
-    addEmoji = emoji => {
-        console.log(emoji);
+    addEmoji = async emoji => {
+        const URL = `/api/chats/:id/messages/${this.props.message.id}/reactions`;
+        const reaction = await fetch(URL, {
+            credentials: 'include',
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                reaction: emoji.id
+            })
+        });
+
+        if (reaction.status === 200) {
+            const createdChat = await reaction.json();
+
+            this.state.chats.push(createdChat);
+        }
+    }
+
+    toggleEmoji = () => {
+        const showEmojiToMsg = !this.state.showEmojiToMsg;
+
+        this.setState({ showEmojiToMsg });
+    }
+
+    componentWillMount() {
+        this.setState({ showEmojiToMsg: this.props.showEmojiToMsg });
     }
 
     formatToEmoji(text) {
@@ -96,9 +120,9 @@ export default class Message extends Component {
     }
 
     render() {
-        // console.log(this.props);
-        const { message, user, title, toggleEmoji } = this.props;
+        const { message, user, title } = this.props;
         const { text, author, date, meta } = message;
+        const { showEmojiToMsg } = this.state;
         const attachmentIds = [
             'https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'
         ];
@@ -107,6 +131,7 @@ export default class Message extends Component {
             'joy_cat': 1,
             'smiley': 3
         };
+
         /* eslint-disable react/jsx-closing-tag-location */
 
         const { newText, attachments, goodDate, peopleEmoji, metadata } =
@@ -116,7 +141,10 @@ export default class Message extends Component {
         if (user.id !== author) {
             return (
                 <div className="message my">
-                    <EmojiPicker addEmoji={this.addEmoji} />
+                    <EmojiPicker
+                        addEmoji={this.addEmoji}
+                        showEmojiToMsg={showEmojiToMsg}
+                    />
                     <div className="message__data">
                         <span className="message__sender">{title}</span>
                         <span className="message__date">{goodDate}</span>
@@ -132,7 +160,7 @@ export default class Message extends Component {
                         <img
                             src="/static/emoji.svg"
                             className="message__add-emoji"
-                            onClick={toggleEmoji}
+                            onClick={this.toggleEmoji}
                         />
                     </div>
                     {metadata}
@@ -143,6 +171,10 @@ export default class Message extends Component {
         // Если сообщение собеседника
         return (
             <div className="message friend">
+                <EmojiPicker
+                    addEmoji={this.addEmoji}
+                    showEmojiToMsg={this.state.showEmojiToMsg}
+                />
                 <div className="message__data">
                     <span className="message__sender">{title}</span>
                     <span className="message__date">{goodDate}</span>
@@ -156,7 +188,7 @@ export default class Message extends Component {
                     <img
                         src="/static/emoji.svg"
                         className="message__add-emoji"
-                        onClick={toggleEmoji}
+                        onClick={this.toggleEmoji}
                     />
                 </div>
                 {metadata}
@@ -169,5 +201,5 @@ Message.propTypes = {
     message: PropTypes.object,
     user: PropTypes.object,
     title: PropTypes.string,
-    toggleEmoji: PropTypes.func
+    showEmojiToMsg: PropTypes.bool
 };

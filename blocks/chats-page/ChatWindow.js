@@ -113,13 +113,6 @@ class ChatWindow extends Component {
         this.props.onShowProfile(profile);
     }
 
-    // componentDidMount = () => {
-    //     console.log(document.querySelector('.messages'))
-    //     const messages = document.querySelector('.messages');
-
-    //     messages.scrollTop = messages.scrollHeight;
-    // }
-
     render() {
         const { activeChat, user } = this.props;
 
@@ -154,7 +147,7 @@ class ChatWindow extends Component {
                             message={message}
                             user={user}
                             title={activeChat.title}
-                            toggleEmoji={this.toggleEmoji}
+                            showEmojiToMsg={false}
                         />
                     ))}
                 </div>
