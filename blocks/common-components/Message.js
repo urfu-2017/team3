@@ -83,7 +83,7 @@ export default class Message extends Component {
                         key={Math.floor(Math.random() * 1000000)}
                         emoji={name}
                         set="emojione"
-                        size={16}
+                        size={20}
                     />
                     <span className="reaction__number-peoples">
                         {reactions[`${name}`]}
@@ -104,7 +104,8 @@ export default class Message extends Component {
         ];
         const reactions = {
             'santa': 2,
-            'joy_cat': 1
+            'joy_cat': 1,
+            'smiley': 3
         };
         /* eslint-disable react/jsx-closing-tag-location */
 
