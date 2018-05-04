@@ -1,7 +1,11 @@
 .main {
     display: flex;
     flex-direction: row;
-    height: 100vh;
+    height: calc(100vh - 2vh);
+    border: 1px solid var(--neutral-color);
+    border-radius: 1vmin;
+    margin: 1vh 1vw;
+    box-sizing: border-box;
     font-family: 'Noto Sans', sans-serif;
 }
 
@@ -11,30 +15,58 @@
 }
 
 .chats__search {
+    --padding: 8px;
     display: flex;
-    flex-direction: row;
-    height: 48px;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(var(--top-line) - var(--padding) * 2);
+    padding: var(--padding);
+    font-size: 16px;
+}
+
+.control-img {
+    width: 32px;
+    height: 32px;
     padding: 8px;
+    border: 2px solid var(--neutral-color);
+    border-radius: 8px;
+}
+
+.control-img:hover {
+    background: radial-gradient(circle at center, var(--neutral-color), #ffffff);
+    cursor: pointer;
 }
 
 .chats__box-burger {
+    --size: 48px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 48px;
-    width: 48px;
+    justify-content: center;
+    width: var(--size);
+    height: var(--size);
     margin-right: 8px;
+    border: 1px solid var(--neutral-color);
+    border-radius: 50%;
+    font-size: calc(var(--size) * 0.75);
+}
+
+.chats__box-burger:hover {
+    background: radial-gradient(circle at center, var(--neutral-color), #ffffff);
+    cursor: pointer;
 }
 
 .chats__search-input {
-    padding: 0 16px;
     height: 48px;
-    width: calc(100% - 32px - 8px - 48px);
+    padding: 0 16px;
     border-width: 0;
     border-radius: 4px;
     outline: none;
-    background-color: #ebebeb;
-    font-size: 12px;
+    background-color: var(--neutral-color);
+    font-size: 18px;
+}
+
+.chats__search-input:focus {
+    box-shadow: 0 0 2px 1px black;
 }
 
 .chats__list {
@@ -48,13 +80,15 @@
 }
 
 .darkness {
+    display: flex;
     position: absolute;
+    z-index: 1;
     top: 0;
     left: 0;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: auto;
     background: rgba(0, 0, 0, 0.8);
 }

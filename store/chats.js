@@ -5,11 +5,17 @@ export default function chats(state = [], action) {
         return action.chats;
     }
 
-    if (action.type === 'RECIVE_MESSAGE') {
+    if (action.type === 'RECEIVE_MESSAGE') {
         return pushMessageImmutable(state, action.chatId, action.message);
     }
 
     if (action.type === 'CREATE_CHAT') {
+        // Не добавляем чатик, если он уже сущесвует
+        // На случай если два пользователя одновременно создали чат
+        if (state.find(chat => chat._id === action.chat._id)) {
+            return state;
+        }
+
         return [...state, action.chat];
     }
 

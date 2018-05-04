@@ -76,8 +76,20 @@ class ChatWindow extends Component {
         }
     }
 
+    // функция добавления emoji
+    addEmoji = emoji => {
+        const input = document.querySelector('.chat-input__write-field');
+        let currentValue = input.value;
+
+        currentValue += `${emoji.colons}`;
+        input.value = currentValue;
+    }
+
     submitMessage = () => {
-        const text = document.querySelector('.chat-input__write-field').value;
+        const input = document.querySelector('.chat-input__write-field');
+        const text = input.value;
+
+        input.value = '';
         const socket = getSocket();
 
         socket.emit('message', {
@@ -86,6 +98,8 @@ class ChatWindow extends Component {
                 author: this.props.user.nickname
             },
             chatId: this.props.activeChat._id
+        }, data => {
+            this.props.onReceiveMessage(data);
         });
     }
 
@@ -93,6 +107,7 @@ class ChatWindow extends Component {
     keySubmitMessage = e => {
         if (e.keyCode === 13) {
             this.submitMessage();
+            e.target.value = '';
         }
     }
 
@@ -117,7 +132,7 @@ class ChatWindow extends Component {
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
-                        src={activeChat.avatar}
+                        src={`${activeChat.avatar}`}
                         onClick={() => this.showProfile(activeChat)}
                     />
                     <span
@@ -133,15 +148,15 @@ class ChatWindow extends Component {
                             key={message.id || '0'}
                             message={message}
                             user={user}
-                            title={activeChat.title}
+                            activeChat={activeChat}
+                            showEmojiToMsg={false}
                         />
                     ))}
                 </div>
-                <Emoji />
+                <Emoji addEmoji={this.addEmoji} />
                 <Preview files={this.state.attachments} />
                 <div className="chat-input chat-input_separator_box-shadow">
                     <input
-                        // value={msgText}
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
                         type="text"
@@ -185,6 +200,7 @@ ChatWindow.propTypes = {
     onShowProfile: PropTypes.func,
     onShowEmoji: PropTypes.func,
     onHideEmoji: PropTypes.func,
+    onReceiveMessage: PropTypes.func,
     showEmoji: PropTypes.bool,
     activeChat: PropTypes.object
 };
@@ -204,6 +220,9 @@ export default connect(
         },
         onHideEmoji: () => {
             dispatch({ type: 'HIDE_EMOJI' });
+        },
+        onReceiveMessage: ({ chatId, message }) => {
+            dispatch({ type: 'RECEIVE_MESSAGE', chatId, message });
         }
     })
 )(ChatWindow);

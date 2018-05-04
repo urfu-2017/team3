@@ -50,25 +50,57 @@ app.prepare().then(() => {
 
 function setupSocket(ws) {
     ws.on('connection', socket => {
-        socket.emit('news', { hello: 'world' });
-
-        socket.on('join', chats => {
-            chats.forEach(c => socket.join(c));
+        socket.on('join', rooms => {
+            rooms.forEach(room => socket.join(room));
         });
 
-        socket.on('message', async data => {
+        socket.on('message', async (data, senderCallback) => {
             const { chatId, message } = data;
 
-            // Сохраняем сообщение в монгу
             const msg = await Message.initialize(message);
 
-            await Chat.update(
+            await Chat.update(// Сохраняем сообщение в монгу
                 { _id: chatId },
                 { $push: { messages: msg } }
             );
 
-            // Отправляем сообщение всем юзерам, включая отправителя (для единообразия)
-            ws.to(chatId).emit('message', { chatId, message: msg });
+            // Отправляем сообщение отправителю
+            senderCallback({ chatId, message: msg });
+            // Отправляем сообщение всем отстальным юзерам в конфе
+            socket.to(chatId).emit('message', { chatId, message: msg });
+        });
+
+        socket.on('chat', async (data, senderCallback) => {
+            // members - список пользователей без создателя чата
+            const { title, type, members } = data;
+
+            if (type === 'private') {
+                const chat = await Chat.findOne({
+                    members,
+                    type: 'private'
+                });
+
+                if (chat) {
+                    senderCallback(); // Ничего не возращаем, если чат уже сущесвтует
+
+                    return;
+                }
+            }
+
+            // Создаём чат и делаем populate members
+            const chat = await Chat.findOneAndUpdate(
+                { _id: mongoose.Types.ObjectId() },
+                { title, members, type },
+                {
+                    new: true,
+                    upsert: true,
+                    populate: ['members']
+                });
+
+            const [, ...other] = members;
+
+            senderCallback(chat);
+            other.forEach(member => socket.to(member).emit('chat', chat));
         });
     });
 }

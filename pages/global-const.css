@@ -1,11 +1,17 @@
 :root {
     --base-color: #399CE6;
-    --secondary-color: #63DD4D;
+    --secondary-color: #868686;
     --spare-color: #00f5;
-    --neutral-color: #e3fee5;
+    --neutral-color: #ebebeb;
+    --top-line: 64px;
 }
 
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+hr {
+    margin: 0;
+    border: 1px solid var(--neutral-color);
 }

@@ -4,8 +4,16 @@ import fetch from 'node-fetch';
 import { connect } from 'react-redux';
 
 class Search extends Component {
+    state = { isSearchString: false }
+
+    showSearch = () => {
+        const { isSearchString } = this.state;
+
+        this.setState({ isSearchString: !isSearchString });
+    }
+
     findUsers = async pressEvent => {
-        if (pressEvent.keyCode !== 13) {
+        if (pressEvent.keyCode !== 13 || pressEvent.target.value === '') {
             return;
         }
 
@@ -15,9 +23,9 @@ class Search extends Component {
         });
 
         if (response.status === 200) {
-            const user = await response.json();
+            const users = await response.json();
 
-            this.props.onUsersFound([user, user, user]); // ТУДУ дубликаты для нагдядности
+            this.props.onUsersFound([users]);
         }
     }
 
@@ -26,25 +34,68 @@ class Search extends Component {
 
         this.props.onShowProfile(user);
     }
+
     render() {
-        return (
-            <React.Fragment>
-                <div className="chats__box-burger" onClick={this.showProfile}>{'I\'m'}</div>
-                <input
-                    type="text"
-                    className="chats__search-input"
-                    placeholder="Найти пользователя"
-                    onKeyDown={this.findUsers}
-                />
-            </React.Fragment>
-        );
+        const { isSearchString } = this.state;
+
+        return isSearchString
+            ?
+            (
+                <React.Fragment>
+                    <input
+                        type="text"
+                        className="chats__search-input"
+                        placeholder="Найти пользователя"
+                        onKeyDown={this.findUsers}
+                        autoFocus
+                    />
+                    <img
+                        src="/static/controls/search.svg"
+                        className="control-img"
+                        onClick={this.showSearch}
+                    />
+                </React.Fragment>
+            )
+            :
+            (
+                <React.Fragment>
+                    <img
+                        src="/static/controls/profile.svg"
+                        className="control-img"
+                        onClick={this.showProfile}
+                    />
+                    <img
+                        src="/static/controls/phonebook.svg"
+                        className="control-img"
+                        onClick={this.props.onShowContacts}
+                    />
+                    <img
+                        src="/static/controls/adduser.svg"
+                        className="control-img"
+                        onClick={this.props.onShowAddUser}
+                    />
+                    <img
+                        src="/static/controls/group.svg"
+                        className="control-img"
+                        onClick={this.props.onShowCreateGroup}
+                    />
+                    <img
+                        src="/static/controls/search.svg"
+                        className="control-img"
+                        onClick={this.showSearch}
+                    />
+                </React.Fragment>
+            );
     }
 }
 
 Search.propTypes = {
     user: PropTypes.object,
     onUsersFound: PropTypes.func,
-    onShowProfile: PropTypes.func
+    onShowProfile: PropTypes.func,
+    onShowAddUser: PropTypes.func,
+    onShowCreateGroup: PropTypes.func,
+    onShowContacts: PropTypes.func
 };
 
 export default connect(
@@ -57,6 +108,15 @@ export default connect(
         },
         onShowProfile: profile => {
             dispatch({ type: 'SHOW_PROFILE', profile });
+        },
+        onShowAddUser: () => {
+            dispatch({ type: 'SHOW_ADDUSER' });
+        },
+        onShowCreateGroup: () => {
+            dispatch({ type: 'SHOW_CREATEGROUP' });
+        },
+        onShowContacts: () => {
+            dispatch({ type: 'SHOW_CONTACTS' });
         }
     })
 )(Search);

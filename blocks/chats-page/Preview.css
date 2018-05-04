@@ -1,8 +1,8 @@
 .load-preview {
-    grid-area: 3 / 1 / 4 / 2;
     display: flex;
-    box-shadow: 1px -2px 2px 1px lightgray;
     z-index: 1;
+    grid-area: 3 / 1 / 4 / 2;
+    border-top: 1px solid lightgray;
 }
 
 .preview {
@@ -16,10 +16,10 @@
 
 .preview__item_delete {
     --size: 13px;
-    height: var(--size);
-    width: var(--size);
-    margin: 10px 0 0 calc(-1 * var(--size) - 10px);
     position: absolute;
+    width: var(--size);
+    height: var(--size);
+    margin: 10px 0 0 calc(-1 * var(--size) - 10px);
 }
 
 .preview__item_delete:hover {

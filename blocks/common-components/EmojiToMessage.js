@@ -7,9 +7,9 @@ import { connect } from 'react-redux';
 
 class Emoji extends Component {
     render() {
-        const { showEmoji, addEmoji } = this.props;
+        const { showEmojiToMsg, addEmoji } = this.props;
 
-        if (!showEmoji) {
+        if (!showEmojiToMsg) {
             return <div />;
         }
 
@@ -36,12 +36,12 @@ class Emoji extends Component {
 }
 
 Emoji.propTypes = {
-    showEmoji: PropTypes.bool,
+    showEmojiToMsg: PropTypes.bool,
     addEmoji: PropTypes.func
 };
 
 export default connect(
     state => ({
-        showEmoji: state.activeChat && state.activeChat.showEmoji
+        showEmoji: state.showEmojiToMsg
     })
 )(Emoji);

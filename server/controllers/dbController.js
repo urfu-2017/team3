@@ -17,7 +17,7 @@ async function getChats(req, res) {
             members: { $elemMatch: { $regex: `^${req.user.nickname}$`, $options: 'i' } }
         }).populate('members');
 
-        res.status(200).json(chats.map(chat => Chat.setChatInfo(req.user.nickname, chat)));
+        res.status(200).json(chats);
     } catch (e) {
         res.sendStatus(400);
     }

@@ -19,20 +19,40 @@ class ChatIcon extends Component {
         this.props.onOpenChat(this.props.chatProps);
     }
 
+    getInterlocutor = chat => {
+        const { user } = this.props;
+
+        let [interlocutor] = chat.members.filter(m => m.nickname !== user.nickname);
+
+        if (!interlocutor) {
+            interlocutor = user;
+        }
+
+        return interlocutor;
+    }
+
+    getLastMessage = chat => {
+        if (chat.members.length) {
+            return chat.messages[chat.messages.length - 1];
+        }
+    }
+
     render() {
         const { chatProps } = this.props;
-        const lastMessage = chatProps.messages.length
-            ? chatProps.messages[chatProps.messages.length - 1]
-            : null;
+
+        const lastMessage = this.getLastMessage(chatProps);
+        const interlocutor = this.getInterlocutor(chatProps);
+        const avatar = chatProps.avatar || interlocutor.avatar;
+        const title = chatProps.title || interlocutor.nickname;
 
         return (
             <div className="chat-icon" onClick={this.openChat}>
                 <div className="chat-icon__logo-box">
-                    <img className="chat-icon__logo" src={chatProps.avatar} />
+                    <img className="chat-icon__logo" src={avatar} />
                 </div>
                 <div className="chat-icon__info-box">
                     <div className="chat-icon__upper-box">
-                        <div className="chat-icon__title">{chatProps.title}</div>
+                        <div className="chat-icon__title">{title}</div>
                         <div className="chat-icon__date">
                             {lastMessage && this.prettyDate(lastMessage.date)}
                         </div>
@@ -48,12 +68,15 @@ class ChatIcon extends Component {
 }
 
 ChatIcon.propTypes = {
+    user: PropTypes.object,
     chatProps: PropTypes.object,
     onOpenChat: PropTypes.func
 };
 
 export default connect(
-    () => ({}),
+    state => ({
+        user: state.user
+    }),
     dispatch => ({
         onOpenChat: chat => {
             dispatch({ type: 'OPEN_CHAT', id: chat._id });
