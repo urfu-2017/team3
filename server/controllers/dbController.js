@@ -83,7 +83,7 @@ async function addReaction(req, res) {
                 messages: { $elemMatch: { _id: req.params.messageId } }
             },
             {
-                $inc: JSON.parse(`{"messages.$.reactions.${req.body.reaction}": 1 }`)
+                $inc: { [`{"messages.$.reactions.${req.body.reaction}`]: 1 }
             },
             { $upsert: true }
         );
