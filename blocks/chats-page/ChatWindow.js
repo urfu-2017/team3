@@ -98,6 +98,8 @@ class ChatWindow extends Component {
                 author: this.props.user.nickname
             },
             chatId: this.props.activeChat._id
+        }, data => {
+            this.props.onReceiveMessage(data);
         });
     }
 
@@ -205,6 +207,7 @@ ChatWindow.propTypes = {
     onShowProfile: PropTypes.func,
     onShowEmoji: PropTypes.func,
     onHideEmoji: PropTypes.func,
+    onReceiveMessage: PropTypes.func,
     showEmoji: PropTypes.bool,
     activeChat: PropTypes.object
 };
@@ -224,6 +227,9 @@ export default connect(
         },
         onHideEmoji: () => {
             dispatch({ type: 'HIDE_EMOJI' });
+        },
+        onReceiveMessage: ({ chatId, message }) => {
+            dispatch({ type: 'RECEIVE_MESSAGE', chatId, message });
         }
     })
 )(ChatWindow);

@@ -54,7 +54,7 @@ export default connect(
     }),
     dispatch => ({
         onCreateChat: chat => {
-            dispatch({ type: 'CREATE_CHAT', chat }); // ТУДУ update sore
+            dispatch({ type: 'CREATE_CHAT', chat });
         }
     })
 )(PureProfile);

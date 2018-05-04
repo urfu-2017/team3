@@ -48,7 +48,7 @@ class MainPage extends React.Component {
         socket.on('message', data => {
             const { chatId, message } = data;
 
-            this.props.onReciveMessage(chatId, message);
+            this.props.onReceiveMessage(chatId, message);
         });
     }
 
@@ -101,7 +101,6 @@ class MainPage extends React.Component {
                         <div className="chats__search">
                             <Search />
                         </div>
-                        <hr />
                         <div className="chats__list">
                             <Chats />
                         </div>
@@ -120,14 +119,14 @@ class MainPage extends React.Component {
 MainPage.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    onReciveMessage: PropTypes.func
+    onReceiveMessage: PropTypes.func
 };
 
 export default withRedux(makeStore,
     state => state,
     dispatch => ({
-        onReciveMessage: (chatId, message) => {
-            dispatch({ type: 'RECIVE_MESSAGE', chatId, message });
+        onReceiveMessage: (chatId, message) => {
+            dispatch({ type: 'RECEIVE_MESSAGE', chatId, message });
         }
     })
 )(MainPage);

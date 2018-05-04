@@ -56,19 +56,20 @@ function setupSocket(ws) {
             chats.forEach(c => socket.join(c));
         });
 
-        socket.on('message', async data => {
+        socket.on('message', async (data, fn) => {
             const { chatId, message } = data;
 
-            // Сохраняем сообщение в монгу
             const msg = await Message.initialize(message);
 
-            await Chat.update(
+            await Chat.update(// Сохраняем сообщение в монгу
                 { _id: chatId },
                 { $push: { messages: msg } }
             );
 
-            // Отправляем сообщение всем юзерам, включая отправителя (для единообразия)
-            ws.to(chatId).emit('message', { chatId, message: msg });
+            // Отправляем сообщение отправителю
+            fn({ chatId, message: msg });
+            // Отправляем сообщение всем отстальным юзерам в конфе
+            socket.to(chatId).emit('message', { chatId, message: msg });
         });
     });
 }

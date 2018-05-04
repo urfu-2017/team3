@@ -422,7 +422,7 @@ describe('messenger API tests', () => {
 
             const checkMessages = res => {
                 res.body.should.be.an.instanceOf(Array).with.lengthOf(1);
-                res.body[0].should.have.property('text', '<p>test <strong>link</strong></p>');
+                res.body[0].should.have.property('text', 'test **link**');
                 res.body[0].should.have.property('author', 'user_1');
                 res.body[0].should.have.property('date');
             };
@@ -481,7 +481,7 @@ describe('messenger API tests', () => {
 
             const checkMessages = res => {
                 res.body.should.be.an.instanceOf(Array).with.lengthOf(1);
-                res.body[0].should.have.property('text', '<p>test <strong>link</strong></p>');
+                res.body[0].should.have.property('text', 'test **link**');
                 res.body[0].should.have.property('author', 'user_1');
                 res.body[0].should.have.property('date');
             };

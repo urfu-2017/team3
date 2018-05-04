@@ -5,7 +5,7 @@ export default function chats(state = [], action) {
         return action.chats;
     }
 
-    if (action.type === 'RECIVE_MESSAGE') {
+    if (action.type === 'RECEIVE_MESSAGE') {
         return pushMessageImmutable(state, action.chatId, action.message);
     }
 
