@@ -22,6 +22,7 @@ module.exports = server => {
     server.route('/api/chats/:id/messages')
         .get(dbController.getMessages)
         .post(dbController.createMessage);
+    server.patch('/api/chats/:chatId/messages/:messageId/reactions', dbController.addReaction);
 
     server.route('/api/chats/:id/members/:nickname')
         .delete(dbController.deleteUserFromChat)

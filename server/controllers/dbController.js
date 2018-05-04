@@ -70,6 +70,29 @@ async function createMessage(req, res) {
     }
 }
 
+async function addReaction(req, res) {
+    try {
+        if (req.body === undefined || req.body.reaction === undefined) {
+            res.status(400).send('expected reaction field in body');
+        }
+
+        const chat = await Chat.findOneAndUpdate(
+            {
+                _id: req.params.chatId,
+                messages: { $elemMatch: { _id: req.params.messageId } }
+            },
+            {
+                $inc: JSON.parse(`{"messages.$.reactions.${req.body.reaction}": 1 }`)
+            },
+            { $upsert: true }
+        );
+
+        res.sendStatus(chat === null ? 400 : 200);
+    } catch (e) {
+        res.status(500).send(e.message);
+    }
+}
+
 async function createChat(req, res) {
     try {
         if (!Chat.isValid(req.body)) {
@@ -197,7 +220,7 @@ async function deleteUserFromChat(req, res) {
 }
 
 module.exports = {
-    getChats, getMessages, createMessage, updateUserAvatar,
+    getChats, getMessages, createMessage, addReaction, updateUserAvatar,
     getUser, createChat, createUser, addUserToChat, deleteUserFromChat,
     updateChatAvatar, updateChatTitle
 };
