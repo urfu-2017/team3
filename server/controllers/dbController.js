@@ -79,6 +79,7 @@ async function addReaction(req, res) {
         const chat = await Chat.findOneAndUpdate(
             {
                 _id: req.params.chatId,
+                members: req.user.nickname,
                 messages: { $elemMatch: { _id: req.params.messageId } }
             },
             {
