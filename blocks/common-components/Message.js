@@ -47,13 +47,13 @@ export default class Message extends Component {
 
     render() {
         // console.log(this.props);
-        const { message, user, title, toggleEmoji } = this.props;
+        const { message, user, toggleEmoji } = this.props;
         const { text, author, date, meta } = message;
         const attachmentIds = [
-            'https://pp.userapi.com/c824701/v824701649/8aa2f/PfeZSgjvF2E.jpg',
-            'https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg',
-            'https://pp.userapi.com/c636020/v636020006/2290b/FvHKIbC-iQk.jpg',
-            'https://pp.userapi.com/c636020/v636020006/2290b/FvHKIbC-iQk.jpg'
+            // 'https://pp.userapi.com/c824701/v824701649/8aa2f/PfeZSgjvF2E.jpg',
+            // 'https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg',
+            // 'https://pp.userapi.com/c636020/v636020006/2290b/FvHKIbC-iQk.jpg',
+            // 'https://pp.userapi.com/c636020/v636020006/2290b/FvHKIbC-iQk.jpg'
         ];
         /* eslint-disable react/jsx-closing-tag-location */
         const metadata = Object.keys(meta || {}).length === 0 ? <React.Fragment /> :
@@ -81,7 +81,7 @@ export default class Message extends Component {
             return (
                 <div className="message my">
                     <EmojiPicker addEmoji={this.addEmoji} />
-                    <span className="message__sender">{title}</span>
+                    <span className="message__sender">{author}</span>
                     {newText}
                     {attachments}
                     <span className="message__date">{this.prettyDate(date)}</span>
@@ -99,7 +99,7 @@ export default class Message extends Component {
         return (
             <div className="message friend">
                 <EmojiPicker addEmoji={this.addEmoji} />
-                <span className="message__sender">{user.nickname}</span>
+                <span className="message__sender">{author}</span>
                 {newText}
                 {attachments}
                 <span className="message__date">{this.prettyDate(date)}</span>

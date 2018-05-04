@@ -155,7 +155,6 @@ class ChatWindow extends Component {
                             key={message.id || '0'}
                             message={message}
                             user={user}
-                            title={activeChat.title}
                             toggleEmoji={this.toggleEmoji}
                         />
                     ))}
