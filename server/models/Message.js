@@ -20,6 +20,10 @@ const mongoSchema = new mongoose.Schema({
         type: Object,
         default: null
     },
+    reactions: {
+        type: Object,
+        default: {}
+    },
     attachmentIds: [mongoose.Schema.Types.ObjectId]
 });
 
