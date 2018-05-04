@@ -120,7 +120,7 @@ export default class Message extends Component {
     }
 
     render() {
-        const { message, user, title } = this.props;
+        const { message, user } = this.props;
         const { text, author, date, meta } = message;
         const { showEmojiToMsg } = this.state;
         const attachmentIds = [
@@ -200,6 +200,5 @@ export default class Message extends Component {
 Message.propTypes = {
     message: PropTypes.object,
     user: PropTypes.object,
-    title: PropTypes.string,
     showEmojiToMsg: PropTypes.bool
 };
