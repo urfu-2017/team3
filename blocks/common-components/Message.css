@@ -57,15 +57,22 @@
 }
 
 .reaction {
+    display: flex;
     border: 1px solid var(--secondary-color);
     border-radius: 10%;
     margin: 0 10px;
     padding: 3px 5px;
 }
 
+.reaction:nth-child(1) {
+    margin-left: 0;
+}
+
 .reaction__number-peoples {
     margin: 0 5px;
     font-weight: bold;
+    font-size: 18px;
+    line-height: 20px;
 }
 
 .metadata {
