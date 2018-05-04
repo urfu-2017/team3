@@ -27,21 +27,6 @@
     color: lightgray;
 }
 
-.message__add-emoji {
-    margin-top: 10px;
-    margin-left: 10px;
-    width: 30px;
-    float: right;
-    cursor: pointer;
-}
-
-.message__attachment {
-    display: block;
-    margin-top: 10px;
-    max-width: 300px;
-    max-height: 200px;
-}
-
 .message__content {
     word-break: break-all;
     margin: 10px 0;

@@ -142,7 +142,7 @@ export default class Message extends Component {
             this.formatting({ text, attachmentIds, date, reactions, meta });
 
         // Если сообщение свое
-        if (user.id !== author) {
+        if (user.id === author) {
             return (
                 <div className="message my">
                     <EmojiPicker
