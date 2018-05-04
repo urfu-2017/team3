@@ -1,5 +1,9 @@
 'use strict';
 
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 const dbController = require('../controllers/dbController');
 
 module.exports = server => {
@@ -7,7 +11,12 @@ module.exports = server => {
         .get(dbController.getChats)
         .post(dbController.createChat);
 
-    server.patch('/api/chats/:id/avatar', dbController.updateChatAvatar);
+    server.patch(
+        '/api/chats/:id/avatar',
+        upload.single('chatAvatar'),
+        dbController.updateChatAvatar
+    );
+
     server.patch('/api/chats/:id/title', dbController.updateChatTitle);
 
     server.route('/api/chats/:id/messages')
@@ -21,5 +30,9 @@ module.exports = server => {
     server.route('/api/users/:nickname')
         .get(dbController.getUser)
         .post(dbController.createUser);
-    server.patch('/api/users/:nickname/avatar', dbController.updateUserAvatar);
+    server.patch(
+        '/api/users/:nickname/avatar',
+        upload.single('userAvatar'),
+        dbController.updateUserAvatar
+    );
 };

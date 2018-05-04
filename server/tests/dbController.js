@@ -1,22 +1,29 @@
 require('dotenv').config();
 
 const request = require('supertest');
+const path = require('path');
 
 require('should');
 
 const setupApiRoutes = require('../routes/api');
 const server = require('../server');
 const mongoose = require('mongoose');
-
 const Chat = require('../models/Chat');
 const User = require('../models/User');
+const cloudinary = require('cloudinary');
 
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING);
+cloudinary.config({
+    'cloud_name': 'team3',
+    'api_key': process.env.CLOUDINARY_API_KEY,
+    'api_secret': process.env.CLOUDINARY_API_SECRET
+});
 
 setupServer(server);
 
 let currentUser = 'user_1';
 let chatId = null;
+const testAvatarPath = path.resolve(__dirname, 'testAvatar.svg');
 
 /* eslint-disable max-statements */
 describe('messenger API tests', () => {
@@ -27,7 +34,10 @@ describe('messenger API tests', () => {
             }),
             Chat.remove({
                 title: { $in: ['apiTest', 'apiTest2'] }
-            })
+            }),
+            cloudinary.v2.uploader.destroy('user_1_profile'),
+            cloudinary.v2.uploader.destroy('user_2_profile'),
+            cloudinary.v2.uploader.destroy('user_3_profile')
         ]);
 
         currentUser = 'user_1';
@@ -96,7 +106,7 @@ describe('messenger API tests', () => {
         it('should return 400 when user doesn\'t exists', async () => {
             await request(server)
                 .patch('/api/users/user1/avatar')
-                .send({ avatar: 'newAvatar' })
+                .attach('userAvatar', testAvatarPath)
                 .expect(400);
         });
 
@@ -107,12 +117,13 @@ describe('messenger API tests', () => {
 
             await request(server)
                 .patch('/api/users/user_1/avatar')
-                .send({ avatar: 'newAvatar' })
+                .attach('userAvatar', testAvatarPath)
                 .expect(200);
 
             const checkBody = res => {
                 res.body.should.have.property('nickname', 'user_1');
-                res.body.should.have.property('avatar', 'newAvatar');
+                res.body.should.have.property('avatar');
+                res.body.avatar.should.match(/^http:\/\/res.cloudinary.com\/team3\/image\/upload/);
             };
 
             await request(server)
@@ -229,7 +240,7 @@ describe('messenger API tests', () => {
         it('should return 400 when chat doesn\'t exists', async () => {
             await request(server)
                 .patch(`/api/chats/${mongoose.Types.ObjectId()}/avatar`)
-                .send({ avatar: 'newAvatar' })
+                .attach('chatAvatar', testAvatarPath)
                 .expect(400);
         });
 
@@ -241,7 +252,7 @@ describe('messenger API tests', () => {
 
             await request(server)
                 .patch(`/api/chats/${body._id}/avatar`)
-                .send({ avatar: 'newAvatar' })
+                .attach('chatAvatar', testAvatarPath)
                 .expect(200);
         });
     });
@@ -249,7 +260,7 @@ describe('messenger API tests', () => {
     describe('/PATCH /api/chats/:id/title', () => {
         it('should return 400 when chat doesn\'t exists', async () => {
             await request(server)
-                .patch(`/api/chats/${mongoose.Types.ObjectId()}/avatar`)
+                .patch(`/api/chats/${mongoose.Types.ObjectId()}/title`)
                 .send({ title: 'newTitle' })
                 .expect(400);
         });
@@ -261,7 +272,7 @@ describe('messenger API tests', () => {
                 .expect(200);
 
             await request(server)
-                .patch(`/api/chats/${body._id}/avatar`)
+                .patch(`/api/chats/${body._id}/title`)
                 .send({ title: 'apiTest2' })
                 .expect(200);
         });

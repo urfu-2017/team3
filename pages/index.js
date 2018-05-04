@@ -90,7 +90,7 @@ class MainPage extends React.Component {
     }
 
     render() {
-        const { user, modal: { foundUsers } } = this.props;
+        const { user } = this.props;
 
         return (
             <React.Fragment>
@@ -102,21 +102,6 @@ class MainPage extends React.Component {
                         <div className="chats__search">
                             <Search />
                         </div>
-                        {foundUsers
-                            ?
-                                <div className="chats__found-users">
-                                    { foundUsers.map(foundUser => {
-                                        return (
-                                            <PureProfile
-                                                key={user.nickname}
-                                                user={foundUser}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            :
-                            null
-                        }
                         <hr />
                         <div className="chats__list">
                             <Chats />
@@ -137,8 +122,7 @@ class MainPage extends React.Component {
 MainPage.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    onReciveMessage: PropTypes.func,
-    modal: PropTypes.object
+    onReciveMessage: PropTypes.func
 };
 
 export default withRedux(makeStore,

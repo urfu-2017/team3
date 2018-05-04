@@ -76,8 +76,20 @@ class ChatWindow extends Component {
         }
     }
 
+    // функция добавления emoji
+    addEmoji = emoji => {
+        const input = document.querySelector('.chat-input__write-field');
+        let currentValue = input.value;
+
+        currentValue += `${emoji.colons}`;
+        input.value = currentValue;
+    }
+
     submitMessage = () => {
-        const text = document.querySelector('.chat-input__write-field').value;
+        const input = document.querySelector('.chat-input__write-field');
+        const text = input.value;
+
+        input.value = '';
         const socket = getSocket();
 
         socket.emit('message', {
@@ -93,12 +105,20 @@ class ChatWindow extends Component {
     keySubmitMessage = e => {
         if (e.keyCode === 13) {
             this.submitMessage();
+            e.target.value = '';
         }
     }
 
     showProfile = profile => {
         this.props.onShowProfile(profile);
     }
+
+    // componentDidMount = () => {
+    //     console.log(document.querySelector('.messages'))
+    //     const messages = document.querySelector('.messages');
+
+    //     messages.scrollTop = messages.scrollHeight;
+    // }
 
     render() {
         const { activeChat, user } = this.props;
@@ -117,7 +137,7 @@ class ChatWindow extends Component {
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
-                        src={`data:image/svg+xml;base64,${activeChat.avatar}`}
+                        src={`${activeChat.avatar}`}
                         onClick={() => this.showProfile(activeChat)}
                     />
                     <span
@@ -134,19 +154,18 @@ class ChatWindow extends Component {
                             message={message}
                             user={user}
                             title={activeChat.title}
+                            toggleEmoji={this.toggleEmoji}
                         />
                     ))}
                 </div>
-                <Emoji />
+                <Emoji addEmoji={this.addEmoji} />
                 <Preview files={this.state.attachments} />
                 <div className="chat-input chat-input_separator_box-shadow">
                     <input
-                        // value={msgText}
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
                         type="text"
                         className="chat-input__write-field"
-                        autoFocus
                     />
                     <label className="chat-input__emoji-btn chat-input__button">
                         <input
