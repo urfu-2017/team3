@@ -12,8 +12,17 @@ import './Message.css';
 /* eslint-disable react/jsx-no-bind */
 
 export default class Message extends Component {
+    state = {
+        reactions: {
+            'santa': 2,
+            'joy_cat': 1,
+            'smiley': 3
+        }
+    };
+
     addEmoji = async emoji => {
-        const URL = `/api/chats/:id/messages/${this.props.message.id}/reactions`;
+        const chatid = this.props.activeChat._id;
+        const URL = `/api/chats/${chatid}/messages/${this.props.message._id}/reactions`;
         const reaction = await fetch(URL, {
             credentials: 'include',
             method: 'PATCH',
@@ -24,9 +33,9 @@ export default class Message extends Component {
         });
 
         if (reaction.status === 200) {
-            const createdChat = await reaction.json();
+            // Ну а здесь локально пушим/добавляем+1
 
-            this.state.chats.push(createdChat);
+            // this.setState({ reactions });
         }
     }
 
@@ -120,17 +129,12 @@ export default class Message extends Component {
     }
 
     render() {
-        const { message, user, title } = this.props;
+        const { message, user } = this.props;
         const { text, author, date, meta } = message;
-        const { showEmojiToMsg } = this.state;
+        const { showEmojiToMsg, reactions } = this.state;
         const attachmentIds = [
             'https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'
         ];
-        const reactions = {
-            'santa': 2,
-            'joy_cat': 1,
-            'smiley': 3
-        };
 
         /* eslint-disable react/jsx-closing-tag-location */
 
@@ -138,7 +142,7 @@ export default class Message extends Component {
             this.formatting({ text, attachmentIds, date, reactions, meta });
 
         // Если сообщение свое
-        if (user.id !== author) {
+        if (user.id === author) {
             return (
                 <div className="message my">
                     <EmojiPicker
@@ -146,7 +150,7 @@ export default class Message extends Component {
                         showEmojiToMsg={showEmojiToMsg}
                     />
                     <div className="message__data">
-                        <span className="message__sender">{title}</span>
+                        <span className="message__sender">{user.nickname}</span>
                         <span className="message__date">{goodDate}</span>
                     </div>
                     <div className="message__content">
@@ -176,7 +180,7 @@ export default class Message extends Component {
                     showEmojiToMsg={this.state.showEmojiToMsg}
                 />
                 <div className="message__data">
-                    <span className="message__sender">{title}</span>
+                    <span className="message__sender">{author}</span>
                     <span className="message__date">{goodDate}</span>
                 </div>
                 {newText}
@@ -200,6 +204,6 @@ export default class Message extends Component {
 Message.propTypes = {
     message: PropTypes.object,
     user: PropTypes.object,
-    title: PropTypes.string,
-    showEmojiToMsg: PropTypes.bool
+    showEmojiToMsg: PropTypes.bool,
+    activeChat: PropTypes.object
 };
