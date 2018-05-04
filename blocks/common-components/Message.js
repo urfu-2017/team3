@@ -96,12 +96,8 @@ export default class Message extends Component {
     }
 
     render() {
-<<<<<<< HEAD
-        const { message, user } = this.props;
-=======
         // console.log(this.props);
-        const { message, user, title, toggleEmoji } = this.props;
->>>>>>> 20bd907eca7637edff328b9782e442f5c2f447e0
+        const { message, user, toggleEmoji } = this.props;
         const { text, author, date, meta } = message;
         const attachmentIds = [
             'https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'
@@ -121,7 +117,7 @@ export default class Message extends Component {
                 <div className="message my">
                     <EmojiPicker addEmoji={this.addEmoji} />
                     <div className="message__data">
-                        <span className="message__sender">{title}</span>
+                        <span className="message__sender">{user.nickname}</span>
                         <span className="message__date">{goodDate}</span>
                     </div>
                     <div className="message__content">
@@ -146,14 +142,10 @@ export default class Message extends Component {
         // Если сообщение собеседника
         return (
             <div className="message friend">
-<<<<<<< HEAD
-                <span className="message__sender">{author}</span>
-=======
                 <div className="message__data">
-                    <span className="message__sender">{title}</span>
+                    <span className="message__sender">{author}</span>
                     <span className="message__date">{goodDate}</span>
                 </div>
->>>>>>> 20bd907eca7637edff328b9782e442f5c2f447e0
                 {newText}
                 {attachments}
                 <div className="message__reactions">
@@ -174,11 +166,6 @@ export default class Message extends Component {
 
 Message.propTypes = {
     message: PropTypes.object,
-<<<<<<< HEAD
-    user: PropTypes.object
-=======
     user: PropTypes.object,
-    title: PropTypes.string,
     toggleEmoji: PropTypes.func
->>>>>>> 20bd907eca7637edff328b9782e442f5c2f447e0
 };
