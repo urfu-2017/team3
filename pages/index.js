@@ -11,6 +11,7 @@ import Search from '../blocks/chats-page/Search';
 import ChatWindow from '../blocks/chats-page/ChatWindow';
 import Profile from '../blocks/pfl/profile';
 import AddUser from '../blocks/common-components/AddUser';
+import Contacts from '../blocks/common-components/Contacts';
 import CreateGroup from '../blocks/common-components/CreateGroup';
 import PureProfile from '../blocks/common-components/PureProfileForList';
 
@@ -114,6 +115,7 @@ class MainPage extends React.Component {
                 <Profile />
                 <AddUser />
                 <CreateGroup />
+                <Contacts />
             </React.Fragment>
         );
     }

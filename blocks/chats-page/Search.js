@@ -69,6 +69,7 @@ class Search extends Component {
                     <img
                         src="/static/controls/phonebook.svg"
                         className="control-img"
+                        onClick={this.props.onShowContacts}
                     />
                     <img
                         src="/static/controls/adduser.svg"
@@ -106,7 +107,8 @@ Search.propTypes = {
     onUsersFound: PropTypes.func,
     onShowProfile: PropTypes.func,
     onShowAddUser: PropTypes.func,
-    onShowCreateGroup: PropTypes.func
+    onShowCreateGroup: PropTypes.func,
+    onShowContacts: PropTypes.func
 };
 
 export default connect(
@@ -125,6 +127,9 @@ export default connect(
         },
         onShowCreateGroup: () => {
             dispatch({ type: 'SHOW_CREATEGROUP' });
+        },
+        onShowContacts: () => {
+            dispatch({ type: 'SHOW_CONTACTS' });
         }
     })
 )(Search);

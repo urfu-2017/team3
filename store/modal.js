@@ -46,6 +46,20 @@ export default function modal(state = {}, action) {
         };
     }
 
+    if (action.type === 'SHOW_CONTACTS') {
+        return {
+            ...state,
+            showContacts: true
+        };
+    }
+
+    if (action.type === 'HIDE_CONTACTS') {
+        return {
+            ...state,
+            showContacts: false
+        };
+    }
+
     if (action.type === 'FOUND_USERS') {
         return {
             ...state,
