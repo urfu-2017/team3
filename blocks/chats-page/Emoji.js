@@ -6,17 +6,8 @@ import '../../node_modules/emoji-mart/css/emoji-mart.css';
 import { connect } from 'react-redux';
 
 class Emoji extends Component {
-
-    addEmoji = emoji => {
-        const input = document.querySelector('.chat-input__write-field');
-        let currentValue = input.value;
-
-        currentValue += `${emoji.colons}`;
-        input.value = currentValue;
-    }
-
     render() {
-        const { showEmoji } = this.props;
+        const { showEmoji, addEmoji } = this.props;
 
         if (!showEmoji) {
             return <div />;
@@ -33,7 +24,7 @@ class Emoji extends Component {
         return (
             <Picker
                 set="emojione"
-                onSelect={this.addEmoji}
+                onSelect={addEmoji}
                 emoji="point_up"
                 style={paletteStyle}
                 showPreview={false}
@@ -45,7 +36,8 @@ class Emoji extends Component {
 }
 
 Emoji.propTypes = {
-    showEmoji: PropTypes.bool
+    showEmoji: PropTypes.bool,
+    addEmoji: PropTypes.func
 };
 
 export default connect(
