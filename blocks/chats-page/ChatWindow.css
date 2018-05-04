@@ -6,7 +6,7 @@
         calc(100% - var(--top-line) - 100px - 48px) 
         100px 
         48px;
-    height: 100vh;
+    height: 100%;
 }
 
 .chat-window__stub {

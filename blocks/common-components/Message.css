@@ -1,6 +1,5 @@
 .message {
     max-width: 40%;
-    height: 100px;
     margin-top: 8px;
     padding: 10px 20px;
     font-size: 14px;
@@ -28,9 +27,26 @@
 }
 
 .message__date {
-    display: block;
+    display: inline-block;
+    margin-top: 10px;
     color: lightgray;
     font-size: 12px;
+    line-height: 30px;
+}
+
+.message__add-emoji {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 30px;
+    float: right;
+    cursor: pointer;
+}
+
+.message__attachment {
+    display: block;
+    margin-top: 10px;
+    max-width: 300px;
+    max-height: 200px;
 }
 
 .message__content {
