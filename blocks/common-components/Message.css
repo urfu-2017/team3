@@ -6,7 +6,7 @@
 }
 
 .my {
-    align-self: flex-start;
+    align-self: flex-end;
     border-radius: 16px;
     border-bottom-left-radius: 0;
     background: #f5f5f5;
@@ -14,7 +14,7 @@
 
 .friend {
     align-items: flex-end;
-    align-self: flex-end;
+    align-self: flex-start;
     border-radius: 16px;
     border-bottom-right-radius: 0;
     background: #eeeeee;

@@ -1,0 +1,18 @@
+.createg {
+    width: 400px;
+    padding: 16px;
+    box-sizing: border-box;
+    background: white;
+    border-radius: 8px;
+}
+
+.createg__input {
+    padding: 0 16px;
+    height: 48px;
+    width: calc(100% - 32px);
+    border-width: 0;
+    border-radius: 4px;
+    outline: none;
+    background-color: #ebebeb;
+    font-size: 12px;
+}
