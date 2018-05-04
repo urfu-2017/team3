@@ -127,6 +127,24 @@ async function getUser(req, res) {
     }
 }
 
+async function getUsers(req, res) {
+    try {
+        const users = await User
+            .find({ _id: { $regex: `.*${req.params.nickname}.*`, $options: 'i' } });
+
+        if (!users) {
+            res.sendStatus(404);
+
+            return;
+        }
+
+        res.status(200).json(users);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(404);
+    }
+}
+
 async function createUser(req, res) {
     try {
         const user = await User.findOrCreate({ nickname: req.params.nickname });
@@ -223,5 +241,5 @@ async function deleteUserFromChat(req, res) {
 module.exports = {
     getChats, getMessages, createMessage, addReaction, updateUserAvatar,
     getUser, createChat, createUser, addUserToChat, deleteUserFromChat,
-    updateChatAvatar, updateChatTitle
+    updateChatAvatar, updateChatTitle, getUsers
 };
