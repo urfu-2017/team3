@@ -36,7 +36,7 @@ module.exports = function setupSocket(ws) {
                 });
 
                 if (chat) {
-                    senderCallback(); // Ничего не возращаем, если чат уже сущесвтует
+                    senderCallback(null, chat._id); // Возвращем id существующего чата, если он есть
 
                     return;
                 }

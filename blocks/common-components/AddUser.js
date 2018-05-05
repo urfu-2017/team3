@@ -21,6 +21,7 @@ class AddUser extends Component {
     }
 
     searchUsers = async e => {
+        this.props.onShowLoader();
         if (e.which === 13) {
             // const text = e.target.value;
             // Запрашиваем список пользователей подходящих
@@ -34,6 +35,7 @@ class AddUser extends Component {
                 this.props.onUsersFound(users);
             }
         }
+        this.props.onHideLoader();
     }
 
     render() {
@@ -81,7 +83,9 @@ AddUser.propTypes = {
     show: PropTypes.bool,
     foundUsers: PropTypes.array,
     onHideAddUser: PropTypes.func,
-    onUsersFound: PropTypes.func
+    onUsersFound: PropTypes.func,
+    onShowLoader: PropTypes.func,
+    onHideLoader: PropTypes.func
 };
 
 export default connect(
@@ -92,6 +96,12 @@ export default connect(
         },
         onUsersFound: users => {
             dispatch({ type: 'FOUND_USERS', foundUsers: users });
+        },
+        onShowLoader: () => {
+            dispatch({ type: 'SHOW_LOADER' });
+        },
+        onHideLoader: () => {
+            dispatch({ type: 'HIDE_LOADER' });
         }
     })
 )(AddUser);
