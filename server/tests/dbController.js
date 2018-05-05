@@ -9,18 +9,19 @@ const mongoose = require('mongoose');
 const Chat = require('../models/Chat');
 const User = require('../models/User');
 const cloudinary = require('cloudinary');
-const utils = require('./utils/testHelpers');
+const setupApiRoutes = require('../routes/api');
+const server = require('../server');
 
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING);
+
 cloudinary.config({
     'cloud_name': 'team3',
     'api_key': process.env.CLOUDINARY_API_KEY,
     'api_secret': process.env.CLOUDINARY_API_SECRET
 });
-
 let currentUser = 'user_1';
 
-const server = utils.setupServer(currentUser);
+setupServer();
 
 let chatId = null;
 const testAvatarPath = path.resolve(__dirname, 'testAvatar.svg');
@@ -230,6 +231,12 @@ describe('messenger API tests', () => {
 
         it('should return 401 when session user is undefined', async () => {
             currentUser = undefined;
+            server.use((req, res, next) => {
+                console.log(req.user);
+                req.user = { nickname: currentUser };
+                next();
+            });
+
             await request(server)
                 .get('/api/chats')
                 .expect(401);
@@ -502,4 +509,16 @@ function checkChat(type, title, members, messages) {
         res.body.should.have.property('members').with.lengthOf(members.length);
         res.body.should.have.property('messages', messages);
     };
+}
+
+function setupServer() {
+    server.use((req, res, next) => {
+        req.user = { nickname: currentUser };
+        next();
+    });
+
+    setupApiRoutes(server);
+    server.listen(8080);
+
+    return server;
 }
