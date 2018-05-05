@@ -37,9 +37,7 @@ class Profile extends Component {
                             {profile.nickname || profile.title}
                         </span>
                         <CopyToClipboard text={groupInviteLink}>
-                            <span className="profile__invite-link">
-                                {groupInviteLink}
-                            </span>
+                            <span className="profile__invite-link">Get Invite link</span>
                         </CopyToClipboard>
                     </div>
                 </div>
