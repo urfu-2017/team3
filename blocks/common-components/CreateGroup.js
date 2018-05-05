@@ -29,6 +29,7 @@ class CreateGroup extends Component {
             type: 'group'
         }, chat => {
             this.props.onChatCreated(chat);
+            socket.emit('join', [chat._id]);
         });
     }
 
