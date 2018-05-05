@@ -5,3 +5,30 @@
     background: white;
     border-radius: 8px;
 }
+
+.contacts__title {
+    font-size: 110%;
+    text-align: center;
+    margin: 0 0 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--neutral-color);
+}
+
+.contacts__user-box {
+    display: block;
+    height: 30px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.contacts__user-box:hover {
+    cursor: pointer;
+    background-color: var(--neutral-color);
+    transition: .2s;
+}
+
+.contacts__nickname {
+    margin-left: 15px;
+    line-height: 30px;
+    font-weight: bold;
+}
