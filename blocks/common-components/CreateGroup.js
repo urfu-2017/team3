@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import getSocket from '../../pages/socket';
+
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-closing-bracket-location */
 
@@ -13,26 +15,20 @@ import './CreateGroup.css';
 class CreateGroup extends Component {
     state = { groupMembers: [], groupTitle: 'group' }
 
-    createChat = async () => {
+    createChat = () => {
         const { groupMembers, groupTitle } = this.state;
 
-        groupMembers.push(this.props.user); // Себя добавляю
-        const response = await fetch('api/chats/', {
-            credentials: 'include',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                title: groupTitle,
-                members: groupMembers,
-                type: 'group'
-            })
+        groupMembers.unshift(this.props.user);
+
+        const socket = getSocket();
+
+        socket.emit('chat', {
+            title: groupTitle,
+            members: groupMembers.map(m => m.nickname),
+            type: 'group'
+        }, chat => {
+            this.props.onCreateChat(chat);
         });
-
-        if (response.status === 200) {
-            const createdChat = await response.json();
-
-            this.props.onCreateChat(createdChat);
-        }
     }
 
     hideCreateGroup = () => {
