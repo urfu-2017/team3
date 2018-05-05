@@ -12,14 +12,6 @@ import './Message.css';
 /* eslint-disable react/jsx-no-bind */
 
 export default class Message extends Component {
-    // state = {
-    //     reactions: {
-    //         'santa': 2,
-    //         'joy_cat': 1,
-    //         'smiley': 3
-    //     }
-    // };
-
     state = {
         reactions: this.props.message.reactions || {}
     }
@@ -27,8 +19,6 @@ export default class Message extends Component {
     addEmoji = async emoji => {
         const chatId = this.props.activeChat._id;
         const msgId = this.props.message._id;
-        // console.log(this.props.message);
-        // console.log(this.props.message._id);
         const response = await fetch(
             `/api/chats/${chatId}/messages/${msgId}/reactions`,
             {
@@ -139,7 +129,6 @@ export default class Message extends Component {
     render() {
         const { message, user } = this.props;
         const { text, author, date, meta } = message;
-        // console.log(message);
         const { showEmojiToMsg, reactions } = this.state;
         const attachmentIds = ['https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'];
         /* eslint-disable react/jsx-closing-tag-location */
