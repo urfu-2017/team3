@@ -27,6 +27,7 @@ module.exports = function setupSocket(ws) {
 
         socket.on('chat', async (data, senderCallback) => {
             // members - список пользователей без создателя чата
+
             const { title, type, members, inviteId, currentUser } = data;
 
             if (type === 'private') {
