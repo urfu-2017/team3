@@ -131,7 +131,7 @@ class CreateGroup extends Component {
 CreateGroup.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    showCG: PropTypes.boolean,
+    showCG: PropTypes.bool,
     onHideCreateGroup: PropTypes.func,
     onCreateChat: PropTypes.func
 };
