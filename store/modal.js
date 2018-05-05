@@ -18,6 +18,16 @@ export default function modal(state = {}, action) {
         };
     }
 
+    if (action.type === 'CHANGE_AVATAR') {
+        return {
+            ...state,
+            profile: {
+                ...state.profile,
+                avatar: action.avatar
+            }
+        };
+    }
+
     if (action.type === 'SHOW_ADDUSER') {
         return {
             ...state,

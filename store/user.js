@@ -5,5 +5,12 @@ export default function user(state = null, action) {
         return action.user;
     }
 
+    if (action.type === 'CHANGE_AVATAR') {
+        return {
+            ...state,
+            avatar: action.avatar
+        };
+    }
+
     return state;
 }

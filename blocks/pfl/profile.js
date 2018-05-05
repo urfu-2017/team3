@@ -40,6 +40,7 @@ class Profile extends Component {
         /* eslint-disable react/jsx-no-bind */
         /* eslint-disable react/self-closing-comp */
         /* eslint-disable prefer-destructuring */
+        this.props.onShowLoader();
         const file = e.target.files[0];
 
         const formData = new FormData();
@@ -55,8 +56,9 @@ class Profile extends Component {
         if (response.status === 200) {
             const answer = await response.json();
 
-            document.querySelector('.profile__avatar').src = answer.url;
+            this.props.onChangeAvatar(answer.url);
         }
+        this.props.onHideLoader();
     }
 
     render() {
@@ -93,6 +95,11 @@ class Profile extends Component {
                             <span className="profile__nickname">
                                 {profile.nickname}
                             </span>
+                            <CopyToClipboard text={`${window.location}invite/${profile.nickname}`}>
+                                <span className="profile__invite-link">
+                                    Copy invite link
+                                </span>
+                            </CopyToClipboard>
                         </div>
                     </div>
                 </div>
@@ -125,7 +132,9 @@ class Profile extends Component {
         if (profile.inviteId) {
             return (
                 <CopyToClipboard text={groupInviteLink}>
-                    <span className="profile__invite-link">Get Invite link</span>
+                    <span className="profile__invite-link">
+                        Copy invite link
+                    </span>
                 </CopyToClipboard>);
         }
 
@@ -136,7 +145,10 @@ class Profile extends Component {
 Profile.propTypes = {
     profile: PropTypes.object,
     onHideProfile: PropTypes.func,
-    user: PropTypes.object
+    user: PropTypes.object,
+    onShowLoader: PropTypes.func,
+    onHideLoader: PropTypes.func,
+    onChangeAvatar: PropTypes.func
 };
 
 export default connect(
@@ -144,6 +156,15 @@ export default connect(
     dispatch => ({
         onHideProfile: () => {
             dispatch({ type: 'HIDE_PROFILE' });
+        },
+        onShowLoader: () => {
+            dispatch({ type: 'SHOW_LOADER' });
+        },
+        onHideLoader: () => {
+            dispatch({ type: 'HIDE_LOADER' });
+        },
+        onChangeAvatar: avatar => {
+            dispatch({ type: 'CHANGE_AVATAR', avatar });
         }
     })
 )(Profile);
