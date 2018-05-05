@@ -76,12 +76,13 @@ function setupSocket(ws) {
 
             if (type === 'private') {
                 const chat = await Chat.findOne({
-                    members,
+                    members: { $all: members },
                     type: 'private'
                 });
 
+                // console.log(chat);
                 if (chat) {
-                    senderCallback(); // Ничего не возращаем, если чат уже сущесвтует
+                    senderCallback(chat); // Ничего не возращаем, если чат уже сущесвтует
 
                     return;
                 }

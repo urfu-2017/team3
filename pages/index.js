@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 import React from 'react';
 import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
+import Router from 'next/router';
 
 import makeStore from '../store';
 import Chats from '../blocks/chats-page/Chats';
@@ -33,29 +34,13 @@ async function loadChats(req) {
     return { type: 'LOAD_CHATS', chats };
 }
 
-async function findUser(req) {
-    const splittedUrl = req.url.split('/');
-    const userName = splittedUrl[splittedUrl.length - 1];
-
-    if (userName) {
-        const res = await fetch(`http://localhost:3000/api/users/${userName}`, {
-            credentials: 'include',
-            headers: {
-                cookie: req.headers.cookie
-            }
-        });
-
-        return res.json();
-    }
-
-    return null;
-}
-
 class MainPage extends React.Component {
     static async getInitialProps({ store, req }) {
         store.dispatch({ type: 'LOGIN_USER', user: req.user });
         store.dispatch(await loadChats(req));
-        store.dispatch({ type: 'ACCEPT_INVITE', invite: await findUser(req) });
+        if (req.params.id) {
+            store.dispatch({ type: 'ACCEPT_INVITE', invite: req.params.id });
+        }
 
         return {};
     }
@@ -70,6 +55,8 @@ class MainPage extends React.Component {
         rooms.push(user.nickname);
         socket.emit('join', rooms);
 
+        this.acceptInvite(socket, user, this.props.invite);
+
         socket.on('message', data => {
             const { chatId, message } = data;
 
@@ -79,6 +66,23 @@ class MainPage extends React.Component {
         socket.on('chat', chat => {
             this.props.onCreateChat(chat);
         });
+    }
+
+    acceptInvite(socket, user, invite) {
+        if (invite) {
+            Router.push('/');
+
+            socket.emit('chat', {
+                members: [user.nickname, invite],
+                type: 'private'
+            }, chat => {
+                if (!this.props.chats.find(c => c.id === chat.id)) {
+                    this.props.onCreateChat(chat);
+                }
+
+                this.props.onOpenChat(chat);
+            });
+        }
     }
 
     render() {
@@ -116,7 +120,9 @@ MainPage.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
     onReceiveMessage: PropTypes.func,
-    onCreateChat: PropTypes.func
+    onCreateChat: PropTypes.func,
+    onOpenChat: PropTypes.func,
+    invite: PropTypes.string
 };
 
 export default withRedux(makeStore,
@@ -127,6 +133,9 @@ export default withRedux(makeStore,
         },
         onCreateChat: chat => {
             dispatch({ type: 'CREATE_CHAT', chat });
+        },
+        onOpenChat: chat => {
+            dispatch({ type: 'OPEN_CHAT', id: chat._id });
         }
     })
 )(MainPage);
