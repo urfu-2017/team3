@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 function getGroupInviteLink(url, id) {
     return `${url}invite/g_${id}`;
 }
+
 /* eslint-disable max-statements */
 
 class Profile extends Component {
@@ -18,7 +19,16 @@ class Profile extends Component {
         this.props.onHideProfile();
     };
 
-    whoIsMyInterlocutor(members) {
+    whoIsMyInterlocutor(profile) {
+        if (profile.type === 'group') {
+            return {
+                avatar: profile.avatar,
+                nickname: profile.title
+            };
+        }
+
+        const { members } = profile;
+
         if (members[0].nickname === this.props.user.nickname) {
             return members[1];
         }
@@ -89,18 +99,17 @@ class Profile extends Component {
             );
         }
 
-        // ЕСЛИ ПРОФИЛЬ ДРУГОГО ЮЗЕРА
-        const userFromNet = this.whoIsMyInterlocutor(profile.members);
+        const displayData = this.whoIsMyInterlocutor(profile);
 
         return (
             <div className="darkness" onClick={this.hideProfile}>
                 <div className="profile" onClick={event => event.stopPropagation()}>
                     <div className="profile__avatar-box">
-                        <img className="profile__avatar" src={userFromNet.avatar} alt="avatar" />
+                        <img className="profile__avatar" src={displayData.avatar} alt="avatar" />
                     </div>
                     <div className="profile__info-box">
                         <span className="profile__nickname">
-                            {userFromNet.nickname}
+                            {displayData.nickname}
                         </span>
 
                         {this.inviteLink(profile)}
