@@ -55,4 +55,14 @@
 .profile__invite-link{
     margin-top: 10px;
     color: #888;
+    cursor: pointer;
+}
+
+.profile__invite-link:hover {
+    color: #666;
+}
+
+
+.profile__invite-link:active {
+    color: #222;
 }

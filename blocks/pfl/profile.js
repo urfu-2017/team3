@@ -95,6 +95,11 @@ class Profile extends Component {
                             <span className="profile__nickname">
                                 {profile.nickname}
                             </span>
+                            <CopyToClipboard text={`${window.location}invite/${profile.nickname}`}>
+                                <span className="profile__invite-link">
+                                    Copy invite link
+                                </span>
+                            </CopyToClipboard>
                         </div>
                     </div>
                 </div>
@@ -127,7 +132,9 @@ class Profile extends Component {
         if (profile.inviteId) {
             return (
                 <CopyToClipboard text={groupInviteLink}>
-                    <span className="profile__invite-link">Get Invite link</span>
+                    <span className="profile__invite-link">
+                        Copy invite link
+                    </span>
                 </CopyToClipboard>);
         }
 
