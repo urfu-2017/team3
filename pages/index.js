@@ -13,6 +13,7 @@ import Profile from '../blocks/pfl/profile';
 import AddUser from '../blocks/common-components/AddUser';
 import Contacts from '../blocks/common-components/Contacts';
 import CreateGroup from '../blocks/common-components/CreateGroup';
+import Loader from '../blocks/loader/Loader';
 
 import 'isomorphic-fetch';
 import './global-const.css';
@@ -83,6 +84,7 @@ class MainPage extends React.Component {
                 <AddUser />
                 <CreateGroup />
                 <Contacts />
+                <Loader />
             </React.Fragment>
         );
     }

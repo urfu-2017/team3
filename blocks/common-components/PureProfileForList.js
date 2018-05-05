@@ -11,12 +11,15 @@ class PureProfile extends Component {
 
         const { user, myUser } = this.props;
 
+        this.props.onStartChatCreation();
         socket.emit('chat', {
             members: [myUser.nickname, user.nickname], // Важно! создатель первый в списке
             type: 'private'
-        }, chat => {
+        }, (chat, existsChatId) => {
             if (chat) {
-                this.props.onCreateChat(chat);
+                this.props.onChatCreated(chat);
+            } else {
+                this.props.onChatExists(existsChatId);
             }
         });
     }
@@ -44,7 +47,9 @@ class PureProfile extends Component {
 PureProfile.propTypes = {
     user: PropTypes.object,
     myUser: PropTypes.object,
-    onCreateChat: PropTypes.func
+    onStartChatCreation: PropTypes.func,
+    onChatCreated: PropTypes.func,
+    onChatExists: PropTypes.func
 };
 
 export default connect(
@@ -52,8 +57,18 @@ export default connect(
         myUser: state.user
     }),
     dispatch => ({
-        onCreateChat: chat => {
+        onStartChatCreation: () => {
+            dispatch({ type: 'SHOW_LOADER' });
+            dispatch({ type: 'HIDE_ADDUSER' });
+        },
+        onChatCreated: chat => {
             dispatch({ type: 'CREATE_CHAT', chat });
+            dispatch({ type: 'OPEN_CHAT', id: chat._id });
+            dispatch({ type: 'HIDE_LOADER' });
+        },
+        onChatExists: chatId => {
+            dispatch({ type: 'OPEN_CHAT', id: chatId });
+            dispatch({ type: 'HIDE_LOADER' });
         }
     })
 )(PureProfile);

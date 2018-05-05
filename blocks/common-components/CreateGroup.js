@@ -22,21 +22,18 @@ class CreateGroup extends Component {
 
         const socket = getSocket();
 
+        this.props.onStartChatCreation();
         socket.emit('chat', {
             title: groupTitle,
             members: groupMembers.map(m => m.nickname),
             type: 'group'
         }, chat => {
-            this.props.onCreateChat(chat);
+            this.props.onChatCreated(chat);
         });
     }
 
     hideCreateGroup = () => {
         this.props.onHideCreateGroup();
-    }
-
-    componentDidMount() {
-        // this.nameInput.focus();
     }
 
     whoIsMyInterlocutor(members) {
@@ -131,19 +128,26 @@ class CreateGroup extends Component {
 CreateGroup.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    showCG: PropTypes.bool,
-    onHideCreateGroup: PropTypes.func,
-    onCreateChat: PropTypes.func
+    showCG: PropTypes.boolean,
+    onChatCreated: PropTypes.func,
+    onStartChatCreation: PropTypes.func,
+    onHideCreateGroup: PropTypes.func
 };
 
 export default connect(
     state => ({ user: state.user, chats: state.chats, showCG: state.modal.showCG }),
     dispatch => ({
+        onStartChatCreation: () => {
+            dispatch({ type: 'HIDE_CREATEGROUP' });
+            dispatch({ type: 'SHOW_LOADER' });
+        },
+        onChatCreated: chat => {
+            dispatch({ type: 'CREATE_CHAT', chat });
+            dispatch({ type: 'OPEN_CHAT', id: chat._id });
+            dispatch({ type: 'HIDE_LOADER' });
+        },
         onHideCreateGroup: () => {
             dispatch({ type: 'HIDE_CREATEGROUP' });
-        },
-        onCreateChat: chat => {
-            dispatch({ type: 'CREATE_CHAT', chat }); // ТУДУ update sore
         }
     })
 )(CreateGroup);
