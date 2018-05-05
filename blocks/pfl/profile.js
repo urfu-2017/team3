@@ -2,19 +2,33 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import '../../pages/global-const.css';
 import './profile.css';
 import { connect } from 'react-redux';
+
+function getGroupInviteLink(url, id) {
+    return `${url}invite/g_${id}`;
+}
 
 /* eslint-disable max-statements */
 
 class Profile extends Component {
     hideProfile = () => {
         this.props.onHideProfile();
-    }
+    };
 
-    whoIsMyInterlocutor(members) {
+    whoIsMyInterlocutor(profile) {
+        if (profile.type === 'group') {
+            return {
+                avatar: profile.avatar,
+                nickname: profile.title
+            };
+        }
+
+        const { members } = profile;
+
         if (members[0].nickname === this.props.user.nickname) {
             return members[1];
         }
@@ -85,23 +99,37 @@ class Profile extends Component {
             );
         }
 
-        // ЕСЛИ ПРОФИЛЬ ДРУГОГО ЮЗЕРА
-        const userFromNet = this.whoIsMyInterlocutor(profile.members);
+        const displayData = this.whoIsMyInterlocutor(profile);
 
         return (
             <div className="darkness" onClick={this.hideProfile}>
                 <div className="profile" onClick={event => event.stopPropagation()}>
                     <div className="profile__avatar-box">
-                        <img className="profile__avatar" src={userFromNet.avatar} alt="avatar" />
+                        <img className="profile__avatar" src={displayData.avatar} alt="avatar" />
                     </div>
                     <div className="profile__info-box">
                         <span className="profile__nickname">
-                            {userFromNet.nickname}
+                            {displayData.nickname}
                         </span>
+
+                        {this.inviteLink(profile)}
                     </div>
                 </div>
             </div>
         );
+    }
+
+    inviteLink(profile) {
+        const groupInviteLink = getGroupInviteLink(window.location, profile.inviteId);
+
+        if (profile.inviteId) {
+            return (
+                <CopyToClipboard text={groupInviteLink}>
+                    <span className="profile__invite-link">Get Invite link</span>
+                </CopyToClipboard>);
+        }
+
+        return <div />;
     }
 }
 

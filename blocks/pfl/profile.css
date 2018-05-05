@@ -51,3 +51,8 @@
     font-size: 18px;
     font-weight: bold;
 }
+
+.profile__invite-link{
+    margin-top: 10px;
+    color: #888;
+}
