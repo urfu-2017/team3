@@ -19,6 +19,7 @@ class ChatIcon extends Component {
 
     openChat = () => {
         this.props.onOpenChat(this.props.chatProps);
+        console.log(this.props.chatProps);
     }
 
     render() {

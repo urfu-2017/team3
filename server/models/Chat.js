@@ -11,7 +11,7 @@ const mongoSchema = new mongoose.Schema({
     members: [{ type: String, ref: 'User' }],
     messages: [Message.schema],
     avatar: String
-});
+}, { minimize: false });
 
 class ChatClass {
     static async findOrCreate({ title, members, type }) {

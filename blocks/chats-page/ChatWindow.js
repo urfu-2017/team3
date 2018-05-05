@@ -62,7 +62,18 @@ class ChatWindow extends Component {
         const { currentTarget: { files } } = e;
 
         [...files].forEach(file => {
-            attachments.push(file);
+            // пока не трогать, бэк не готов
+            // const reader = new FileReader();
+            // reader.readAsArrayBuffer(file);
+            // console.log(reader);
+            // const response = await fetch('/api/attachments', {
+            //     credentials: 'include',
+            //     method: 'PUT',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ file: reader })
+            // });
+
+            return attachments.push(file);
         });
 
         this.setState({ attachments });
@@ -151,7 +162,7 @@ class ChatWindow extends Component {
                 <div className="messages messages_grid_large">
                     {activeChat.messages.map(message => (
                         <Message
-                            key={message.id || '0'}
+                            key={message._id || '0'}
                             message={message}
                             user={user}
                             activeChat={activeChat}

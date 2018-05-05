@@ -86,13 +86,8 @@ class MainPage extends React.Component {
     }
 
     render() {
-        const { user } = this.props;
-
         return (
             <React.Fragment>
-                <head>
-                    <title>{user.nickname}</title>
-                </head>
                 <main className="main">
                     <article className="chats">
                         <div className="chats__search">

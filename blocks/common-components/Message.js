@@ -12,38 +12,52 @@ import './Message.css';
 /* eslint-disable react/jsx-no-bind */
 
 export default class Message extends Component {
+    // state = {
+    //     reactions: {
+    //         'santa': 2,
+    //         'joy_cat': 1,
+    //         'smiley': 3
+    //     }
+    // };
+
     state = {
-        reactions: {
-            'santa': 2,
-            'joy_cat': 1,
-            'smiley': 3
-        }
-    };
+        reactions: this.props.message.reactions || {}
+    }
 
     addEmoji = async emoji => {
-        const chatid = this.props.activeChat._id;
-        const URL = `/api/chats/${chatid}/messages/${this.props.message._id}/reactions`;
-        const reaction = await fetch(URL, {
-            credentials: 'include',
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                reaction: emoji.id
-            })
-        });
+        const chatId = this.props.activeChat._id;
+        const msgId = this.props.message._id;
+        // console.log(this.props.message);
+        // console.log(this.props.message._id);
+        const response = await fetch(
+            `/api/chats/${chatId}/messages/${msgId}/reactions`,
+            {
+                credentials: 'include',
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reaction: emoji.id })
+            }
+        );
 
-        if (reaction.status === 200) {
-            // Ну а здесь локально пушим/добавляем+1
+        if (response.status === 200) {
+            const { reactions } = this.state;
+            const isHaveSmile = Object.keys(reactions).includes(emoji.id);
 
-            // this.setState({ reactions });
+            if (isHaveSmile) {
+                reactions[`${emoji.id}`] += 1;
+            } else {
+                reactions[`${emoji.id}`] = 1;
+            }
+
+            this.setState({ reactions });
         }
-    }
+    };
 
     toggleEmoji = () => {
         const showEmojiToMsg = !this.state.showEmojiToMsg;
 
         this.setState({ showEmojiToMsg });
-    }
+    };
 
     componentWillMount() {
         this.setState({ showEmojiToMsg: this.props.showEmojiToMsg });
@@ -79,16 +93,12 @@ export default class Message extends Component {
     }
 
     formatting({ text, attachmentIds, date, reactions, meta }) {
-        const metadata = Object.keys(meta || {}).length === 0
-            ?
+        const metadata =
+            Object.keys(meta || {}).length === 0 ? (
                 <React.Fragment />
-            :
-            (
+            ) : (
                 <a className="metadata" href={meta.url}>
-                    <img
-                        src={meta.image}
-                        className="metadata__image"
-                    />
+                    <img src={meta.image} className="metadata__image" />
                     <h3 className="metadata__header">{meta.title || meta.author}</h3>
                     <div className="metadata__description">{meta.description}</div>
                 </a>
@@ -118,9 +128,7 @@ export default class Message extends Component {
                         set="emojione"
                         size={20}
                     />
-                    <span className="reaction__number-peoples">
-                        {reactions[`${name}`]}
-                    </span>
+                    <span className="reaction__number-peoples">{reactions[`${name}`]}</span>
                 </div>
             );
         });
@@ -131,35 +139,32 @@ export default class Message extends Component {
     render() {
         const { message, user } = this.props;
         const { text, author, date, meta } = message;
+        // console.log(message);
         const { showEmojiToMsg, reactions } = this.state;
-        const attachmentIds = [
-            'https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'
-        ];
+        const attachmentIds = ['https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'];
         /* eslint-disable react/jsx-closing-tag-location */
 
-        const { newText, attachments, goodDate, peopleEmoji, metadata } =
-            this.formatting({ text, attachmentIds, date, reactions, meta });
+        const { newText, attachments, goodDate, peopleEmoji, metadata } = this.formatting({
+            text,
+            attachmentIds,
+            date,
+            reactions,
+            meta
+        });
 
         // Если сообщение свое
         if (user.id === author) {
             return (
                 <div className="message my">
-                    <EmojiPicker
-                        addEmoji={this.addEmoji}
-                        showEmojiToMsg={showEmojiToMsg}
-                    />
+                    <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
                     <div className="message__data">
                         <span className="message__sender">{author}</span>
                         <span className="message__date">{goodDate}</span>
                     </div>
-                    <div className="message__content">
-                        {newText}
-                    </div>
+                    <div className="message__content">{newText}</div>
                     {attachments}
                     <div className="message__reactions">
-                        <div className="message__reactions_to-left">
-                            {peopleEmoji}
-                        </div>
+                        <div className="message__reactions_to-left">{peopleEmoji}</div>
                         <img
                             src="/static/emoji.svg"
                             className="message__add-emoji"
@@ -174,10 +179,7 @@ export default class Message extends Component {
         // Если сообщение собеседника
         return (
             <div className="message friend">
-                <EmojiPicker
-                    addEmoji={this.addEmoji}
-                    showEmojiToMsg={this.state.showEmojiToMsg}
-                />
+                <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={this.state.showEmojiToMsg} />
                 <div className="message__data">
                     <span className="message__sender">{author}</span>
                     <span className="message__date">{goodDate}</span>
@@ -185,9 +187,7 @@ export default class Message extends Component {
                 {newText}
                 {attachments}
                 <div className="message__reactions">
-                    <div className="message__reactions_to-left">
-                        {peopleEmoji}
-                    </div>
+                    <div className="message__reactions_to-left">{peopleEmoji}</div>
                     <img
                         src="/static/emoji.svg"
                         className="message__add-emoji"

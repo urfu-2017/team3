@@ -16,16 +16,10 @@ const mongoSchema = new mongoose.Schema({
         index: true
     },
     text: String,
-    meta: {
-        type: Object,
-        default: null
-    },
-    reactions: {
-        type: Object,
-        default: {}
-    },
+    meta: {},
+    reactions: {},
     attachmentIds: [mongoose.Schema.Types.ObjectId]
-});
+}, { minimize: false });
 
 class MessageClass {
     static async initialize({ author, text }) {
@@ -35,7 +29,8 @@ class MessageClass {
             author,
             meta,
             data: Date.now(),
-            text: processMarkdownAndSanitize(text)
+            text: processMarkdownAndSanitize(text),
+            reactions: {}
         };
     }
 }

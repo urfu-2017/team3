@@ -78,7 +78,7 @@ class AddUser extends Component {
 
 AddUser.propTypes = {
     user: PropTypes.object,
-    show: PropTypes.boolean,
+    show: PropTypes.bool,
     foundUsers: PropTypes.array,
     onHideAddUser: PropTypes.func,
     onUsersFound: PropTypes.func
