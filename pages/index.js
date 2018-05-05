@@ -21,7 +21,8 @@ import './index.css';
 import getSocket from './socket';
 
 async function loadChats(req) {
-    const res = await fetch('http://localhost:3000/api/chats', {
+    const { HOST, PORT } = process.env;
+    const res = await fetch(`${HOST}:${PORT}/api/chats`, {
         credentials: 'include',
         headers: {
             cookie: req.headers.cookie

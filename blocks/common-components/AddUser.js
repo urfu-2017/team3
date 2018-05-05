@@ -24,15 +24,14 @@ class AddUser extends Component {
         if (e.which === 13) {
             // const text = e.target.value;
             // Запрашиваем список пользователей подходящих
-            const response = await fetch(`/api/users/${e.target.value}`, {
-                credentials: 'include',
-                method: 'GET'
+            const response = await fetch(`/api/search/users/${e.target.value}`, {
+                credentials: 'include'
             });
 
             if (response.status === 200) {
                 const users = await response.json();
 
-                this.props.onUsersFound([users]); // ТУДУ дубликаты для нагдядности
+                this.props.onUsersFound(users);
             }
         }
     }
