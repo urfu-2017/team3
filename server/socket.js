@@ -27,11 +27,11 @@ module.exports = function setupSocket(ws) {
 
         socket.on('chat', async (data, senderCallback) => {
             // members - список пользователей без создателя чата
-            const { title, type, members } = data;
+            const { title, type, members, inviteId, currentUser } = data;
 
             if (type === 'private') {
                 const chat = await Chat.findOne({
-                    members,
+                    members: { $all: members },
                     type: 'private'
                 });
 
@@ -42,12 +42,31 @@ module.exports = function setupSocket(ws) {
                 }
             }
 
-            const chat = await Chat.create({ title, members, type });
+            if (inviteId) {
+                await addMember(inviteId, currentUser, senderCallback);
 
-            const [, ...other] = members;
+                return;
+            }
 
-            senderCallback(chat);
-            other.forEach(member => socket.to(member).emit('chat', chat));
+            await createGroupChat(socket, senderCallback, title, members, type);
         });
     });
+
+    async function addMember(inviteId, currentUser, senderCallback) {
+        const chat = await Chat.findOne({ inviteId });
+
+        if (!chat.members.find(currentUser)) {
+            await Chat.update({ _id: chat.id }, { $push: { members: currentUser } });
+        }
+
+        senderCallback(chat);
+    }
+
+    async function createGroupChat(socket, senderCallback, { title, members, type }) {
+        const chat = await Chat.create({ title, members, type });
+        const [, ...other] = members;
+
+        senderCallback(chat);
+        other.forEach(member => socket.to(member).emit('chat', chat));
+    }
 };

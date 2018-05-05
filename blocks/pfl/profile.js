@@ -9,7 +9,7 @@ import './profile.css';
 import { connect } from 'react-redux';
 
 function getGroupInviteLink(url, id) {
-    return `${url}invite/g_${id.substr(18, 6)}`;
+    return `${url}invite/g_${id}`;
 }
 
 class Profile extends Component {
@@ -24,7 +24,7 @@ class Profile extends Component {
             return (<div />);
         }
 
-        const groupInviteLink = getGroupInviteLink(window.location, profile._id);
+        const groupInviteLink = getGroupInviteLink(window.location, profile.inviteId);
 
         return (
             <div className="darkness" onClick={this.hideProfile}>

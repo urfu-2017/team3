@@ -72,18 +72,41 @@ class MainPage extends React.Component {
     acceptInvite(socket, user, invite) {
         if (invite) {
             Router.push('/');
-
-            socket.emit('chat', {
-                members: [user.nickname, invite],
-                type: 'private'
-            }, chat => {
-                if (!this.props.chats.find(c => c.id === chat.id)) {
-                    this.props.onCreateChat(chat);
-                }
-
-                this.props.onOpenChat(chat);
-            });
+            if (invite.startsWith('g_')) {
+                this.acceptGroupInvite(invite, socket);
+            } else {
+                this.acceptPrivateInvite(socket, user, invite);
+            }
         }
+    }
+
+    acceptPrivateInvite(socket, user, invite) {
+        socket.emit('chat', {
+            members: [user.nickname, invite],
+            type: 'private'
+        }, chat => {
+            if (!this.props.chats.find(c => c.id === chat.id)) {
+                this.props.onCreateChat(chat);
+            }
+
+            this.props.onOpenChat(chat);
+        });
+    }
+
+    acceptGroupInvite(invite, user, socket) {
+        const inviteId = invite.substr(2);
+
+        socket.emit('chat', {
+            inviteId,
+            type: 'group',
+            currentUser: user.nickname
+        }, chat => {
+            if (!this.props.chats.find(c => c.id === chat.id)) {
+                this.props.onCreateChat(chat);
+            }
+
+            this.props.onOpenChat(chat);
+        });
     }
 
     render() {

@@ -32,7 +32,7 @@ describe('fillDb', () => {
 
     it('create group chats', async () => {
         await request(server).post('/api/chats')
-            .send({ type: 'group', members: userNames, title: 'theBeatles' })
+            .send({ type: 'group', members: userNames, title: 'theBeatles', inviteId: 'Beatles' })
             .expect(200);
     });
 });
