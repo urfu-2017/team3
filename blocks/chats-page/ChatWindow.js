@@ -128,6 +128,14 @@ class ChatWindow extends Component {
         this.props.onShowProfile(profile);
     }
 
+    scrollToBottom = () => {
+        this.messagesEnd.scrollIntoView();
+    }
+
+    componentDidUpdate() {
+        this.scrollToBottom();
+    }
+
     render() {
         const { activeChat, user } = this.props;
 
@@ -169,6 +177,7 @@ class ChatWindow extends Component {
                             showEmojiToMsg={false}
                         />
                     ))}
+                    <div ref={el => { this.messagesEnd = el; }}></div>
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
                 <Preview files={this.state.attachments} />
