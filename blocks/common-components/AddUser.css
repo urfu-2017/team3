@@ -27,6 +27,7 @@
     font-size: 16px;
     position: fixed;
     box-sizing: border-box;
+    z-index: 2;
 }
 
 @supports (width: -webkit-max-content) {
@@ -37,6 +38,7 @@
         height: 48px;
         box-shadow: 0 -8px 0 8px #fff;
         width: calc(var(--width) - 32px);
+        z-index: 1;
     }
 }
 

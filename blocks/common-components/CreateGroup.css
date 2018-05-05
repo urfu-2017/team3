@@ -1,18 +1,85 @@
-.createg {
+.create-group {
+    --width: 400px;
     width: 400px;
+    width: var(--width);
+    /* height: 80%; */
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 16px;
     box-sizing: border-box;
     background: white;
     border-radius: 8px;
 }
 
-.createg__input {
+.create-group__input {
     padding: 0 16px;
     height: 48px;
-    width: calc(100% - 32px);
+    width: 368px;
+    width: calc(var(--width) - 32px);
     border-width: 0;
     border-radius: 4px;
     outline: none;
     background-color: #ebebeb;
-    font-size: 12px;
+    font-size: 16px;
+    position: fixed;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+.create-group__list {
+    width: 100%;
+    margin-top: 64px;
+    border-top: 1px solid var(--neutral-color);
+}
+
+.create-group__user-box {
+    display: block;
+    height: 30px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.create-group__user-box:hover {
+    cursor: pointer;
+    background-color: var(--neutral-color);
+    transition: .2s;
+}
+
+.create-group__nickname {
+    margin-left: 15px;
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.create-group__info_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 16px;
+    border-top: 1px solid var(--neutral-color);
+    padding-top: 16px;
+}
+
+.create-group__number-members {
+    font-size: 110%;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.create-group__button {
+    border: none;
+    background: none;
+    font-size: 110%;
+    border-radius: 5px;
+    height: 30px;
+    width: 110px;
+    margin-top: 8px;
+}
+
+.create-group__button:hover {
+    cursor: pointer;
+    background-color: var(--neutral-color);
+    transition: .2s;
 }
