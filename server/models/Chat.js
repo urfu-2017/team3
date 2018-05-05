@@ -11,12 +11,15 @@ const mongoSchema = new mongoose.Schema({
     members: [{ type: String, ref: 'User' }],
     messages: [Message.schema],
     avatar: String
-});
+}, { minimize: false });
 
 class ChatClass {
     static async findOrCreate({ title, members, type }) {
         if (type === 'private') {
-            const chat = await this.findOne({ members });
+            const chat = await this.findOne({
+                members,
+                type: 'private'
+            }).populate('members');
 
             if (chat) {
                 return chat;
@@ -26,23 +29,25 @@ class ChatClass {
         return await this.create({ title, members, type });
     }
 
-    static setChatInfo(userNickname, chat) {
+    static async create(chat) {
         if (chat.type === 'group') {
-            return chat;
+            const avatarInBase64 = createIdenticon();
+
+            const response = await cloudinary.v2
+                .uploader.upload(`data:image/png;base64,${avatarInBase64}`);
+
+            chat.avatar = response.url;
         }
 
-        let interlocutor = chat.members.find(
-            member => member.nickname !== userNickname
-        );
+        return await this.findOneAndUpdate(
+            { _id: mongoose.Types.ObjectId() },
+            chat,
+            {
+                new: true,
+                upsert: true,
+                populate: ['members']
+            });
 
-        if (!interlocutor) {
-            [interlocutor] = chat.members;
-        }
-
-        chat.avatar = interlocutor.avatar;
-        chat.title = interlocutor.nickname;
-
-        return chat;
     }
 
     static isValid({ members, type }) {
@@ -55,20 +60,6 @@ class ChatClass {
                (type === 'group') && (members.length !== 0);
     }
 }
-
-/* eslint-disable no-invalid-this */
-mongoSchema.pre('save', async function () {
-    if (this.type !== 'group') {
-        return this;
-    }
-
-    const avatarInBase64 = createIdenticon();
-    const response = await cloudinary.v2.uploader.upload(`data:image/png;base64,${avatarInBase64}`);
-
-    this.avatar = response.url;
-
-    return this;
-});
 
 mongoSchema.loadClass(ChatClass);
 const Chat = mongoose.model('Chat', mongoSchema);

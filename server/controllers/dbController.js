@@ -17,7 +17,7 @@ async function getChats(req, res) {
             members: { $elemMatch: { $regex: `^${req.user.nickname}$`, $options: 'i' } }
         }).populate('members');
 
-        res.status(200).json(chats.map(chat => Chat.setChatInfo(req.user.nickname, chat)));
+        res.status(200).json(chats);
     } catch (e) {
         res.sendStatus(400);
     }
@@ -70,6 +70,30 @@ async function createMessage(req, res) {
     }
 }
 
+async function addReaction(req, res) {
+    try {
+        if (req.body === undefined || req.body.reaction === undefined) {
+            res.status(400).send('expected reaction field in body');
+        }
+
+        const chat = await Chat.update(
+            {
+                _id: req.params.chatId,
+                members: req.user.nickname,
+                'messages._id': req.params.messageId
+            },
+            {
+                $inc: { [`messages.$.reactions.${req.body.reaction}`]: 1 }
+            },
+            { $upsert: true, $new: true }
+        );
+
+        res.sendStatus(chat === null ? 400 : 200);
+    } catch (e) {
+        res.status(500).send(e.message);
+    }
+}
+
 async function createChat(req, res) {
     try {
         if (!Chat.isValid(req.body)) {
@@ -99,6 +123,24 @@ async function getUser(req, res) {
 
         res.status(200).json(user);
     } catch (e) {
+        res.sendStatus(404);
+    }
+}
+
+async function getUsers(req, res) {
+    try {
+        const users = await User
+            .find({ _id: { $regex: `.*${req.params.nickname}.*`, $options: 'i' } });
+
+        if (!users) {
+            res.sendStatus(404);
+
+            return;
+        }
+
+        res.status(200).json(users);
+    } catch (e) {
+        console.log(e);
         res.sendStatus(404);
     }
 }
@@ -197,7 +239,7 @@ async function deleteUserFromChat(req, res) {
 }
 
 module.exports = {
-    getChats, getMessages, createMessage, updateUserAvatar,
+    getChats, getMessages, createMessage, addReaction, updateUserAvatar,
     getUser, createChat, createUser, addUserToChat, deleteUserFromChat,
-    updateChatAvatar, updateChatTitle
+    updateChatAvatar, updateChatTitle, getUsers
 };

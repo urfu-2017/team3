@@ -219,7 +219,7 @@ describe('messenger API tests', () => {
         it('should get only chats where user is member', async () => {
             const checkChats = res => {
                 res.body.should.be.an.instanceOf(Array).with.lengthOf(1);
-                checkChat('private', 'user_2', ['user_1', 'user_2'], [])({ body: res.body[0] });
+                checkChat('private', 'apiTest', ['user_1', 'user_2'], [])({ body: res.body[0] });
             };
 
             await request(server)
@@ -422,7 +422,7 @@ describe('messenger API tests', () => {
 
             const checkMessages = res => {
                 res.body.should.be.an.instanceOf(Array).with.lengthOf(1);
-                res.body[0].should.have.property('text', '<p>test <strong>link</strong></p>');
+                res.body[0].should.have.property('text', 'test **link**');
                 res.body[0].should.have.property('author', 'user_1');
                 res.body[0].should.have.property('date');
             };
@@ -481,7 +481,7 @@ describe('messenger API tests', () => {
 
             const checkMessages = res => {
                 res.body.should.be.an.instanceOf(Array).with.lengthOf(1);
-                res.body[0].should.have.property('text', '<p>test <strong>link</strong></p>');
+                res.body[0].should.have.property('text', 'test **link**');
                 res.body[0].should.have.property('author', 'user_1');
                 res.body[0].should.have.property('date');
             };

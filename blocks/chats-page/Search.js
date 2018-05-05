@@ -4,12 +4,10 @@ import fetch from 'node-fetch';
 import { connect } from 'react-redux';
 
 class Search extends Component {
-    getInitialState = () => {
-        return { isSearchString: false };
-    }
+    state = { isSearchString: false }
 
     showSearch = () => {
-        const { isSearchString } = this.state || false;
+        const { isSearchString } = this.state;
 
         this.setState({ isSearchString: !isSearchString });
     }
@@ -27,7 +25,7 @@ class Search extends Component {
         if (response.status === 200) {
             const users = await response.json();
 
-            this.props.onUsersFound([users]); // ТУДУ дубликаты для нагдядности
+            this.props.onUsersFound([users]);
         }
     }
 
@@ -38,7 +36,7 @@ class Search extends Component {
     }
 
     render() {
-        const { isSearchString } = this.state || false;
+        const { isSearchString } = this.state;
 
         return isSearchString
             ?
@@ -87,17 +85,6 @@ class Search extends Component {
                         onClick={this.showSearch}
                     />
                 </React.Fragment>
-                // <React.Fragment>
-                //     <div className="chats__box-burger" onClick={this.showProfile}>
-                //         {user.nickname.slice(0, 1).toUpperCase()}
-                //     </div>
-                //     <input
-                //         type="text"
-                //         className="chats__search-input"
-                //         placeholder="Найти пользователя"
-                //         onKeyDown={this.findUsers}
-                //     />
-                // </React.Fragment>
             );
     }
 }

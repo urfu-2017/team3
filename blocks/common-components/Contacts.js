@@ -64,7 +64,7 @@ class Contacts extends Component {
 Contacts.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    showContacts: PropTypes.boolean,
+    showContacts: PropTypes.bool,
     onHideContacts: PropTypes.func,
     onShowProfile: PropTypes.func
 };

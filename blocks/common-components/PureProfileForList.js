@@ -3,24 +3,25 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import getSocket from '../../pages/socket';
+
 class PureProfile extends Component {
-    createChat = async () => {
+    createChat = () => {
+        const socket = getSocket();
+
         const { user, myUser } = this.props;
-        const response = await fetch('api/chats/', {
-            credentials: 'include',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                members: [user.nickname, myUser.nickname],
-                type: 'private'
-            })
+
+        this.props.onStartChatCreation();
+        socket.emit('chat', {
+            members: [myUser.nickname, user.nickname], // Важно! создатель первый в списке
+            type: 'private'
+        }, (chat, existsChatId) => {
+            if (chat) {
+                this.props.onChatCreated(chat);
+            } else {
+                this.props.onChatExists(existsChatId);
+            }
         });
-
-        if (response.status === 200) {
-            const createdChat = await response.json();
-
-            this.props.onCreateChat(createdChat);
-        }
     }
 
     render() {
@@ -45,7 +46,10 @@ class PureProfile extends Component {
 
 PureProfile.propTypes = {
     user: PropTypes.object,
-    onCreateChat: PropTypes.func
+    myUser: PropTypes.object,
+    onStartChatCreation: PropTypes.func,
+    onChatCreated: PropTypes.func,
+    onChatExists: PropTypes.func
 };
 
 export default connect(
@@ -53,8 +57,18 @@ export default connect(
         myUser: state.user
     }),
     dispatch => ({
-        onCreateChat: chat => {
-            dispatch({ type: 'CREATE_CHAT', chat }); // ТУДУ update sore
+        onStartChatCreation: () => {
+            dispatch({ type: 'SHOW_LOADER' });
+            dispatch({ type: 'HIDE_ADDUSER' });
+        },
+        onChatCreated: chat => {
+            dispatch({ type: 'CREATE_CHAT', chat });
+            dispatch({ type: 'OPEN_CHAT', id: chat._id });
+            dispatch({ type: 'HIDE_LOADER' });
+        },
+        onChatExists: chatId => {
+            dispatch({ type: 'OPEN_CHAT', id: chatId });
+            dispatch({ type: 'HIDE_LOADER' });
         }
     })
 )(PureProfile);

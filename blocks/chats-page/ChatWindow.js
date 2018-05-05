@@ -13,6 +13,8 @@ import getSocket from '../../pages/socket';
 
 import Message from '../common-components/Message';
 
+import Chat from '../../models/Chat';
+
 import Emoji from './Emoji';
 import Preview from './Preview';
 
@@ -60,7 +62,18 @@ class ChatWindow extends Component {
         const { currentTarget: { files } } = e;
 
         [...files].forEach(file => {
-            attachments.push(file);
+            // пока не трогать, бэк не готов
+            // const reader = new FileReader();
+            // reader.readAsArrayBuffer(file);
+            // console.log(reader);
+            // const response = await fetch('/api/attachments', {
+            //     credentials: 'include',
+            //     method: 'PUT',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ file: reader })
+            // });
+
+            return attachments.push(file);
         });
 
         this.setState({ attachments });
@@ -98,6 +111,8 @@ class ChatWindow extends Component {
                 author: this.props.user.nickname
             },
             chatId: this.props.activeChat._id
+        }, data => {
+            this.props.onReceiveMessage(data);
         });
     }
 
@@ -124,26 +139,30 @@ class ChatWindow extends Component {
             );
         }
 
+        const chat = new Chat(activeChat);
+        const avatar = chat.getAvatarFor(user);
+        const title = chat.getTitleFor(user);
+
         return (
             <section className="chat-window">
                 <div className="chat-header">
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
-                        src={`${activeChat.avatar}`}
+                        src={`${avatar}`}
                         onClick={() => this.showProfile(activeChat)}
                     />
                     <span
                         className="chat-header__name"
                         onClick={() => this.showProfile(activeChat)}
                         >
-                        {activeChat.title}
+                        {title}
                     </span>
                 </div>
                 <div className="messages messages_grid_large">
                     {activeChat.messages.map(message => (
                         <Message
-                            key={message.id || '0'}
+                            key={message._id || '0'}
                             message={message}
                             user={user}
                             activeChat={activeChat}
@@ -198,6 +217,7 @@ ChatWindow.propTypes = {
     onShowProfile: PropTypes.func,
     onShowEmoji: PropTypes.func,
     onHideEmoji: PropTypes.func,
+    onReceiveMessage: PropTypes.func,
     showEmoji: PropTypes.bool,
     activeChat: PropTypes.object
 };
@@ -217,6 +237,9 @@ export default connect(
         },
         onHideEmoji: () => {
             dispatch({ type: 'HIDE_EMOJI' });
+        },
+        onReceiveMessage: ({ chatId, message }) => {
+            dispatch({ type: 'RECEIVE_MESSAGE', chatId, message });
         }
     })
 )(ChatWindow);

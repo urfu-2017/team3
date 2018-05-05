@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import getSocket from '../../pages/socket';
+
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-closing-bracket-location */
 
@@ -13,34 +15,25 @@ import './CreateGroup.css';
 class CreateGroup extends Component {
     state = { groupMembers: [], groupTitle: 'group' }
 
-    createChat = async () => {
+    createChat = () => {
         const { groupMembers, groupTitle } = this.state;
 
-        groupMembers.push(this.props.user); // Себя добавляю
-        const response = await fetch('api/chats/', {
-            credentials: 'include',
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                title: groupTitle,
-                members: groupMembers,
-                type: 'group'
-            })
+        groupMembers.unshift(this.props.user);
+
+        const socket = getSocket();
+
+        this.props.onStartChatCreation();
+        socket.emit('chat', {
+            title: groupTitle,
+            members: groupMembers.map(m => m.nickname),
+            type: 'group'
+        }, chat => {
+            this.props.onChatCreated(chat);
         });
-
-        if (response.status === 200) {
-            const createdChat = await response.json();
-
-            this.props.onCreateChat(createdChat);
-        }
     }
 
     hideCreateGroup = () => {
         this.props.onHideCreateGroup();
-    }
-
-    componentDidMount() {
-        // this.nameInput.focus();
     }
 
     whoIsMyInterlocutor(members) {
@@ -136,18 +129,25 @@ CreateGroup.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
     showCG: PropTypes.boolean,
-    onHideCreateGroup: PropTypes.func,
-    onCreateChat: PropTypes.func
+    onChatCreated: PropTypes.func,
+    onStartChatCreation: PropTypes.func,
+    onHideCreateGroup: PropTypes.func
 };
 
 export default connect(
     state => ({ user: state.user, chats: state.chats, showCG: state.modal.showCG }),
     dispatch => ({
+        onStartChatCreation: () => {
+            dispatch({ type: 'HIDE_CREATEGROUP' });
+            dispatch({ type: 'SHOW_LOADER' });
+        },
+        onChatCreated: chat => {
+            dispatch({ type: 'CREATE_CHAT', chat });
+            dispatch({ type: 'OPEN_CHAT', id: chat._id });
+            dispatch({ type: 'HIDE_LOADER' });
+        },
         onHideCreateGroup: () => {
             dispatch({ type: 'HIDE_CREATEGROUP' });
-        },
-        onCreateChat: chat => {
-            dispatch({ type: 'CREATE_CHAT', chat }); // ТУДУ update sore
         }
     })
 )(CreateGroup);
