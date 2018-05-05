@@ -8,12 +8,14 @@ import chats from './chats';
 import activeChat from './activeChat';
 import user from './user';
 import modal from './modal';
+import invite from './invite';
 
 const reducer = combineReducers({
     chats,
     activeChat,
     user,
-    modal
+    modal,
+    invite
 });
 
 export default function makeStore(initialState) {

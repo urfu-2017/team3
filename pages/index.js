@@ -33,12 +33,31 @@ async function loadChats(req) {
     return { type: 'LOAD_CHATS', chats };
 }
 
+async function findUser(req) {
+    const splittedUrl = req.url.split('/');
+    const userName = splittedUrl[splittedUrl.length - 1];
+
+    if (userName) {
+        const res = await fetch(`http://localhost:3000/api/users/${userName}`, {
+            credentials: 'include',
+            headers: {
+                cookie: req.headers.cookie
+            }
+        });
+
+        return res.json();
+    }
+
+    return null;
+}
+
 class MainPage extends React.Component {
     static async getInitialProps({ store, req }) {
         store.dispatch({ type: 'LOGIN_USER', user: req.user });
         store.dispatch(await loadChats(req));
+        store.dispatch({ type: 'ACCEPT_INVITE', invite: await findUser(req) });
 
-        return { };
+        return {};
     }
 
     componentDidMount() {

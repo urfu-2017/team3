@@ -21,6 +21,10 @@ module.exports = (server, app) => {
             (req, res) => {
                 app.render(req, res, '/index');
             })
+        .get('/invite/:id', connectEnsureLogin.ensureLoggedIn('/auth'),
+            (req, res) => {
+                app.render(req, res, '/index');
+            })
         .get('/auth', (req, res) => {
             app.render(req, res, '/auth');
         })
