@@ -76,16 +76,16 @@ async function addReaction(req, res) {
             res.status(400).send('expected reaction field in body');
         }
 
-        const chat = await Chat.findOneAndUpdate(
+        const chat = await Chat.update(
             {
                 _id: req.params.chatId,
                 members: req.user.nickname,
-                messages: { $elemMatch: { _id: req.params.messageId } }
+                'messages._id': req.params.messageId
             },
             {
-                $inc: { [`{"messages.$.reactions.${req.body.reaction}`]: 1 }
+                $inc: { [`messages.$.reactions.${req.body.reaction}`]: 1 }
             },
-            { $upsert: true }
+            { $upsert: true, $new: true }
         );
 
         res.sendStatus(chat === null ? 400 : 200);
