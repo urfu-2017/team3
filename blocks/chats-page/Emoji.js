@@ -18,7 +18,8 @@ class Emoji extends Component {
             bottom: 'calc(48px + 5px)',
             right: 'calc(32px + 16px + 24px)',
             width: '25%',
-            minWidth: '300px'
+            minWidth: '300px',
+            zIndex: 20
         };
 
         return (
