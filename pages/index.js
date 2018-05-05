@@ -37,6 +37,10 @@ async function loadChats(req) {
 
 class MainPage extends React.Component {
     static async getInitialProps({ store, req }) {
+        if (!req) {
+            return {};
+        }
+
         store.dispatch({ type: 'LOGIN_USER', user: req.user });
         store.dispatch(await loadChats(req));
         if (req.params.id) {
