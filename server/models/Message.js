@@ -26,6 +26,7 @@ class MessageClass {
         const meta = await extractMeta(text);
 
         return {
+            _id: mongoose.Types.ObjectId(),
             author,
             meta,
             data: Date.now(),

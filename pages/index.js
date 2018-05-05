@@ -68,6 +68,10 @@ class MainPage extends React.Component {
             this.props.onCreateChat(chat);
             socket.emit('join', [chat._id]);
         });
+
+        socket.on('update_message', data => {
+            this.props.onUpdateMessage(data);
+        });
     }
 
     acceptInvite(socket, user, invite) {
@@ -135,7 +139,8 @@ MainPage.propTypes = {
     onReceiveMessage: PropTypes.func,
     onCreateChat: PropTypes.func,
     onOpenChat: PropTypes.func,
-    invite: PropTypes.string
+    invite: PropTypes.string,
+    onUpdateMessage: PropTypes.func
 };
 
 export default withRedux(makeStore,
@@ -149,6 +154,9 @@ export default withRedux(makeStore,
         },
         onOpenChat: chatId => {
             dispatch({ type: 'OPEN_CHAT', id: chatId });
+        },
+        onUpdateMessage: ({ chatId, message }) => {
+            dispatch({ type: 'UPDATE_MESSAGE', chatId, message });
         }
     })
 )(MainPage);
