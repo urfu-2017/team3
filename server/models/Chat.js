@@ -26,9 +26,11 @@ class ChatClass {
             }
         }
 
-        const chat = { title, members, type };
+        return await this.create({ title, members, type });
+    }
 
-        if (type === 'group') {
+    static async create(chat) {
+        if (chat.type === 'group') {
             const avatarInBase64 = createIdenticon();
 
             const response = await cloudinary.v2
