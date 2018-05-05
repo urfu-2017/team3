@@ -163,13 +163,20 @@ class ChatWindow extends Component {
     }
 
     activeChatId = '0';
+    messagesCount = 0;
 
     componentDidUpdate() {
         const { activeChat } = this.props;
 
-        if (activeChat && activeChat._id !== this.activeChatId) {
+        if (!activeChat) {
+            return;
+        }
+
+        if (activeChat._id !== this.activeChatId ||
+            activeChat.messages.length !== this.messagesCount) {
             this.scrollToBottom();
             this.activeChatId = activeChat._id;
+            this.messagesCount = activeChat.messages.length;
         }
     }
 
