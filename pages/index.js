@@ -72,40 +72,31 @@ class MainPage extends React.Component {
     acceptInvite(socket, user, invite) {
         if (invite) {
             Router.push('/');
+
             if (invite.startsWith('g_')) {
-                this.acceptGroupInvite(invite, socket);
+                const inviteId = invite.substr(2);
+
+                this.acceptInviteInternal(socket, {
+                    inviteId,
+                    type: 'group',
+                    currentUser: user.nickname
+                });
             } else {
-                this.acceptPrivateInvite(socket, user, invite);
+                this.acceptInviteInternal(socket, {
+                    members: [user.nickname, invite],
+                    type: 'private'
+                });
             }
         }
     }
 
-    acceptPrivateInvite(socket, user, invite) {
-        socket.emit('chat', {
-            members: [user.nickname, invite],
-            type: 'private'
-        }, chat => {
-            if (!this.props.chats.find(c => c.id === chat.id)) {
+    acceptInviteInternal(socket, description) {
+        socket.emit('chat', description, (chat, existingChatId) => {
+            if (chat) {
                 this.props.onCreateChat(chat);
             }
 
-            this.props.onOpenChat(chat);
-        });
-    }
-
-    acceptGroupInvite(invite, user, socket) {
-        const inviteId = invite.substr(2);
-
-        socket.emit('chat', {
-            inviteId,
-            type: 'group',
-            currentUser: user.nickname
-        }, chat => {
-            if (!this.props.chats.find(c => c.id === chat.id)) {
-                this.props.onCreateChat(chat);
-            }
-
-            this.props.onOpenChat(chat);
+            this.props.onOpenChat(chat ? chat._id : existingChatId);
         });
     }
 
@@ -154,8 +145,8 @@ export default withRedux(makeStore,
         onCreateChat: chat => {
             dispatch({ type: 'CREATE_CHAT', chat });
         },
-        onOpenChat: chat => {
-            dispatch({ type: 'OPEN_CHAT', id: chat._id });
+        onOpenChat: chatId => {
+            dispatch({ type: 'OPEN_CHAT', id: chatId });
         }
     })
 )(MainPage);

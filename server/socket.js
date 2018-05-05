@@ -48,21 +48,23 @@ module.exports = function setupSocket(ws) {
                 return;
             }
 
-            await createGroupChat(socket, senderCallback, title, members, type);
+            await createChat(socket, senderCallback, { title, members, type });
         });
     });
 
     async function addMember(inviteId, currentUser, senderCallback) {
-        const chat = await Chat.findOne({ inviteId });
+        let chat = await Chat.findOne({ inviteId });
 
-        if (!chat.members.find(currentUser)) {
-            await Chat.update({ _id: chat.id }, { $push: { members: currentUser } });
+        if (!chat.members.find(m => m === currentUser)) {
+            chat = await Chat.findOneAndUpdate({ _id: chat.id },
+                { $push: { members: currentUser } },
+                { new: true });
         }
 
         senderCallback(chat);
     }
 
-    async function createGroupChat(socket, senderCallback, { title, members, type }) {
+    async function createChat(socket, senderCallback, { title, members, type }) {
         const chat = await Chat.create({ title, members, type });
         const [, ...other] = members;
 
