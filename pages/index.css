@@ -14,6 +14,10 @@
     border-right: solid 1px #e4e4e4;
 }
 
+.chats::-webkit-scrollbar {
+    width: 0;
+}
+
 .chats__search {
     --padding: 8px;
     display: flex;

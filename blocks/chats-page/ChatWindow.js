@@ -56,26 +56,38 @@ class ChatWindow extends Component {
     }
 
     // добавляем новые файлы в превью
-    onFilesChange = e => {
+    onFilesChange = async e => {
         const attachments = this.state.attachments || [];
 
         const { currentTarget: { files } } = e;
 
-        [...files].forEach(file => {
-            // пока не трогать, бэк не готов
-            // const reader = new FileReader();
-            // reader.readAsArrayBuffer(file);
-            // console.log(reader);
-            // const response = await fetch('/api/attachments', {
-            //     credentials: 'include',
-            //     method: 'PUT',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ file: reader })
-            // });
+        const links = await [...files].map(async file => {
+            const formData = new FormData();
 
-            return attachments.push(file);
+            formData.append('attachment', file);
+
+            const response = await fetch('/api/attachments', {
+                credentials: 'include',
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.status === 200) {
+                attachments.push(file);
+            } else {
+                attachments.push('http://fotki.ykt.ru/albums/userpics/15649/moeya.jpg');
+            }
         });
 
+        if (this.state.attachmentsLinks) {
+            this.setState({
+                attachmentsLinks: attachmentsLinks.concat(links)
+            });
+        } else {
+            this.setState({
+                attachmentsLinks: links
+            });
+        }
         this.setState({ attachments });
         this.togglePreview([...files], attachments);
     }
@@ -108,7 +120,8 @@ class ChatWindow extends Component {
         socket.emit('message', {
             message: {
                 text,
-                author: this.props.user.nickname
+                author: this.props.user.nickname,
+                attachments: this.state.attachmentsLinks || []
             },
             chatId: this.props.activeChat._id
         }, data => {
