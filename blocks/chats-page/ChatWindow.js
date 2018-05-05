@@ -155,7 +155,7 @@ class ChatWindow extends Component {
 
         return (
             <section className="chat-window">
-                <div className="chat-header">
+                <div className="chat-header" onClick={this.props.onHideEmoji}>
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
@@ -169,7 +169,7 @@ class ChatWindow extends Component {
                         {title}
                     </span>
                 </div>
-                <div className="messages messages_grid_large">
+                <div className="messages messages_grid_large" onClick={this.props.onHideEmoji}>
                     {activeChat.messages.map(message => (
                         <Message
                             key={message._id || '0'}
@@ -183,14 +183,18 @@ class ChatWindow extends Component {
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
                 <Preview files={this.state.attachments} />
-                <div className="chat-input chat-input_separator_box-shadow">
+                <div
+                    className="chat-input chat-input_separator_box-shadow"
+                    onClick={this.props.onHideEmoji}>
                     <input
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
                         type="text"
                         className="chat-input__write-field"
                     />
-                    <label className="chat-input__emoji-btn chat-input__button">
+                    <label
+                        className="chat-input__emoji-btn chat-input__button"
+                        onClick={event => event.stopPropagation()}>
                         <input
                             type="button"
                             onClick={this.toggleEmoji}

@@ -113,3 +113,7 @@
     background-image: url(/static/send-button.png);
     background-size: var(--size);
 }
+
+.chat-input__emoji-btn {
+    z-index: 20;
+}

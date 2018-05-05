@@ -39,11 +39,9 @@ class Profile extends Component {
         });
 
         if (response.status === 200) {
-            const users = await response.json();
+            const answer = await response.json();
 
-            document.querySelector('.profile__avatar').src = users.url;
-
-            console.log(users);
+            document.querySelector('.profile__avatar').src = answer.url;
         }
     }
 
