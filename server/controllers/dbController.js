@@ -164,7 +164,7 @@ async function updateUserAvatar(req, res) {
             { $set: { avatar: url } }
         );
 
-        res.sendStatus(user === null ? 400 : 200);
+        res.status(user === null ? 400 : 200).json({ url });
     } catch (err) {
         res.status(500).send(err.message);
     }

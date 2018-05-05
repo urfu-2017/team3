@@ -10,12 +10,34 @@
 }
 
 .profile__avatar-box {
+    position: relative;
     width: 100px;
     height: 100px;
 }
 
 .profile__avatar {
     border-radius: 50px;
+    width: 100%;
+    height: 100%;
+}
+
+.profile__avatar-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background: rgba(0, 0, 0, 0.6);
+    visibility: hidden;
+}
+
+.profile__avatar-box:hover  .profile__avatar-hover {
+    visibility: visible;
+}
+
+.profile__input {
+    visibility: hidden;
 }
 
 .profile__info-box {
