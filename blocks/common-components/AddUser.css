@@ -3,7 +3,8 @@
     width: 400px;
     width: var(--width);
     height: 80%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 16px;
     box-sizing: border-box;
     background: white;
@@ -28,14 +29,18 @@
     box-sizing: border-box;
 }
 
-.adduser__input_wrapper {
-    /* не спрашивайте, почему */
-    position: fixed;
-    width: 368px;
-    height: 48px;
-    box-shadow: 0 -8px 0 8px #fff;
-    width: calc(var(--width) - 32px);
+@supports (width: -webkit-max-content) {
+    .adduser__input_wrapper {
+        /* не спрашивайте, почему */
+        position: fixed;
+        width: 368px;
+        height: 48px;
+        box-shadow: 0 -8px 0 8px #fff;
+        width: calc(var(--width) - 32px);
+    }
 }
+
+
 
 .adduser__list {
     width: 100%;
