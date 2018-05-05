@@ -219,7 +219,7 @@ describe('messenger API tests', () => {
         it('should get only chats where user is member', async () => {
             const checkChats = res => {
                 res.body.should.be.an.instanceOf(Array).with.lengthOf(1);
-                checkChat('private', 'user_2', ['user_1', 'user_2'], [])({ body: res.body[0] });
+                checkChat('private', 'apiTest', ['user_1', 'user_2'], [])({ body: res.body[0] });
             };
 
             await request(server)
