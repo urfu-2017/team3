@@ -1,14 +1,14 @@
 .adduser {
     --width: 400px;
+    box-sizing: border-box;
     width: 400px;
     width: var(--width);
     height: 80%;
-    overflow-y: auto;
-    overflow-x: hidden;
     padding: 16px;
-    box-sizing: border-box;
-    background: white;
+    overflow-x: hidden;
+    overflow-y: auto;
     border-radius: 8px;
+    background: white;
 }
 
 .adduser::-webkit-scrollbar {
@@ -16,33 +16,31 @@
 }
 
 .adduser__input {
-    padding: 0 16px;
-    height: 48px;
+    position: fixed;
+    z-index: 2;
+    box-sizing: border-box;
     width: 368px;
     width: calc(var(--width) - 32px);
+    height: 48px;
+    padding: 0 16px;
     border-width: 0;
     border-radius: 4px;
     outline: none;
     background-color: #ebebeb;
     font-size: 16px;
-    position: fixed;
-    box-sizing: border-box;
-    z-index: 2;
 }
 
 @supports (width: -webkit-max-content) {
     .adduser__input_wrapper {
         /* не спрашивайте, почему */
         position: fixed;
+        z-index: 1;
         width: 368px;
+        width: calc(var(--width) - 32px);
         height: 48px;
         box-shadow: 0 -8px 0 8px #fff;
-        width: calc(var(--width) - 32px);
-        z-index: 1;
     }
 }
-
-
 
 .adduser__list {
     width: 100%;
@@ -53,9 +51,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: calc(100% - 16px);
     height: 48px;
     padding: 8px;
-    width: calc(100% - 16px);
 }
 
 .adduser__user:hover {
@@ -63,8 +61,8 @@
 }
 
 .adduser__user-avatar {
-    height: 48px;
     width: 48px;
-    border-radius: 24px;
+    height: 48px;
     margin-right: 8px;
+    border-radius: 24px;
 }

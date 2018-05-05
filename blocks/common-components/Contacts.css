@@ -1,17 +1,17 @@
 .contacts {
+    box-sizing: border-box;
     width: 400px;
     padding: 16px;
-    box-sizing: border-box;
-    background: white;
     border-radius: 8px;
+    background: white;
 }
 
 .contacts__title {
-    font-size: 110%;
-    text-align: center;
     margin: 0 0 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--neutral-color);
+    font-size: 110%;
+    text-align: center;
 }
 
 .contacts__user-box {
@@ -22,13 +22,13 @@
 }
 
 .contacts__user-box:hover {
-    cursor: pointer;
-    background-color: var(--neutral-color);
     transition: .2s;
+    background-color: var(--neutral-color);
+    cursor: pointer;
 }
 
 .contacts__nickname {
     margin-left: 15px;
-    line-height: 30px;
     font-weight: bold;
+    line-height: 30px;
 }

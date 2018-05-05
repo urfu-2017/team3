@@ -1,29 +1,29 @@
 .create-group {
     --width: 400px;
+    box-sizing: border-box;
     width: 400px;
     width: var(--width);
+    padding: 16px;
+    overflow-x: hidden;
     /* height: 80%; */
     overflow-y: auto;
-    overflow-x: hidden;
-    padding: 16px;
-    box-sizing: border-box;
-    background: white;
     border-radius: 8px;
+    background: white;
 }
 
 .create-group__input {
-    padding: 0 16px;
-    height: 48px;
+    position: fixed;
+    z-index: 2;
+    box-sizing: border-box;
     width: 368px;
     width: calc(var(--width) - 32px);
+    height: 48px;
+    padding: 0 16px;
     border-width: 0;
     border-radius: 4px;
     outline: none;
     background-color: #ebebeb;
     font-size: 16px;
-    position: fixed;
-    box-sizing: border-box;
-    z-index: 2;
 }
 
 .create-group__list {
@@ -40,15 +40,15 @@
 }
 
 .create-group__user-box:hover {
-    cursor: pointer;
-    background-color: var(--neutral-color);
     transition: .2s;
+    background-color: var(--neutral-color);
+    cursor: pointer;
 }
 
 .create-group__nickname {
     margin-left: 15px;
-    line-height: 30px;
     font-weight: bold;
+    line-height: 30px;
 }
 
 .create-group__info_wrapper {
@@ -57,29 +57,29 @@
     align-items: center;
     justify-content: space-around;
     margin-top: 16px;
-    border-top: 1px solid var(--neutral-color);
     padding-top: 16px;
+    border-top: 1px solid var(--neutral-color);
 }
 
 .create-group__number-members {
-    font-size: 110%;
     height: 30px;
+    font-size: 110%;
     line-height: 30px;
     text-align: center;
 }
 
 .create-group__button {
+    width: 110px;
+    height: 30px;
+    margin-top: 8px;
     border: none;
+    border-radius: 5px;
     background: none;
     font-size: 110%;
-    border-radius: 5px;
-    height: 30px;
-    width: 110px;
-    margin-top: 8px;
 }
 
 .create-group__button:hover {
-    cursor: pointer;
-    background-color: var(--neutral-color);
     transition: .2s;
+    background-color: var(--neutral-color);
+    cursor: pointer;
 }
