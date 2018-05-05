@@ -40,6 +40,7 @@ class Profile extends Component {
         /* eslint-disable react/jsx-no-bind */
         /* eslint-disable react/self-closing-comp */
         /* eslint-disable prefer-destructuring */
+        this.props.onShowLoader();
         const file = e.target.files[0];
 
         const formData = new FormData();
@@ -55,8 +56,9 @@ class Profile extends Component {
         if (response.status === 200) {
             const answer = await response.json();
 
-            document.querySelector('.profile__avatar').src = answer.url;
+            this.props.onChangeAvatar(answer.url);
         }
+        this.props.onHideLoader();
     }
 
     render() {
@@ -136,7 +138,10 @@ class Profile extends Component {
 Profile.propTypes = {
     profile: PropTypes.object,
     onHideProfile: PropTypes.func,
-    user: PropTypes.object
+    user: PropTypes.object,
+    onShowLoader: PropTypes.func,
+    onHideLoader: PropTypes.func,
+    onChangeAvatar: PropTypes.func
 };
 
 export default connect(
@@ -144,6 +149,15 @@ export default connect(
     dispatch => ({
         onHideProfile: () => {
             dispatch({ type: 'HIDE_PROFILE' });
+        },
+        onShowLoader: () => {
+            dispatch({ type: 'SHOW_LOADER' });
+        },
+        onHideLoader: () => {
+            dispatch({ type: 'HIDE_LOADER' });
+        },
+        onChangeAvatar: avatar => {
+            dispatch({ type: 'CHANGE_AVATAR', avatar });
         }
     })
 )(Profile);
