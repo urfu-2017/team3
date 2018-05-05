@@ -13,6 +13,8 @@ import getSocket from '../../pages/socket';
 
 import Message from '../common-components/Message';
 
+import Chat from '../../models/Chat';
+
 import Emoji from './Emoji';
 import Preview from './Preview';
 
@@ -126,20 +128,24 @@ class ChatWindow extends Component {
             );
         }
 
+        const chat = new Chat(activeChat);
+        const avatar = chat.getAvatarFor(user);
+        const title = chat.getTitleFor(user);
+
         return (
             <section className="chat-window">
                 <div className="chat-header">
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
-                        src={`${activeChat.avatar}`}
+                        src={`${avatar}`}
                         onClick={() => this.showProfile(activeChat)}
                     />
                     <span
                         className="chat-header__name"
                         onClick={() => this.showProfile(activeChat)}
                         >
-                        {activeChat.title}
+                        {title}
                     </span>
                 </div>
                 <div className="messages messages_grid_large">
