@@ -8,7 +8,6 @@ import chats from './chats';
 import activeChat from './activeChat';
 import user from './user';
 import modal from './modal';
-import invite from './invite';
 import loader from './loader';
 import invite from './invite';
 
