@@ -1,12 +1,13 @@
 .profile {
     display: flex;
     flex-direction: row;
-    width: 320px;
+    width: 420px;
     height: 164px;
     padding: 32px;
     box-sizing: border-box;
     background: white;
     border-radius: 8px;
+    z-index: 100;
 }
 
 .profile__avatar-box {
@@ -28,4 +29,9 @@
     color: #444444;
     font-size: 18px;
     font-weight: bold;
+}
+
+.profile__invite-link{
+    margin-top: 10px;
+    color: #888;
 }

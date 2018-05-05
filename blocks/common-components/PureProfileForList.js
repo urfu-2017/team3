@@ -22,7 +22,7 @@ class PureProfile extends Component {
                 this.props.onChatExists(existsChatId);
             }
         });
-    }
+    };
 
     render() {
         const { user } = this.props;
