@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 
 import moment from 'moment';
 
+import Chat from '../../models/Chat';
+
 import './ChatIcon.css';
 
 class ChatIcon extends Component {
@@ -19,31 +21,13 @@ class ChatIcon extends Component {
         this.props.onOpenChat(this.props.chatProps);
     }
 
-    getInterlocutor = chat => {
-        const { user } = this.props;
-
-        let [interlocutor] = chat.members.filter(m => m.nickname !== user.nickname);
-
-        if (!interlocutor) {
-            interlocutor = user;
-        }
-
-        return interlocutor;
-    }
-
-    getLastMessage = chat => {
-        if (chat.members.length) {
-            return chat.messages[chat.messages.length - 1];
-        }
-    }
-
     render() {
-        const { chatProps } = this.props;
+        const { chatProps, user } = this.props;
 
-        const lastMessage = this.getLastMessage(chatProps);
-        const interlocutor = this.getInterlocutor(chatProps);
-        const avatar = chatProps.avatar || interlocutor.avatar;
-        const title = chatProps.title || interlocutor.nickname;
+        const chat = new Chat(chatProps);
+        const lastMessage = chat.getLastMessage();
+        const avatar = chat.getAvatarFor(user);
+        const title = chat.getTitleFor(user);
 
         return (
             <div className="chat-icon" onClick={this.openChat}>
