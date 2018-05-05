@@ -56,7 +56,8 @@ async function createMessage(req, res) {
 
         const message = await Message.initialize({
             author: req.user.nickname,
-            text: req.body.text
+            text: req.body.text,
+            attachments: req.body.attachments
         });
 
         const chat = await Chat.findOneAndUpdate(
