@@ -33,7 +33,7 @@ class ChatWindow extends Component {
     changeText = e => this.setState({ msgText: e.target.value });
 
     // при подгрузке картинок меняем css
-    togglePreview(newFiles, oldfiles) {
+    togglePreview(oldfiles) {
         const messages = document.querySelector('.messages');
         const chatInput = document.querySelector('.chat-input');
 
@@ -61,11 +61,12 @@ class ChatWindow extends Component {
 
         const { currentTarget: { files } } = e;
 
-        const links = await [...files].map(async file => {
+        const links = [];
+
+        await Promise.all([...files].map(async file => {
             const formData = new FormData();
 
-            formData.append('attachment', file);
-
+            formData.append('image', file);
             const response = await fetch('/api/attachments', {
                 credentials: 'include',
                 method: 'PUT',
@@ -73,23 +74,31 @@ class ChatWindow extends Component {
             });
 
             if (response.status === 200) {
-                attachments.push(file);
-            } else {
-                attachments.push('http://fotki.ykt.ru/albums/userpics/15649/moeya.jpg');
-            }
-        });
+                const answer = await response.json();
+                const { url } = answer;
 
-        if (this.state.attachmentsLinks) {
-            this.setState({
-                attachmentsLinks: attachmentsLinks.concat(links)
+                links.push(url);
+
+                return url;
+            }
+
+            return 'http://fotki.ykt.ru/albums/userpics/15649/moeya.jpg';
+        }));
+
+        if (attachments.length) {
+            await this.setState({
+                attachmentsLinks: this.state.attachmentsLinks.concat(links)
             });
         } else {
-            this.setState({
+            await this.setState({
                 attachmentsLinks: links
             });
         }
-        this.setState({ attachments });
-        this.togglePreview([...files], attachments);
+        [...files].forEach(file => {
+            attachments.push(file);
+        });
+        await this.setState({ attachments });
+        await this.togglePreview(attachments);
     }
 
     // клик на рожицу, используется в <Emoji.../>
@@ -111,6 +120,11 @@ class ChatWindow extends Component {
     }
 
     submitMessage = () => {
+        this.setState({
+            attachments: [],
+            attachmentsLinks: []
+        });
+        this.togglePreview([]);
         const input = document.querySelector('.chat-input__write-field');
         const text = input.value;
 

@@ -40,7 +40,7 @@ export default class Preview extends Component {
     render() {
         const { files } = this.props;
 
-        if (!files) {
+        if (!files || files.length === 0) {
             return <div className="img-preview" />;
         }
 
