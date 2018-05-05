@@ -66,6 +66,7 @@ class MainPage extends React.Component {
 
         socket.on('chat', chat => {
             this.props.onCreateChat(chat);
+            socket.emit('join', [chat._id]);
         });
     }
 
@@ -94,6 +95,7 @@ class MainPage extends React.Component {
         socket.emit('chat', description, (chat, existingChatId) => {
             if (chat) {
                 this.props.onCreateChat(chat);
+                socket.emit('join', [chat._id]);
             }
 
             this.props.onOpenChat(chat ? chat._id : existingChatId);
