@@ -1,13 +1,12 @@
 .profile {
     display: flex;
     flex-direction: row;
-    width: 420px;
+    width: 320px;
     height: 164px;
     padding: 32px;
     box-sizing: border-box;
     background: white;
     border-radius: 8px;
-    z-index: 100;
 }
 
 .profile__avatar-box {

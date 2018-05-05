@@ -24,8 +24,6 @@ class Profile extends Component {
             return (<div />);
         }
 
-        const groupInviteLink = getGroupInviteLink(window.location, profile.inviteId);
-
         return (
             <div className="darkness" onClick={this.hideProfile}>
                 <div className="profile">
@@ -36,13 +34,25 @@ class Profile extends Component {
                         <span className="profile__nickname">
                             {profile.nickname || profile.title}
                         </span>
-                        <CopyToClipboard text={groupInviteLink}>
-                            <span className="profile__invite-link">Get Invite link</span>
-                        </CopyToClipboard>
+
+                        {this.inviteLink(profile)}
                     </div>
                 </div>
             </div>
         );
+    }
+
+    inviteLink(profile) {
+        const groupInviteLink = getGroupInviteLink(window.location, profile.inviteId);
+
+        if (profile.inviteId) {
+            return (
+                <CopyToClipboard text={groupInviteLink}>
+                    <span className="profile__invite-link">Get Invite link</span>
+                </CopyToClipboard>);
+        }
+
+        return <div />;
     }
 }
 
