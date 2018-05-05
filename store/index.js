@@ -8,6 +8,7 @@ import chats from './chats';
 import activeChat from './activeChat';
 import user from './user';
 import modal from './modal';
+import loader from './loader';
 import invite from './invite';
 
 const reducer = combineReducers({
@@ -15,6 +16,7 @@ const reducer = combineReducers({
     activeChat,
     user,
     modal,
+    loader,
     invite
 });
 
