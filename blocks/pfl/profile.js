@@ -22,6 +22,31 @@ class Profile extends Component {
         return members[0];
     }
 
+    onFileChange = async e => {
+        /* eslint-disable react/jsx-no-bind */
+        /* eslint-disable react/self-closing-comp */
+        /* eslint-disable prefer-destructuring */
+        const file = e.target.files[0];
+
+        const formData = new FormData();
+
+        formData.append('userAvatar', file);
+
+        const response = await fetch(`/api/users/${this.props.user.nickname}/avatar`, {
+            credentials: 'include',
+            method: 'PATCH',
+            body: formData
+        });
+
+        if (response.status === 200) {
+            const users = await response.json();
+
+            document.querySelector('.profile__avatar').src = users.url;
+
+            console.log(users);
+        }
+    }
+
     render() {
         const { profile } = this.props;
 
@@ -29,28 +54,51 @@ class Profile extends Component {
             return (<div />);
         }
 
-        let avatalLink = '';
-        let title = '';
-
+        // ЕСЛИ СВОЙ ПРОФИЛЬ
         if (profile.nickname) {
-            title = profile.nickname;
-            avatalLink = `data:image/svg+xml;base64,${profile.avatar}`;
-        } else {
-            const man = this.whoIsMyInterlocutor(profile.members);
-
-            title = man.nickname;
-            avatalLink = man.avatar;
+            return (
+                <div className="darkness" onClick={this.hideProfile}>
+                    <div className="profile" onClick={event => event.stopPropagation()}>
+                        <div className="profile__avatar-box">
+                            <label htmlFor="imginput">
+                                <img
+                                    className="profile__avatar"
+                                    src={profile.avatar}
+                                    alt="avatar"
+                                />
+                            </label>
+                            <label htmlFor="imginput">
+                                <div className="profile__avatar-hover"></div>
+                            </label>
+                            <input
+                                onChange={this.onFileChange}
+                                name="userAvatar" id="imginput"
+                                className="profile__input"
+                                type="file"
+                            />
+                        </div>
+                        <div className="profile__info-box">
+                            <span className="profile__nickname">
+                                {profile.nickname}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            );
         }
+
+        // ЕСЛИ ПРОФИЛЬ ДРУГОГО ЮЗЕРА
+        const userFromNet = this.whoIsMyInterlocutor(profile.members);
 
         return (
             <div className="darkness" onClick={this.hideProfile}>
-                <div className="profile">
+                <div className="profile" onClick={event => event.stopPropagation()}>
                     <div className="profile__avatar-box">
-                        <img className="profile__avatar" src={avatalLink} alt="avatar" />
+                        <img className="profile__avatar" src={userFromNet.avatar} alt="avatar" />
                     </div>
                     <div className="profile__info-box">
                         <span className="profile__nickname">
-                            {title}
+                            {userFromNet.nickname}
                         </span>
                     </div>
                 </div>

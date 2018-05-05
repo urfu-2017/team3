@@ -129,7 +129,9 @@ class ChatWindow extends Component {
     }
 
     scrollToBottom = () => {
-        this.messagesEnd.scrollIntoView();
+        if (this.messagesEnd) {
+            this.messagesEnd.scrollIntoView();
+        }
     }
 
     componentDidUpdate() {
