@@ -1,25 +1,45 @@
 .adduser {
+    --width: 400px;
     width: 400px;
+    width: var(--width);
+    height: 80%;
+    overflow: auto;
     padding: 16px;
     box-sizing: border-box;
     background: white;
     border-radius: 8px;
 }
 
+.adduser::-webkit-scrollbar {
+    width: 0;
+}
+
 .adduser__input {
     padding: 0 16px;
     height: 48px;
-    width: calc(100% - 32px);
+    width: 368px;
+    width: calc(var(--width) - 32px);
     border-width: 0;
     border-radius: 4px;
     outline: none;
     background-color: #ebebeb;
-    font-size: 12px;
+    font-size: 16px;
+    position: fixed;
+    box-sizing: border-box;
+}
+
+.adduser__input_wrapper {
+    /* не спрашивайте, почему */
+    position: fixed;
+    width: 368px;
+    height: 48px;
+    box-shadow: 0 -8px 0 8px #fff;
+    width: calc(var(--width) - 32px);
 }
 
 .adduser__list {
     width: 100%;
-    margin-top: 16px;
+    margin-top: 48px;
 }
 
 .adduser__user {

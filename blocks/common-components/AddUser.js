@@ -48,17 +48,19 @@ class AddUser extends Component {
         return (
             <div className="darkness" onClick={this.hideAddUser}>
                 <div className="adduser" onClick={event => event.stopPropagation()}>
-                    <input
-                        type="text"
-                        className="adduser__input"
-                        placeholder="Найти пользователя"
-                        onKeyPress={this.searchUsers}
-                        ref={input => { this.nameInput = input; }}
-                    />
+                    <div className="adduser__input_wrapper">
+                        <input
+                            type="text"
+                            className="adduser__input"
+                            placeholder="Найти пользователя"
+                            onKeyPress={this.searchUsers}
+                            ref={input => { this.nameInput = input; }}
+                        />
+                    </div>
                     <div className="adduser__list">
                         {foundUsers
                             ?
-                                <div className="chats__found-users">
+                                <div className="adduser__found-users">
                                     { foundUsers.map(foundUser => {
                                         return (
                                             <PureProfile
