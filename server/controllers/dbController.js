@@ -185,6 +185,18 @@ async function updateChatAvatar(req, res) {
     }
 }
 
+async function uploadAttachment(req, res) {
+    try {
+        const { url } = await cloudinary.v2.uploader.upload(
+            `data:image/png;base64,${req.file.buffer.toString('base64')}`,
+        );
+
+        res.status(200).json({ url });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+}
+
 async function _updateImage(publicId, fileBuffer) {
     await cloudinary.v2.uploader.destroy(publicId);
 
@@ -241,5 +253,5 @@ async function deleteUserFromChat(req, res) {
 module.exports = {
     getChats, getMessages, createMessage, addReaction, updateUserAvatar,
     getUser, createChat, createUser, addUserToChat, deleteUserFromChat,
-    updateChatAvatar, updateChatTitle, getUsers
+    updateChatAvatar, updateChatTitle, getUsers, uploadAttachment
 };

@@ -18,7 +18,7 @@ const mongoSchema = new mongoose.Schema({
     text: String,
     meta: {},
     reactions: {},
-    attachmentIds: [mongoose.Schema.Types.ObjectId]
+    attachments: [String]
 }, { minimize: false });
 
 class MessageClass {
