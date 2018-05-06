@@ -120,6 +120,11 @@ class Profile extends Component {
                         </span>
 
                         {this.inviteLink(profile)}
+                        <ul>
+                            {profile.members
+                                ? profile.members.map(m => <li key={m.nickname}>{m.nickname}</li>)
+                                : null}
+                        </ul>
                     </div>
                 </div>
             </div>
