@@ -14,10 +14,6 @@
     border-right: solid 1px #e4e4e4;
 }
 
-.chats::-webkit-scrollbar {
-    width: 0;
-}
-
 .chats__search {
     --padding: 8px;
     display: flex;
@@ -77,6 +73,10 @@
     width: 100%;
     height: calc(100% - 48px - 2*8px);
     overflow: auto;
+}
+
+.chats__list::-webkit-scrollbar {
+    width: 0;
 }
 
 .dialog {
