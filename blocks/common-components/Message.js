@@ -37,14 +37,14 @@ export default class Message extends Component {
     }
 
     formatToEmoji(text) {
-        return text.split(/:([0-9a-z_-]+):/).map((chunk, i) => {
+        return text.split(/:(\+?[0-9a-z_-]+):/).map((chunk, i) => {
             if (i % 2) {
                 return (
                     <Emoji
                         key={Math.floor(Math.random() * 1000000)}
                         emoji={chunk}
                         set="emojione"
-                        size={16}
+                        size={20}
                     />
                 );
             }
