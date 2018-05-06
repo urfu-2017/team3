@@ -51,6 +51,35 @@ module.exports = function setupSocket(ws) {
 
             await createChat(socket, senderCallback, { title, members, type });
         });
+
+        socket.on('reaction', async data => {
+            const { chatId, messageId, reaction } = data;
+
+            await Chat.update(
+                {
+                    _id: chatId,
+                    'messages._id': messageId
+                },
+                {
+                    $inc: { [`messages.$.reactions.${reaction}`]: 1 }
+                },
+                {
+                    $upsert: true,
+                    $new: true
+                }
+            );
+
+            const updatedChat = await Chat.findOne(
+                {
+                    _id: chatId,
+                    'messages._id': messageId
+                }
+            );
+            // туду: не умеем получать отдельное сообщение из массива
+            const message = updatedChat.messages.find(m => m._id.toString() === messageId);
+
+            ws.to(chatId).emit('update_message', { chatId, message });
+        });
     });
 
     async function addMember(inviteId, currentUser, senderCallback) {

@@ -6,41 +6,24 @@ import PropTypes from 'prop-types';
 import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
 
+import getSocket from '../../pages/socket';
+
 import EmojiPicker from './EmojiToMessage';
 import './Message.css';
 
 /* eslint-disable react/jsx-no-bind */
 
 export default class Message extends Component {
-    state = {
-        reactions: this.props.message.reactions || {}
-    }
+    state = { }
 
-    addEmoji = async emoji => {
+    addEmoji = emoji => {
+
         const chatId = this.props.activeChat._id;
-        const msgId = this.props.message._id;
-        const response = await fetch(
-            `/api/chats/${chatId}/messages/${msgId}/reactions`,
-            {
-                credentials: 'include',
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reaction: emoji.id })
-            }
-        );
+        const messageId = this.props.message._id;
 
-        if (response.status === 200) {
-            const { reactions } = this.state;
-            const isHaveSmile = Object.keys(reactions).includes(emoji.id);
+        const socket = getSocket();
 
-            if (isHaveSmile) {
-                reactions[`${emoji.id}`] += 1;
-            } else {
-                reactions[`${emoji.id}`] = 1;
-            }
-
-            this.setState({ reactions });
-        }
+        socket.emit('reaction', { chatId, messageId, reaction: emoji.id });
     };
 
     toggleEmoji = () => {
@@ -129,9 +112,9 @@ export default class Message extends Component {
     render() {
         const { message, user } = this.props;
         const { text, author, date, meta, attachments } = message;
-        const { showEmojiToMsg, reactions } = this.state;
-        // const attachmentIds =
-        // ['https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'];
+        const { showEmojiToMsg } = this.state;
+
+        const reactions = message.reactions || {};
         /* eslint-disable react/jsx-closing-tag-location */
 
         const { newText, images, goodDate, peopleEmoji, metadata } = this.formatting({

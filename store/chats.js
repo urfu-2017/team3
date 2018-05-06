@@ -1,5 +1,8 @@
 'use strict';
 
+/* eslint complexity: 0 */
+/* eslint max-statements: 0 */
+
 export default function chats(state = [], action) {
     if (action.type === 'LOAD_CHATS') {
         return action.chats;
@@ -19,6 +22,10 @@ export default function chats(state = [], action) {
         return [...state, action.chat];
     }
 
+    if (action.type === 'UPDATE_MESSAGE') {
+        return updateMessageImmutable(state, action.chatId, action.message);
+    }
+
     return state;
 }
 
@@ -29,6 +36,25 @@ function pushMessageImmutable(oldChats, chatId, message) {
     const newChat = {
         ...oldChat,
         messages: [...oldChat.messages, message]
+    };
+
+    newChats[chatIndex] = newChat;
+
+    return newChats;
+}
+
+function updateMessageImmutable(oldChats, chatId, message) {
+    const newChats = [...oldChats];
+    const chatIndex = newChats.findIndex(c => c._id === chatId);
+    const oldChat = newChats[chatIndex];
+    const newMessages = [...oldChat.messages];
+    const messageIndex = newMessages.findIndex(m => m._id === message._id);
+
+    newMessages[messageIndex] = message;
+
+    const newChat = {
+        ...oldChat,
+        messages: newMessages
     };
 
     newChats[chatIndex] = newChat;

@@ -140,6 +140,7 @@ class ChatWindow extends Component {
             chatId: this.props.activeChat._id
         }, data => {
             this.props.onReceiveMessage(data);
+            this.scrollToBottom();
         });
     }
 
@@ -161,8 +162,20 @@ class ChatWindow extends Component {
         }
     }
 
+    activeChatId = '0';
+
     componentDidUpdate() {
-        this.scrollToBottom();
+        const { activeChat } = this.props;
+
+        if (!activeChat) {
+            return;
+        }
+
+        if (activeChat._id !== this.activeChatId) {
+            this.scrollToBottom();
+            this.activeChatId = activeChat._id;
+            this.messagesCount = activeChat.messages.length;
+        }
     }
 
     render() {

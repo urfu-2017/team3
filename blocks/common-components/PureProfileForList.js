@@ -18,6 +18,7 @@ class PureProfile extends Component {
         }, (chat, existsChatId) => {
             if (chat) {
                 this.props.onChatCreated(chat);
+                socket.emit('join', [chat._id]);
             } else {
                 this.props.onChatExists(existsChatId);
             }
