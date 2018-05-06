@@ -111,11 +111,10 @@ export default class Message extends Component {
 
     render() {
         const { message, user } = this.props;
-        const { text, author, date, meta, qttachments } = message;
+        const { text, author, date, meta, attachments } = message;
         const { showEmojiToMsg } = this.state;
 
         const reactions = message.reactions || {};
-        const attachmentIds = ['https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'];
         /* eslint-disable react/jsx-closing-tag-location */
 
         const { newText, images, goodDate, peopleEmoji, metadata } = this.formatting({
