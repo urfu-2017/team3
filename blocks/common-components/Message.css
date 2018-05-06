@@ -27,6 +27,14 @@
     font-size: 12px;
 }
 
+.message__sender {
+    margin-right: 10px;
+}
+
+.message__date {
+    text-align: right;
+}
+
 .message__content {
     margin: 10px 0;
     word-break: break-all;

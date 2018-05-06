@@ -33,7 +33,7 @@ class ChatWindow extends Component {
     changeText = e => this.setState({ msgText: e.target.value });
 
     // при подгрузке картинок меняем css
-    togglePreview(newFiles, oldfiles) {
+    togglePreview(oldfiles) {
         const messages = document.querySelector('.messages');
         const chatInput = document.querySelector('.chat-input');
 
@@ -56,28 +56,49 @@ class ChatWindow extends Component {
     }
 
     // добавляем новые файлы в превью
-    onFilesChange = e => {
+    onFilesChange = async e => {
         const attachments = this.state.attachments || [];
 
         const { currentTarget: { files } } = e;
 
+        const links = [];
+
+        await Promise.all([...files].map(async file => {
+            const formData = new FormData();
+
+            formData.append('image', file);
+            const response = await fetch('/api/attachments', {
+                credentials: 'include',
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response.status === 200) {
+                const answer = await response.json();
+                const { url } = answer;
+
+                links.push(url);
+
+                return url;
+            }
+
+            return 'http://fotki.ykt.ru/albums/userpics/15649/moeya.jpg';
+        }));
+
+        if (attachments.length) {
+            await this.setState({
+                attachmentsLinks: this.state.attachmentsLinks.concat(links)
+            });
+        } else {
+            await this.setState({
+                attachmentsLinks: links
+            });
+        }
         [...files].forEach(file => {
-            // пока не трогать, бэк не готов
-            // const reader = new FileReader();
-            // reader.readAsArrayBuffer(file);
-            // console.log(reader);
-            // const response = await fetch('/api/attachments', {
-            //     credentials: 'include',
-            //     method: 'PUT',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ file: reader })
-            // });
-
-            return attachments.push(file);
+            attachments.push(file);
         });
-
-        this.setState({ attachments });
-        this.togglePreview([...files], attachments);
+        await this.setState({ attachments });
+        await this.togglePreview(attachments);
     }
 
     // клик на рожицу, используется в <Emoji.../>
@@ -99,6 +120,11 @@ class ChatWindow extends Component {
     }
 
     submitMessage = () => {
+        this.setState({
+            attachments: [],
+            attachmentsLinks: []
+        });
+        this.togglePreview([]);
         const input = document.querySelector('.chat-input__write-field');
         const text = input.value;
 
@@ -108,7 +134,8 @@ class ChatWindow extends Component {
         socket.emit('message', {
             message: {
                 text,
-                author: this.props.user.nickname
+                author: this.props.user.nickname,
+                attachments: this.state.attachmentsLinks || []
             },
             chatId: this.props.activeChat._id
         }, data => {
