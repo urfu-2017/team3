@@ -43,7 +43,7 @@ class ChatClass {
             const response = await cloudinary.v2
                 .uploader.upload(`data:image/png;base64,${avatarInBase64}`);
 
-            chat.avatar = response.url;
+            chat.avatar = response.secure_url;
             chat.inviteId = getRandomString().substring(0, 5);
         }
 

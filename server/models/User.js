@@ -23,7 +23,7 @@ class UserClass {
         const avatarInBase64 = createIdenticon();
         const response = await this._uploadAvatar(avatarInBase64, nickname);
 
-        return await this.create({ nickname, avatar: response.url });
+        return await this.create({ nickname, avatar: response.secure_url });
     }
 
     static _uploadAvatar(avatarInBase64, nickname) {
