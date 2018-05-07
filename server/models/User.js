@@ -13,6 +13,7 @@ const mongoSchema = new mongoose.Schema({
 }, { toJSON: { virtuals: true } });
 
 class UserClass {
+    /* eslint-disable camelcase */
     static async findOrCreate({ nickname }) {
         const user = await this.findOne({ _id: nickname });
 
@@ -21,10 +22,11 @@ class UserClass {
         }
 
         const avatarInBase64 = createIdenticon();
-        const response = await this._uploadAvatar(avatarInBase64, nickname);
+        const { secure_url } = await this._uploadAvatar(avatarInBase64, nickname);
 
-        return await this.create({ nickname, avatar: response.url });
+        return await this.create({ nickname, avatar: secure_url });
     }
+    /* eslint-enable camelcase */
 
     static _uploadAvatar(avatarInBase64, nickname) {
         const content = `data:image/png;base64,${avatarInBase64}`;

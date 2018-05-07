@@ -36,14 +36,15 @@ class ChatClass {
         return await this.create({ title, members, type });
     }
 
+    /* eslint-disable camelcase */
     static async create(chat) {
         if (chat.type === 'group') {
             const avatarInBase64 = createIdenticon();
 
-            const response = await cloudinary.v2
+            const { secure_url } = await cloudinary.v2
                 .uploader.upload(`data:image/png;base64,${avatarInBase64}`);
 
-            chat.avatar = response.url;
+            chat.avatar = secure_url;
             chat.inviteId = getRandomString().substring(0, 5);
         }
 
@@ -57,6 +58,7 @@ class ChatClass {
             });
 
     }
+    /* eslint-enable camelcase */
 
     static isValid({ members, type }) {
         if (!members) {

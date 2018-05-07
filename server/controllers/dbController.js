@@ -156,16 +156,18 @@ async function createUser(req, res) {
     }
 }
 
+/* eslint-disable camelcase */
 async function updateUserAvatar(req, res) {
     try {
-        const { url } = await _updateImage(`${req.params.nickname}_profile`, req.file.buffer);
+        const publicId = `${req.params.nickname}_profile`;
+        const { secure_url } = await _updateImage(publicId, req.file.buffer);
 
         const user = await User.findOneAndUpdate(
             { _id: req.params.nickname },
-            { $set: { avatar: url } }
+            { $set: { avatar: secure_url } }
         );
 
-        res.status(user === null ? 400 : 200).json({ url });
+        res.status(user === null ? 400 : 200).json({ url: secure_url });
     } catch (err) {
         res.status(500).send(err.message);
     }
@@ -173,11 +175,11 @@ async function updateUserAvatar(req, res) {
 
 async function updateChatAvatar(req, res) {
     try {
-        const { url } = await _updateImage(req.params.id, req.file.buffer);
+        const { secure_url } = await _updateImage(req.params.id, req.file.buffer);
 
         const user = await Chat.findOneAndUpdate(
             { _id: req.params.id },
-            { $set: { avatar: url } }
+            { $set: { avatar: secure_url } }
         );
 
         res.sendStatus(user === null ? 400 : 200);
@@ -188,15 +190,16 @@ async function updateChatAvatar(req, res) {
 
 async function uploadAttachment(req, res) {
     try {
-        const { url } = await cloudinary.v2.uploader.upload(
+        const { secure_url } = await cloudinary.v2.uploader.upload(
             `data:image/png;base64,${req.file.buffer.toString('base64')}`,
         );
 
-        res.status(200).json({ url });
+        res.status(200).json({ url: secure_url });
     } catch (err) {
         res.status(500).send(err.message);
     }
 }
+/* eslint-enable camelcase */
 
 async function _updateImage(publicId, fileBuffer) {
     await cloudinary.v2.uploader.destroy(publicId);

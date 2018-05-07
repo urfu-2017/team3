@@ -124,7 +124,7 @@ describe('messenger API tests', () => {
             const checkBody = res => {
                 res.body.should.have.property('nickname', 'user_1');
                 res.body.should.have.property('avatar');
-                res.body.avatar.should.match(/^http:\/\/res.cloudinary.com\/team3\/image\/upload/);
+                res.body.avatar.should.match(/^https:\/\/res.cloudinary.com\/team3\/image\/upload/);
             };
 
             await request(server)
