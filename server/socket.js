@@ -27,11 +27,12 @@ module.exports = function setupSocket(ws) {
 
         socket.on('chat', async (data, senderCallback) => {
             // members - список пользователей без создателя чата
-            const { title, type, members } = data;
+
+            const { title, type, members, inviteId, currentUser } = data;
 
             if (type === 'private') {
                 const chat = await Chat.findOne({
-                    members,
+                    members: { $all: members },
                     type: 'private'
                 });
 
@@ -42,12 +43,62 @@ module.exports = function setupSocket(ws) {
                 }
             }
 
-            const chat = await Chat.create({ title, members, type });
+            if (inviteId) {
+                await addMember(inviteId, currentUser, senderCallback);
 
-            const [, ...other] = members;
+                return;
+            }
 
-            senderCallback(chat);
-            other.forEach(member => socket.to(member).emit('chat', chat));
+            await createChat(socket, senderCallback, { title, members, type });
+        });
+
+        socket.on('reaction', async data => {
+            const { chatId, messageId, reaction } = data;
+
+            await Chat.update(
+                {
+                    _id: chatId,
+                    'messages._id': messageId
+                },
+                {
+                    $inc: { [`messages.$.reactions.${reaction}`]: 1 }
+                },
+                {
+                    $upsert: true,
+                    $new: true
+                }
+            );
+
+            const updatedChat = await Chat.findOne(
+                {
+                    _id: chatId,
+                    'messages._id': messageId
+                }
+            );
+            // туду: не умеем получать отдельное сообщение из массива
+            const message = updatedChat.messages.find(m => m._id.toString() === messageId);
+
+            ws.to(chatId).emit('update_message', { chatId, message });
         });
     });
+
+    async function addMember(inviteId, currentUser, senderCallback) {
+        let chat = await Chat.findOne({ inviteId });
+
+        if (!chat.members.find(m => m === currentUser)) {
+            chat = await Chat.findOneAndUpdate({ _id: chat.id },
+                { $push: { members: currentUser } },
+                { new: true });
+        }
+
+        senderCallback(chat);
+    }
+
+    async function createChat(socket, senderCallback, { title, members, type }) {
+        const chat = await Chat.create({ title, members, type });
+        const [, ...other] = members;
+
+        senderCallback(chat);
+        other.forEach(member => socket.to(member).emit('chat', chat));
+    }
 };

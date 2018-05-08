@@ -6,41 +6,24 @@ import PropTypes from 'prop-types';
 import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
 
+import getSocket from '../../pages/socket';
+
 import EmojiPicker from './EmojiToMessage';
 import './Message.css';
 
 /* eslint-disable react/jsx-no-bind */
 
 export default class Message extends Component {
-    state = {
-        reactions: this.props.message.reactions || {}
-    }
+    state = { }
 
-    addEmoji = async emoji => {
+    addEmoji = emoji => {
+
         const chatId = this.props.activeChat._id;
-        const msgId = this.props.message._id;
-        const response = await fetch(
-            `/api/chats/${chatId}/messages/${msgId}/reactions`,
-            {
-                credentials: 'include',
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ reaction: emoji.id })
-            }
-        );
+        const messageId = this.props.message._id;
 
-        if (response.status === 200) {
-            const { reactions } = this.state;
-            const isHaveSmile = Object.keys(reactions).includes(emoji.id);
+        const socket = getSocket();
 
-            if (isHaveSmile) {
-                reactions[`${emoji.id}`] += 1;
-            } else {
-                reactions[`${emoji.id}`] = 1;
-            }
-
-            this.setState({ reactions });
-        }
+        socket.emit('reaction', { chatId, messageId, reaction: emoji.id });
     };
 
     toggleEmoji = () => {
@@ -54,14 +37,14 @@ export default class Message extends Component {
     }
 
     formatToEmoji(text) {
-        return text.split(/:([0-9a-z_-]+):/).map((chunk, i) => {
+        return text.split(/:(\+?[0-9a-z_-]+):/).map((chunk, i) => {
             if (i % 2) {
                 return (
                     <Emoji
                         key={Math.floor(Math.random() * 1000000)}
                         emoji={chunk}
                         set="emojione"
-                        size={16}
+                        size={20}
                     />
                 );
             }
@@ -82,7 +65,7 @@ export default class Message extends Component {
             .fromNow();
     }
 
-    formatting({ text, attachmentIds, date, reactions, meta }) {
+    formatting({ text, attachments, date, reactions, meta }) {
         const metadata =
             Object.keys(meta || {}).length === 0 ? (
                 <React.Fragment />
@@ -96,7 +79,7 @@ export default class Message extends Component {
 
         const newText = this.formatToEmoji(text);
 
-        const attachments = attachmentIds.map(link => {
+        const images = attachments.map(link => {
             return (
                 <img
                     className="message__attachment"
@@ -123,19 +106,20 @@ export default class Message extends Component {
             );
         });
 
-        return { newText, attachments, goodDate, peopleEmoji, metadata };
+        return { newText, images, goodDate, peopleEmoji, metadata };
     }
 
     render() {
         const { message, user } = this.props;
-        const { text, author, date, meta } = message;
-        const { showEmojiToMsg, reactions } = this.state;
-        const attachmentIds = ['https://pp.userapi.com/c831108/v831108414/ce2cf/TP3B77406X0.jpg'];
+        const { text, author, date, meta, attachments } = message;
+        const { showEmojiToMsg } = this.state;
+
+        const reactions = message.reactions || {};
         /* eslint-disable react/jsx-closing-tag-location */
 
-        const { newText, attachments, goodDate, peopleEmoji, metadata } = this.formatting({
+        const { newText, images, goodDate, peopleEmoji, metadata } = this.formatting({
             text,
-            attachmentIds,
+            attachments,
             date,
             reactions,
             meta
@@ -151,7 +135,7 @@ export default class Message extends Component {
                         <span className="message__date">{goodDate}</span>
                     </div>
                     <div className="message__content">{newText}</div>
-                    {attachments}
+                    {images}
                     <div className="message__reactions">
                         <div className="message__reactions_to-left">{peopleEmoji}</div>
                         <img
@@ -174,7 +158,7 @@ export default class Message extends Component {
                     <span className="message__date">{goodDate}</span>
                 </div>
                 {newText}
-                {attachments}
+                {images}
                 <div className="message__reactions">
                     <div className="message__reactions_to-left">{peopleEmoji}</div>
                     <img

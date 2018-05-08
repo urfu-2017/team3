@@ -18,19 +18,21 @@ const mongoSchema = new mongoose.Schema({
     text: String,
     meta: {},
     reactions: {},
-    attachmentIds: [mongoose.Schema.Types.ObjectId]
+    attachments: [String]
 }, { minimize: false });
 
 class MessageClass {
-    static async initialize({ author, text }) {
+    static async initialize({ author, text, attachments }) {
         const meta = await extractMeta(text);
 
         return {
+            _id: mongoose.Types.ObjectId(),
             author,
             meta,
             data: Date.now(),
             text: processMarkdownAndSanitize(text),
-            reactions: {}
+            reactions: {},
+            attachments: attachments || []
         };
     }
 }

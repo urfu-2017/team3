@@ -2,19 +2,33 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import '../../pages/global-const.css';
 import './profile.css';
 import { connect } from 'react-redux';
+
+function getGroupInviteLink(url, id) {
+    return `${url}invite/g_${id}`;
+}
 
 /* eslint-disable max-statements */
 
 class Profile extends Component {
     hideProfile = () => {
         this.props.onHideProfile();
-    }
+    };
 
-    whoIsMyInterlocutor(members) {
+    whoIsMyInterlocutor(profile) {
+        if (profile.type === 'group') {
+            return {
+                avatar: profile.avatar,
+                nickname: profile.title
+            };
+        }
+
+        const { members } = profile;
+
         if (members[0].nickname === this.props.user.nickname) {
             return members[1];
         }
@@ -26,6 +40,7 @@ class Profile extends Component {
         /* eslint-disable react/jsx-no-bind */
         /* eslint-disable react/self-closing-comp */
         /* eslint-disable prefer-destructuring */
+        this.props.onShowLoader();
         const file = e.target.files[0];
 
         const formData = new FormData();
@@ -41,8 +56,9 @@ class Profile extends Component {
         if (response.status === 200) {
             const answer = await response.json();
 
-            document.querySelector('.profile__avatar').src = answer.url;
+            this.props.onChangeAvatar(answer.url);
         }
+        this.props.onHideLoader();
     }
 
     render() {
@@ -79,36 +95,65 @@ class Profile extends Component {
                             <span className="profile__nickname">
                                 {profile.nickname}
                             </span>
+                            <CopyToClipboard text={`${window.location}invite/${profile.nickname}`}>
+                                <span className="profile__invite-link">
+                                    Copy invite link
+                                </span>
+                            </CopyToClipboard>
                         </div>
                     </div>
                 </div>
             );
         }
 
-        // ЕСЛИ ПРОФИЛЬ ДРУГОГО ЮЗЕРА
-        const userFromNet = this.whoIsMyInterlocutor(profile.members);
+        const displayData = this.whoIsMyInterlocutor(profile);
 
         return (
             <div className="darkness" onClick={this.hideProfile}>
                 <div className="profile" onClick={event => event.stopPropagation()}>
                     <div className="profile__avatar-box">
-                        <img className="profile__avatar" src={userFromNet.avatar} alt="avatar" />
+                        <img className="profile__avatar" src={displayData.avatar} alt="avatar" />
                     </div>
                     <div className="profile__info-box">
                         <span className="profile__nickname">
-                            {userFromNet.nickname}
+                            {displayData.nickname}
                         </span>
+
+                        {this.inviteLink(profile)}
+                        <ul>
+                            {profile.members
+                                ? profile.members.map(m => <li key={m.nickname}>{m.nickname}</li>)
+                                : null}
+                        </ul>
                     </div>
                 </div>
             </div>
         );
+    }
+
+    inviteLink(profile) {
+        const groupInviteLink = getGroupInviteLink(window.location, profile.inviteId);
+
+        if (profile.inviteId) {
+            return (
+                <CopyToClipboard text={groupInviteLink}>
+                    <span className="profile__invite-link">
+                        Copy invite link
+                    </span>
+                </CopyToClipboard>);
+        }
+
+        return <div />;
     }
 }
 
 Profile.propTypes = {
     profile: PropTypes.object,
     onHideProfile: PropTypes.func,
-    user: PropTypes.object
+    user: PropTypes.object,
+    onShowLoader: PropTypes.func,
+    onHideLoader: PropTypes.func,
+    onChangeAvatar: PropTypes.func
 };
 
 export default connect(
@@ -116,6 +161,15 @@ export default connect(
     dispatch => ({
         onHideProfile: () => {
             dispatch({ type: 'HIDE_PROFILE' });
+        },
+        onShowLoader: () => {
+            dispatch({ type: 'SHOW_LOADER' });
+        },
+        onHideLoader: () => {
+            dispatch({ type: 'HIDE_LOADER' });
+        },
+        onChangeAvatar: avatar => {
+            dispatch({ type: 'CHANGE_AVATAR', avatar });
         }
     })
 )(Profile);

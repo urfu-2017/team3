@@ -37,19 +37,25 @@ class Contacts extends Component {
         return (
             <div className="darkness" onClick={this.hideContacts}>
                 <div className="contacts" onClick={event => event.stopPropagation()}>
-                    <div>
+                    <div className="contacts__title">
+                        Нажмите, чтобы посмотреть профиль
+                    </div>
+                    <div className="contacts__box">
                         {chats.map(chat => {
                             if (chat.type === 'private'
                             && (chat.members[0].nickname !== chat.members[1].nickname)) {
                                 return (
                                     <li
+                                        className="contacts__user-box"
                                         key={Math.random()}
                                         onClick={() => {
                                             this.props.onHideContacts();
                                             this.props.onShowProfile(chat);
                                         }}
                                         >
-                                        {this.whoIsMyInterlocutor(chat.members).nickname}
+                                        <div className="contacts__nickname">
+                                            {this.whoIsMyInterlocutor(chat.members).nickname}
+                                        </div>
                                     </li>
                                 );
                             }

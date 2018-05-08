@@ -75,6 +75,10 @@
     overflow: auto;
 }
 
+.chats__list::-webkit-scrollbar {
+    width: 0;
+}
+
 .dialog {
     flex: 6;
 }

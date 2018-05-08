@@ -43,5 +43,4 @@ app.prepare().then(() => {
 
     httpServer.listen(parseInt(process.env.PORT, 10), () =>
         console.log(`Listening on ${process.env.HOST}:${process.env.PORT}`));
-
 });

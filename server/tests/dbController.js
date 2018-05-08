@@ -5,23 +5,24 @@ const path = require('path');
 
 require('should');
 
-const setupApiRoutes = require('../routes/api');
-const server = require('../server');
 const mongoose = require('mongoose');
 const Chat = require('../models/Chat');
 const User = require('../models/User');
 const cloudinary = require('cloudinary');
+const setupApiRoutes = require('../routes/api');
+const server = require('../server');
 
 mongoose.connect(process.env.DATABASE_CONNECTION_STRING);
+
 cloudinary.config({
     'cloud_name': 'team3',
     'api_key': process.env.CLOUDINARY_API_KEY,
     'api_secret': process.env.CLOUDINARY_API_SECRET
 });
-
-setupServer(server);
-
 let currentUser = 'user_1';
+
+setupServer();
+
 let chatId = null;
 const testAvatarPath = path.resolve(__dirname, 'testAvatar.svg');
 
@@ -123,7 +124,7 @@ describe('messenger API tests', () => {
             const checkBody = res => {
                 res.body.should.have.property('nickname', 'user_1');
                 res.body.should.have.property('avatar');
-                res.body.avatar.should.match(/^http:\/\/res.cloudinary.com\/team3\/image\/upload/);
+                res.body.avatar.should.match(/^https:\/\/res.cloudinary.com\/team3\/image\/upload/);
             };
 
             await request(server)
@@ -230,6 +231,12 @@ describe('messenger API tests', () => {
 
         it('should return 401 when session user is undefined', async () => {
             currentUser = undefined;
+            server.use((req, res, next) => {
+                console.log(req.user);
+                req.user = { nickname: currentUser };
+                next();
+            });
+
             await request(server)
                 .get('/api/chats')
                 .expect(401);
@@ -504,14 +511,14 @@ function checkChat(type, title, members, messages) {
     };
 }
 
-function setupServer(s) {
-    s.use((req, res, next) => {
+function setupServer() {
+    server.use((req, res, next) => {
         req.user = { nickname: currentUser };
         next();
     });
 
-    setupApiRoutes(s);
-    s.listen(8080);
+    setupApiRoutes(server);
+    server.listen(8080);
 
-    return s;
+    return server;
 }

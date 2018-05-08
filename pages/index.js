@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 import React from 'react';
 import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
+import Router from 'next/router';
 
 import makeStore from '../store';
 import Chats from '../blocks/chats-page/Chats';
@@ -36,10 +37,17 @@ async function loadChats(req) {
 
 class MainPage extends React.Component {
     static async getInitialProps({ store, req }) {
+        if (!req) {
+            return {};
+        }
+
         store.dispatch({ type: 'LOGIN_USER', user: req.user });
         store.dispatch(await loadChats(req));
+        if (req.params.id) {
+            store.dispatch({ type: 'ACCEPT_INVITE', invite: req.params.id });
+        }
 
-        return { };
+        return {};
     }
 
     componentDidMount() {
@@ -52,6 +60,8 @@ class MainPage extends React.Component {
         rooms.push(user.nickname);
         socket.emit('join', rooms);
 
+        this.acceptInvite(socket, user, this.props.invite);
+
         socket.on('message', data => {
             const { chatId, message } = data;
 
@@ -60,6 +70,43 @@ class MainPage extends React.Component {
 
         socket.on('chat', chat => {
             this.props.onCreateChat(chat);
+            socket.emit('join', [chat._id]);
+        });
+
+        socket.on('update_message', data => {
+            this.props.onUpdateMessage(data);
+        });
+    }
+
+    acceptInvite(socket, user, invite) {
+        if (invite) {
+            Router.push('/');
+
+            if (invite.startsWith('g_')) {
+                const inviteId = invite.substr(2);
+
+                this.acceptInviteInternal(socket, {
+                    inviteId,
+                    type: 'group',
+                    currentUser: user.nickname
+                });
+            } else {
+                this.acceptInviteInternal(socket, {
+                    members: [user.nickname, invite],
+                    type: 'private'
+                });
+            }
+        }
+    }
+
+    acceptInviteInternal(socket, description) {
+        socket.emit('chat', description, (chat, existingChatId) => {
+            if (chat) {
+                this.props.onCreateChat(chat);
+                socket.emit('join', [chat._id]);
+            }
+
+            this.props.onOpenChat(chat ? chat._id : existingChatId);
         });
     }
 
@@ -94,7 +141,10 @@ MainPage.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
     onReceiveMessage: PropTypes.func,
-    onCreateChat: PropTypes.func
+    onCreateChat: PropTypes.func,
+    onOpenChat: PropTypes.func,
+    invite: PropTypes.string,
+    onUpdateMessage: PropTypes.func
 };
 
 export default withRedux(makeStore,
@@ -105,6 +155,12 @@ export default withRedux(makeStore,
         },
         onCreateChat: chat => {
             dispatch({ type: 'CREATE_CHAT', chat });
+        },
+        onOpenChat: chatId => {
+            dispatch({ type: 'OPEN_CHAT', id: chatId });
+        },
+        onUpdateMessage: ({ chatId, message }) => {
+            dispatch({ type: 'UPDATE_MESSAGE', chatId, message });
         }
     })
 )(MainPage);

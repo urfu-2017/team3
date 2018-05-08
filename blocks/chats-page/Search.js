@@ -46,7 +46,7 @@ class Search extends Component {
                         type="text"
                         className="chats__search-input"
                         placeholder="Найти пользователя"
-                        onKeyDown={this.findUsers}
+                        // onKeyDown={this.findUsers}
                         autoFocus
                     />
                     <img

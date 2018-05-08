@@ -10,8 +10,15 @@ const mongoSchema = new mongoose.Schema({
     type: String,
     members: [{ type: String, ref: 'User' }],
     messages: [Message.schema],
-    avatar: String
+    avatar: String,
+    inviteId: String
 }, { minimize: false });
+
+function getRandomString() {
+    return Math.random().toString(36)
+        .substring(2, 15) + Math.random().toString(36)
+        .substring(2, 15);
+}
 
 class ChatClass {
     static async findOrCreate({ title, members, type }) {
@@ -29,14 +36,16 @@ class ChatClass {
         return await this.create({ title, members, type });
     }
 
+    /* eslint-disable camelcase */
     static async create(chat) {
         if (chat.type === 'group') {
             const avatarInBase64 = createIdenticon();
 
-            const response = await cloudinary.v2
+            const { secure_url } = await cloudinary.v2
                 .uploader.upload(`data:image/png;base64,${avatarInBase64}`);
 
-            chat.avatar = response.url;
+            chat.avatar = secure_url;
+            chat.inviteId = getRandomString().substring(0, 5);
         }
 
         return await this.findOneAndUpdate(
@@ -49,6 +58,7 @@ class ChatClass {
             });
 
     }
+    /* eslint-enable camelcase */
 
     static isValid({ members, type }) {
         if (!members) {
@@ -57,7 +67,7 @@ class ChatClass {
 
         /* eslint-disable no-mixed-operators */
         return (type === 'private') && (members.length === 2) ||
-               (type === 'group') && (members.length !== 0);
+            (type === 'group') && (members.length !== 0);
     }
 }
 

@@ -29,6 +29,7 @@ class CreateGroup extends Component {
             type: 'group'
         }, chat => {
             this.props.onChatCreated(chat);
+            socket.emit('join', [chat._id]);
         });
     }
 
@@ -73,21 +74,21 @@ class CreateGroup extends Component {
 
         return (
             <div className="darkness" onClick={this.hideCreateGroup}>
-                <div className="createg" onClick={event => event.stopPropagation()}>
+                <div className="create-group" onClick={event => event.stopPropagation()}>
                     <input
                         type="text"
-                        className="createg__input"
+                        className="create-group__input"
                         placeholder="Название группы"
                         value={this.state.groupTitle}
                         onChange={e => this.setState({ groupTitle: e.target.value })}
                     />
-                    <span>{groupMembers.length}</span>
-                    <div>
+                    <div className="create-group__list">
                         {chats.map(chat => {
                             if (chat.type === 'private'
                             && (chat.members[0].nickname !== chat.members[1].nickname)) {
                                 return (
                                     <li
+                                        className="create-group__user-box"
                                         key={Math.random()}
                                         onClick={() => {
                                             this.pushOrPopFromGroupMembers(
@@ -95,30 +96,25 @@ class CreateGroup extends Component {
                                             );
                                         }}
                                         >
-                                        {this.whoIsMyInterlocutor(chat.members).nickname}
+                                        <div className="create-group__nickname">
+                                            {this.whoIsMyInterlocutor(chat.members).nickname}
+                                        </div>
                                     </li>
                                 );
                             }
                         })}
                     </div>
-                    <button onClick={this.createChat}>Создать</button>
-                    {/* <div className="adduser__list">
-                        {foundUsers
-                            ?
-                                <div className="chats__found-users">
-                                    { foundUsers.map(foundUser => {
-                                        return (
-                                            <PureProfile
-                                                key={user.nickname}
-                                                user={foundUser}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            :
-                            null
-                        }
-                    </div> */}
+                    <div className="create-group__info_wrapper">
+                        <span className="create-group__number-members">
+                            {groupMembers.length} участников
+                        </span>
+                        <button
+                            className="create-group__button"
+                            onClick={this.createChat}
+                            >
+                            Создать
+                        </button>
+                    </div>
                 </div>
             </div>
         );
