@@ -78,6 +78,15 @@
     background-position: center;
     background-size: var(--icon-size);
     cursor: pointer;
+    box-sizing: border-box;
+    border: var(--border-size) solid transparent;
+    border-radius: 50%;
+    outline: none;
+}
+
+.chat-input__button:hover,
+.chat-input__button:focus {
+    background-color: var(--spare-color-transparent);
 }
 
 .chat-input__input_not-visual {
@@ -169,7 +178,11 @@
 
 .chat-input__burger-content > .chat-input__button {
     width: 100%;
-    background-position: left;
+    background-position: calc(var(--standard-indent-small) * 0.25);
+    border-radius: calc(var(--standard-indent-small) * 0.5);
+    box-sizing: content-box;
+    z-index: 1;
+    padding: calc(var(--standard-indent-small) * 0.25);
 }
 
 .chat-input__button_description_add {

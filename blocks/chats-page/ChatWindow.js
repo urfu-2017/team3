@@ -229,11 +229,16 @@ class ChatWindow extends Component {
                         type="text"
                         className="chat-input__write-field"
                     />
-                    <label className="chat-input__audioinput-btn chat-input__button">
+                    <label
+                        className="chat-input__audioinput-btn chat-input__button"
+                        tabIndex="0"
+                        >
                     </label>
                     <label
                         className="chat-input__emoji-btn chat-input__button"
-                        onClick={event => event.stopPropagation()}>
+                        onClick={event => event.stopPropagation()}
+                        tabIndex="0"
+                        >
                         <input
                             type="button"
                             onClick={this.toggleEmoji}
@@ -243,15 +248,19 @@ class ChatWindow extends Component {
                     <input
                         type="checkbox"
                         className="chat-input__input_not-visual"
-                        
                         id="chat-input__burger-checkbox"
                     />
-                    <label className="chat-input__burger-btn chat-input__button" htmlFor="chat-input__burger-checkbox">
+                    <label
+                        className="chat-input__burger-btn chat-input__button"
+                        htmlFor="chat-input__burger-checkbox"
+                        tabIndex="0"
+                        >
                     </label>
                     <label
                         src="/static/send_message.svg"
                         onClick={this.submitMessage}
                         className="chat-input__send-btn chat-input__button"
+                        tabIndex="0"
                     />
                     <div className="chat-input__burger-content">
                         <label className="chat-input__attachment-btn chat-input__button">
