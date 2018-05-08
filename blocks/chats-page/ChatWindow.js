@@ -25,7 +25,8 @@ class ChatWindow extends Component {
         super(props);
         this.state = {
             msgText: '',
-            foundUsersList: false
+            foundUsersList: false,
+            attachments: []
         };
     }
 
@@ -120,37 +121,40 @@ class ChatWindow extends Component {
     }
 
     submitMessage = async () => {
-        this.setState({
-            attachments: [],
-            attachmentsLinks: []
-        });
-        this.togglePreview([]);
-        const input = document.querySelector('.chat-input__write-field');
-        const text = input.value;
+        if (this.state.msgText.trim() || this.state.attachments.length) {
+            this.setState({
+                attachments: [],
+                attachmentsLinks: [],
+                msgText: ''
+            });
+            this.togglePreview([]);
+            const input = document.querySelector('.chat-input__write-field');
+            const text = input.value;
 
-        input.value = '';
-        const socket = getSocket();
+            input.value = '';
+            const socket = getSocket();
 
-        await socket.emit('message', {
-            message: {
-                text,
-                author: this.props.user.nickname,
-                attachments: this.state.attachmentsLinks || []
-            },
-            chatId: this.props.activeChat._id
-        }, async data => {
-            await this.props.onReceiveMessage(data);
-            await this.scrollToBottom();
-        });
+            await socket.emit('message', {
+                message: {
+                    text,
+                    author: this.props.user.nickname,
+                    attachments: this.state.attachmentsLinks || []
+                },
+                chatId: this.props.activeChat._id
+            }, async data => {
+                await this.props.onReceiveMessage(data);
+                await this.scrollToBottom();
+            });
 
-        setTimeout(() => {
-            this.props.onSortChats(this.props.activeChat._id);
-        }, 500);
+            setTimeout(() => {
+                this.props.onSortChats(this.props.activeChat._id);
+            }, 500);
+        }
     }
 
     // прослушка отправки на Enter
     keySubmitMessage = e => {
-        if (e.keyCode === 13 && e.target.value.trim()) {
+        if (e.keyCode === 13) {
             this.submitMessage();
             e.target.value = '';
         }
