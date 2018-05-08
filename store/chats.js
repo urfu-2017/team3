@@ -50,7 +50,7 @@ function pushMessageImmutable(oldChats, chatId, message) {
 
     newChats[chatIndex] = newChat;
 
-    return newChats;
+    return newChats.sort(sortByLastMessage).concat([]);
 }
 
 function updateMessageImmutable(oldChats, chatId, message) {
