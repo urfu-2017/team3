@@ -146,9 +146,7 @@ class ChatWindow extends Component {
                 await this.scrollToBottom();
             });
 
-            setTimeout(() => {
-                this.props.onSortChats(this.props.activeChat._id);
-            }, 500);
+            this.props.onSortChats(this.props.activeChat._id);
         }
     }
 
