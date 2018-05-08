@@ -5,7 +5,16 @@
 
 export default function chats(state = [], action) {
     if (action.type === 'LOAD_CHATS') {
-        return action.chats;
+        return action.chats.sort(sortByLastMessage);
+
+        // return action.chats.reverse();
+    }
+
+    if (action.type === 'SORT_CHATS') {
+        let localState = state;
+
+        // concat([]) - для того, чтобы перерендер произошел, неизвестно зачем
+        return localState.sort(sortByLastMessage).concat([]);
     }
 
     if (action.type === 'RECEIVE_MESSAGE') {
@@ -30,6 +39,7 @@ export default function chats(state = [], action) {
 }
 
 function pushMessageImmutable(oldChats, chatId, message) {
+    message.date = new Date(message.data);
     const newChats = [...oldChats];
     const chatIndex = newChats.findIndex(c => c._id === chatId);
     const oldChat = newChats[chatIndex];
@@ -40,7 +50,7 @@ function pushMessageImmutable(oldChats, chatId, message) {
 
     newChats[chatIndex] = newChat;
 
-    return newChats;
+    return newChats.sort(sortByLastMessage).concat([]);
 }
 
 function updateMessageImmutable(oldChats, chatId, message) {
@@ -60,4 +70,26 @@ function updateMessageImmutable(oldChats, chatId, message) {
     newChats[chatIndex] = newChat;
 
     return newChats;
+}
+
+function sortByLastMessage(a, b) {
+    let aTime = 0;
+
+    if (a.messages.length) {
+        aTime = a.messages[a.messages.length - 1].date;
+    }
+
+    aTime = new Date(aTime);
+    aTime = aTime.getTime();
+
+    let bTime = 0;
+
+    if (b.messages.length) {
+        bTime = b.messages[b.messages.length - 1].date;
+    }
+
+    bTime = new Date(bTime);
+    bTime = bTime.getTime();
+
+    return bTime - aTime;
 }

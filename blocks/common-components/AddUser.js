@@ -17,7 +17,11 @@ class AddUser extends Component {
     }
 
     componentDidMount() {
-        // this.nameInput.focus();
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                this.props.onHideAddUser();
+            }
+        });
     }
 
     searchUsers = async e => {

@@ -51,6 +51,10 @@
 }
 
 .chat-icon__title {
+    width: 196px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: #444444;
     font-size: 14px;
     font-weight: bold;
