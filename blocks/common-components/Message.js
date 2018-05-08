@@ -62,7 +62,7 @@ export default class Message extends Component {
     prettyDate(date) {
         return moment(date)
             .locale('ru')
-            .fromNow();
+            .format('LT');
     }
 
     formatting({ text, attachments, date, reactions, meta }) {
@@ -157,7 +157,7 @@ export default class Message extends Component {
                     <span className="message__sender">{author}</span>
                     <span className="message__date">{goodDate}</span>
                 </div>
-                {newText}
+                <div className="message__content">{newText}</div>
                 {images}
                 <div className="message__reactions">
                     <div className="message__reactions_to-left">{peopleEmoji}</div>

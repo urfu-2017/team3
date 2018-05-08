@@ -14,7 +14,7 @@ class ChatIcon extends Component {
     prettyDate(date) {
         return moment(date)
             .locale('ru')
-            .fromNow();
+            .format('LT');
     }
 
     openChat = () => {

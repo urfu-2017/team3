@@ -119,7 +119,7 @@ class ChatWindow extends Component {
         input.value = currentValue;
     }
 
-    submitMessage = () => {
+    submitMessage = async () => {
         this.setState({
             attachments: [],
             attachmentsLinks: []
@@ -131,22 +131,26 @@ class ChatWindow extends Component {
         input.value = '';
         const socket = getSocket();
 
-        socket.emit('message', {
+        await socket.emit('message', {
             message: {
                 text,
                 author: this.props.user.nickname,
                 attachments: this.state.attachmentsLinks || []
             },
             chatId: this.props.activeChat._id
-        }, data => {
-            this.props.onReceiveMessage(data);
-            this.scrollToBottom();
+        }, async data => {
+            await this.props.onReceiveMessage(data);
+            await this.scrollToBottom();
         });
+
+        setTimeout(() => {
+            this.props.onSortChats(this.props.activeChat._id);
+        }, 500);
     }
 
     // прослушка отправки на Enter
     keySubmitMessage = e => {
-        if (e.keyCode === 13) {
+        if (e.keyCode === 13 && e.target.value.trim()) {
             this.submitMessage();
             e.target.value = '';
         }
@@ -274,7 +278,8 @@ ChatWindow.propTypes = {
     onHideEmoji: PropTypes.func,
     onReceiveMessage: PropTypes.func,
     showEmoji: PropTypes.bool,
-    activeChat: PropTypes.object
+    activeChat: PropTypes.object,
+    onSortChats: PropTypes.func
 };
 
 export default connect(
@@ -295,6 +300,9 @@ export default connect(
         },
         onReceiveMessage: ({ chatId, message }) => {
             dispatch({ type: 'RECEIVE_MESSAGE', chatId, message });
+        },
+        onSortChats: id => {
+            dispatch({ type: 'SORT_CHATS', id });
         }
     })
 )(ChatWindow);

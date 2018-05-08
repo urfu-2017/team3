@@ -37,6 +37,14 @@ class CreateGroup extends Component {
         this.props.onHideCreateGroup();
     }
 
+    componentDidMount() {
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                this.props.onHideCreateGroup();
+            }
+        });
+    }
+
     whoIsMyInterlocutor(members) {
         if (members[0].nickname === this.props.user.nickname) {
             return members[1];

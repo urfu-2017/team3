@@ -19,6 +19,14 @@ class Profile extends Component {
         this.props.onHideProfile();
     };
 
+    componentDidMount() {
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                this.props.onHideProfile();
+            }
+        });
+    }
+
     whoIsMyInterlocutor(profile) {
         if (profile.type === 'group') {
             return {
@@ -118,8 +126,7 @@ class Profile extends Component {
                         <span className="profile__nickname">
                             {displayData.nickname}
                         </span>
-
-                        {this.inviteLink(profile)}
+                        <span>{this.inviteLink(profile)}</span>
                         <ul>
                             {profile.members
                                 ? profile.members.map(m => <li key={m.nickname}>{m.nickname}</li>)
