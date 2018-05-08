@@ -5,7 +5,7 @@
 	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
 <g id="direction_right">
 	<g>
-		<polygon fill-rule="evenodd" clip-rule="evenodd" points="20,10.02 0,3.02 5,10.02 0,17.02 		"/>
+		<polygon fill="#747474" fill-rule="evenodd" clip-rule="evenodd" points="20,10.02 0,3.02 5,10.02 0,17.02 		"/>
 	</g>
 </g>
 </svg>

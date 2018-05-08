@@ -10,10 +10,11 @@ body {
 .main {
     display: flex;
     flex-direction: row;
-    height: 100vh;
+    height: calc(100vh - var(--standard-indent-small));
     border: 1px solid var(--neutral-color);
     border-radius: 1vmin;
     box-sizing: border-box;
+    margin: 0 0 var(--standard-indent-small);
     font-family: 'Noto Sans', sans-serif;
 }
 
