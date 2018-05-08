@@ -113,7 +113,7 @@ class MainPage extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <main className="main">
+                <main className="main main_theme_day">
                     <article className="chats">
                         <div className="chats__search">
                             <Search />
@@ -126,12 +126,12 @@ class MainPage extends React.Component {
                     <article className="dialog">
                         <ChatWindow />
                     </article>
+                    <Profile />
+                    <AddUser />
+                    <CreateGroup />
+                    <Contacts />
+                    <Loader />
                 </main>
-                <Profile />
-                <AddUser />
-                <CreateGroup />
-                <Contacts />
-                <Loader />
             </React.Fragment>
         );
     }

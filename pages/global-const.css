@@ -1,15 +1,33 @@
-:root {
-    --base-color: #399CE6;
-    --secondary-color: #868686;
-    --spare-color: #00f5;
-    --neutral-color: #ebebeb;
-    --top-line: 64px;
+.main_theme_day{
+    --base-color: #399CE6ff;
+    --base-color-semi-transparent: #399CE699;
+    --base-color-trasparent: #399CE633;
+
+    --spare-color: #868686ff;
+    --spare-color-semi-transparent: #86868699;
+    --spare-color-trasparent: #86868633;
+
+    --neutral-color: #ebebebff;
+    --neutral-color-semi-transparent: #ebebeb99;
+    --neutral-color-trasparent: #ebebeb33;
+
+    --text-color-h1: #000f;
+    --text-color-h2: #000a;
+    --text-color-h3: #0005;
+
+    --standard-indent: 32px;
+    --standard-indent-small: 8px;
+
+    --icon-size: 32px;
+
+    --border-size: 1px;
+    --border-size-bold: calc(var(--border-size) * 2);
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
+.main_theme_night {}
 
 hr {
     margin: 0;

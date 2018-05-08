@@ -36,23 +36,16 @@ class ChatWindow extends Component {
     // при подгрузке картинок меняем css
     togglePreview(oldfiles) {
         const messages = document.querySelector('.messages');
-        const chatInput = document.querySelector('.chat-input');
 
         messages.classList.remove(
             'messages_grid_large',
             'messages_grid_small'
         );
-        chatInput.classList.remove(
-            'chat-input_separator_box-shadow',
-            'chat-input_separator_border'
-        );
 
         if (oldfiles.length) {
             messages.classList.add('messages_grid_small');
-            chatInput.classList.add('chat-input_separator_border');
         } else {
             messages.classList.add('messages_grid_large');
-            chatInput.classList.add('chat-input_separator_box-shadow');
         }
     }
 
@@ -229,44 +222,60 @@ class ChatWindow extends Component {
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
                 <Preview files={this.state.attachments} />
-                <div
-                    className="chat-input chat-input_separator_box-shadow"
-                    onClick={this.props.onHideEmoji}>
+                <div className="chat-input" onClick={this.props.onHideEmoji}>
                     <input
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
                         type="text"
                         className="chat-input__write-field"
                     />
+                    <label className="chat-input__audioinput-btn chat-input__button">
+                    </label>
                     <label
                         className="chat-input__emoji-btn chat-input__button"
                         onClick={event => event.stopPropagation()}>
                         <input
                             type="button"
                             onClick={this.toggleEmoji}
-                            className="chat-input__not-visual"
-                        />
-                        <img
-                            src="/static/emoji.svg"
-                            className="chat-input__emoji-icon"
+                            className="chat-input__input_not-visual"
                         />
                     </label>
-                    <label className="chat-input__attachment-btn chat-input__button">
-                        <input
-                            type="file"
-                            className="chat-input__not-visual"
-                            multiple
-                            onChange={this.onFilesChange}
-                        />
-                        <img
-                            src="/static/camera.svg"
-                            className="chat-input__attachment-icon"
-                        />
+                    <input
+                        type="checkbox"
+                        className="chat-input__input_not-visual"
+                        
+                        id="chat-input__burger-checkbox"
+                    />
+                    <label className="chat-input__burger-btn chat-input__button" htmlFor="chat-input__burger-checkbox">
                     </label>
-                    <div
+                    <label
+                        src="/static/send_message.svg"
                         onClick={this.submitMessage}
                         className="chat-input__send-btn chat-input__button"
                     />
+                    <div className="chat-input__burger-content">
+                        <label className="chat-input__attachment-btn chat-input__button">
+                            <input
+                                type="file"
+                                className="chat-input__input_not-visual"
+                                multiple
+                                onChange={this.onFilesChange}
+                            />
+                            <span className="chat-input__button_description_add">
+                                Прикрепить файл
+                            </span>
+                        </label>
+                        <label className="chat-input__autodestroy-btn chat-input__button">
+                            <span className="chat-input__button_description_add">
+                                Секретное сообщение
+                            </span>
+                        </label>
+                        <label className="chat-input__geolocation-btn chat-input__button">
+                            <span className="chat-input__button_description_add">
+                                Местоположение
+                            </span>
+                        </label>
+                    </div>
                 </div>
             </section>
         );

@@ -1,10 +1,18 @@
+@media screen and (max-width: 768px) {}
+
+@media screen and (max-width: 576px) {}
+
+body {
+    --body-margin-side: 15%;
+    margin: 0 var(--body-margin-side);
+}
+
 .main {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 2vh);
+    height: 100vh;
     border: 1px solid var(--neutral-color);
     border-radius: 1vmin;
-    margin: 1vh 1vw;
     box-sizing: border-box;
     font-family: 'Noto Sans', sans-serif;
 }
@@ -19,7 +27,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: calc(var(--top-line) - var(--padding) * 2);
+    height: calc(var(--standard-indent) * 2 - var(--padding) * 2);
     padding: var(--padding);
     font-size: 16px;
 }

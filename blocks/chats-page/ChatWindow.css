@@ -1,11 +1,12 @@
 .chat-window {
+    --size: 48px;
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 
-        var(--top-line) 
-        calc(100% - var(--top-line) - 100px - 48px) 
-        100px 
-        48px;
+        calc(var(--icon-size) + var(--standard-indent))
+        auto 
+        100px
+        calc(var(--icon-size) + var(--standard-indent-small) * 2);
     height: 100%;
 }
 
@@ -60,60 +61,139 @@
 }
 
 .chat-input {
-    --size: 32px;
-    display: grid;
-    z-index: 1;
+    --icon-size: var(--standard-indent);
+    display: flex;
     box-sizing: border-box;
-    grid-template-columns: auto var(--size) var(--size) var(--size);
-    grid-template-rows: var(--size);
-    grid-column-gap: 24px;
     grid-area: 4 / 1 / 5 / 2;
-    padding: 8px 16px;
+    justify-content: space-between;
+    padding: var(--standard-indent-small);
     border-top: 1px solid lightgray;
 }
 
-.chat-input_separator_box-shadow {
-    /* box-shadow: 3px 0 4px 2px lightgray; */
-}
-
-.chat-input_separator_border {
-    border-top-color: lightgray;
-    box-shadow: none;
-}
-
 .chat-input__button {
-    width: var(--size);
-    height: var(--size);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    margin: 0;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: var(--icon-size);
     cursor: pointer;
 }
 
-.chat-input__not-visual {
+.chat-input__input_not-visual {
     display: none;
 }
 
 .chat-input__write-field {
-    grid-area: 1 / 1 / 2 / 2;
-    padding: 0 16px;
-    border: 1px solid black;
-    border-radius: 4px;
+    width: calc(100% - 4 * (var(--icon-size) + var(--standard-indent) / 2));
+    height: var(--icon-size);
+    padding: 0 calc(var(--standard-indent) * 0.5 * 0.5);
+    box-sizing: border-box;
+    border: var(--border-size) solid black;
+    border-radius: calc(var(--standard-indent-small) * 0.5);
     outline: none;
-    font-size: 16px;
 }
 
 .chat-input__write-field:focus {
-    box-shadow: 0 0 2px 1px black;
-}
-
-.chat-input__attachment-btn {
-    grid-area: 1 / 3 / 2 / -2;
+    box-shadow: 0 0 var(--border-size-bold) var(--border-size) black;
 }
 
 .chat-input__send-btn {
-    grid-area: 1 / -2 / 2 / -1;
-    background-image: url(/static/send-button.png);
-    background-size: var(--size);
+    background-image: url(/static/send_message.svg);
+}
+
+.chat-input__attachment-btn {
+    background-image: url(/static/attachment.svg);
 }
 
 .chat-input__emoji-btn {
-    z-index: 20;
+    background-image: url(/static/emoji.svg);
+}
+
+.chat-input__burger-btn {
+    background-image: url(/static/burger.svg);
+}
+
+.chat-input__burger-content {
+    display: none;
+    position: absolute;
+    right: calc(
+        var(--body-margin-side) +
+        (var(--icon-size) / 2) +
+        var(--standard-indent-small)
+    );
+    bottom: calc(
+        var(--icon-size) +
+        (var(--standard-indent-small) * 2) +
+        (var(--icon-size) / 2)
+    );
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: space-between;
+    width: calc(
+        var(--icon-size) +
+        (var(--standard-indent) * 0.5) +
+        (var(--standard-indent) * 0.5 * 2) +
+        (var(--icon-size) * 5)
+    );
+    height: calc(var(--icon-size) * 3 + var(--standard-indent) * 0.5 * 4);
+    padding: calc(var(--standard-indent) * 0.5);
+    border-radius: var(--standard-indent-small);
+    background-color: white;
+    box-shadow: 
+        0 
+        0 
+        calc(var(--border-size-bold) * 2) 
+        var(--border-size-bold) 
+        var(--spare-color);
+}
+
+.chat-input__burger-content::after {
+    content: '';
+    position: absolute;
+    right: var(--icon-size);
+    bottom: calc(var(--icon-size) / -2);
+    width: 0;
+    height: 0;
+    transform: rotate(45deg);
+    border: calc(var(--icon-size) / 2) solid transparent;
+    background-color: white;
+    box-shadow: 
+        var(--border-size) 
+        var(--border-size) 
+        var(--border-size-bold) 
+        0 
+        var(--spare-color);
+}
+
+.chat-input__burger-content > .chat-input__button {
+    width: 100%;
+    background-position: left;
+}
+
+.chat-input__button_description_add {
+    display: block;
+    padding-left: calc(
+        var(--icon-size) +
+        (var(--standard-indent) * 0.5)
+    );
+    color: var(--text-color-h2);
+    font-size: .8rem;
+    line-height: var(--icon-size);
+}
+
+.chat-input__audioinput-btn {
+    background-image: url(/static/microphone.svg);
+}
+
+.chat-input__autodestroy-btn {
+    background-image: url(/static/autodestroy_message.svg);
+}
+
+.chat-input__geolocation-btn {
+    background-image: url(/static/geolocation.svg);
+}
+
+#chat-input__burger-checkbox:checked ~ .chat-input__burger-content{
+    display: flex;
 }
