@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import ChatIcon from '../common-components/ChatIcon';
+import ChatIcon from './ChatIcon';
 
 class Chats extends React.Component {
     render() {

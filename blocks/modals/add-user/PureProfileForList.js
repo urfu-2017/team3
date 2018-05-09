@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import getSocket from '../../pages/socket';
+import getSocket from '../../../pages/socket';
 
 class PureProfile extends Component {
     createChat = () => {

@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-import '../../pages/global-const.css';
-import './profile.css';
+import '../../../pages/global-const.css';
+import './Profile.css';
 import { connect } from 'react-redux';
 
 function getGroupInviteLink(url, id) {

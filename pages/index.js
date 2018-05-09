@@ -7,14 +7,17 @@ import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 
 import makeStore from '../store';
-import Chats from '../blocks/chats-page/Chats';
-import Search from '../blocks/chats-page/Search';
-import ChatWindow from '../blocks/chats-page/ChatWindow';
-import Profile from '../blocks/pfl/profile';
-import AddUser from '../blocks/common-components/AddUser';
-import Contacts from '../blocks/common-components/Contacts';
-import CreateGroup from '../blocks/common-components/CreateGroup';
-import Loader from '../blocks/loader/Loader';
+
+import Chats from '../blocks/chats/Chats';
+
+import ChatWindow from '../blocks/chat-window/ChatWindow';
+
+import Search from '../blocks/modals/search/Search';
+import Profile from '../blocks/modals/profile/Profile';
+import AddUser from '../blocks/modals/add-user/AddUser';
+import Contacts from '../blocks/modals/contacts/Contacts';
+import CreateGroup from '../blocks/modals/create-group/CreateGroup';
+import Loader from '../blocks/modals/loader/Loader';
 
 import 'isomorphic-fetch';
 import './global-const.css';

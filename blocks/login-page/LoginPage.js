@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import Button from '../common-components/Button';
+import Button from './Button';
 
 import './LoginPage.css';
 

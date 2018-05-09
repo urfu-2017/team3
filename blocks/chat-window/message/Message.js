@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
 
-import getSocket from '../../pages/socket';
+import getSocket from '../../../pages/socket';
 
 import EmojiPicker from './EmojiToMessage';
 import './Message.css';

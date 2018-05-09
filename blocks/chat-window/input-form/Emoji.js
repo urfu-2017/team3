@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Picker } from 'emoji-mart';
 
-import '../../node_modules/emoji-mart/css/emoji-mart.css';
+import '../../../node_modules/emoji-mart/css/emoji-mart.css';
 import { connect } from 'react-redux';
 
 class Emoji extends Component {

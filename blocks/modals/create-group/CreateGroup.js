@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import getSocket from '../../pages/socket';
+import getSocket from '../../../pages/socket';
 
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-closing-bracket-location */

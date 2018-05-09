@@ -24,8 +24,20 @@ export default function activeChat(state = null, action) {
         };
     }
 
+    if (action.type === 'RESET_ATTACHMENTS') {
+        return {
+            ...state,
+            attachments: [],
+            attachmentsLinks: []
+        };
+    }
+
     if (action.type === 'ADD_ATTACHMENT') {
-        // Обработка добавляение атачмента
+        return {
+            ...state,
+            attachments: action.attachments,
+            attachmentsLinks: action.attachmentsLinks
+        };
     }
 
     if (action.type === 'DELETE_ATTACHMENT') {

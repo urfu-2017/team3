@@ -11,12 +11,12 @@ import { connect } from 'react-redux';
 
 import getSocket from '../../pages/socket';
 
-import Message from '../common-components/Message';
-
 import Chat from '../../models/Chat';
 
-import Emoji from './Emoji';
-import Preview from './Preview';
+import InputPopup from './input-form/popup-additional-functions/InputPopup';
+import Message from './message/Message';
+import Emoji from './input-form/Emoji';
+import Preview from './preview-panel/Preview';
 
 import './ChatWindow.css';
 
@@ -25,75 +25,12 @@ class ChatWindow extends Component {
         super(props);
         this.state = {
             msgText: '',
-            foundUsersList: false,
-            attachments: []
+            foundUsersList: false
         };
     }
 
     // при вводе добавляем с state
     changeText = e => this.setState({ msgText: e.target.value });
-
-    // при подгрузке картинок меняем css
-    togglePreview(oldfiles) {
-        const messages = document.querySelector('.messages');
-
-        messages.classList.remove(
-            'messages_grid_large',
-            'messages_grid_small'
-        );
-
-        if (oldfiles.length) {
-            messages.classList.add('messages_grid_small');
-        } else {
-            messages.classList.add('messages_grid_large');
-        }
-    }
-
-    // добавляем новые файлы в превью
-    onFilesChange = async e => {
-        const attachments = this.state.attachments || [];
-
-        const { currentTarget: { files } } = e;
-
-        const links = [];
-
-        await Promise.all([...files].map(async file => {
-            const formData = new FormData();
-
-            formData.append('image', file);
-            const response = await fetch('/api/attachments', {
-                credentials: 'include',
-                method: 'PUT',
-                body: formData
-            });
-
-            if (response.status === 200) {
-                const answer = await response.json();
-                const { url } = answer;
-
-                links.push(url);
-
-                return url;
-            }
-
-            return 'http://fotki.ykt.ru/albums/userpics/15649/moeya.jpg';
-        }));
-
-        if (attachments.length) {
-            await this.setState({
-                attachmentsLinks: this.state.attachmentsLinks.concat(links)
-            });
-        } else {
-            await this.setState({
-                attachmentsLinks: links
-            });
-        }
-        [...files].forEach(file => {
-            attachments.push(file);
-        });
-        await this.setState({ attachments });
-        await this.togglePreview(attachments);
-    }
 
     // клик на рожицу, используется в <Emoji.../>
     toggleEmoji = () => {
@@ -114,10 +51,9 @@ class ChatWindow extends Component {
     }
 
     submitMessage = async () => {
-        if (this.state.msgText.trim() || this.state.attachments.length) {
+        if (this.state.msgText.trim() || this.props.attachments.length) {
+            this.props.resetAttachments();
             this.setState({
-                attachments: [],
-                attachmentsLinks: [],
                 msgText: ''
             });
             this.togglePreview([]);
@@ -131,7 +67,7 @@ class ChatWindow extends Component {
                 message: {
                     text,
                     author: this.props.user.nickname,
-                    attachments: this.state.attachmentsLinks || []
+                    attachments: this.props.attachmentsLinks || []
                 },
                 chatId: this.props.activeChat._id
             }, async data => {
@@ -140,6 +76,22 @@ class ChatWindow extends Component {
             });
 
             this.props.onSortChats(this.props.activeChat._id);
+        }
+    }
+
+    // при подгрузке картинок меняем css
+    togglePreview(oldfiles) {
+        const messages = document.querySelector('.messages');
+
+        messages.classList.remove(
+            'messages_grid_large',
+            'messages_grid_small'
+        );
+
+        if (oldfiles.length) {
+            messages.classList.add('messages_grid_small');
+        } else {
+            messages.classList.add('messages_grid_large');
         }
     }
 
@@ -221,7 +173,7 @@ class ChatWindow extends Component {
                     <div ref={el => { this.messagesEnd = el; }}></div>
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
-                <Preview files={this.state.attachments} />
+                <Preview files={this.props.attachments || []} />
                 <div className="chat-input" onClick={this.props.onHideEmoji}>
                     <input
                         onChange={this.changeText}
@@ -231,13 +183,11 @@ class ChatWindow extends Component {
                     />
                     <label
                         className="chat-input__audioinput-btn chat-input__button"
-                        tabIndex="0"
                         >
                     </label>
                     <label
                         className="chat-input__emoji-btn chat-input__button"
                         onClick={event => event.stopPropagation()}
-                        tabIndex="0"
                         >
                         <input
                             type="button"
@@ -253,38 +203,16 @@ class ChatWindow extends Component {
                     <label
                         className="chat-input__burger-btn chat-input__button"
                         htmlFor="chat-input__burger-checkbox"
-                        tabIndex="0"
                         >
                     </label>
                     <label
                         src="/static/send_message.svg"
                         onClick={this.submitMessage}
                         className="chat-input__send-btn chat-input__button"
-                        tabIndex="0"
                     />
-                    <div className="chat-input__burger-content">
-                        <label className="chat-input__attachment-btn chat-input__button">
-                            <input
-                                type="file"
-                                className="chat-input__input_not-visual"
-                                multiple
-                                onChange={this.onFilesChange}
-                            />
-                            <span className="chat-input__button_description_add">
-                                Прикрепить файл
-                            </span>
-                        </label>
-                        <label className="chat-input__autodestroy-btn chat-input__button">
-                            <span className="chat-input__button_description_add">
-                                Секретное сообщение
-                            </span>
-                        </label>
-                        <label className="chat-input__geolocation-btn chat-input__button">
-                            <span className="chat-input__button_description_add">
-                                Местоположение
-                            </span>
-                        </label>
-                    </div>
+                    <InputPopup
+                        togglePreview={this.togglePreview}
+                    />
                 </div>
             </section>
         );
@@ -299,14 +227,19 @@ ChatWindow.propTypes = {
     onReceiveMessage: PropTypes.func,
     showEmoji: PropTypes.bool,
     activeChat: PropTypes.object,
-    onSortChats: PropTypes.func
+    onSortChats: PropTypes.func,
+    attachments: PropTypes.array,
+    attachmentsLinks: PropTypes.array,
+    resetAttachments: PropTypes.func
 };
 
 export default connect(
     state => ({
         activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id),
         user: state.user,
-        showEmoji: state.activeChat && state.activeChat.showEmoji
+        showEmoji: state.activeChat && state.activeChat.showEmoji,
+        attachments: state.activeChat && state.activeChat.attachments,
+        attachmentsLinks: state.activeChat && state.activeChat.attachmentsLinks
     }),
     dispatch => ({
         onShowProfile: profile => {
@@ -323,6 +256,9 @@ export default connect(
         },
         onSortChats: id => {
             dispatch({ type: 'SORT_CHATS', id });
+        },
+        resetAttachments: () => {
+            dispatch({ type: 'RESET_ATTACHMENTS' });
         }
     })
 )(ChatWindow);

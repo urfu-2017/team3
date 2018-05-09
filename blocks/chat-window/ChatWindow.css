@@ -81,11 +81,9 @@
     box-sizing: border-box;
     border: var(--border-size) solid transparent;
     border-radius: 50%;
-    outline: none;
 }
 
-.chat-input__button:hover,
-.chat-input__button:focus {
+.chat-input__button:hover {
     background-color: var(--spare-color-transparent);
 }
 
