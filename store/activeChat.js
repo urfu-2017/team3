@@ -24,12 +24,46 @@ export default function activeChat(state = null, action) {
         };
     }
 
+    if (action.type === 'SHOW_INPUT_POPUP') {
+        return {
+            ...state,
+            showInputPopup: true
+        };
+    }
+
+    if (action.type === 'HIDE_INPUT_POPUP') {
+        return {
+            ...state,
+            showInputPopup: false
+        };
+    }
+
+    if (action.type === 'RESET_ATTACHMENTS') {
+        return {
+            ...state,
+            attachments: [],
+            attachmentsLinks: []
+        };
+    }
+
     if (action.type === 'ADD_ATTACHMENT') {
-        // Обработка добавляение атачмента
+        const localState = {
+            ...state,
+            attachments: action.attachments.concat([]),
+            attachmentsLinks: action.attachmentsLinks.concat([])
+        };
+
+        return Object.assign(localState, {});
     }
 
     if (action.type === 'DELETE_ATTACHMENT') {
-        // Обработка удаления атачмента
+        const localState = {
+            ...state,
+            attachments: action.attachments.concat([]),
+            attachmentsLinks: action.attachmentsLinks.concat([])
+        };
+
+        return Object.assign(localState, {});
     }
 
     return state;

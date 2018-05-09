@@ -1,0 +1,106 @@
+.message {
+    max-width: 40%;
+    margin-top: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.my {
+    align-self: flex-end;
+    border-radius: 16px;
+    border-bottom-left-radius: 0;
+    background: #f5f5f5;
+}
+
+.friend {
+    align-items: flex-end;
+    align-self: flex-start;
+    border-radius: 16px;
+    border-bottom-right-radius: 0;
+    background: #eeeeee;
+}
+
+.message__data {
+    display: flex;
+    justify-content: space-between;
+    color: lightgray;
+    font-size: 12px;
+}
+
+.message__sender {
+    margin-right: 10px;
+}
+
+.message__date {
+    text-align: right;
+}
+
+.message__content {
+    margin: 10px 0;
+    word-break: break-all;
+}
+
+.message__attachment {
+    display: block;
+    max-width: 100%;
+    max-height: 200px;
+    margin: 10px;
+}
+
+.message__reactions {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    margin: 10px 0;
+}
+
+.message__reactions_to-left {
+    display: flex;
+}
+
+.message__add-emoji {
+    width: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.reaction {
+    display: flex;
+    margin: 0 10px;
+    padding: 3px 5px;
+    border: 1px solid var(--spare-color);
+    border-radius: 10%;
+}
+
+.reaction:nth-child(1) {
+    margin-left: 0;
+}
+
+.reaction__number-peoples {
+    margin: 0 5px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 20px;
+}
+
+.metadata {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.metadata__image {
+    width: 100%;
+}
+
+.metadata__header {
+    font-size: 80%;
+    text-align: center;
+}
+
+.metadata__description {
+    font-size: 80%;
+    text-decoration: none !important;
+}

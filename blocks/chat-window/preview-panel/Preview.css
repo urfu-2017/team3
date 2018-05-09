@@ -1,0 +1,28 @@
+.load-preview {
+    display: flex;
+    z-index: 1;
+    grid-area: 3 / 1 / 4 / 2;
+    border-top: 1px solid lightgray;
+}
+
+.preview {
+    display: block;
+}
+
+.preview__item {
+    height: 80px;
+    margin: 10px;
+}
+
+.preview__item_delete {
+    --size: 13px;
+    position: absolute;
+    width: var(--size);
+    height: var(--size);
+    margin: 10px 0 0 calc(-1 * var(--size) - 10px);
+}
+
+.preview__item_delete:hover {
+    transform: rotate(-15deg) scale(0.9);
+    cursor: pointer;
+}
