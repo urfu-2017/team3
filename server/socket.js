@@ -1,6 +1,7 @@
 'use strict';
 
 const Message = require('./models/Message');
+const Reaction = require('./models/Reaction');
 const Chat = require('./models/Chat');
 
 module.exports = function setupSocket(ws) {
@@ -53,30 +54,9 @@ module.exports = function setupSocket(ws) {
         });
 
         socket.on('reaction', async data => {
-            const { chatId, messageId, reaction } = data;
+            const { chatId, messageId, reaction: emojiName, userId: userName } = data;
 
-            await Chat.update(
-                {
-                    _id: chatId,
-                    'messages._id': messageId
-                },
-                {
-                    $inc: { [`messages.$.reactions.${reaction}`]: 1 }
-                },
-                {
-                    $upsert: true,
-                    $new: true
-                }
-            );
-
-            const updatedChat = await Chat.findOne(
-                {
-                    _id: chatId,
-                    'messages._id': messageId
-                }
-            );
-            // туду: не умеем получать отдельное сообщение из массива
-            const message = updatedChat.messages.find(m => m._id.toString() === messageId);
+            const message = await updateReaction(chatId, { messageId, emojiName, userName });
 
             ws.to(chatId).emit('update_message', { chatId, message });
         });
@@ -100,5 +80,30 @@ module.exports = function setupSocket(ws) {
 
         senderCallback(chat);
         other.forEach(member => socket.to(member).emit('chat', chat));
+    }
+
+    /* eslint-disable max-statements */
+    async function updateReaction(chatId, { messageId, emojiName, userName }) {
+        const chat = await Chat.findOne({ _id: chatId });
+        const message = chat.messages.find(m => m.id === messageId);
+        const reaction = message.reactions.find(r => r.emojiName === emojiName);
+
+        if (reaction) {
+            if (reaction.users.find(u => u === userName)) {
+                reaction.users.remove(userName);
+            } else {
+                reaction.users.push(userName);
+            }
+
+            if (reaction.users.length === 0) {
+                message.reactions = message.reactions.remove(reaction);
+            }
+        } else {
+            message.reactions.push(Reaction.initialize({ emojiName, user: userName }));
+        }
+
+        await chat.save();
+
+        return message;
     }
 };
