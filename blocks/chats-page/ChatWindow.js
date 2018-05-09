@@ -30,6 +30,14 @@ class ChatWindow extends Component {
         };
     }
 
+    componentDidMount() {
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                this.props.onHideEmoji();
+            }
+        });
+    }
+
     // при вводе добавляем с state
     changeText = e => this.setState({ msgText: e.target.value });
 

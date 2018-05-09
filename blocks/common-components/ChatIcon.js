@@ -43,7 +43,9 @@ class ChatIcon extends Component {
                     </div>
                     <div className="chat-icon__lower-box">
                         {/* ТУДУ оверфлоу не работает */}
-                        <div className="chat-icon__lastmsg">{lastMessage && lastMessage.text}</div>
+                        <div className="chat-icon__lastmsg">
+                            {lastMessage && (lastMessage.text || 'Photo')}
+                        </div>
                     </div>
                 </div>
             </div>
