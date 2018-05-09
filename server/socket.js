@@ -54,7 +54,7 @@ module.exports = function setupSocket(ws) {
         });
 
         socket.on('reaction', async data => {
-            const { chatId, messageId, reaction: emojiName, userId: userName } = data;
+            const { chatId, messageId, reaction: emojiName, userName } = data;
 
             const message = await updateReaction(chatId, { messageId, emojiName, userName });
 
