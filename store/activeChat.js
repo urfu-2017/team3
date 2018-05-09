@@ -24,6 +24,20 @@ export default function activeChat(state = null, action) {
         };
     }
 
+    if (action.type === 'SHOW_INPUT_POPUP') {
+        return {
+            ...state,
+            showInputPopup: true
+        };
+    }
+
+    if (action.type === 'HIDE_INPUT_POPUP') {
+        return {
+            ...state,
+            showInputPopup: false
+        };
+    }
+
     if (action.type === 'RESET_ATTACHMENTS') {
         return {
             ...state,

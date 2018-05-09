@@ -123,7 +123,7 @@
 }
 
 .chat-input__burger-content {
-    display: none;
+    display: flex;
     position: absolute;
     right: calc(
         var(--body-margin-side) +
@@ -206,6 +206,6 @@
     background-image: url(/static/geolocation.svg);
 }
 
-#chat-input__burger-checkbox:checked ~ .chat-input__burger-content{
+/* #chat-input__burger-checkbox:checked ~ .chat-input__burger-content{
     display: flex;
-}
+} */

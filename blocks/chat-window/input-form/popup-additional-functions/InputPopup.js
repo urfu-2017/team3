@@ -51,6 +51,12 @@ class InputPopup extends Component {
     }
 
     render() {
+        const { showInputPopup } = this.props;
+
+        if (!showInputPopup) {
+            return <div />;
+        }
+
         return (
             <div className="chat-input__burger-content">
                 <label className="chat-input__attachment-btn chat-input__button">
@@ -83,11 +89,13 @@ InputPopup.propTypes = {
     attachments: PropTypes.array,
     attachmentsLinks: PropTypes.array,
     togglePreview: PropTypes.func,
-    addAttachment: PropTypes.func
+    addAttachment: PropTypes.func,
+    showInputPopup: PropTypes.bool
 };
 
 export default connect(
     state => ({
+        showInputPopup: state.activeChat && state.activeChat.showInputPopup,
         attachments: state.activeChat.attachments,
         attachmentsLinks: state.activeChat.attachmentsLinks
     }),
