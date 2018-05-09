@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import { searchUsers, hideAddUser } from '../../../actions/modals';
+
 import PureProfile from './PureProfileForList';
 
 /* eslint-disable react/jsx-no-bind */
@@ -13,33 +15,21 @@ import './AddUser.css';
 
 class AddUser extends Component {
     hideAddUser = () => {
-        this.props.onHideAddUser();
+        this.props.hideAddUser();
     }
 
     componentDidMount() {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
-                this.props.onHideAddUser();
+                this.props.hideAddUser();
             }
         });
     }
 
     searchUsers = async e => {
-        this.props.onShowLoader();
         if (e.which === 13) {
-            // const text = e.target.value;
-            // Запрашиваем список пользователей подходящих
-            const response = await fetch(`/api/search/users/${e.target.value}`, {
-                credentials: 'include'
-            });
-
-            if (response.status === 200) {
-                const users = await response.json();
-
-                this.props.onUsersFound(users);
-            }
+            await this.props.searchUsers(e.target.value);
         }
-        this.props.onHideLoader();
     }
 
     render() {
@@ -51,7 +41,7 @@ class AddUser extends Component {
 
         return (
             <div className="darkness" onClick={this.hideAddUser}>
-                <div className="adduser" onClick={event => event.stopPropagation()}>
+                <div className="adduser" onClick={e => e.stopPropagation()}>
                     <div className="adduser__input_wrapper">
                         <input
                             type="text"
@@ -87,27 +77,19 @@ class AddUser extends Component {
 AddUser.propTypes = {
     user: PropTypes.object,
     show: PropTypes.bool,
-    foundUsers: PropTypes.array,
-    onHideAddUser: PropTypes.func,
-    onUsersFound: PropTypes.func,
-    onShowLoader: PropTypes.func,
-    onHideLoader: PropTypes.func
+    searchUsers: PropTypes.func,
+    hideAddUser: PropTypes.func,
+    foundUsers: PropTypes.array
 };
 
 export default connect(
-    state => ({ user: state.user, show: state.modal.show, foundUsers: state.modal.foundUsers }),
-    dispatch => ({
-        onHideAddUser: () => {
-            dispatch({ type: 'HIDE_ADDUSER' });
-        },
-        onUsersFound: users => {
-            dispatch({ type: 'FOUND_USERS', foundUsers: users });
-        },
-        onShowLoader: () => {
-            dispatch({ type: 'SHOW_LOADER' });
-        },
-        onHideLoader: () => {
-            dispatch({ type: 'HIDE_LOADER' });
-        }
-    })
+    state => ({
+        user: state.user,
+        show: state.modal.show,
+        foundUsers: state.modal.foundUsers
+    }),
+    {
+        searchUsers,
+        hideAddUser
+    }
 )(AddUser);
