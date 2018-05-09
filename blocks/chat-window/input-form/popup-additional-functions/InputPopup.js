@@ -15,7 +15,9 @@ class InputPopup extends Component {
 
         const { currentTarget: { files } } = e;
 
-        await Promise.all([...files].map(async file => {
+        const linksQueue = {};
+
+        await Promise.all([...files].map(async (file, i) => {
             const formData = new FormData();
 
             formData.append('image', file);
@@ -29,13 +31,17 @@ class InputPopup extends Component {
                 const answer = await response.json();
                 const { url } = answer;
 
-                links.push(url);
+                linksQueue[`${i}`] = url;
 
                 return url;
             }
 
             return 'http://fotki.ykt.ru/albums/userpics/15649/moeya.jpg';
         }));
+
+        Object.keys(linksQueue).forEach(index => {
+            links.push(linksQueue[`${index}`]);
+        });
 
         [...files].forEach(file => {
             attachments.push(file);
