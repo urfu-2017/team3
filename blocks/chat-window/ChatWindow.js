@@ -173,7 +173,7 @@ class ChatWindow extends Component {
                     <div ref={el => { this.messagesEnd = el; }}></div>
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
-                <Preview files={this.props.attachments || []} />
+                <Preview />
                 <div className="chat-input" onClick={this.props.onHideEmoji}>
                     <input
                         onChange={this.changeText}

@@ -33,15 +33,23 @@ export default function activeChat(state = null, action) {
     }
 
     if (action.type === 'ADD_ATTACHMENT') {
-        return {
+        const localState = {
             ...state,
-            attachments: action.attachments,
-            attachmentsLinks: action.attachmentsLinks
+            attachments: action.attachments.concat([]),
+            attachmentsLinks: action.attachmentsLinks.concat([])
         };
+
+        return Object.assign(localState, {});
     }
 
     if (action.type === 'DELETE_ATTACHMENT') {
-        // Обработка удаления атачмента
+        const localState = {
+            ...state,
+            attachments: action.attachments.concat([]),
+            attachmentsLinks: action.attachmentsLinks.concat([])
+        };
+
+        return Object.assign(localState, {});
     }
 
     return state;

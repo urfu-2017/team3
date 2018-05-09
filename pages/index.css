@@ -3,7 +3,7 @@
 @media screen and (max-width: 576px) {}
 
 body {
-    --body-margin-side: 15%;
+    --body-margin-side: 0%;
     margin: 0 var(--body-margin-side);
 }
 

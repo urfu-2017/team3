@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
 import FilePreview from 'react-preview-file';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import './Preview.css';
 
-export default class Preview extends Component {
-    // deletePic = e => {
-    //     const targetPreview = e.target.parentElement;
-    //     const previews = document.querySelector('.load-preview').children;
-    //     const index = Array.prototype.slice.call(previews).indexOf(targetPreview);
+class Preview extends Component {
+    deletePic = e => {
+        const id = e.target.parentElement.getAttribute('data-id');
 
-    //     delete this.props.files.splice(index, 1);
-    //     this.render();
-    // }
+        const { attachments } = this.props;
+        const { attachmentsLinks } = this.props;
+
+        attachments.splice(id, 1);
+        attachmentsLinks.splice(id, 1);
+
+        this.props.deleteAttachment(attachments, attachmentsLinks);
+    }
 
     previewImgs(files) {
-        return files.map(file => {
+        return files.map((file, i) => {
             return (
                 <FilePreview key={file.name} file={file}>
                     {preview => {
                         return (
-                            <li key={file.name} className="preview">
+                            <li key={file.name} className="preview" data-id={i}>
                                 <img
                                     src={preview}
                                     className="preview__item"
@@ -27,7 +31,7 @@ export default class Preview extends Component {
                                 <img
                                     src="/static/closeDeleteElement.svg"
                                     className="preview__item_delete"
-                                    // onClick={this.deletePic}
+                                    onClick={this.deletePic}
                                 />
                             </li>
                         );
@@ -38,20 +42,34 @@ export default class Preview extends Component {
     }
 
     render() {
-        const { files } = this.props;
+        const { attachments } = this.props;
 
-        if (!files || files.length === 0) {
+        if (!attachments || attachments.length === 0) {
             return <div className="img-preview" />;
         }
 
         return (
             <div className="load-preview">
-                {this.previewImgs(files)}
+                {this.previewImgs(attachments)}
             </div>
         );
     }
 }
 
 Preview.propTypes = {
-    files: PropTypes.array
+    attachments: PropTypes.array,
+    attachmentsLinks: PropTypes.array,
+    deleteAttachment: PropTypes.func
 };
+
+export default connect(
+    state => ({
+        attachments: state.activeChat.attachments,
+        attachmentsLinks: state.activeChat.attachmentsLinks
+    }),
+    dispatch => ({
+        deleteAttachment: (attachments, attachmentsLinks) => {
+            dispatch({ type: 'DELETE_ATTACHMENT', attachments, attachmentsLinks });
+        }
+    })
+)(Preview);

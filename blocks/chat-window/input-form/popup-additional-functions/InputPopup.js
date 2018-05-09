@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 class InputPopup extends Component {
     // добавляем новые файлы в превью
     onFilesChange = async e => {
-        console.log(this.props);
         const attachments = this.props.attachments || [];
         const links = this.props.attachmentsLinks || [];
 
