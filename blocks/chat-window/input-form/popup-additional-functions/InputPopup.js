@@ -70,12 +70,18 @@ class InputPopup extends Component {
                         Прикрепить файл
                     </span>
                 </label>
-                <label className="chat-input__autodestroy-btn chat-input__button">
+                <label
+                    className="chat-input__autodestroy-btn chat-input__button"
+                    onClick={this.props.onHideInputPopup}
+                    >
                     <span className="chat-input__button_description_add">
                         Секретное сообщение
                     </span>
                 </label>
-                <label className="chat-input__geolocation-btn chat-input__button">
+                <label
+                    className="chat-input__geolocation-btn chat-input__button"
+                    onClick={this.props.onHideInputPopup}
+                    >
                     <span className="chat-input__button_description_add">
                         Местоположение
                     </span>
@@ -90,7 +96,8 @@ InputPopup.propTypes = {
     attachmentsLinks: PropTypes.array,
     togglePreview: PropTypes.func,
     addAttachment: PropTypes.func,
-    showInputPopup: PropTypes.bool
+    showInputPopup: PropTypes.bool,
+    onHideInputPopup: PropTypes.func
 };
 
 export default connect(
@@ -102,6 +109,9 @@ export default connect(
     dispatch => ({
         addAttachment: (attachments, attachmentsLinks) => {
             dispatch({ type: 'ADD_ATTACHMENT', attachments, attachmentsLinks });
+        },
+        onHideInputPopup: () => {
+            dispatch({ type: 'HIDE_INPUT_POPUP' });
         }
     })
 )(InputPopup);

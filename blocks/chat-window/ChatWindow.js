@@ -132,11 +132,6 @@ class ChatWindow extends Component {
         }
     }
 
-    hidePopups = () => {
-        this.props.onHideEmoji();
-        this.props.onHideInputPopup();
-    }
-
     render() {
         const { activeChat, user } = this.props;
 
@@ -153,8 +148,8 @@ class ChatWindow extends Component {
         const title = chat.getTitleFor(user);
 
         return (
-            <section className="chat-window" onClick={this.hidePopups}>
-                <div className="chat-header">
+            <section className="chat-window">
+                <div className="chat-header" onClick={this.props.onHideEmoji}>
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
@@ -168,7 +163,7 @@ class ChatWindow extends Component {
                         {title}
                     </span>
                 </div>
-                <div className="messages messages_grid_large">
+                <div className="messages messages_grid_large" onClick={this.props.onHideEmoji}>
                     {activeChat.messages.map(message => (
                         <Message
                             key={message._id || '0'}
@@ -182,7 +177,7 @@ class ChatWindow extends Component {
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
                 <Preview />
-                <div className="chat-input">
+                <div className="chat-input" onClick={this.props.onHideEmoji}>
                     <input
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
@@ -205,13 +200,8 @@ class ChatWindow extends Component {
                     </label>
                     <label
                         className="chat-input__burger-btn chat-input__button"
-                        onClick={event => event.stopPropagation()}
+                        onClick={this.props.onShowInputPopup}
                         >
-                        <input
-                            type="button"
-                            onClick={this.props.onShowInputPopup}
-                            className="chat-input__input_not-visual"
-                        />
                     </label>
                     <label
                         src="/static/send_message.svg"
@@ -239,8 +229,7 @@ ChatWindow.propTypes = {
     attachments: PropTypes.array,
     attachmentsLinks: PropTypes.array,
     resetAttachments: PropTypes.func,
-    onShowInputPopup: PropTypes.func,
-    onHideInputPopup: PropTypes.func
+    onShowInputPopup: PropTypes.func
 };
 
 export default connect(
@@ -273,9 +262,6 @@ export default connect(
         },
         onShowInputPopup: () => {
             dispatch({ type: 'SHOW_INPUT_POPUP' });
-        },
-        onHideInputPopup: () => {
-            dispatch({ type: 'HIDE_INPUT_POPUP' });
         }
     })
 )(ChatWindow);
