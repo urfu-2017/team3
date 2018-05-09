@@ -13,6 +13,7 @@ class Preview extends Component {
 
         attachments.splice(id, 1);
         attachmentsLinks.splice(id, 1);
+        this.props.togglePreview(attachments);
 
         this.props.deleteAttachment(attachments, attachmentsLinks);
     }
@@ -59,7 +60,8 @@ class Preview extends Component {
 Preview.propTypes = {
     attachments: PropTypes.array,
     attachmentsLinks: PropTypes.array,
-    deleteAttachment: PropTypes.func
+    deleteAttachment: PropTypes.func,
+    togglePreview: PropTypes.func
 };
 
 export default connect(

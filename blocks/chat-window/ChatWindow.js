@@ -176,7 +176,7 @@ class ChatWindow extends Component {
                     <div ref={el => { this.messagesEnd = el; }}></div>
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
-                <Preview />
+                <Preview togglePreview={this.togglePreview} />
                 <div className="chat-input" onClick={this.props.onHideEmoji}>
                     <input
                         onChange={this.changeText}

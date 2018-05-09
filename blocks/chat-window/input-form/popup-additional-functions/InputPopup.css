@@ -1,0 +1,84 @@
+.chat-input__burger-content {
+    z-index: 5;
+    display: flex;
+    position: absolute;
+    right: calc(
+        var(--body-margin-side) +
+        (var(--icon-size) / 2) +
+        var(--standard-indent-small)
+    );
+    bottom: calc(
+        var(--icon-size) +
+        (var(--standard-indent-small) * 3) +
+        (var(--icon-size) / 2)
+    );
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: space-between;
+    width: calc(
+        var(--icon-size) +
+        (var(--standard-indent) * 0.5) +
+        (var(--standard-indent) * 0.5 * 2) +
+        (var(--icon-size) * 5)
+    );
+    height: calc(var(--icon-size) * 3 + var(--standard-indent) * 0.5 * 4);
+    padding: calc(var(--standard-indent) * 0.5);
+    border-radius: var(--standard-indent-small);
+    background-color: white;
+    box-shadow: 
+        0 
+        0 
+        calc(var(--border-size-bold)) 
+        var(--border-size) 
+        var(--spare-color);
+}
+
+.chat-input__burger-content::after {
+    content: '';
+    position: absolute;
+    right: calc(var(--icon-size) + var(--border-size));
+    bottom: calc(var(--icon-size) / -2);
+    width: 0;
+    height: 0;
+    transform: rotate(45deg);
+    border: calc(var(--icon-size) / 2) solid transparent;
+    background-color: white;
+    box-shadow: 
+        var(--border-size) 
+        var(--border-size) 
+        var(--border-size) 
+        0 
+        var(--spare-color);
+}
+
+.chat-input__burger-content > .chat-input__button {
+    width: 100%;
+    background-position: calc(var(--standard-indent-small) * 0.25);
+    border-radius: calc(var(--standard-indent-small) * 0.5);
+    box-sizing: content-box;
+    z-index: 10;
+    padding: calc(var(--standard-indent-small) * 0.25);
+}
+
+.chat-input__button_description_add {
+    display: block;
+    padding-left: calc(
+        var(--icon-size) +
+        (var(--standard-indent) * 0.5)
+    );
+    color: var(--text-color-h2);
+    font-size: .8rem;
+    line-height: var(--icon-size);
+}
+
+.chat-input__audioinput-btn {
+    background-image: url(/static/microphone.svg);
+}
+
+.chat-input__autodestroy-btn {
+    background-image: url(/static/autodestroy_message.svg);
+}
+
+.chat-input__geolocation-btn {
+    background-image: url(/static/geolocation.svg);
+}

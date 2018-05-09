@@ -3,6 +3,7 @@
     z-index: 1;
     grid-area: 3 / 1 / 4 / 2;
     border-top: 1px solid lightgray;
+    background: white;
 }
 
 .preview {

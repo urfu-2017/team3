@@ -7,6 +7,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import './InputPopup.css';
+
 class InputPopup extends Component {
     // добавляем новые файлы в превью
     onFilesChange = async e => {
