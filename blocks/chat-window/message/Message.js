@@ -14,7 +14,7 @@ import './Message.css';
 /* eslint-disable react/jsx-no-bind */
 
 export default class Message extends Component {
-    state = { }
+    state = {};
 
     addEmoji = emoji => {
 
@@ -23,7 +23,12 @@ export default class Message extends Component {
 
         const socket = getSocket();
 
-        socket.emit('reaction', { chatId, messageId, reaction: emoji.id });
+        socket.emit('reaction', {
+            chatId,
+            messageId,
+            reaction: emoji.id,
+            userName: this.props.user._id
+        });
     };
 
     toggleEmoji = () => {
@@ -91,20 +96,21 @@ export default class Message extends Component {
 
         const goodDate = this.prettyDate(date);
 
-        const emojiNames = Object.keys(reactions);
-        const peopleEmoji = emojiNames.map(name => {
-            return (
-                <div className="reaction" key={name}>
-                    <Emoji
-                        key={Math.floor(Math.random() * 1000000)}
-                        emoji={name}
-                        set="emojione"
-                        size={20}
-                    />
-                    <span className="reaction__number-peoples">{reactions[`${name}`]}</span>
-                </div>
-            );
-        });
+        const peopleEmoji = reactions
+            .filter(r => r.users.length > 0)
+            .map(r => {
+                return (
+                    <div className="reaction" key={r.emojiName}>
+                        <Emoji
+                            key={Math.floor(Math.random() * 1000000)}
+                            emoji={r.emojiName}
+                            set="emojione"
+                            size={20}
+                        />
+                        <span className="reaction__number-peoples">{r.users.length}</span>
+                    </div>
+                );
+            });
 
         return { newText, images, goodDate, peopleEmoji, metadata };
     }
