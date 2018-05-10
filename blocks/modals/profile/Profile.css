@@ -1,23 +1,23 @@
 .profile {
     display: flex;
-    box-sizing: border-box;
-    flex-direction: row;
-    width: 320px;
-    padding: 32px;
-    border-radius: 8px;
     background: white;
+    box-sizing: border-box;
+    width: var(--modal-width);
+    padding: var(--standard-indent);
+    border-radius: var(--standard-indent-small);
 }
 
 .profile__avatar-box {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: calc(var(--icon-size) * 4);
+    height: calc(var(--icon-size) * 4);
 }
 
 .profile__avatar {
     width: 100%;
     height: 100%;
-    border-radius: 50px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .profile__avatar-hover {
@@ -25,47 +25,80 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #0009;
+    cursor: pointer;
 }
 
-.profile__avatar-box:hover  .profile__avatar-hover {
+.profile__avatar_new {
+    position: absolute;
+    top: calc(100% - var(--icon-size) * 0.75);
+    left: calc(100% - var(--icon-size) * 0.75);
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+
+.profile__avatar-box:hover .profile__avatar-hover {
     visibility: visible;
 }
 
-.profile__input {
+.profile__new-avatar_input {
     visibility: hidden;
 }
 
 .profile__info-box {
     display: flex;
+    flex-grow: 3;
     flex-direction: column;
-    margin-left: 16px;
+    margin-left: var(--standard-indent);
 }
 
 .profile__nickname {
-    width: 128px;
     overflow: hidden;
-    color: #444444;
-    font-size: 18px;
+    color: var(--text-color-h1);
+    font-size: 130%;
+    text-align: center;
     font-weight: bold;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .profile__invite-link{
-    margin-top: 10px;
-    color: #888;
-    cursor: pointer;
+    display: block;
+    margin-top: calc(var(--standard-indent-small) * 2);
+    color: var(--text-color-h2);
 }
 
 .profile__invite-link:hover {
-    color: #666;
+    color: var(--text-color-h3);
+    cursor: pointer;
 }
 
-
 .profile__invite-link:active {
-    color: #222;
+    color: var(--text-color-h1);
+}
+
+.contacts {
+    padding: 0;
+    margin: 0;
+}
+.contacts__user-box {
+    display: block;
+    height: var(--icon-size);
+    margin: var(--standard-indent-small);
+    border-radius: var(--standard-indent-small);
+}
+
+.contacts__user-box:hover {
+    transition: .2s;
+    background-color: var(--neutral-color);
+    cursor: pointer;
+}
+
+.contacts__nickname {
+    font-weight: bold;
+    line-height: var(--icon-size);
+    padding-left: var(--standard-indent-small);
 }

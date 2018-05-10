@@ -15,13 +15,22 @@ import './CreateGroup.css';
 import Chat from '../../../models/Chat';
 
 class CreateGroup extends Component {
-    state = { groupMembers: [], groupTitle: 'group' }
+    state = {
+        groupMembers: [],
+        groupTitle: 'group',
+        mutableContacts: this.props.contacts.slice()
+    }
 
     createChat = () => {
         const { groupMembers, groupTitle } = this.state;
         const myUser = this.props.user;
 
         this.props.createGroupChat(myUser, groupMembers, groupTitle);
+        this.setState({
+            groupMembers: [],
+            groupTitle: 'group',
+            mutableContacts: this.props.contacts.slice()
+        });
     }
 
     hideCreateGroup = () => {
@@ -36,27 +45,39 @@ class CreateGroup extends Component {
         });
     }
 
+    /* eslint-disable max-statements */
+    /* eslint-disable complexity */
     pushOrPopFromGroupMembers(member) {
-        const { groupMembers } = this.state;
-        let index = -1;
+        const { groupMembers, mutableContacts } = this.state;
+        let indexInMembers = -1;
+        let indexInContacts = -1;
 
         for (let i = 0; i < groupMembers.length; i += 1) {
             if (groupMembers[i].nickname === member.nickname) {
-                index = i;
+                indexInMembers = i;
             }
         }
 
-        if (index === -1) {
+        for (let i = 0; i < mutableContacts.length; i += 1) {
+            if (mutableContacts[i].nickname === member.nickname) {
+                indexInContacts = i;
+            }
+        }
+
+        if (indexInMembers === -1) {
             groupMembers.push(member);
+            mutableContacts.splice(indexInContacts, 1);
         } else {
-            groupMembers.splice(index, 1);
+            mutableContacts.push(member);
+            groupMembers.splice(indexInMembers, 1);
         }
 
         this.setState({ groupMembers });
     }
+    /* eslint-enable max-statements */
 
     render() {
-        const { contacts, showCG } = this.props;
+        const { showCG } = this.props;
         const { groupMembers } = this.state;
 
         if (!showCG) {
@@ -66,40 +87,63 @@ class CreateGroup extends Component {
         return (
             <div className="darkness" onClick={this.hideCreateGroup}>
                 <div className="create-group" onClick={e => e.stopPropagation()}>
-                    <input
-                        type="text"
-                        className="create-group__input"
-                        placeholder="Название группы"
-                        value={this.state.groupTitle}
-                        onChange={e => this.setState({ groupTitle: e.target.value })}
-                    />
-                    <div className="create-group__list">
-                        {contacts.map(contact => {
-
-                            return (
-                                <li
-                                    className="create-group__user-box"
-                                    key={Math.random()}
-                                    onClick={() => this.pushOrPopFromGroupMembers(contact)}
-                                    >
-                                    <div className="create-group__nickname">
-                                        {contact.nickname}
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </div>
-                    <div className="create-group__info_wrapper">
-                        <span className="create-group__number-members">
-                            {groupMembers.length} участников
+                    <div className="create-group__title">
+                        <span className="create-group__hint">
+                            Название группы
                         </span>
-                        <button
-                            className="create-group__button"
-                            onClick={this.createChat}
-                            >
-                            Создать
-                        </button>
+                        <input
+                            type="text"
+                            className="create-group__name"
+                            placeholder="Название группы"
+                            value={this.state.groupTitle}
+                            onChange={e => this.setState({ groupTitle: e.target.value })}
+                            autoFocus
+                        />
                     </div>
+                    <div className="create-group__list">
+                        <div className="create-group__list_wrapper">
+                            {this.state.mutableContacts.map(contact => {
+                                return (
+                                    <li
+                                        className="create-group__user-box"
+                                        key={Math.random()}
+                                        onClick={() => this.pushOrPopFromGroupMembers(contact)}
+                                        >
+                                        <div className="create-group__nickname">
+                                            {contact.nickname}
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                        </div>
+                    </div>
+                    <span className="create-group__number-members">
+                        Количество участников: {groupMembers.length}
+                    </span>
+                    <div className="create-group__participants">
+                        <div className="create-group__participants_wrapper">
+                            {this.state.groupMembers.map(contact => {
+                                return (
+                                    <li
+                                        className="create-group__user-box"
+                                        key={Math.random()}
+                                        onClick={() => this.pushOrPopFromGroupMembers(contact)}
+                                        >
+                                        <div className="create-group__nickname">
+                                            {contact.nickname}
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                        </div>
+                    </div>
+                    <hr className="create-group_separator" />
+                    <button
+                        className="create-group__button"
+                        onClick={this.createChat}
+                        >
+                        Создать
+                    </button>
                 </div>
             </div>
         );

@@ -1,0 +1,41 @@
+.profile_in-list {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: var(--standard-indent-small);
+    border-radius: var(--standard-indent-small);
+    margin: var(--standard-indent-small) 0;
+}
+
+.profile__avatar-box_in-list {
+    width: calc(var(--icon-size) * 2);
+    height: calc(var(--icon-size) * 2);
+}
+
+.profile__avatar_in-list {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile__info-box_in-list {
+    display: flex;
+    flex-grow: 3;
+    flex-direction: column;
+}
+
+.profile__nickname_in-list {
+    overflow: hidden;
+    color: var(--text-color-h1);
+    font-size: 120%;
+    text-align: center;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile_in-list:hover {
+    background-color: var(--neutral-color-semi-transparent);
+    cursor: pointer;
+}
