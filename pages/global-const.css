@@ -1,7 +1,7 @@
 .main_theme_day{
     --base-color: #399CE6ff;
-    --base-color-semi-transparent: #399CE699;
-    --base-color-transparent: #399CE633;
+    --base-color-semi-transparent: #399CE6dd;
+    --base-color-transparent: #399CE6bb;
 
     --spare-color: #868686ff;
     --spare-color-semi-transparent: #86868699;
@@ -11,7 +11,7 @@
     --neutral-color-semi-transparent: #ebebeb99;
     --neutral-color-transparent: #ebebeb33;
 
-    --text-color-h1: #000f;
+    --text-color-h1: #000c;
     --text-color-h2: #000a;
     --text-color-h3: #0005;
 

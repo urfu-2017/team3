@@ -78,7 +78,7 @@ export default class Message extends Component {
                 <a className="metadata" href={meta.url}>
                     <img src={meta.image} className="metadata__image" />
                     <h3 className="metadata__header">{meta.title || meta.author}</h3>
-                    <div className="metadata__description">{meta.description}</div>
+                    <span className="metadata__description">{meta.description}</span>
                 </a>
             );
 
@@ -141,7 +141,10 @@ export default class Message extends Component {
                         <span className="message__date">{goodDate}</span>
                     </div>
                     <div className="message__content">{newText}</div>
-                    {images}
+                    <div className="message__attachments">
+                        {images}
+                    </div>
+                    {metadata}
                     <div className="message__reactions">
                         <div className="message__reactions_to-left">{peopleEmoji}</div>
                         <img
@@ -150,7 +153,6 @@ export default class Message extends Component {
                             onClick={this.toggleEmoji}
                         />
                     </div>
-                    {metadata}
                 </div>
             );
         }
