@@ -9,7 +9,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import getSocket from '../../pages/socket';
+import { showProfile } from '../../actions/modals';
+import {
+    showEmoji,
+    hideEmoji,
+    resetAttachments,
+    sendMessage,
+    showInputPopup } from '../../actions/activeChat';
 
 import Chat from '../../models/Chat';
 
@@ -24,8 +30,7 @@ class ChatWindow extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            msgText: '',
-            foundUsersList: false
+            msgText: ''
         };
     }
 
@@ -43,10 +48,10 @@ class ChatWindow extends Component {
 
     // клик на рожицу, используется в <Emoji.../>
     toggleEmoji = () => {
-        if (this.props.showEmoji) {
-            this.props.onHideEmoji();
+        if (this.props.emojiActive) {
+            this.props.hideEmoji();
         } else {
-            this.props.onShowEmoji();
+            this.props.showEmoji();
         }
     }
 
@@ -62,8 +67,8 @@ class ChatWindow extends Component {
     }
 
     /* eslint-disable max-statements */
-    submitMessage = async () => {
-        const attachments = this.props.attachments || [];
+    submitMessage = () => {
+        const { attachments } = this.props;
 
         if (this.state.msgText.trim() || attachments.length) {
             this.props.resetAttachments();
@@ -76,21 +81,15 @@ class ChatWindow extends Component {
             const text = input.value;
 
             input.value = '';
-            const socket = getSocket();
 
-            await socket.emit('message', {
-                message: {
-                    text,
-                    author: this.props.user.nickname,
-                    attachments: this.props.attachmentsLinks || []
-                },
-                chatId: this.props.activeChat._id
-            }, async data => {
-                await this.props.onReceiveMessage(data);
-                await this.scrollToBottom();
-            });
+            const message = {
+                text,
+                author: this.props.user.nickname,
+                attachments: this.props.attachments.map(a => a.url)
+            };
+            const chatId = this.props.activeChat._id;
 
-            this.props.onSortChats(this.props.activeChat._id);
+            this.props.sendMessage(chatId, message);
         }
     }
 
@@ -118,7 +117,7 @@ class ChatWindow extends Component {
     }
 
     showProfile = profile => {
-        this.props.onShowProfile(profile);
+        this.props.showProfile(profile);
     }
 
     scrollToBottom = () => {
@@ -128,7 +127,7 @@ class ChatWindow extends Component {
     }
 
     activeChatId = '0';
-
+    messagesCount = 0;
     componentDidUpdate() {
         const { activeChat } = this.props;
 
@@ -139,6 +138,9 @@ class ChatWindow extends Component {
         if (activeChat._id !== this.activeChatId) {
             this.scrollToBottom();
             this.activeChatId = activeChat._id;
+            this.messagesCount = activeChat.messages.length;
+        } else if (activeChat.messages.length !== this.messagesCount) {
+            this.scrollToBottom();
             this.messagesCount = activeChat.messages.length;
         }
     }
@@ -160,7 +162,7 @@ class ChatWindow extends Component {
 
         return (
             <section className="chat-window">
-                <div className="chat-header" onClick={this.props.onHideEmoji}>
+                <div className="chat-header" onClick={this.props.hideEmoji}>
                     <img
                         className="chat-header__img"
                         alt="chatavatar"
@@ -174,7 +176,7 @@ class ChatWindow extends Component {
                         {title}
                     </span>
                 </div>
-                <div className="messages messages_grid_large" onClick={this.props.onHideEmoji}>
+                <div className="messages messages_grid_large" onClick={this.props.hideEmoji}>
                     {activeChat.messages.map(message => (
                         <Message
                             key={message._id || '0'}
@@ -187,8 +189,8 @@ class ChatWindow extends Component {
                     <div ref={el => { this.messagesEnd = el; }}></div>
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
-                <Preview togglePreview={this.togglePreview} />
-                <div className="chat-input" onClick={this.props.onHideEmoji}>
+                <Preview />
+                <div className="chat-input" onClick={this.props.hideEmoji}>
                     <input
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
@@ -214,7 +216,7 @@ class ChatWindow extends Component {
                     </label>
                     <label
                         className="chat-input__burger-btn chat-input__button"
-                        onClick={this.props.onShowInputPopup}
+                        onClick={this.props.showInputPopup}
                         >
                     </label>
                     <label
@@ -233,53 +235,31 @@ class ChatWindow extends Component {
 
 ChatWindow.propTypes = {
     user: PropTypes.object,
-    onShowProfile: PropTypes.func,
-    onShowEmoji: PropTypes.func,
-    onHideEmoji: PropTypes.func,
-    onReceiveMessage: PropTypes.func,
-    showEmoji: PropTypes.bool,
+    emojiActive: PropTypes.bool,
+    showProfile: PropTypes.func,
+    showEmoji: PropTypes.func,
+    hideEmoji: PropTypes.func,
     activeChat: PropTypes.object,
-    onSortChats: PropTypes.func,
     attachments: PropTypes.array,
-    attachmentsLinks: PropTypes.array,
     resetAttachments: PropTypes.func,
-    onShowInputPopup: PropTypes.func,
-    onHideInputPopup: PropTypes.func
+    showInputPopup: PropTypes.func,
+    sendMessage: PropTypes.func
 };
 
 export default connect(
     state => ({
         activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id),
         user: state.user,
-        showEmoji: state.activeChat && state.activeChat.showEmoji,
+        emojiActive: state.activeChat && state.activeChat.showEmoji,
         attachments: state.activeChat && state.activeChat.attachments,
         attachmentsLinks: state.activeChat && state.activeChat.attachmentsLinks,
         showInputPopup: state.activeChat && state.activeChat.showInputPopup
-    }),
-    dispatch => ({
-        onShowProfile: profile => {
-            dispatch({ type: 'SHOW_PROFILE', profile });
-        },
-        onShowEmoji: () => {
-            dispatch({ type: 'SHOW_EMOJI' });
-        },
-        onHideEmoji: () => {
-            dispatch({ type: 'HIDE_EMOJI' });
-        },
-        onReceiveMessage: ({ chatId, message }) => {
-            dispatch({ type: 'RECEIVE_MESSAGE', chatId, message });
-        },
-        onSortChats: id => {
-            dispatch({ type: 'SORT_CHATS', id });
-        },
-        resetAttachments: () => {
-            dispatch({ type: 'RESET_ATTACHMENTS' });
-        },
-        onShowInputPopup: () => {
-            dispatch({ type: 'SHOW_INPUT_POPUP' });
-        },
-        onHideInputPopup: () => {
-            dispatch({ type: 'HIDE_INPUT_POPUP' });
-        }
-    })
+    }), {
+        showProfile,
+        showEmoji,
+        hideEmoji,
+        sendMessage,
+        resetAttachments,
+        showInputPopup
+    }
 )(ChatWindow);

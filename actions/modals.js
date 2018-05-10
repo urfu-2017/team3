@@ -24,6 +24,10 @@ export const hideCreateGroup = () => dispatch => {
     dispatch({ type: types.HIDE_CREATEGROUP });
 };
 
+export const showProfile = profile => dispatch => {
+    dispatch({ type: types.SHOW_PROFILE, profile });
+};
+
 export const hideProfile = () => dispatch => {
     dispatch({ type: types.HIDE_PROFILE });
 };

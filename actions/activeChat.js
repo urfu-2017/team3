@@ -1,5 +1,7 @@
 'use strict';
 
+import getSocket from '../pages/socket';
+
 import types from './types';
 
 export const addAttachments = files => async dispatch => {
@@ -32,4 +34,36 @@ export const deleteAttachment = index => dispatch => {
 
 export const hideInputPopup = () => dispatch => {
     dispatch({ type: types.HIDE_INPUT_POPUP });
+};
+
+export const showEmoji = () => dispatch => {
+    dispatch({ type: types.SHOW_EMOJI });
+};
+
+export const hideEmoji = () => dispatch => {
+    dispatch({ type: types.HIDE_EMOJI });
+};
+
+export const sendMessage = (chatId, message) => dispatch => {
+    const socket = getSocket();
+
+    socket.emit('message', { chatId, message },
+        data => {
+            console.info(data);
+            dispatch({
+                type: types.RECEIVE_MESSAGE,
+                chatId: data.chatId,
+                message: data.message
+            });
+
+            dispatch({ type: 'SORT_CHATS' });
+        });
+};
+
+export const resetAttachments = () => dispatch => {
+    dispatch({ type: 'RESET_ATTACHMENTS' });
+};
+
+export const showInputPopup = () => dispatch => {
+    dispatch({ type: 'SHOW_INPUT_POPUP' });
 };
