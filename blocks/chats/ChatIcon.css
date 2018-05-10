@@ -1,0 +1,68 @@
+.chat-icon {
+    display: flex;
+    flex-direction: row;
+    height: calc(var(--standard-indent) * 2);
+    cursor: pointer;
+}
+
+.chat-icon:hover {
+    background-color: var(--neutral-color-semi-transparent);
+}
+
+.chat-icon:active {
+    transform: scale(.95, .95);
+}
+
+.chat-icon__logo-box {
+    height: 100%;
+    padding: var(--standard-indent-small);
+    background-color: transparent;
+    object-fit: cover;
+}
+
+.chat-icon__logo {
+    width: calc((var(--standard-indent) - var(--standard-indent-small)) * 2);
+    height: calc((var(--standard-indent) - var(--standard-indent-small)) * 2);
+    border-radius: 50%;
+}
+
+.chat-icon__info-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--standard-indent-small);
+}
+
+@supports not (width: -webkit-max-content) {
+    .chat-icon__info-box {
+        padding-right: calc(var(--standard-indent-small) * 3);
+    }
+}
+
+.chat-icon__upper-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.chat-icon__lastmsg {
+    width: 230px;
+    overflow: hidden;
+    color: var(--text-color-h3);
+    font-size: 90%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-icon__title {
+    overflow: hidden;
+    color: var(--text-color-h1);
+    font-size: 90%;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chat-icon__date {
+    color: var(--text-color-h3);
+    font-size: 80%;
+}

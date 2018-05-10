@@ -1,0 +1,31 @@
+.custom-button {
+    display: flex;
+    box-sizing: border-box;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #3AA94A;
+    border-radius: 15px;
+    outline: none;
+    background-color: var(--spare-color);
+    color: #000;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.custom-button:focus {
+    transform: scale(1.05, 1.05);
+    transition: .1s;
+    background-color: snow;
+    box-shadow: 0 0 10px var(--spare-color);
+}
+
+.custom-button:hover {
+    transform: translate(0, 0);
+    transition: .1s;
+    background-color: snow;
+}
+
+.custom-button:active {
+    transform: scale(.95, .95);
+}

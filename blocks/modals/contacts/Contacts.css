@@ -1,0 +1,34 @@
+.contacts {
+    box-sizing: border-box;
+    width: 400px;
+    padding: 16px;
+    border-radius: 8px;
+    background: white;
+}
+
+.contacts__title {
+    margin: 0 0 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--neutral-color);
+    font-size: 110%;
+    text-align: center;
+}
+
+.contacts__user-box {
+    display: block;
+    height: 30px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.contacts__user-box:hover {
+    transition: .2s;
+    background-color: var(--neutral-color);
+    cursor: pointer;
+}
+
+.contacts__nickname {
+    margin-left: 15px;
+    font-weight: bold;
+    line-height: 30px;
+}

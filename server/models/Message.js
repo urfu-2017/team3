@@ -2,6 +2,7 @@
 
 const sanitizeHtml = require('sanitize-html');
 const extractMeta = require('../utils/metaExtractor');
+const Reaction = require('./Reaction');
 const mongoose = require('mongoose');
 
 const mongoSchema = new mongoose.Schema({
@@ -17,7 +18,7 @@ const mongoSchema = new mongoose.Schema({
     },
     text: String,
     meta: {},
-    reactions: {},
+    reactions: [Reaction.schema],
     attachments: [String]
 }, { minimize: false });
 
@@ -31,20 +32,19 @@ class MessageClass {
             meta,
             data: Date.now(),
             text: processMarkdownAndSanitize(text),
-            reactions: {},
+            reactions: [],
             attachments: attachments || []
         };
     }
 }
 
 function processMarkdownAndSanitize(text) {
-    const santizedHtml = sanitizeHtml(text, {
+    return sanitizeHtml(text, {
         allowedTags: ['p', 'strong', 'em', 'a', 'code'],
         allowedAttributes: {
             'a': ['href']
-        } });
-
-    return santizedHtml;
+        }
+    });
 }
 
 mongoSchema.loadClass(MessageClass);
