@@ -45,5 +45,8 @@ export const createGroupChat = (myUser, otherMembers, groupTitle) => dispatch =>
         console.info(chat);
         socket.emit('join', [chat._id]);
     });
+};
 
+export const openChat = id => dispatch => {
+    dispatch({ type: types.OPEN_CHAT, id });
 };

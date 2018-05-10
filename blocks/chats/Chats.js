@@ -17,7 +17,7 @@ class Chats extends React.Component {
 }
 
 Chats.propTypes = {
-    chats: PropTypes.arrayOf(PropTypes.object)
+    chats: PropTypes.array
 };
 
 export default connect(
