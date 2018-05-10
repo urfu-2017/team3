@@ -50,6 +50,7 @@
     flex-direction: column;
     padding: var(--standard-indent-small) calc(var(--standard-indent-small) * 2);
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .messages_grid_large {
