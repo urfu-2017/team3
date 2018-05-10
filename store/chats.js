@@ -10,10 +10,6 @@ export default function chats(state = [], action) {
         return action.chats.sort(compareByLastMessage);
     }
 
-    if (action.type === 'SORT_CHATS') {
-        return [...state].sort(compareByLastMessage);
-    }
-
     if (action.type === 'RECEIVE_MESSAGE') {
         return pushMessageImmutable(state, action.chatId, action.message)
             .sort(compareByLastMessage);
