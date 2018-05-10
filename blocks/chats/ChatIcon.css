@@ -17,6 +17,7 @@
     height: 100%;
     padding: var(--standard-indent-small);
     background-color: transparent;
+    object-fit: cover;
 }
 
 .chat-icon__logo {
