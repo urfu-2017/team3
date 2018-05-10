@@ -37,8 +37,6 @@ class CreateGroup extends Component {
     }
 
     pushOrPopFromGroupMembers(member) {
-        console.info(member);
-
         const { groupMembers } = this.state;
         let index = -1;
 
