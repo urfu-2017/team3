@@ -93,22 +93,6 @@ class ChatWindow extends Component {
         }
     }
 
-    // при подгрузке картинок меняем css
-    togglePreview(oldfiles) {
-        const messages = document.querySelector('.messages');
-
-        messages.classList.remove(
-            'messages_grid_large',
-            'messages_grid_small'
-        );
-
-        if (oldfiles.length) {
-            messages.classList.add('messages_grid_small');
-        } else {
-            messages.classList.add('messages_grid_large');
-        }
-    }
-
     // прослушка отправки на Enter
     keySubmitMessage = e => {
         if (e.keyCode === 13) {
@@ -146,7 +130,7 @@ class ChatWindow extends Component {
     }
 
     render() {
-        const { activeChat, user } = this.props;
+        const { activeChat, user, attachments } = this.props;
 
         if (!activeChat) {
             return (
@@ -176,7 +160,9 @@ class ChatWindow extends Component {
                         {title}
                     </span>
                 </div>
-                <div className="messages messages_grid_large" onClick={this.props.hideEmoji}>
+                <div
+                    className={`messages messages_grid_${attachments.length ? 'small' : 'large'}`}
+                    onClick={this.props.hideEmoji}>
                     {activeChat.messages.map(message => (
                         <Message
                             key={message._id || '0'}
@@ -252,7 +238,6 @@ export default connect(
         user: state.user,
         emojiActive: state.activeChat && state.activeChat.showEmoji,
         attachments: state.activeChat && state.activeChat.attachments,
-        attachmentsLinks: state.activeChat && state.activeChat.attachmentsLinks,
         showInputPopup: state.activeChat && state.activeChat.showInputPopup
     }), {
         showProfile,
