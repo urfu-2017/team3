@@ -4,27 +4,22 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './Preview.css';
 
+import { deleteAttachment } from '../../../actions/activeChat';
+
 class Preview extends Component {
     deletePic = e => {
-        const id = e.target.parentElement.getAttribute('data-id');
+        const index = e.target.parentElement.getAttribute('data-id');
 
-        const { attachments } = this.props;
-        const { attachmentsLinks } = this.props;
-
-        attachments.splice(id, 1);
-        attachmentsLinks.splice(id, 1);
-        this.props.togglePreview(attachments);
-
-        this.props.deleteAttachment(attachments, attachmentsLinks);
+        this.props.deleteAttachment(parseInt(index, 10));
     }
 
-    previewImgs(files) {
-        return files.map((file, i) => {
+    previewImgs(attachments) {
+        return attachments.map((attachment, i) => {
             return (
-                <FilePreview key={file.name} file={file}>
+                <FilePreview key={attachment.file.name} file={attachment.file}>
                     {preview => {
                         return (
-                            <li key={file.name} className="preview" data-id={i}>
+                            <li key={attachment.file.name} className="preview" data-id={i}>
                                 <img
                                     src={preview}
                                     className="preview__item"
@@ -59,19 +54,13 @@ class Preview extends Component {
 
 Preview.propTypes = {
     attachments: PropTypes.array,
-    attachmentsLinks: PropTypes.array,
-    deleteAttachment: PropTypes.func,
-    togglePreview: PropTypes.func
+    deleteAttachment: PropTypes.func
 };
 
 export default connect(
     state => ({
-        attachments: state.activeChat.attachments,
-        attachmentsLinks: state.activeChat.attachmentsLinks
-    }),
-    dispatch => ({
-        deleteAttachment: (attachments, attachmentsLinks) => {
-            dispatch({ type: 'DELETE_ATTACHMENT', attachments, attachmentsLinks });
-        }
-    })
+        attachments: state.activeChat.attachments
+    }), {
+        deleteAttachment
+    }
 )(Preview);

@@ -22,10 +22,16 @@ export default class Chat {
     getInterlocutorFor(user) {
         let [interlocutor] = this.members.filter(m => m.nickname !== user.nickname);
 
-        if (!interlocutor) {
-            interlocutor = user;
+        return interlocutor || user;
+    }
+
+    getContactFor(user) {
+        if (this.type !== 'private') {
+            return null;
         }
 
-        return interlocutor;
+        const contact = this.getInterlocutorFor(user);
+
+        return contact === user ? null : contact;
     }
 }

@@ -1,24 +1,18 @@
 'use strict';
 
+import Chat from '../models/Chat';
+
 /* eslint complexity: 0 */
 /* eslint max-statements: 0 */
 
 export default function chats(state = [], action) {
     if (action.type === 'LOAD_CHATS') {
-        return action.chats.sort(sortByLastMessage);
-
-        // return action.chats.reverse();
-    }
-
-    if (action.type === 'SORT_CHATS') {
-        let localState = state;
-
-        // concat([]) - для того, чтобы перерендер произошел, неизвестно зачем
-        return localState.sort(sortByLastMessage).concat([]);
+        return action.chats.sort(compareByLastMessage);
     }
 
     if (action.type === 'RECEIVE_MESSAGE') {
-        return pushMessageImmutable(state, action.chatId, action.message);
+        return pushMessageImmutable(state, action.chatId, action.message)
+            .sort(compareByLastMessage);
     }
 
     if (action.type === 'CREATE_CHAT') {
@@ -39,7 +33,6 @@ export default function chats(state = [], action) {
 }
 
 function pushMessageImmutable(oldChats, chatId, message) {
-    message.date = new Date(message.data);
     const newChats = [...oldChats];
     const chatIndex = newChats.findIndex(c => c._id === chatId);
     const oldChat = newChats[chatIndex];
@@ -50,7 +43,7 @@ function pushMessageImmutable(oldChats, chatId, message) {
 
     newChats[chatIndex] = newChat;
 
-    return newChats.sort(sortByLastMessage).concat([]);
+    return newChats;
 }
 
 function updateMessageImmutable(oldChats, chatId, message) {
@@ -72,24 +65,18 @@ function updateMessageImmutable(oldChats, chatId, message) {
     return newChats;
 }
 
-function sortByLastMessage(a, b) {
-    let aTime = 0;
+function compareByLastMessage(a, b) {
+    const aLastMessage = new Chat(a).getLastMessage();
+    const bLastMessage = new Chat(b).getLastMessage();
 
-    if (a.messages.length) {
-        aTime = a.messages[a.messages.length - 1].date;
+    if (!aLastMessage && !bLastMessage) {
+        return b._id.localeCompare(a._id);
     }
 
-    aTime = new Date(aTime);
-    aTime = aTime.getTime();
-
-    let bTime = 0;
-
-    if (b.messages.length) {
-        bTime = b.messages[b.messages.length - 1].date;
+    if (bLastMessage && aLastMessage) {
+        return new Date(bLastMessage.date) - new Date(aLastMessage.date);
     }
 
-    bTime = new Date(bTime);
-    bTime = bTime.getTime();
-
-    return bTime - aTime;
+    // чатик в котором есть сообщение всегда раньше
+    return aLastMessage ? -1 : 1;
 }

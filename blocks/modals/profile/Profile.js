@@ -1,4 +1,5 @@
 'use strict';
+/* eslint-disable react/jsx-no-bind */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -8,21 +9,22 @@ import '../../../pages/global-const.css';
 import './Profile.css';
 import { connect } from 'react-redux';
 
+import { hideProfile } from '../../../actions/modals';
+import { changeAvatar } from '../../../actions/user';
+
 function getGroupInviteLink(url, id) {
     return `${url}invite/g_${id}`;
 }
 
-/* eslint-disable max-statements */
-
 class Profile extends Component {
     hideProfile = () => {
-        this.props.onHideProfile();
+        this.props.hideProfile();
     };
 
     componentDidMount() {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
-                this.props.onHideProfile();
+                this.props.hideProfile();
             }
         });
     }
@@ -44,29 +46,10 @@ class Profile extends Component {
         return members[0];
     }
 
-    onFileChange = async e => {
-        /* eslint-disable react/jsx-no-bind */
-        /* eslint-disable react/self-closing-comp */
-        /* eslint-disable prefer-destructuring */
-        this.props.onShowLoader();
-        const file = e.target.files[0];
+    onFileChange = e => {
+        const [file] = e.target.files;
 
-        const formData = new FormData();
-
-        formData.append('userAvatar', file);
-
-        const response = await fetch(`/api/users/${this.props.user.nickname}/avatar`, {
-            credentials: 'include',
-            method: 'PATCH',
-            body: formData
-        });
-
-        if (response.status === 200) {
-            const answer = await response.json();
-
-            this.props.onChangeAvatar(answer.url);
-        }
-        this.props.onHideLoader();
+        this.props.changeAvatar(file, this.props.user);
     }
 
     render() {
@@ -90,7 +73,7 @@ class Profile extends Component {
                                 />
                             </label>
                             <label htmlFor="imginput">
-                                <div className="profile__avatar-hover"></div>
+                                <div className="profile__avatar-hover" />
                             </label>
                             <input
                                 onChange={this.onFileChange}
@@ -115,6 +98,7 @@ class Profile extends Component {
         }
 
         const displayData = this.whoIsMyInterlocutor(profile);
+        // туду отделить профиль пользователя от группы
 
         return (
             <div className="darkness" onClick={this.hideProfile}>
@@ -156,27 +140,17 @@ class Profile extends Component {
 
 Profile.propTypes = {
     profile: PropTypes.object,
-    onHideProfile: PropTypes.func,
     user: PropTypes.object,
-    onShowLoader: PropTypes.func,
-    onHideLoader: PropTypes.func,
-    onChangeAvatar: PropTypes.func
+    hideProfile: PropTypes.func,
+    changeAvatar: PropTypes.func
 };
 
 export default connect(
-    state => ({ profile: state.modal.profile, user: state.user }),
-    dispatch => ({
-        onHideProfile: () => {
-            dispatch({ type: 'HIDE_PROFILE' });
-        },
-        onShowLoader: () => {
-            dispatch({ type: 'SHOW_LOADER' });
-        },
-        onHideLoader: () => {
-            dispatch({ type: 'HIDE_LOADER' });
-        },
-        onChangeAvatar: avatar => {
-            dispatch({ type: 'CHANGE_AVATAR', avatar });
-        }
-    })
+    state => ({
+        profile: state.modal.profile,
+        user: state.user
+    }), {
+        hideProfile,
+        changeAvatar
+    }
 )(Profile);

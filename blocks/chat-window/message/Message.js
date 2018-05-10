@@ -29,7 +29,17 @@ export default class Message extends Component {
             reaction: emoji.id,
             userName: this.props.user._id
         });
+
+        this.setState({ showEmojiToMsg: false });
     };
+
+    componentDidMount() {
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                this.setState({ showEmojiToMsg: false });
+            }
+        });
+    }
 
     toggleEmoji = () => {
         const showEmojiToMsg = !this.state.showEmojiToMsg;
@@ -99,18 +109,33 @@ export default class Message extends Component {
         const peopleEmoji = reactions
             .filter(r => r.users.length > 0)
             .map(r => {
+                let usersList = '';
+
+                r.users.forEach(user => {
+                    usersList += `${user} `;
+                });
+
                 return (
                     <div className="reaction" key={r.emojiName}>
                         <Emoji
                             key={Math.floor(Math.random() * 1000000)}
                             emoji={r.emojiName}
                             set="emojione"
-                            size={20}
+                            size={16}
                         />
                         <span className="reaction__number-peoples">{r.users.length}</span>
+                        <div className="reaction__users">{usersList}</div>
                     </div>
                 );
             });
+
+        peopleEmoji.push(
+            <div
+                key={Math.floor(Math.random() * 1000000)}
+                className="message__add-emoji"
+                onClick={this.toggleEmoji}
+            />
+        );
 
         return { newText, images, goodDate, peopleEmoji, metadata };
     }
@@ -135,23 +160,20 @@ export default class Message extends Component {
         if (user.id === author) {
             return (
                 <div className="message my">
-                    <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
-                    <div className="message__data">
-                        <span className="message__sender">{author}</span>
-                        <span className="message__date">{goodDate}</span>
+                    <div className="messageBody myBody">
+                        <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
+                        <div className="message__data">
+                            <span className="message__sender">{author}</span>
+                            <span className="message__date">{goodDate}</span>
+                        </div>
+                        <div className="message__content">{newText}</div>
+                        <div className="message__attachments">
+                            {images}
+                        </div>
+                        {metadata}
                     </div>
-                    <div className="message__content">{newText}</div>
-                    <div className="message__attachments">
-                        {images}
-                    </div>
-                    {metadata}
                     <div className="message__reactions">
                         <div className="message__reactions_to-left">{peopleEmoji}</div>
-                        <img
-                            src="/static/emoji.svg"
-                            className="message__add-emoji"
-                            onClick={this.toggleEmoji}
-                        />
                     </div>
                 </div>
             );
@@ -160,22 +182,22 @@ export default class Message extends Component {
         // Если сообщение собеседника
         return (
             <div className="message friend">
-                <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={this.state.showEmojiToMsg} />
-                <div className="message__data">
-                    <span className="message__sender">{author}</span>
-                    <span className="message__date">{goodDate}</span>
+                <div className="messageBody friendBody">
+                    <EmojiPicker
+                        addEmoji={this.addEmoji}
+                        showEmojiToMsg={this.state.showEmojiToMsg}
+                    />
+                    <div className="message__data">
+                        <span className="message__sender">{author}</span>
+                        <span className="message__date">{goodDate}</span>
+                    </div>
+                    <div className="message__content">{newText}</div>
+                    {images}
+                    {metadata}
                 </div>
-                <div className="message__content">{newText}</div>
-                {images}
                 <div className="message__reactions">
                     <div className="message__reactions_to-left">{peopleEmoji}</div>
-                    <img
-                        src="/static/emoji.svg"
-                        className="message__add-emoji"
-                        onClick={this.toggleEmoji}
-                    />
                 </div>
-                {metadata}
             </div>
         );
     }

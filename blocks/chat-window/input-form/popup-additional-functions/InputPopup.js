@@ -7,49 +7,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { addAttachments, hideInputPopup } from '../../../../actions/activeChat';
+
 import './InputPopup.css';
 
 class InputPopup extends Component {
     // добавляем новые файлы в превью
     onFilesChange = async e => {
-        const attachments = this.props.attachments || [];
-        const links = this.props.attachmentsLinks || [];
-
         const { currentTarget: { files } } = e;
 
-        const linksQueue = {};
-
-        await Promise.all([...files].map(async (file, i) => {
-            const formData = new FormData();
-
-            formData.append('image', file);
-            const response = await fetch('/api/attachments', {
-                credentials: 'include',
-                method: 'PUT',
-                body: formData
-            });
-
-            if (response.status === 200) {
-                const answer = await response.json();
-                const { url } = answer;
-
-                linksQueue[`${i}`] = url;
-
-                return url;
-            }
-
-            return 'http://fotki.ykt.ru/albums/userpics/15649/moeya.jpg';
-        }));
-
-        Object.keys(linksQueue).forEach(index => {
-            links.push(linksQueue[`${index}`]);
-        });
-
-        [...files].forEach(file => {
-            attachments.push(file);
-        });
-        await this.props.togglePreview(attachments);
-        await this.props.addAttachment(attachments, links);
+        await this.props.addAttachments(files);
     }
 
     render() {
@@ -74,7 +41,7 @@ class InputPopup extends Component {
                 </label>
                 <label
                     className="chat-input__autodestroy-btn chat-input__button"
-                    onClick={this.props.onHideInputPopup}
+                    onClick={this.props.hideInputPopup}
                     >
                     <span className="chat-input__button_description_add">
                         Секретное сообщение
@@ -82,7 +49,7 @@ class InputPopup extends Component {
                 </label>
                 <label
                     className="chat-input__geolocation-btn chat-input__button"
-                    onClick={this.props.onHideInputPopup}
+                    onClick={this.props.hideInputPopup}
                     >
                     <span className="chat-input__button_description_add">
                         Местоположение
@@ -94,26 +61,16 @@ class InputPopup extends Component {
 }
 
 InputPopup.propTypes = {
-    attachments: PropTypes.array,
-    attachmentsLinks: PropTypes.array,
-    togglePreview: PropTypes.func,
-    addAttachment: PropTypes.func,
     showInputPopup: PropTypes.bool,
-    onHideInputPopup: PropTypes.func
+    hideInputPopup: PropTypes.func,
+    addAttachments: PropTypes.func
 };
 
 export default connect(
     state => ({
-        showInputPopup: state.activeChat && state.activeChat.showInputPopup,
-        attachments: state.activeChat.attachments,
-        attachmentsLinks: state.activeChat.attachmentsLinks
-    }),
-    dispatch => ({
-        addAttachment: (attachments, attachmentsLinks) => {
-            dispatch({ type: 'ADD_ATTACHMENT', attachments, attachmentsLinks });
-        },
-        onHideInputPopup: () => {
-            dispatch({ type: 'HIDE_INPUT_POPUP' });
-        }
-    })
+        showInputPopup: state.activeChat && state.activeChat.showInputPopup
+    }), {
+        addAttachments,
+        hideInputPopup
+    }
 )(InputPopup);

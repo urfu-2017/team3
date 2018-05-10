@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 
 import './Contacts.css';
 
+// туду Выпиливаем эту хуйню
 class Contacts extends Component {
     hideContacts = () => {
         this.props.onHideContacts();
