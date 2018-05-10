@@ -84,8 +84,10 @@ body {
     overflow: auto;
 }
 
-.chats__list::-webkit-scrollbar {
-    width: 0;
+@supports (width: -webkit-max-content) {
+    .chats__list::-webkit-scrollbar {
+        width: 0;
+    }
 }
 
 .dialog {
