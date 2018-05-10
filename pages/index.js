@@ -120,7 +120,6 @@ class MainPage extends React.Component {
                         <div className="chats__controls">
                             <Controls />
                         </div>
-                        <hr />
                         <div className="chats__list">
                             <div className="chats__list_wrapper">
                                 <Chats />

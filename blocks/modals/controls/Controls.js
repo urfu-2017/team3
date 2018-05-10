@@ -67,17 +67,12 @@ class Controls extends Component {
                         onClick={this.showProfile}
                     />
                     <img
-                        src="/static/controls/phonebook.svg"
-                        className="control-img"
-                        onClick={this.props.onShowContacts}
-                    />
-                    <img
-                        src="/static/controls/adduser.svg"
+                        src="/static/controls/chat.svg"
                         className="control-img"
                         onClick={this.props.onShowAddUser}
                     />
                     <img
-                        src="/static/controls/group.svg"
+                        src="/static/controls/create_group_chat.svg"
                         className="control-img"
                         onClick={this.props.onShowCreateGroup}
                     />
