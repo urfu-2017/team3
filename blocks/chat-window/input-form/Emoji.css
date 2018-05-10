@@ -8,8 +8,7 @@
     );
     bottom: calc(
         var(--icon-size) +
-        (var(--standard-indent-small) * 3) +
-        (var(--icon-size) / 2)
+        (var(--standard-indent-small) * 3)
     );
     box-sizing: border-box;
     width: calc(36px * 8 + 2px) !important;
