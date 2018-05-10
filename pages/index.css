@@ -9,12 +9,12 @@ body {
 
 .main {
     display: flex;
+    box-sizing: border-box;
     flex-direction: row;
     height: calc(100vh - var(--standard-indent-small));
+    margin: 0 0 var(--standard-indent-small);
     border: 1px solid var(--neutral-color);
     border-radius: 1vmin;
-    box-sizing: border-box;
-    margin: 0 0 var(--standard-indent-small);
     font-family: 'Noto Sans', sans-serif;
 }
 

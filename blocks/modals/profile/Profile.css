@@ -1,11 +1,11 @@
 .profile {
     display: flex;
+    box-sizing: border-box;
     flex-direction: row;
     width: 320px;
     padding: 32px;
-    box-sizing: border-box;
-    background: white;
     border-radius: 8px;
+    background: white;
 }
 
 .profile__avatar-box {
@@ -15,12 +15,13 @@
 }
 
 .profile__avatar {
-    border-radius: 50px;
     width: 100%;
     height: 100%;
+    border-radius: 50px;
 }
 
 .profile__avatar-hover {
+    visibility: hidden;
     position: absolute;
     top: 0;
     left: 0;
@@ -28,7 +29,6 @@
     height: 100px;
     border-radius: 50px;
     background: rgba(0, 0, 0, 0.6);
-    visibility: hidden;
 }
 
 .profile__avatar-box:hover  .profile__avatar-hover {
@@ -46,11 +46,11 @@
 }
 
 .profile__nickname {
+    width: 128px;
+    overflow: hidden;
     color: #444444;
     font-size: 18px;
     font-weight: bold;
-    width: 128px;
-    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }

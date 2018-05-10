@@ -1,7 +1,7 @@
 .chat-input__burger-content {
-    z-index: 5;
     display: flex;
     position: absolute;
+    z-index: 5;
     right: calc(
         var(--body-margin-side) +
         (var(--icon-size) / 2) +
@@ -52,12 +52,12 @@
 }
 
 .chat-input__burger-content > .chat-input__button {
-    width: 100%;
-    background-position: calc(var(--standard-indent-small) * 0.25);
-    border-radius: calc(var(--standard-indent-small) * 0.5);
-    box-sizing: content-box;
     z-index: 10;
+    box-sizing: content-box;
+    width: 100%;
     padding: calc(var(--standard-indent-small) * 0.25);
+    border-radius: calc(var(--standard-indent-small) * 0.5);
+    background-position: calc(var(--standard-indent-small) * 0.25);
 }
 
 .chat-input__button_description_add {

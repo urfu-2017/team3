@@ -28,8 +28,8 @@
 }
 
 .chat-header:hover {
-    cursor: pointer;
     text-shadow: 0 0 var(--border-size) var(--text-color-h3);
+    cursor: pointer;
 }
 
 .chat-header__img {
@@ -49,8 +49,8 @@
     display: flex;
     flex-direction: column;
     padding: var(--standard-indent-small) calc(var(--standard-indent-small) * 2);
-    overflow-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .messages_grid_large {
@@ -76,16 +76,16 @@
 }
 
 .chat-input__button {
+    box-sizing: border-box;
     width: var(--icon-size);
     height: var(--icon-size);
     margin: 0;
+    border: var(--border-size) solid transparent;
+    border-radius: 50%;
     background-repeat: no-repeat;
     background-position: center;
     background-size: var(--icon-size);
     cursor: pointer;
-    box-sizing: border-box;
-    border: var(--border-size) solid transparent;
-    border-radius: 50%;
 }
 
 .chat-input__button:hover {
@@ -97,14 +97,14 @@
 }
 
 .chat-input__write-field {
+    box-sizing: border-box;
     width: calc(100% - 4 * (var(--icon-size) + var(--standard-indent) / 2));
     height: var(--icon-size);
     padding: 0 calc(var(--standard-indent) * 0.5 * 0.5);
-    box-sizing: border-box;
-    border: none;
-    background-color: var(--spare-color-transparent); 
+    border: none; 
     border-radius: calc(var(--standard-indent-small) * 0.5);
     outline: none;
+    background-color: var(--spare-color-transparent);
 }
 
 .chat-input__write-field:focus {

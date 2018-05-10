@@ -55,11 +55,11 @@
 
 .chat-icon__title {
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     color: var(--text-color-h1);
     font-size: 90%;
     font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .chat-icon__date {

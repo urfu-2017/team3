@@ -1,11 +1,11 @@
 .message {
-    max-width: 70%;
     min-width: 20%;
+    max-width: 70%;
     margin-top: var(--standard-indent-small);
     padding: var(--standard-indent-small) calc(var(--standard-indent-small) * 2);
-    font-size: 90%;
     border-radius: calc(var(--standard-indent-small) * 2);
-    background-color: var(--neutral-color);    
+    background-color: var(--neutral-color);
+    font-size: 90%;    
 }
 
 .my {
@@ -35,8 +35,8 @@
 
 .message__content {
     margin: var(--standard-indent-small) 0;
-    word-break: break-all;
     text-decoration: none;
+    word-break: break-all;
 }
 
 .message__content a {
@@ -84,15 +84,15 @@
 
 .reaction {
     display: flex;
+    box-sizing: border-box;
     align-items: center;
+    height: var(--icon-size);
     margin: 0 var(--standard-indent-small);
     padding: 
         calc(var(--standard-indent-small) / 4) 
         calc(var(--standard-indent-small) / 2);
     border: var(--border-size) solid var(--spare-color-semi-transparent);
     border-radius: calc(var(--standard-indent-small) / 2);
-    box-sizing: border-box;
-    height: var(--icon-size);
 }
 
 .reaction:nth-child(1) {
@@ -111,9 +111,9 @@
     padding: var(--standard-indent-small);
     border: var(--border-size) solid var(--spare-color-semi-transparent);
     border-radius: var(--standard-indent-small);
-    text-decoration: none;
     color: var(--base-color);
     font-size: 80%;
+    text-decoration: none;
 }
 
 .metadata:hover {
