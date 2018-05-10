@@ -28,8 +28,6 @@ export const createChat = (myUser, user) => dispatch => { // туду private
 export const createGroupChat = (myUser, otherMembers, groupTitle) => dispatch => {
     const socket = getSocket();
 
-    console.info(myUser, otherMembers, groupTitle);
-
     dispatch({ type: types.HIDE_CREATEGROUP });
     dispatch({ type: types.SHOW_LOADER });
 
@@ -42,11 +40,22 @@ export const createGroupChat = (myUser, otherMembers, groupTitle) => dispatch =>
         dispatch({ type: types.OPEN_CHAT, id: chat._id });
         dispatch({ type: types.HIDE_LOADER });
 
-        console.info(chat);
         socket.emit('join', [chat._id]);
     });
 };
 
 export const openChat = id => dispatch => {
     dispatch({ type: types.OPEN_CHAT, id });
+};
+
+export const receiveChat = chat => dispatch => {
+    dispatch({ type: types.CREATE_CHAT, chat });
+};
+
+export const receiveMessage = (chatId, message) => dispatch => {
+    dispatch({ type: types.RECEIVE_MESSAGE, chatId, message });
+};
+
+export const updateMessage = (chatId, message) => dispatch => {
+    dispatch({ type: types.UPDATE_MESSAGE, chatId, message });
 };

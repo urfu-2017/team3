@@ -76,7 +76,6 @@ class ChatWindow extends Component {
                 msgText: ''
             });
             this.props.onHideEmoji();
-            this.togglePreview([]);
             const input = document.querySelector('.chat-input__write-field');
             const text = input.value;
 
@@ -211,9 +210,7 @@ class ChatWindow extends Component {
                         className="chat-input__send-btn chat-input__button"
                     />
                 </div>
-                <InputPopup
-                    togglePreview={this.togglePreview}
-                />
+                <InputPopup />
             </section>
         );
     }

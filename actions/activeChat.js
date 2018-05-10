@@ -2,6 +2,8 @@
 
 import getSocket from '../pages/socket';
 
+import { receiveMessage } from './chats';
+
 import types from './types';
 
 export const addAttachments = files => async dispatch => {
@@ -49,21 +51,14 @@ export const sendMessage = (chatId, message) => dispatch => {
 
     socket.emit('message', { chatId, message },
         data => {
-            console.info(data);
-            dispatch({
-                type: types.RECEIVE_MESSAGE,
-                chatId: data.chatId,
-                message: data.message
-            });
-
-            dispatch({ type: 'SORT_CHATS' });
+            dispatch(receiveMessage(data.chatId, data.message));
         });
 };
 
 export const resetAttachments = () => dispatch => {
-    dispatch({ type: 'RESET_ATTACHMENTS' });
+    dispatch({ type: types.RESET_ATTACHMENTS });
 };
 
 export const showInputPopup = () => dispatch => {
-    dispatch({ type: 'SHOW_INPUT_POPUP' });
+    dispatch({ type: types.SHOW_INPUT_POPUP });
 };
