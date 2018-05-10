@@ -3,7 +3,6 @@
     position: absolute;
     z-index: 5;
     right: calc(
-        var(--body-margin-side) +
         (var(--icon-size) / 2) +
         var(--standard-indent-small)
     );

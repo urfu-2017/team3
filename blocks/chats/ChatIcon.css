@@ -33,12 +33,6 @@
     padding: var(--standard-indent-small);
 }
 
-@supports not (width: -webkit-max-content) {
-    .chat-icon__info-box {
-        padding-right: calc(var(--standard-indent-small) * 3);
-    }
-}
-
 .chat-icon__upper-box {
     display: flex;
     justify-content: space-between;

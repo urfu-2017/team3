@@ -23,7 +23,6 @@ class Emoji extends Component {
                     emoji="point_up"
                     showPreview={false}
                     showSkinTones={false}
-                    search={false}
                     include={['people']}
                     autoFocus
                 />

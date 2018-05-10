@@ -2,7 +2,6 @@
     z-index: 3;
     position: absolute;
     right: calc(
-        var(--body-margin-side) +
         (var(--icon-size) / 2) +
         var(--standard-indent-small)
     );
@@ -21,11 +20,7 @@
         calc(var(--border-size-bold)) 
         var(--border-size) 
         var(--spare-color);
-    overflow-y: auto;
-}
-
-.emoji-mart::-webkit-scrollbar {
-    width: 0;
+    overflow: hidden;
 }
 
 .emoji_input {
@@ -41,6 +36,9 @@
 
 .emoji-mart-scroll {
     padding: 0;
+    margin-right: -17px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .emoji-mart-scroll::-webkit-scrollbar {

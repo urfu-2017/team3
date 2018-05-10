@@ -12,7 +12,7 @@ import makeStore from '../store';
 
 import Chats from '../blocks/chats/Chats';
 import ChatWindow from '../blocks/chat-window/ChatWindow';
-import Search from '../blocks/modals/search/Search';
+import Controls from '../blocks/modals/controls/Controls';
 import Profile from '../blocks/modals/profile/Profile';
 import AddUser from '../blocks/modals/add-user/AddUser';
 import Contacts from '../blocks/modals/contacts/Contacts';
@@ -117,12 +117,14 @@ class MainPage extends React.Component {
             <React.Fragment>
                 <main className="main main_theme_day">
                     <article className="chats">
-                        <div className="chats__search">
-                            <Search />
+                        <div className="chats__controls">
+                            <Controls />
                         </div>
                         <hr />
                         <div className="chats__list">
-                            <Chats />
+                            <div className="chats__list_wrapper">
+                                <Chats />
+                            </div>
                         </div>
                     </article>
                     <article className="dialog">

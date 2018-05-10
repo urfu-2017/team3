@@ -10,27 +10,25 @@ body {
 .main {
     display: flex;
     box-sizing: border-box;
-    flex-direction: row;
     height: calc(100vh - var(--standard-indent-small));
     margin: 0 0 var(--standard-indent-small);
-    border: 1px solid var(--neutral-color);
+    border: var(--border-size) solid var(--neutral-color);
     border-radius: 1vmin;
     font-family: 'Noto Sans', sans-serif;
 }
 
 .chats {
-    flex: 2;
-    border-right: solid 1px #e4e4e4;
+    border-right: var(--border-size) solid var(--neutral-color);
 }
 
-.chats__search {
-    --padding: 8px;
+.chats__controls {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: calc(var(--standard-indent) * 2 - var(--padding) * 2);
-    padding: var(--padding);
-    font-size: 16px;
+    height: calc(var(--standard-indent) * 2);
+    padding: var(--standard-indent-small);
+    box-sizing: border-box;
+    border-bottom: var(--border-size) solid var(--neutral-color);
 }
 
 .control-img {
@@ -80,20 +78,15 @@ body {
 
 .chats__list {
     width: 100%;
-    height: calc(100% - 48px - 2*8px);
-    overflow: auto;
+    height: calc(100% - 48px - 2 * 8px);
+    overflow: hidden;
 }
 
-@supports (width: -webkit-max-content) {
-    .chats__list::-webkit-scrollbar {
-        width: 0;
-    }
-}
-
-@supports(overflow: -moz-scrollbars-none) {
-    .chats__list {
-        /* overflow: -moz-scrollbars-none; */
-    }
+.chats__list_wrapper {
+    height: 100%;
+    margin-right: -16px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .dialog {

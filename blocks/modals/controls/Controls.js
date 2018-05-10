@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import fetch from 'node-fetch';
 import { connect } from 'react-redux';
 
+import './Controls.css';
+
 /* туду переделать на поиск по сообщениям */
-class Search extends Component {
+class Controls extends Component {
     state = { isSearchString: false }
 
     showSearch = () => {
@@ -89,7 +91,7 @@ class Search extends Component {
     }
 }
 
-Search.propTypes = {
+Controls.propTypes = {
     user: PropTypes.object,
     onUsersFound: PropTypes.func,
     onShowProfile: PropTypes.func,
@@ -119,4 +121,4 @@ export default connect(
             dispatch({ type: 'SHOW_CONTACTS' });
         }
     })
-)(Search);
+)(Controls);
