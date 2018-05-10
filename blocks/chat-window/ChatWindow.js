@@ -15,7 +15,8 @@ import {
     hideEmoji,
     resetAttachments,
     sendMessage,
-    showInputPopup } from '../../actions/activeChat';
+    showInputPopup,
+    hideInputPopup } from '../../actions/activeChat';
 
 import Chat from '../../models/Chat';
 
@@ -40,8 +41,8 @@ class ChatWindow extends Component {
     componentDidMount() {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
-                this.props.onHideEmoji();
-                this.props.onHideInputPopup();
+                this.props.hideEmoji();
+                this.props.hideInputPopup();
             }
         });
     }
@@ -75,7 +76,7 @@ class ChatWindow extends Component {
             this.setState({
                 msgText: ''
             });
-            this.props.onHideEmoji();
+            this.props.hideEmoji();
             const input = document.querySelector('.chat-input__write-field');
             const text = input.value;
 
@@ -226,6 +227,7 @@ ChatWindow.propTypes = {
     attachments: PropTypes.array,
     resetAttachments: PropTypes.func,
     showInputPopup: PropTypes.func,
+    hideInputPopup: PropTypes.func,
     sendMessage: PropTypes.func
 };
 
@@ -242,6 +244,7 @@ export default connect(
         hideEmoji,
         sendMessage,
         resetAttachments,
-        showInputPopup
+        showInputPopup,
+        hideInputPopup
     }
 )(ChatWindow);
