@@ -1,5 +1,32 @@
-.emoji {
+.emoji-mart {
+    z-index: 3;
     position: absolute;
+    right: calc(
+        var(--body-margin-side) +
+        (var(--icon-size) / 2) +
+        var(--standard-indent-small)
+    );
+    bottom: calc(
+        var(--icon-size) +
+        (var(--standard-indent-small) * 3) +
+        (var(--icon-size) / 2)
+    );
+    box-sizing: border-box;
+    width: calc(36px * 8 + 2px) !important;
+    height: calc(var(--icon-size) * 3 + var(--standard-indent) * 0.5 * 4);
+    border-radius: var(--standard-indent-small);
+    background-color: white;
+    box-shadow: 
+        0 
+        0 
+        calc(var(--border-size-bold)) 
+        var(--border-size) 
+        var(--spare-color);
+    overflow-y: auto;
+}
+
+.emoji-mart::-webkit-scrollbar {
+    width: 0;
 }
 
 .emoji_input {
@@ -7,6 +34,24 @@
     left: 100px;
 }
 
-.emoji_reactions {
-    
+.emoji-mart-bar,
+.emoji-mart-search,
+.emoji-mart-category-label {
+    display: none;
+}
+
+.emoji-mart-scroll {
+    padding: 0;
+}
+
+.emoji-mart-scroll::-webkit-scrollbar {
+    width: 0;
+}
+
+.emoji-mart-emoji:hover {
+    cursor: pointer !important;
+}
+
+.emoji-mart-category .emoji-mart-emoji span {
+    cursor: pointer;
 }
