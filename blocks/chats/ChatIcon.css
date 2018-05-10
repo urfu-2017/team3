@@ -17,13 +17,13 @@
     height: 100%;
     padding: var(--standard-indent-small);
     background-color: transparent;
-    object-fit: cover;
 }
 
 .chat-icon__logo {
     width: calc((var(--standard-indent) - var(--standard-indent-small)) * 2);
     height: calc((var(--standard-indent) - var(--standard-indent-small)) * 2);
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .chat-icon__info-box {
