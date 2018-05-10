@@ -32,6 +32,15 @@ class ChatWindow extends Component {
     // при вводе добавляем с state
     changeText = e => this.setState({ msgText: e.target.value });
 
+    componentDidMount() {
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                this.props.onHideEmoji();
+                this.props.onHideInputPopup();
+            }
+        });
+    }
+
     // клик на рожицу, используется в <Emoji.../>
     toggleEmoji = () => {
         if (this.props.showEmoji) {
@@ -47,7 +56,9 @@ class ChatWindow extends Component {
         let currentValue = input.value;
 
         currentValue += `${emoji.colons}`;
-        input.value = currentValue;
+        this.setState({ msgText: currentValue });
+        this.textInput.focus();
+        // input.value = currentValue;
     }
 
     /* eslint-disable max-statements */
@@ -59,6 +70,7 @@ class ChatWindow extends Component {
             this.setState({
                 msgText: ''
             });
+            this.props.onHideEmoji();
             this.togglePreview([]);
             const input = document.querySelector('.chat-input__write-field');
             const text = input.value;
@@ -102,7 +114,6 @@ class ChatWindow extends Component {
     keySubmitMessage = e => {
         if (e.keyCode === 13) {
             this.submitMessage();
-            e.target.value = '';
         }
     }
 
@@ -182,7 +193,10 @@ class ChatWindow extends Component {
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
                         type="text"
+                        ref={input => { this.textInput = input; }}
+                        autoFocus
                         className="chat-input__write-field"
+                        value={this.state.msgText}
                     />
                     <label
                         className="chat-input__audioinput-btn chat-input__button"
@@ -229,7 +243,8 @@ ChatWindow.propTypes = {
     attachments: PropTypes.array,
     attachmentsLinks: PropTypes.array,
     resetAttachments: PropTypes.func,
-    onShowInputPopup: PropTypes.func
+    onShowInputPopup: PropTypes.func,
+    onHideInputPopup: PropTypes.func
 };
 
 export default connect(
@@ -262,6 +277,9 @@ export default connect(
         },
         onShowInputPopup: () => {
             dispatch({ type: 'SHOW_INPUT_POPUP' });
+        },
+        onHideInputPopup: () => {
+            dispatch({ type: 'HIDE_INPUT_POPUP' });
         }
     })
 )(ChatWindow);
