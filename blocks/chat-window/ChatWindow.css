@@ -7,6 +7,7 @@
         calc(var(--icon-size) + var(--standard-indent) * 2)
         calc(var(--icon-size) + var(--standard-indent-small) * 2);
     height: 100%;
+    overflow: hidden;
 }
 
 .chat-window__stub {
@@ -48,9 +49,10 @@
 .messages {
     display: flex;
     flex-direction: column;
+    margin-right: -16px;
     padding: var(--standard-indent-small) calc(var(--standard-indent-small) * 2);
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .messages_grid_large {
@@ -59,10 +61,6 @@
 
 .messages_grid_small {
     grid-area: 2 / 1 / 3 / 2;
-}
-
-.messages::-webkit-scrollbar {
-    width: 0;
 }
 
 .chat-input {

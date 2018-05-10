@@ -10,7 +10,7 @@
 }
 
 .chat-icon:active {
-    transform: scale(.95, .95);
+    background-color: var(--neutral-color);
 }
 
 .chat-icon__logo-box {

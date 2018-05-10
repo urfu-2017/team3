@@ -90,6 +90,12 @@ body {
     }
 }
 
+@supports(overflow: -moz-scrollbars-none) {
+    .chats__list {
+        /* overflow: -moz-scrollbars-none; */
+    }
+}
+
 .dialog {
     flex: 6;
 }

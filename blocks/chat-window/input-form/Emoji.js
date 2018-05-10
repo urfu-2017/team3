@@ -16,16 +16,18 @@ class Emoji extends Component {
         }
 
         return (
-            <Picker
-                set="emojione"
-                onSelect={addEmoji}
-                emoji="point_up"
-                showPreview={false}
-                showSkinTones={false}
-                search={false}
-                include={['people']}
-                autoFocus
-            />
+            <div className="emoji">
+                <Picker
+                    set="emojione"
+                    onSelect={addEmoji}
+                    emoji="point_up"
+                    showPreview={false}
+                    showSkinTones={false}
+                    search={false}
+                    include={['people']}
+                    autoFocus
+                />
+            </div>
         );
     }
 }
