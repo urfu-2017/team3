@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.message:first-child {
+    margin-top: calc(var(--standard-indent-small) * 3);
+}
+
 .message_my {
     align-self: flex-end;
 }

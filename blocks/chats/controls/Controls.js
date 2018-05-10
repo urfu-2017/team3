@@ -91,8 +91,7 @@ Controls.propTypes = {
     onUsersFound: PropTypes.func,
     onShowProfile: PropTypes.func,
     onShowAddUser: PropTypes.func,
-    onShowCreateGroup: PropTypes.func,
-    onShowContacts: PropTypes.func
+    onShowCreateGroup: PropTypes.func
 };
 
 export default connect(
@@ -111,9 +110,6 @@ export default connect(
         },
         onShowCreateGroup: () => {
             dispatch({ type: 'SHOW_CREATEGROUP' });
-        },
-        onShowContacts: () => {
-            dispatch({ type: 'SHOW_CONTACTS' });
         }
     })
 )(Controls);
