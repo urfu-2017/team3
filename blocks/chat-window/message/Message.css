@@ -2,8 +2,7 @@
     position: relative;
     min-width: 20%;
     max-width: 65%;
-    margin: calc(var(--standard-indent-small) * 2);
-    margin-bottom: 0;
+    margin-top: calc(var(--standard-indent-small) * 2);
 }
 
 .message:first-child {
@@ -51,6 +50,7 @@
     height: calc(var(--icon-size) * 0.75);
     margin: calc(var(--standard-indent-small) / 4) 0;
     border-radius: 50%;
+    background-size: 24px;
 }
 
 .message__control:hover {
@@ -59,7 +59,7 @@
 }
 
 .message__add-emoji {
-    background-image: url(/static/add_reaction.svg);
+    background-image: url(/static/emoji.svg);
 }
 
 .message__reply {
