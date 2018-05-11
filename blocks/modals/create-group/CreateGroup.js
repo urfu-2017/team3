@@ -74,10 +74,11 @@ class CreateGroup extends Component {
 
         this.setState({ groupMembers, mutableContacts });
     }
+    /* eslint-enable complexity */
     /* eslint-enable max-statements */
 
     render() {
-        const { showCG } = this.props;
+        const { user, showCG } = this.props;
         const { groupMembers } = this.state;
 
         if (!showCG) {
@@ -118,10 +119,15 @@ class CreateGroup extends Component {
                         </div>
                     </div>
                     <span className="create-group__number-members">
-                        Количество участников: {groupMembers.length}
+                        Количество участников: {groupMembers.length + 1}
                     </span>
                     <div className="create-group__participants">
                         <div className="create-group__participants_wrapper">
+                            <li className="create-group__user-box">
+                                <div className="create-group__nickname">
+                                    {user.nickname}
+                                </div>
+                            </li>
                             {this.state.groupMembers.map(contact => {
                                 return (
                                     <li
