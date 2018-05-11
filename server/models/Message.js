@@ -11,15 +11,14 @@ const mongoSchema = new mongoose.Schema({
         ref: 'User',
         index: true
     },
-    date: {
-        type: Date,
-        default: Date.now,
-        index: true
-    },
     text: String,
     meta: {},
     reactions: [Reaction.schema],
-    attachments: [String]
+    attachments: [String],
+    date: {
+        type: Date,
+        index: true
+    }
 }, { minimize: false });
 
 class MessageClass {
@@ -29,8 +28,8 @@ class MessageClass {
         return {
             _id: mongoose.Types.ObjectId(),
             author,
-            meta,
             date: new Date(),
+            meta,
             text: processMarkdownAndSanitize(text),
             reactions: [],
             attachments: attachments || []

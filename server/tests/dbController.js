@@ -508,6 +508,7 @@ function checkChat(type, title, members, messages) {
         res.body.should.have.property('title', title);
         res.body.should.have.property('members').with.lengthOf(members.length);
         res.body.should.have.property('messages', messages);
+        res.body.should.have.property('createdAt');
     };
 }
 
