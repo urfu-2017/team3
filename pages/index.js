@@ -40,6 +40,34 @@ class MainPage extends React.Component {
         store.dispatch(await loadChats(req));
     }
 
+    changeTheme = e => {
+        const { isNightTheme } = this.state;
+
+        e.target.parentElement.classList.remove(
+            isNightTheme ? 'main_theme_night' : 'main_theme_day'
+        );
+        e.target.parentElement.classList.add(
+            isNightTheme ? 'main_theme_day' : 'main_theme_night'
+        );
+
+        localStorage.setItem('night-theme', isNightTheme ? '0' : '1');
+        this.setState({ isNightTheme: !isNightTheme });
+    }
+
+    setTheme = () => {
+        const isNightTheme = localStorage.getItem('night-theme') === '1';
+
+        this.setState({ isNightTheme });
+        localStorage.setItem('night-theme', isNightTheme ? '1' : '0');
+
+        const main = document.querySelector('.main');
+
+        main.classList.remove('main_theme_day');
+        main.classList.add(
+            isNightTheme ? 'main_theme_night' : 'main_theme_day'
+        );
+    }
+
     connectToRooms(socket) {
         const rooms = this.props.chats.map(c => c._id);
 
@@ -75,6 +103,7 @@ class MainPage extends React.Component {
         this.setupReceiveMessage(socket);
         this.setupReceiveChat(socket);
         this.setupUpdateMessage(socket);
+        this.setTheme();
 
         this.acceptInvite(socket, this.props.user, this.props.invite);
     }
@@ -132,6 +161,11 @@ class MainPage extends React.Component {
                     <AddUser />
                     <CreateGroup />
                     <Loader />
+                    <div className="substrate" />
+                    <div
+                        className="theme"
+                        onClick={this.changeTheme}
+                    />
                 </main>
             </React.Fragment>
         );

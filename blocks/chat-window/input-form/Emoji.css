@@ -14,7 +14,7 @@
     height: calc(var(--icon-size) * 3 + var(--standard-indent) * 0.5 * 4);
     overflow: hidden;
     border-radius: var(--standard-indent-small);
-    background-color: white;
+    background-color: var(--background-color);
     box-shadow: 
         0 
         0 
@@ -47,6 +47,10 @@
 
 .emoji-mart-emoji:hover {
     cursor: pointer !important;
+}
+
+.emoji-mart-emoji:hover::before {
+    background-color: var(--spare-color-transparent) !important;
 }
 
 .emoji-mart-category .emoji-mart-emoji span {

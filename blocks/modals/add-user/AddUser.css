@@ -3,8 +3,9 @@
     width: var(--modal-width);
     height: 80%;
     overflow: hidden;
-    border-radius: 8px;
-    background: white;
+    border-radius: var(--standard-indent-small);
+    background-color: var(--background-color);
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
 }
 
 .adduser__input {
@@ -17,17 +18,18 @@
     border-radius: var(--standard-indent-small) var(--standard-indent-small) 0 0;
     outline: none;
     background-color: var(--neutral-color);
+    color: var(--text-color-h0);
 }
 
 .adduser__input:focus {
-    background-color: white;
+    background-color: var(--background-color);
     box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
 }
 
 .adduser__list {
     height: 100%;
     margin-top: calc(var(--standard-indent) * 1.5);
-    margin-right: -16px;
+    margin-right: -17px;
     overflow-x: hidden;
     overflow-y: scroll;
 }

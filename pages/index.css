@@ -20,6 +20,7 @@ body {
 
 .chats {
     border-right: var(--border-size) solid var(--neutral-color);
+    background-color: var(--background-color);
 }
 
 .chats__list {
@@ -30,9 +31,9 @@ body {
 
 .chats__list_wrapper {
     height: 100%;
+    margin-right: -17px;
     overflow-x: hidden;
     overflow-y: scroll;
-    margin-right: -16px;
 }
 
 .dialog {
@@ -50,5 +51,31 @@ body {
     width: 100%;
     height: 100%;
     margin: auto;
-    background: rgba(0, 0, 0, 0.8);
+    background-color: var(--darkness-color);
+}
+
+.substrate {
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-color);
+}
+
+.theme {
+    position: fixed;
+    top: 4px;
+    right: 4px;
+    width: 24px;
+    height: 24px;
+    padding: 4px;
+    border: 2px solid var(--neutral-color);
+    border-radius: 8px;
+    background-image: url(/static/theme.svg);
+    background-repeat: no-repeat;
+    background-position: 4px 4px;
+    background-size: 24px;
+    cursor: pointer;
 }
