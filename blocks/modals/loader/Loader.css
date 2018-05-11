@@ -1,11 +1,11 @@
 .backdrop {
-  box-sizing: border-box;
-  margin: 0;
   display: flex;
-  justify-content: center;
+  box-sizing: border-box;
   align-items: center;
-  height: 100%;
+  justify-content: center;
   width: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 .loader {
@@ -15,7 +15,6 @@
 }
 
 .dot {
-  background: white;
   margin: 5px;
   -webkit-animation-name: loader;
           animation-name: loader;
@@ -25,6 +24,7 @@
           animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
           animation-direction: alternate;
+  background: white;
 }
 
 .dot:nth-child(1) {

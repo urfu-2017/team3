@@ -1,8 +1,8 @@
 .message {
+    position: relative;
     min-width: 20%;
     max-width: 65%;
     margin-top: calc(var(--standard-indent-small) * 2);
-    position: relative;
 }
 
 .message:first-child {
@@ -18,25 +18,25 @@
 }
 
 .message__controls {
+    display: flex;
+    visibility: hidden;
     position: absolute;
-    width: calc(
-        (
-            var(--icon-size) * 0.75 + 
-            var(--standard-indent-small) * 0.25 * 2
-        ) * 3
-    );
-    right: calc(var(--standard-indent-small) * 1.5);
     top: calc(
         (
             var(--icon-size) * 0.75 + 
             var(--standard-indent-small) * 0.25 * 2
         ) / -1.5
     );
-    border: var(--border-size) solid var(--spare-color);
-    visibility: hidden;
-    display: flex;
-    justify-content: space-evenly;
+    right: calc(var(--standard-indent-small) * 1.5);
     align-items: center;
+    justify-content: space-evenly;
+    width: calc(
+        (
+            var(--icon-size) * 0.75 + 
+            var(--standard-indent-small) * 0.25 * 2
+        ) * 3
+    );
+    border: var(--border-size) solid var(--spare-color);
     border-radius: var(--standard-indent-small);
     background-color: white;
 }
@@ -46,8 +46,8 @@
 }
 
 .message__control {
-    height: calc(var(--icon-size) * 0.75);
     width: calc(var(--icon-size) * 0.75);
+    height: calc(var(--icon-size) * 0.75);
     margin: calc(var(--standard-indent-small) / 4) 0;
     border-radius: 50%;
 }
@@ -131,9 +131,9 @@
 }
 
 .message__reactions {
-    margin: 0 0 calc(var(--standard-indent-small) / 2);
     display: flex;
     flex-wrap: wrap;
+    margin: 0 0 calc(var(--standard-indent-small) / 2);
 }
 
 .message__reactions_to-left {
@@ -142,44 +142,44 @@
 }
 
 .reaction {
-    position: relative;
     display: flex;
-    margin-right: var(--standard-indent-small);
-    margin-top: calc(var(--standard-indent-small) / 2);
-    background-color: var(--neutral-color);
-    padding: calc(var(--standard-indent-small) / 2);
-    border-radius: var(--standard-indent-small);
-    cursor: pointer;
+    position: relative;
     box-sizing: border-box;
+    margin-top: calc(var(--standard-indent-small) / 2);
+    margin-right: var(--standard-indent-small);
+    padding: calc(var(--standard-indent-small) / 2);
     border: var(--border-size) solid transparent;
+    border-radius: var(--standard-indent-small);
+    background-color: var(--neutral-color);
+    cursor: pointer;
 }
 
 .reaction:hover {
-    background-color: var(--neutral-color-semi-transparent);
     border-color: var(--spare-color);
+    background-color: var(--neutral-color-semi-transparent);
 }
 
 .reaction__number-peoples {
-    font-size: 90%;
-    line-height: 100%;
     margin-left: calc(var(--standard-indent-small) / 2);
-    font-weight: bold;
     color: var(--text-color-h2);
+    font-size: 90%;
+    font-weight: bold;
+    line-height: 100%;
 }
 
 .reaction__users {
-    position: absolute;
     display: flex;
-    flex-direction: column;
-    max-width: calc(var(--standard-indent) * 3);;
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;;
     bottom: var(--icon-size);
+    flex-direction: column;
+    max-width: calc(var(--standard-indent) * 3);
     padding: var(--standard-indent-small);
     border-radius: var(--standard-indent-small);
-    font-size: 75%;
     background: var(--text-color-h1);
     color: white;
-    visibility: hidden;
-    z-index: 1;
+    font-size: 75%;
 }
 
 .reaction__users > span {

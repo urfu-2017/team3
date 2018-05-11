@@ -1,5 +1,6 @@
 .chat-window {
     display: grid;
+    position: relative;
     grid-template-columns: 1fr;
     grid-template-rows: 
         calc(var(--icon-size) + var(--standard-indent))
@@ -7,8 +8,7 @@
         calc(var(--icon-size) + var(--standard-indent) * 2)
         calc(var(--icon-size) + var(--standard-indent-small) * 2);
     height: 100%;
-    overflow: hidden;
-    position: relative;    
+    overflow: hidden;    
 }
 
 .chat-window__stub {
@@ -107,8 +107,8 @@
 }
 
 .chat-input__write-field:focus {
-    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
     background-color: transparent;
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
 }
 
 .chat-input__send-btn {

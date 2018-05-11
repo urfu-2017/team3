@@ -25,9 +25,9 @@
 }
 
 .adduser__list {
-    overflow-x: hidden;
-    overflow-y: scroll;
-    margin-right: -16px;
     height: 100%;
     margin-top: calc(var(--standard-indent) * 1.5);
+    margin-right: -16px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }

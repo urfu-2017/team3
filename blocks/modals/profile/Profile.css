@@ -1,10 +1,10 @@
 .profile {
     display: flex;
-    background: white;
     box-sizing: border-box;
     width: var(--modal-width);
     padding: var(--standard-indent);
     border-radius: var(--standard-indent-small);
+    background: white;
 }
 
 .profile__avatar-box {
@@ -50,8 +50,8 @@
 
 .profile__info-box {
     display: flex;
-    flex-grow: 3;
     flex-direction: column;
+    flex-grow: 3;
     margin-left: var(--standard-indent);
 }
 
@@ -59,8 +59,8 @@
     overflow: hidden;
     color: var(--text-color-h1);
     font-size: 130%;
-    text-align: center;
     font-weight: bold;
+    text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -81,8 +81,8 @@
 }
 
 .contacts {
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 .contacts__user-box {
     display: block;
@@ -98,7 +98,7 @@
 }
 
 .contacts__nickname {
+    padding-left: var(--standard-indent-small);
     font-weight: bold;
     line-height: var(--icon-size);
-    padding-left: var(--standard-indent-small);
 }
