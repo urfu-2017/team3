@@ -72,7 +72,7 @@ class CreateGroup extends Component {
             groupMembers.splice(indexInMembers, 1);
         }
 
-        this.setState({ groupMembers });
+        this.setState({ groupMembers, mutableContacts });
     }
     /* eslint-enable max-statements */
 
