@@ -1,68 +1,33 @@
 .adduser {
-    --width: 400px;
     box-sizing: border-box;
-    width: 400px;
-    width: var(--width);
+    width: var(--modal-width);
     height: 80%;
-    padding: 16px;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
     border-radius: 8px;
     background: white;
 }
 
-.adduser::-webkit-scrollbar {
-    width: 0;
-}
-
 .adduser__input {
     position: fixed;
-    z-index: 2;
     box-sizing: border-box;
-    width: 368px;
-    width: calc(var(--width) - 32px);
-    height: 48px;
-    padding: 0 16px;
+    width: var(--modal-width);
+    height: calc(var(--standard-indent) * 1.5);
+    padding: 0 calc(var(--standard-indent-small) * 2);
     border-width: 0;
-    border-radius: 4px;
+    border-radius: var(--standard-indent-small) var(--standard-indent-small) 0 0;
     outline: none;
-    background-color: #ebebeb;
-    font-size: 16px;
+    background-color: var(--neutral-color);
 }
 
-@supports (width: -webkit-max-content) {
-    .adduser__input_wrapper {
-        /* не спрашивайте, почему */
-        position: fixed;
-        z-index: 1;
-        width: 368px;
-        width: calc(var(--width) - 32px);
-        height: 48px;
-        box-shadow: 0 -8px 0 8px #fff;
-    }
+.adduser__input:focus {
+    background-color: white;
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
 }
 
 .adduser__list {
-    width: 100%;
-    margin-top: 48px;
-}
-
-.adduser__user {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: calc(100% - 16px);
-    height: 48px;
-    padding: 8px;
-}
-
-.adduser__user:hover {
-    background: #ebebeb;
-}
-
-.adduser__user-avatar {
-    width: 48px;
-    height: 48px;
-    margin-right: 8px;
-    border-radius: 24px;
+    height: 100%;
+    margin-top: calc(var(--standard-indent) * 1.5);
+    margin-right: -16px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }

@@ -109,10 +109,8 @@ export default class Message extends Component {
         const peopleEmoji = reactions
             .filter(r => r.users.length > 0)
             .map(r => {
-                let usersList = '';
-
-                r.users.forEach(user => {
-                    usersList += `${user} `;
+                const usersList = r.users.map(user => {
+                    return (<span key={user}>{user}</span>);
                 });
 
                 return (
@@ -128,14 +126,6 @@ export default class Message extends Component {
                     </div>
                 );
             });
-
-        peopleEmoji.push(
-            <div
-                key={Math.floor(Math.random() * 1000000)}
-                className="message__add-emoji"
-                onClick={this.toggleEmoji}
-            />
-        );
 
         return { newText, images, goodDate, peopleEmoji, metadata };
     }
@@ -159,46 +149,71 @@ export default class Message extends Component {
         // Если сообщение свое
         if (user.id === author) {
             return (
-                <div className="message my">
-                    <div className="messageBody myBody">
-                        <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
+                <React.Fragment>
+                    <div className="message message_my">
+                        <div className="message__controls">
+                            <div
+                                className="message__control message__add-emoji"
+                                onClick={this.toggleEmoji}
+                            />
+                            <div
+                                className="message__control message__reply"
+                            />
+                            <div
+                                className="message__control message__forward"
+                            />
+                        </div>
+                        <div className="message__body message__body_my">
+                            <div className="message__data">
+                                <span className="message__sender">{author}</span>
+                                <span className="message__date">{goodDate}</span>
+                            </div>
+                            <div className="message__content">{newText}</div>
+                            <div className="message__attachments">
+                                {images}
+                            </div>
+                            {metadata}
+                        </div>
+                        <div className="message__reactions">
+                            <div className="message__reactions_to-left">{peopleEmoji}</div>
+                        </div>
+                    </div>
+                    <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
+                </React.Fragment>
+            );
+        }
+
+        // Если сообщение собеседника
+        return (
+            <React.Fragment>
+                <div className="message message_friend">
+                    <div className="message__controls">
+                        <div
+                            className="message__control message__add-emoji"
+                            onClick={this.toggleEmoji}
+                        />
+                        <div
+                            className="message__control message__reply"
+                        />
+                        <div
+                            className="message__control message__forward"
+                        />
+                    </div>
+                    <div className="message__body message__body_friend">
                         <div className="message__data">
                             <span className="message__sender">{author}</span>
                             <span className="message__date">{goodDate}</span>
                         </div>
                         <div className="message__content">{newText}</div>
-                        <div className="message__attachments">
-                            {images}
-                        </div>
+                        {images}
                         {metadata}
                     </div>
                     <div className="message__reactions">
                         <div className="message__reactions_to-left">{peopleEmoji}</div>
                     </div>
                 </div>
-            );
-        }
-
-        // Если сообщение собеседника
-        return (
-            <div className="message friend">
-                <div className="messageBody friendBody">
-                    <EmojiPicker
-                        addEmoji={this.addEmoji}
-                        showEmojiToMsg={this.state.showEmojiToMsg}
-                    />
-                    <div className="message__data">
-                        <span className="message__sender">{author}</span>
-                        <span className="message__date">{goodDate}</span>
-                    </div>
-                    <div className="message__content">{newText}</div>
-                    {images}
-                    {metadata}
-                </div>
-                <div className="message__reactions">
-                    <div className="message__reactions_to-left">{peopleEmoji}</div>
-                </div>
-            </div>
+                <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
+            </React.Fragment>
         );
     }
 }

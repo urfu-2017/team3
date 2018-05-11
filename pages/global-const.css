@@ -19,6 +19,7 @@
     --standard-indent-small: 8px;
 
     --icon-size: 32px;
+    --modal-width: 400px;
 
     --border-size: 1px;
     --border-size-bold: calc(var(--border-size) * 2);

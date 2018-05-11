@@ -11,14 +11,29 @@ import { connect } from 'react-redux';
 
 import { hideProfile } from '../../../actions/modals';
 import { changeAvatar } from '../../../actions/user';
+import { createChat } from '../../../actions/chats';
 
 function getGroupInviteLink(url, id) {
     return `${url}invite/g_${id}`;
 }
 
+/* eslint-disable react/jsx-closing-bracket-location */
+
 class Profile extends Component {
     hideProfile = () => {
         this.props.hideProfile();
+    };
+
+    getInterlocutor = chat => {
+        const interlocutors = chat.members.filter(member => {
+            if (member.nickname !== this.props.user.nickname) {
+                return true;
+            }
+
+            return false;
+        });
+
+        return interlocutors[0];
     };
 
     componentDidMount() {
@@ -60,10 +75,13 @@ class Profile extends Component {
         }
 
         // ЕСЛИ СВОЙ ПРОФИЛЬ
-        if (profile.nickname) {
+        if (profile.nickname === this.props.user.nickname) {
             return (
                 <div className="darkness" onClick={this.hideProfile}>
-                    <div className="profile" onClick={event => event.stopPropagation()}>
+                    <div
+                        className="profile"
+                        onClick={event => event.stopPropagation()}
+                        >
                         <div className="profile__avatar-box">
                             <label htmlFor="imginput">
                                 <img
@@ -73,12 +91,18 @@ class Profile extends Component {
                                 />
                             </label>
                             <label htmlFor="imginput">
-                                <div className="profile__avatar-hover" />
+                                <div className="profile__avatar-hover">
+                                    <img
+                                        className="profile__avatar_new"
+                                        src="/static/upload_avatar.svg"
+                                        alt="загрузить новый аватар"
+                                    />
+                                </div>
                             </label>
                             <input
                                 onChange={this.onFileChange}
                                 name="userAvatar" id="imginput"
-                                className="profile__input"
+                                className="profile__new-avatar_input"
                                 type="file"
                             />
                         </div>
@@ -100,9 +124,36 @@ class Profile extends Component {
         const displayData = this.whoIsMyInterlocutor(profile);
         // туду отделить профиль пользователя от группы
 
+        if (profile.type === 'private') {
+            return (
+                <div className="darkness" onClick={this.hideProfile}>
+                    <div
+                        className="profile"
+                        onClick={event => event.stopPropagation()}
+                        >
+                        <div className="profile__avatar-box">
+                            <img
+                                className="profile__avatar"
+                                src={this.getInterlocutor(profile).avatar}
+                                alt="avatar"
+                            />
+                        </div>
+                        <div className="profile__info-box">
+                            <span className="profile__nickname">
+                                {this.getInterlocutor(profile).nickname}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="darkness" onClick={this.hideProfile}>
-                <div className="profile" onClick={event => event.stopPropagation()}>
+                <div
+                    className="profile"
+                    onClick={event => event.stopPropagation()}
+                    >
                     <div className="profile__avatar-box">
                         <img className="profile__avatar" src={displayData.avatar} alt="avatar" />
                     </div>
@@ -111,9 +162,28 @@ class Profile extends Component {
                             {displayData.nickname}
                         </span>
                         <span>{this.inviteLink(profile)}</span>
-                        <ul>
+                        <ul className="contacts">
                             {profile.members
-                                ? profile.members.map(m => <li key={m.nickname}>{m.nickname}</li>)
+                                ? profile.members.map(m => {
+                                    return (
+                                        <li
+                                            className="contacts__user-box"
+                                            key={m.nickname}
+                                            onClick={() => {
+                                                const { nickname } = this.props.user;
+
+                                                if (m.nickname !== nickname) {
+                                                    this.hideProfile();
+                                                    this.props.createChat(this.props.user, m);
+                                                }
+                                            }}
+                                            >
+                                            <div className="contacts__nickname">
+                                                {m.nickname}
+                                            </div>
+                                        </li>
+                                    );
+                                })
                                 : null}
                         </ul>
                     </div>
@@ -142,7 +212,8 @@ Profile.propTypes = {
     profile: PropTypes.object,
     user: PropTypes.object,
     hideProfile: PropTypes.func,
-    changeAvatar: PropTypes.func
+    changeAvatar: PropTypes.func,
+    createChat: PropTypes.func
 };
 
 export default connect(
@@ -151,6 +222,7 @@ export default connect(
         user: state.user
     }), {
         hideProfile,
-        changeAvatar
+        changeAvatar,
+        createChat
     }
 )(Profile);

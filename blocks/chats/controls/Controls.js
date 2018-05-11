@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import fetch from 'node-fetch';
 import { connect } from 'react-redux';
 
+import './Controls.css';
+
 /* туду переделать на поиск по сообщениям */
-class Search extends Component {
+class Controls extends Component {
     state = { isSearchString: false }
 
     showSearch = () => {
@@ -65,17 +67,12 @@ class Search extends Component {
                         onClick={this.showProfile}
                     />
                     <img
-                        src="/static/controls/phonebook.svg"
-                        className="control-img"
-                        onClick={this.props.onShowContacts}
-                    />
-                    <img
-                        src="/static/controls/adduser.svg"
+                        src="/static/controls/chat.svg"
                         className="control-img"
                         onClick={this.props.onShowAddUser}
                     />
                     <img
-                        src="/static/controls/group.svg"
+                        src="/static/controls/create_group_chat.svg"
                         className="control-img"
                         onClick={this.props.onShowCreateGroup}
                     />
@@ -89,13 +86,12 @@ class Search extends Component {
     }
 }
 
-Search.propTypes = {
+Controls.propTypes = {
     user: PropTypes.object,
     onUsersFound: PropTypes.func,
     onShowProfile: PropTypes.func,
     onShowAddUser: PropTypes.func,
-    onShowCreateGroup: PropTypes.func,
-    onShowContacts: PropTypes.func
+    onShowCreateGroup: PropTypes.func
 };
 
 export default connect(
@@ -114,9 +110,6 @@ export default connect(
         },
         onShowCreateGroup: () => {
             dispatch({ type: 'SHOW_CREATEGROUP' });
-        },
-        onShowContacts: () => {
-            dispatch({ type: 'SHOW_CONTACTS' });
         }
     })
-)(Search);
+)(Controls);

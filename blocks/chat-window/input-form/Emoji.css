@@ -1,8 +1,7 @@
 .emoji-mart {
-    z-index: 3;
     position: absolute;
+    z-index: 3;
     right: calc(
-        var(--body-margin-side) +
         (var(--icon-size) / 2) +
         var(--standard-indent-small)
     );
@@ -13,6 +12,7 @@
     box-sizing: border-box;
     width: calc(36px * 8 + 2px) !important;
     height: calc(var(--icon-size) * 3 + var(--standard-indent) * 0.5 * 4);
+    overflow: hidden;
     border-radius: var(--standard-indent-small);
     background-color: white;
     box-shadow: 
@@ -21,11 +21,6 @@
         calc(var(--border-size-bold)) 
         var(--border-size) 
         var(--spare-color);
-    overflow-y: auto;
-}
-
-.emoji-mart::-webkit-scrollbar {
-    width: 0;
 }
 
 .emoji_input {
@@ -40,7 +35,10 @@
 }
 
 .emoji-mart-scroll {
+    margin-right: -17px;
     padding: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 .emoji-mart-scroll::-webkit-scrollbar {
