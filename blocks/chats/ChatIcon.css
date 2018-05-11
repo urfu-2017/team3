@@ -54,11 +54,13 @@
     font-weight: bold;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 190px; 
+    width: 180px; 
 }
 
 .chat-icon__date {
     color: var(--text-color-h3);
     font-size: 80%;
-    width: 40px;
+    width: 42px;
+    margin-right: 8px;
+    text-align: right;
 }

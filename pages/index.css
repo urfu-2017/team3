@@ -30,9 +30,9 @@ body {
 
 .chats__list_wrapper {
     height: 100%;
-    margin-right: -16px;
     overflow-x: hidden;
     overflow-y: scroll;
+    margin-right: -16px;
 }
 
 .dialog {

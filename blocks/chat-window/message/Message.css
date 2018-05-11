@@ -2,7 +2,8 @@
     position: relative;
     min-width: 20%;
     max-width: 65%;
-    margin-top: calc(var(--standard-indent-small) * 2);
+    margin: calc(var(--standard-indent-small) * 2);
+    margin-bottom: 0;
 }
 
 .message:first-child {
@@ -228,7 +229,7 @@
 .message + .emoji-mart {
     bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3);
     width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important;
-    height: 40%;
+    height: 200px;
     background-color: white;
 }
 
