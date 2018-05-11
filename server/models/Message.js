@@ -14,10 +14,12 @@ const mongoSchema = new mongoose.Schema({
     text: String,
     meta: {},
     reactions: [Reaction.schema],
-    attachments: [String]
-}, { minimize: false, timestamps: { createdAt: 'date' } });
-
-mongoSchema.index({ 'date': 1 });
+    attachments: [String],
+    date: {
+        type: Date,
+        index: true
+    }
+}, { minimize: false });
 
 class MessageClass {
     static async initialize({ author, text, attachments }) {
@@ -26,6 +28,7 @@ class MessageClass {
         return {
             _id: mongoose.Types.ObjectId(),
             author,
+            date: new Date(),
             meta,
             text: processMarkdownAndSanitize(text),
             reactions: [],
