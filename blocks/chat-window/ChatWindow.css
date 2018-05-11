@@ -20,6 +20,7 @@
 }
 
 .chat-header {
+    --size: calc(var(--icon-size) * 1.5);
     display: flex;
     z-index: 10;
     grid-area: 1 / 1 / 2 / 2;
@@ -35,7 +36,6 @@
 }
 
 .chat-header__img {
-    --size: calc(var(--standard-indent) * 1.5);
     width: var(--size);
     height: var(--size);
     margin: 0 calc(var(--standard-indent) / 2);
@@ -45,6 +45,10 @@
 
 .chat-header__name {
     color: var(--text-color-h1);
+    width: 200px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .messages {

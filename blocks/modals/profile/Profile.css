@@ -63,6 +63,7 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: calc(var(--modal-width) - var(--icon-size) * 4 - 3 * var(--standard-indent));
 }
 
 .profile__invite-link{

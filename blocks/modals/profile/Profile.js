@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 
 import { hideProfile } from '../../../actions/modals';
 import { changeAvatar } from '../../../actions/user';
+import { createChat } from '../../../actions/chats';
 
 function getGroupInviteLink(url, id) {
     return `${url}invite/g_${id}`;
@@ -21,6 +22,18 @@ function getGroupInviteLink(url, id) {
 class Profile extends Component {
     hideProfile = () => {
         this.props.hideProfile();
+    };
+
+    getInterlocutor = chat => {
+        const interlocutors = chat.members.filter(member => {
+            if (member.nickname !== this.props.user.nickname) {
+                return true;
+            }
+
+            return false;
+        });
+
+        return interlocutors[0];
     };
 
     componentDidMount() {
@@ -62,11 +75,11 @@ class Profile extends Component {
         }
 
         // ЕСЛИ СВОЙ ПРОФИЛЬ
-        if (profile.nickname) {
+        if (profile.nickname === this.props.user.nickname) {
             return (
                 <div className="darkness" onClick={this.hideProfile}>
                     <div
-                        className="profile modals__main"
+                        className="profile"
                         onClick={event => event.stopPropagation()}
                         >
                         <div className="profile__avatar-box">
@@ -111,10 +124,34 @@ class Profile extends Component {
         const displayData = this.whoIsMyInterlocutor(profile);
         // туду отделить профиль пользователя от группы
 
+        if (profile.type === 'private') {
+            return (
+                <div className="darkness" onClick={this.hideProfile}>
+                    <div
+                        className="profile"
+                        onClick={event => event.stopPropagation()}
+                        >
+                        <div className="profile__avatar-box">
+                            <img
+                                className="profile__avatar"
+                                src={this.getInterlocutor(profile).avatar}
+                                alt="avatar"
+                            />
+                        </div>
+                        <div className="profile__info-box">
+                            <span className="profile__nickname">
+                                {this.getInterlocutor(profile).nickname}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
             <div className="darkness" onClick={this.hideProfile}>
                 <div
-                    className="profile modals__main"
+                    className="profile"
                     onClick={event => event.stopPropagation()}
                     >
                     <div className="profile__avatar-box">
@@ -132,6 +169,14 @@ class Profile extends Component {
                                         <li
                                             className="contacts__user-box"
                                             key={m.nickname}
+                                            onClick={() => {
+                                                const { nickname } = this.props.user;
+
+                                                if (m.nickname !== nickname) {
+                                                    this.hideProfile();
+                                                    this.props.createChat(this.props.user, m);
+                                                }
+                                            }}
                                             >
                                             <div className="contacts__nickname">
                                                 {m.nickname}
@@ -167,7 +212,8 @@ Profile.propTypes = {
     profile: PropTypes.object,
     user: PropTypes.object,
     hideProfile: PropTypes.func,
-    changeAvatar: PropTypes.func
+    changeAvatar: PropTypes.func,
+    createChat: PropTypes.func
 };
 
 export default connect(
@@ -176,6 +222,7 @@ export default connect(
         user: state.user
     }), {
         hideProfile,
-        changeAvatar
+        changeAvatar,
+        createChat
     }
 )(Profile);
