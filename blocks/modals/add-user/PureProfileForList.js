@@ -3,26 +3,13 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import getSocket from '../../../pages/socket';
+import { createChat } from '../../../actions/chats';
 
 class PureProfile extends Component {
     createChat = () => {
-        const socket = getSocket();
+        const { myUser, user } = this.props;
 
-        const { user, myUser } = this.props;
-
-        this.props.onStartChatCreation();
-        socket.emit('chat', {
-            members: [myUser.nickname, user.nickname], // Важно! создатель первый в списке
-            type: 'private'
-        }, (chat, existsChatId) => {
-            if (chat) {
-                this.props.onChatCreated(chat);
-                socket.emit('join', [chat._id]);
-            } else {
-                this.props.onChatExists(existsChatId);
-            }
-        });
+        this.props.createChat(myUser, user);
     };
 
     render() {
@@ -48,28 +35,13 @@ class PureProfile extends Component {
 PureProfile.propTypes = {
     user: PropTypes.object,
     myUser: PropTypes.object,
-    onStartChatCreation: PropTypes.func,
-    onChatCreated: PropTypes.func,
-    onChatExists: PropTypes.func
+    createChat: PropTypes.func
 };
 
 export default connect(
     state => ({
         myUser: state.user
-    }),
-    dispatch => ({
-        onStartChatCreation: () => {
-            dispatch({ type: 'SHOW_LOADER' });
-            dispatch({ type: 'HIDE_ADDUSER' });
-        },
-        onChatCreated: chat => {
-            dispatch({ type: 'CREATE_CHAT', chat });
-            dispatch({ type: 'OPEN_CHAT', id: chat._id });
-            dispatch({ type: 'HIDE_LOADER' });
-        },
-        onChatExists: chatId => {
-            dispatch({ type: 'OPEN_CHAT', id: chatId });
-            dispatch({ type: 'HIDE_LOADER' });
-        }
-    })
+    }), {
+        createChat
+    }
 )(PureProfile);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import fetch from 'node-fetch';
 import { connect } from 'react-redux';
 
+/* туду переделать на поиск по сообщениям */
 class Search extends Component {
     state = { isSearchString: false }
 
@@ -46,7 +47,6 @@ class Search extends Component {
                         type="text"
                         className="chats__search-input"
                         placeholder="Найти пользователя"
-                        // onKeyDown={this.findUsers}
                         autoFocus
                     />
                     <img

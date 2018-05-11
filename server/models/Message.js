@@ -30,7 +30,7 @@ class MessageClass {
             _id: mongoose.Types.ObjectId(),
             author,
             meta,
-            data: Date.now(),
+            date: new Date(),
             text: processMarkdownAndSanitize(text),
             reactions: [],
             attachments: attachments || []

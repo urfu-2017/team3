@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import Chat from '../../models/Chat';
+import { openChat } from '../../actions/chats';
 
 import './ChatIcon.css';
 
@@ -18,7 +19,7 @@ class ChatIcon extends Component {
     }
 
     openChat = () => {
-        this.props.onOpenChat(this.props.chatProps);
+        this.props.openChat(this.props.chatProps._id);
     }
 
     render() {
@@ -56,16 +57,13 @@ class ChatIcon extends Component {
 ChatIcon.propTypes = {
     user: PropTypes.object,
     chatProps: PropTypes.object,
-    onOpenChat: PropTypes.func
+    openChat: PropTypes.func
 };
 
 export default connect(
     state => ({
         user: state.user
-    }),
-    dispatch => ({
-        onOpenChat: chat => {
-            dispatch({ type: 'OPEN_CHAT', id: chat._id });
-        }
-    })
+    }), {
+        openChat
+    }
 )(ChatIcon);

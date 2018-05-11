@@ -6,12 +6,12 @@ import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 
+import { receiveChat, openChat, updateMessage, receiveMessage } from '../actions/chats';
+import types from '../actions/types';
 import makeStore from '../store';
 
 import Chats from '../blocks/chats/Chats';
-
 import ChatWindow from '../blocks/chat-window/ChatWindow';
-
 import Search from '../blocks/modals/search/Search';
 import Profile from '../blocks/modals/profile/Profile';
 import AddUser from '../blocks/modals/add-user/AddUser';
@@ -25,60 +25,59 @@ import './index.css';
 
 import getSocket from './socket';
 
-async function loadChats(req) {
-    const { HOST, PORT } = process.env;
-    const res = await fetch(`${HOST}:${PORT}/api/chats`, {
-        credentials: 'include',
-        headers: {
-            cookie: req.headers.cookie
-        }
-    });
-    const chats = await res.json();
-
-    return { type: 'LOAD_CHATS', chats };
-}
-
 class MainPage extends React.Component {
     static async getInitialProps({ store, req }) {
         if (!req) {
             return {};
         }
 
-        store.dispatch({ type: 'LOGIN_USER', user: req.user });
-        store.dispatch(await loadChats(req));
-        if (req.params.id) {
-            store.dispatch({ type: 'ACCEPT_INVITE', invite: req.params.id });
-        }
+        await this.initState(store, req);
 
-        return {};
+        return { invite: req.params.id };
+    }
+
+    static async initState(store, req) {
+        store.dispatch({ type: types.LOGIN_USER, user: req.user });
+        store.dispatch(await loadChats(req));
+    }
+
+    connectToRooms(socket) {
+        const rooms = this.props.chats.map(c => c._id);
+
+        rooms.push(this.props.user.nickname);
+        socket.emit('join', rooms);
+    }
+
+    setupReceiveMessage(socket) {
+        socket.on('message', data => {
+            const { chatId, message } = data;
+
+            this.props.receiveMessage(chatId, message);
+        });
+    }
+
+    setupReceiveChat(socket) {
+        socket.on('chat', chat => {
+            this.props.receiveChat(chat);
+            socket.emit('join', [chat._id]);
+        });
+    }
+
+    setupUpdateMessage(socket) {
+        socket.on('update_message', data => {
+            this.props.updateMessage(data.chatId, data.message);
+        });
     }
 
     componentDidMount() {
         const socket = getSocket();
 
-        const { user } = this.props;
-        // Подключение ко всем комнатам с чатиками
-        const rooms = this.props.chats.map(c => c._id);
+        this.connectToRooms(socket);
+        this.setupReceiveMessage(socket);
+        this.setupReceiveChat(socket);
+        this.setupUpdateMessage(socket);
 
-        rooms.push(user.nickname);
-        socket.emit('join', rooms);
-
-        this.acceptInvite(socket, user, this.props.invite);
-
-        socket.on('message', data => {
-            const { chatId, message } = data;
-
-            this.props.onReceiveMessage(chatId, message);
-        });
-
-        socket.on('chat', chat => {
-            this.props.onCreateChat(chat);
-            socket.emit('join', [chat._id]);
-        });
-
-        socket.on('update_message', data => {
-            this.props.onUpdateMessage(data);
-        });
+        this.acceptInvite(socket, this.props.user, this.props.invite);
     }
 
     acceptInvite(socket, user, invite) {
@@ -105,11 +104,11 @@ class MainPage extends React.Component {
     acceptInviteInternal(socket, description) {
         socket.emit('chat', description, (chat, existingChatId) => {
             if (chat) {
-                this.props.onCreateChat(chat);
+                this.props.receiveChat(chat);
                 socket.emit('join', [chat._id]);
             }
 
-            this.props.onOpenChat(chat ? chat._id : existingChatId);
+            this.props.openChat(chat ? chat._id : existingChatId);
         });
     }
 
@@ -143,27 +142,31 @@ class MainPage extends React.Component {
 MainPage.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    onReceiveMessage: PropTypes.func,
-    onCreateChat: PropTypes.func,
-    onOpenChat: PropTypes.func,
+    receiveMessage: PropTypes.func,
+    openChat: PropTypes.func,
     invite: PropTypes.string,
-    onUpdateMessage: PropTypes.func
+    updateMessage: PropTypes.func,
+    receiveChat: PropTypes.func
 };
 
 export default withRedux(makeStore,
-    state => state,
-    dispatch => ({
-        onReceiveMessage: (chatId, message) => {
-            dispatch({ type: 'RECEIVE_MESSAGE', chatId, message });
-        },
-        onCreateChat: chat => {
-            dispatch({ type: 'CREATE_CHAT', chat });
-        },
-        onOpenChat: chatId => {
-            dispatch({ type: 'OPEN_CHAT', id: chatId });
-        },
-        onUpdateMessage: ({ chatId, message }) => {
-            dispatch({ type: 'UPDATE_MESSAGE', chatId, message });
-        }
-    })
+    state => state, {
+        receiveMessage,
+        receiveChat,
+        openChat,
+        updateMessage
+    }
 )(MainPage);
+
+async function loadChats(req) {
+    const { HOST, PORT } = process.env;
+    const res = await fetch(`${HOST}:${PORT}/api/chats`, {
+        credentials: 'include',
+        headers: {
+            cookie: req.headers.cookie
+        }
+    });
+    const chats = await res.json();
+
+    return { type: types.LOAD_CHATS, chats };
+}

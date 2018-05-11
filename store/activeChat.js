@@ -6,7 +6,8 @@ export default function activeChat(state = null, action) {
     if (action.type === 'OPEN_CHAT') {
         return {
             ...state,
-            id: action.id
+            id: action.id,
+            attachments: []
         };
     }
 
@@ -46,24 +47,18 @@ export default function activeChat(state = null, action) {
         };
     }
 
-    if (action.type === 'ADD_ATTACHMENT') {
-        const localState = {
+    if (action.type === 'ADD_ATTACHMENTS') {
+        return {
             ...state,
-            attachments: action.attachments.concat([]),
-            attachmentsLinks: action.attachmentsLinks.concat([])
+            attachments: [...state.attachments, ...action.attachments]
         };
-
-        return Object.assign(localState, {});
     }
 
     if (action.type === 'DELETE_ATTACHMENT') {
-        const localState = {
+        return {
             ...state,
-            attachments: action.attachments.concat([]),
-            attachmentsLinks: action.attachmentsLinks.concat([])
+            attachments: state.attachments.filter((a, i) => i !== action.index)
         };
-
-        return Object.assign(localState, {});
     }
 
     return state;
