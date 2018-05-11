@@ -49,6 +49,7 @@ class MainPage extends React.Component {
         e.target.parentElement.classList.add(
             isNightTheme ? 'main_theme_day' : 'main_theme_night'
         );
+        e.target.setAttribute('title', isNightTheme ? 'Ночной режим' : 'Дневной режим');
 
         localStorage.setItem('night-theme', isNightTheme ? '0' : '1');
         this.setState({ isNightTheme: !isNightTheme });
@@ -66,6 +67,15 @@ class MainPage extends React.Component {
         main.classList.add(
             isNightTheme ? 'main_theme_night' : 'main_theme_day'
         );
+        main
+            .querySelector('.theme')
+            .setAttribute('title',
+                isNightTheme
+                    ?
+                    'Дневной режим'
+                    :
+                    'Ночной режим'
+            );
     }
 
     connectToRooms(socket) {

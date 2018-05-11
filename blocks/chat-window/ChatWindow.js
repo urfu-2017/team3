@@ -151,10 +151,12 @@ class ChatWindow extends Component {
                         className="chat-header__img"
                         alt="chatavatar"
                         src={`${avatar}`}
+                        title="Посмотреть информацию"
                         onClick={() => this.showProfile(activeChat)}
                     />
                     <span
                         className="chat-header__name"
+                        title="Посмотреть информацию"
                         onClick={() => this.showProfile(activeChat)}
                         >
                         {title}
@@ -188,11 +190,13 @@ class ChatWindow extends Component {
                     />
                     <label
                         className="chat-input__audioinput-btn chat-input__button"
+                        title="Набор голосом"
                         >
                     </label>
                     <label
                         className="chat-input__emoji-btn chat-input__button"
                         onClick={event => event.stopPropagation()}
+                        title="Добавить emoji"
                         >
                         <input
                             type="button"
@@ -203,12 +207,14 @@ class ChatWindow extends Component {
                     <label
                         className="chat-input__burger-btn chat-input__button"
                         onClick={this.props.showInputPopup}
+                        title="Прикрепить"
                         >
                     </label>
                     <label
                         src="/static/send_message.svg"
                         onClick={this.submitMessage}
                         className="chat-input__send-btn chat-input__button"
+                        title="Отправить сообщение"
                     />
                 </div>
                 <InputPopup />

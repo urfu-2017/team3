@@ -154,13 +154,16 @@ export default class Message extends Component {
                         <div className="message__controls">
                             <div
                                 className="message__control message__add-emoji"
+                                title="Добавить реакцию"
                                 onClick={this.toggleEmoji}
                             />
                             <div
                                 className="message__control message__reply"
+                                title="Ответить"
                             />
                             <div
                                 className="message__control message__forward"
+                                title="Переслать"
                             />
                         </div>
                         <div className="message__body message__body_my">
@@ -190,13 +193,16 @@ export default class Message extends Component {
                     <div className="message__controls">
                         <div
                             className="message__control message__add-emoji"
+                            title="Добавить реакцию"
                             onClick={this.toggleEmoji}
                         />
                         <div
                             className="message__control message__reply"
+                            title="Ответить"
                         />
                         <div
                             className="message__control message__forward"
+                            title="Переслать"
                         />
                     </div>
                     <div className="message__body message__body_friend">

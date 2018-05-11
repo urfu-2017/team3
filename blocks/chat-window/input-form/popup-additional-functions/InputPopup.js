@@ -28,7 +28,10 @@ class InputPopup extends Component {
 
         return (
             <div className="chat-input__burger-content">
-                <label className="chat-input__attachment-btn chat-input__button">
+                <label
+                    className="chat-input__attachment-btn chat-input__button"
+                    title="Прикрепить файл"
+                    >
                     <input
                         type="file"
                         className="chat-input__input_not-visual"
@@ -42,6 +45,7 @@ class InputPopup extends Component {
                 <label
                     className="chat-input__autodestroy-btn chat-input__button"
                     onClick={this.props.hideInputPopup}
+                    title="Секретное сообщение"
                     >
                     <span className="chat-input__button_description_add">
                         Секретное сообщение
@@ -50,6 +54,7 @@ class InputPopup extends Component {
                 <label
                     className="chat-input__geolocation-btn chat-input__button"
                     onClick={this.props.hideInputPopup}
+                    title="Местоположение"
                     >
                     <span className="chat-input__button_description_add">
                         Местоположение
