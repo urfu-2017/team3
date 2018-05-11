@@ -30,7 +30,7 @@
     color: var(--text-color-h1);
     font-size: 120%;
     font-weight: bold;
-    text-align: center;
+    padding-left: var(--standard-indent);
     text-overflow: ellipsis;
     white-space: nowrap;
 }
