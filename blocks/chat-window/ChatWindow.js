@@ -14,6 +14,7 @@ import {
     showEmoji,
     hideEmoji,
     resetAttachments,
+    addAttachments,
     sendMessage,
     showInputPopup,
     hideInputPopup } from '../../actions/activeChat';
@@ -31,7 +32,8 @@ class ChatWindow extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            msgText: ''
+            msgText: '',
+            isDraggable: false
         };
     }
 
@@ -47,6 +49,32 @@ class ChatWindow extends Component {
         });
     }
 
+    // обработка переносимого файла
+    toggleDragOver = e => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+    };
+
+    // управление отображением области дропа
+    toggleDragEnter = e => {
+        e.preventDefault();
+        this.setState({ isDraggable: true });
+    };
+
+    toggleDragLeave = e => {
+        e.preventDefault();
+        this.setState({ isDraggable: false });
+    };
+
+    // обработка дропа
+    toggleDrop = e => {
+        e.preventDefault();
+        const { files } = e.dataTransfer;
+
+        this.setState({ isDraggable: false });
+        this.props.addAttachments(files);
+    };
+
     // клик на рожицу, используется в <Emoji.../>
     toggleEmoji = () => {
         if (this.props.emojiActive) {
@@ -54,7 +82,7 @@ class ChatWindow extends Component {
         } else {
             this.props.showEmoji();
         }
-    }
+    };
 
     // функция добавления emoji
     addEmoji = emoji => {
@@ -65,7 +93,7 @@ class ChatWindow extends Component {
         this.setState({ msgText: currentValue });
         this.textInput.focus();
         // input.value = currentValue;
-    }
+    };
 
     /* eslint-disable max-statements */
     submitMessage = () => {
@@ -91,24 +119,24 @@ class ChatWindow extends Component {
 
             this.props.sendMessage(chatId, message);
         }
-    }
+    };
 
     // прослушка отправки на Enter
     keySubmitMessage = e => {
         if (e.keyCode === 13) {
             this.submitMessage();
         }
-    }
+    };
 
     showProfile = profile => {
         this.props.showProfile(profile);
-    }
+    };
 
     scrollToBottom = () => {
         if (this.messagesEnd) {
             this.messagesEnd.scrollIntoView();
         }
-    }
+    };
 
     activeChatId = '0';
     messagesCount = 0;
@@ -145,7 +173,13 @@ class ChatWindow extends Component {
         const title = chat.getTitleFor(user);
 
         return (
-            <section className="chat-window">
+            <section
+                className="chat-window"
+                onDragOver={this.toggleDragOver}
+                onDragEnter={this.toggleDragEnter}
+                onDragLeave={this.toggleDragLeave}
+                onDrop={this.toggleDrop}
+                >
                 <div className="chat-header" onClick={this.props.hideEmoji}>
                     <img
                         className="chat-header__img"
@@ -162,20 +196,30 @@ class ChatWindow extends Component {
                         {title}
                     </span>
                 </div>
-                <div
-                    className={`messages messages_grid_${attachments.length ? 'small' : 'large'}`}
-                    onClick={this.props.hideEmoji}>
-                    {activeChat.messages.map(message => (
-                        <Message
-                            key={message._id || '0'}
-                            message={message}
-                            user={user}
-                            activeChat={activeChat}
-                            showEmojiToMsg={false}
-                        />
-                    ))}
-                    <div ref={el => { this.messagesEnd = el; }}></div>
-                </div>
+                {this.state.isDraggable
+                    ?
+                        <div className="chat-window__dragndrop-hint">
+                            Перетащите ваши файлы сюда
+                        </div>
+                    :
+                    (
+                        <div
+                            className={'messages messages_grid_' +
+                            `${attachments.length ? 'small' : 'large'}`}
+                            onClick={this.props.hideEmoji}>
+                            {activeChat.messages.map(message => (
+                                <Message
+                                    key={message._id || '0'}
+                                    message={message}
+                                    user={user}
+                                    activeChat={activeChat}
+                                    showEmojiToMsg={false}
+                                />
+                            ))}
+                            <div ref={el => { this.messagesEnd = el; }}></div>
+                        </div>
+                    )
+                }
                 <Emoji addEmoji={this.addEmoji} />
                 <Preview />
                 <div className="chat-input" onClick={this.props.hideEmoji}>
@@ -234,7 +278,8 @@ ChatWindow.propTypes = {
     resetAttachments: PropTypes.func,
     showInputPopup: PropTypes.func,
     hideInputPopup: PropTypes.func,
-    sendMessage: PropTypes.func
+    sendMessage: PropTypes.func,
+    addAttachments: PropTypes.func
 };
 
 export default connect(
@@ -251,6 +296,7 @@ export default connect(
         sendMessage,
         resetAttachments,
         showInputPopup,
-        hideInputPopup
+        hideInputPopup,
+        addAttachments
     }
 )(ChatWindow);
