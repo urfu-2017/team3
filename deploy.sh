@@ -1,5 +1,9 @@
 #!/bin/bash
 
+currentdir=$(pwd | sed 's/ /\\ /g');
+nowpath=${currentdir}"/node_modules/now/download/dist";
+export PATH=$PATH:"$nowpath"
+
 firstArg=$1
 nowToken=$2
 buildAlias='team-3-'${firstArg}'.now.sh'
