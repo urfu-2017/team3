@@ -11,7 +11,7 @@ export default function chats(state = [], action) {
     }
 
     if (action.type === 'RECEIVE_MESSAGE') {
-        return pushMessageImmutable(state, action.chatId, action.message)
+        return pushMessage(state, action.chatId, action.message)
             .sort(compareByLastMessage);
     }
 
@@ -26,39 +26,52 @@ export default function chats(state = [], action) {
     }
 
     if (action.type === 'UPDATE_MESSAGE') {
-        return updateMessageImmutable(state, action.chatId, action.message);
+        return updateMessage(state, action.chatId, action.message);
+    }
+
+    if (action.type === 'UPDATE_CHAT') {
+        return updateChat(state, action.chat);
     }
 
     return state;
 }
 
-function pushMessageImmutable(oldChats, chatId, message) {
-    const newChats = [...oldChats];
-    const chatIndex = newChats.findIndex(c => c._id === chatId);
-    const oldChat = newChats[chatIndex];
-    const newChat = {
-        ...oldChat,
-        messages: [...oldChat.messages, message]
-    };
-
-    newChats[chatIndex] = newChat;
-
-    return newChats;
+function pushMessage(oldChats, chatId, message) {
+    return updateChatImmutable(oldChats, chatId, oldChat => {
+        return {
+            ...oldChat,
+            messages: [...oldChat.messages, message]
+        };
+    });
 }
 
-function updateMessageImmutable(oldChats, chatId, message) {
+function updateMessage(oldChats, chatId, message) {
+    return updateChatImmutable(oldChats, chatId, oldChat => {
+        const newMessages = [...oldChat.messages];
+        const messageIndex = newMessages.findIndex(m => m._id === message._id);
+
+        newMessages[messageIndex] = message;
+
+        return {
+            ...oldChat,
+            messages: newMessages
+        };
+    });
+}
+
+function updateChat(oldChats, updatedChat) {
+    return updateChatImmutable(oldChats, updatedChat._id, oldChat => {
+        return {
+            ...oldChat,
+            ...updatedChat };
+    });
+}
+
+function updateChatImmutable(oldChats, chatId, getNewChat) {
     const newChats = [...oldChats];
     const chatIndex = newChats.findIndex(c => c._id === chatId);
     const oldChat = newChats[chatIndex];
-    const newMessages = [...oldChat.messages];
-    const messageIndex = newMessages.findIndex(m => m._id === message._id);
-
-    newMessages[messageIndex] = message;
-
-    const newChat = {
-        ...oldChat,
-        messages: newMessages
-    };
+    const newChat = getNewChat(oldChat);
 
     newChats[chatIndex] = newChat;
 

@@ -12,7 +12,7 @@ const mongoSchema = new mongoose.Schema({
     messages: [Message.schema],
     avatar: String,
     inviteId: String
-}, { minimize: false });
+}, { minimize: false, timestamps: true });
 
 function getRandomString() {
     return Math.random().toString(36)

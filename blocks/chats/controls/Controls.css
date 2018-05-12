@@ -1,0 +1,43 @@
+.chats__controls {
+    display: flex;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(var(--standard-indent) * 2);
+    padding: var(--standard-indent-small) var(--standard-indent);
+    border-bottom: var(--border-size) solid var(--neutral-color);
+}
+
+.control-img {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    padding: calc(var(--standard-indent-small) / 2);
+    border: var(--border-size) solid var(--neutral-color);
+    border-radius: var(--standard-indent-small);
+}
+
+.control-img:hover {
+    background-color: var(--spare-color-transparent);
+    cursor: pointer;
+}
+
+.chats__search-input {
+    box-sizing: border-box;
+    width: calc((100% * 2 + var(--icon-size)) / 3);
+    height: calc(
+        var(--icon-size) + 
+        var(--standard-indent-small) / 2 * 2 + 
+        var(--border-size) * 2
+    );
+    padding: calc(var(--standard-indent-small) / 2);
+    border-width: 0;
+    border-radius: 4px;
+    outline: none;
+    background-color: var(--spare-color-transparent);
+    font-size: 100%;
+}
+
+.chats__search-input:focus {
+    background-color: transparent;
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
+}

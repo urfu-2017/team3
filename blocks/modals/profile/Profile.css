@@ -1,23 +1,24 @@
 .profile {
     display: flex;
     box-sizing: border-box;
-    flex-direction: row;
-    width: 320px;
-    padding: 32px;
-    border-radius: 8px;
-    background: white;
+    width: var(--modal-width);
+    padding: var(--standard-indent);
+    border-radius: var(--standard-indent-small);
+    background-color: var(--background-color);
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
 }
 
 .profile__avatar-box {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: calc(var(--icon-size) * 4);
+    height: calc(var(--icon-size) * 4);
 }
 
 .profile__avatar {
     width: 100%;
     height: 100%;
-    border-radius: 50px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .profile__avatar-hover {
@@ -25,47 +26,82 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    background: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #0009;
+    cursor: pointer;
 }
 
-.profile__avatar-box:hover  .profile__avatar-hover {
+.profile__avatar_new {
+    position: absolute;
+    top: calc(100% - var(--icon-size) * 0.75);
+    left: calc(100% - var(--icon-size) * 0.75);
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+
+.profile__avatar-box:hover .profile__avatar-hover {
     visibility: visible;
 }
 
-.profile__input {
+.profile__new-avatar_input {
     visibility: hidden;
 }
 
 .profile__info-box {
     display: flex;
     flex-direction: column;
-    margin-left: 16px;
+    flex-grow: 3;
+    margin-left: var(--standard-indent);
 }
 
 .profile__nickname {
-    width: 128px;
+    width: calc(var(--modal-width) - var(--icon-size) * 4 - 3 * var(--standard-indent));
     overflow: hidden;
-    color: #444444;
-    font-size: 18px;
+    color: var(--text-color-h1);
+    font-size: 130%;
     font-weight: bold;
+    text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .profile__invite-link{
-    margin-top: 10px;
-    color: #888;
-    cursor: pointer;
+    display: block;
+    margin-top: calc(var(--standard-indent-small) * 2);
+    color: var(--text-color-h2);
 }
 
 .profile__invite-link:hover {
-    color: #666;
+    color: var(--text-color-h3);
+    cursor: pointer;
 }
 
-
 .profile__invite-link:active {
-    color: #222;
+    color: var(--text-color-h1);
+}
+
+.contacts {
+    margin: 0;
+    padding: 0;
+}
+.contacts__user-box {
+    display: block;
+    height: var(--icon-size);
+    margin: var(--standard-indent-small);
+    border-radius: var(--standard-indent-small);
+    color: var(--text-color-h0);
+}
+
+.contacts__user-box:hover {
+    transition: .2s;
+    background-color: var(--neutral-color);
+    cursor: pointer;
+}
+
+.contacts__nickname {
+    padding-left: var(--standard-indent-small);
+    font-weight: bold;
+    line-height: var(--icon-size);
 }

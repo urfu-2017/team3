@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import fetch from 'node-fetch';
 import { connect } from 'react-redux';
 
+import './Controls.css';
+
 /* туду переделать на поиск по сообщениям */
-class Search extends Component {
+class Controls extends Component {
     state = { isSearchString: false }
 
     showSearch = () => {
@@ -53,6 +55,7 @@ class Search extends Component {
                         src="/static/controls/search.svg"
                         className="control-img"
                         onClick={this.showSearch}
+                        title="Поиск"
                     />
                 </React.Fragment>
             )
@@ -63,39 +66,37 @@ class Search extends Component {
                         src="/static/controls/profile.svg"
                         className="control-img"
                         onClick={this.showProfile}
+                        title="Мой профиль"
                     />
                     <img
-                        src="/static/controls/phonebook.svg"
-                        className="control-img"
-                        onClick={this.props.onShowContacts}
-                    />
-                    <img
-                        src="/static/controls/adduser.svg"
+                        src="/static/controls/chat.svg"
                         className="control-img"
                         onClick={this.props.onShowAddUser}
+                        title="Добавить собеседника"
                     />
                     <img
-                        src="/static/controls/group.svg"
+                        src="/static/controls/create_group_chat.svg"
                         className="control-img"
                         onClick={this.props.onShowCreateGroup}
+                        title="Создать групповой чат"
                     />
                     <img
                         src="/static/controls/search.svg"
                         className="control-img"
                         onClick={this.showSearch}
+                        title="Поиск"
                     />
                 </React.Fragment>
             );
     }
 }
 
-Search.propTypes = {
+Controls.propTypes = {
     user: PropTypes.object,
     onUsersFound: PropTypes.func,
     onShowProfile: PropTypes.func,
     onShowAddUser: PropTypes.func,
-    onShowCreateGroup: PropTypes.func,
-    onShowContacts: PropTypes.func
+    onShowCreateGroup: PropTypes.func
 };
 
 export default connect(
@@ -114,9 +115,6 @@ export default connect(
         },
         onShowCreateGroup: () => {
             dispatch({ type: 'SHOW_CREATEGROUP' });
-        },
-        onShowContacts: () => {
-            dispatch({ type: 'SHOW_CONTACTS' });
         }
     })
-)(Search);
+)(Controls);

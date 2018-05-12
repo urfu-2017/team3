@@ -59,3 +59,7 @@ export const receiveMessage = (chatId, message) => dispatch => {
 export const updateMessage = (chatId, message) => dispatch => {
     dispatch({ type: types.UPDATE_MESSAGE, chatId, message });
 };
+
+export const updateChat = chat => dispatch => {
+    dispatch({ type: types.UPDATE_CHAT, chat });
+};

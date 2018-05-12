@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 import { createChat } from '../../../actions/chats';
 
+import './PureProfileForList.css';
+
 class PureProfile extends Component {
     createChat = () => {
         const { myUser, user } = this.props;
@@ -16,16 +18,16 @@ class PureProfile extends Component {
         const { user } = this.props;
 
         return (
-            <div className="profile" onClick={this.createChat}>
-                <div className="profile__avatar-box">
+            <div className="profile_in-list" onClick={this.createChat}>
+                <div className="profile__avatar-box_in-list">
                     <img
-                        className="profile__avatar"
+                        className="profile__avatar_in-list"
                         src={user.avatar}
                         alt="avatar"
                     />
                 </div>
-                <div className="profile__info-box">
-                    <span className="profile__nickname">{user.nickname}</span>
+                <div className="profile__info-box_in-list">
+                    <span className="profile__nickname_in-list">{user.nickname}</span>
                 </div>
             </div>
         );

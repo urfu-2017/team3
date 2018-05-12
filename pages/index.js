@@ -6,16 +6,15 @@ import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 
-import { receiveChat, openChat, updateMessage, receiveMessage } from '../actions/chats';
+import { receiveChat, openChat, updateMessage, updateChat, receiveMessage } from '../actions/chats';
 import types from '../actions/types';
 import makeStore from '../store';
 
 import Chats from '../blocks/chats/Chats';
 import ChatWindow from '../blocks/chat-window/ChatWindow';
-import Search from '../blocks/modals/search/Search';
+import Controls from '../blocks/chats/controls/Controls';
 import Profile from '../blocks/modals/profile/Profile';
 import AddUser from '../blocks/modals/add-user/AddUser';
-import Contacts from '../blocks/modals/contacts/Contacts';
 import CreateGroup from '../blocks/modals/create-group/CreateGroup';
 import Loader from '../blocks/modals/loader/Loader';
 
@@ -39,6 +38,44 @@ class MainPage extends React.Component {
     static async initState(store, req) {
         store.dispatch({ type: types.LOGIN_USER, user: req.user });
         store.dispatch(await loadChats(req));
+    }
+
+    changeTheme = e => {
+        const { isNightTheme } = this.state;
+
+        e.target.parentElement.classList.remove(
+            isNightTheme ? 'main_theme_night' : 'main_theme_day'
+        );
+        e.target.parentElement.classList.add(
+            isNightTheme ? 'main_theme_day' : 'main_theme_night'
+        );
+        e.target.setAttribute('title', isNightTheme ? 'Ночной режим' : 'Дневной режим');
+
+        localStorage.setItem('night-theme', isNightTheme ? '0' : '1');
+        this.setState({ isNightTheme: !isNightTheme });
+    }
+
+    setTheme = () => {
+        const isNightTheme = localStorage.getItem('night-theme') === '1';
+
+        this.setState({ isNightTheme });
+        localStorage.setItem('night-theme', isNightTheme ? '1' : '0');
+
+        const main = document.querySelector('.main');
+
+        main.classList.remove('main_theme_day');
+        main.classList.add(
+            isNightTheme ? 'main_theme_night' : 'main_theme_day'
+        );
+        main
+            .querySelector('.theme')
+            .setAttribute('title',
+                isNightTheme
+                    ?
+                    'Дневной режим'
+                    :
+                    'Ночной режим'
+            );
     }
 
     connectToRooms(socket) {
@@ -69,6 +106,12 @@ class MainPage extends React.Component {
         });
     }
 
+    setupUpdateChat(socket) {
+        socket.on('update_chat', data => {
+            this.props.updateChat(data);
+        });
+    }
+
     componentDidMount() {
         const socket = getSocket();
 
@@ -76,6 +119,9 @@ class MainPage extends React.Component {
         this.setupReceiveMessage(socket);
         this.setupReceiveChat(socket);
         this.setupUpdateMessage(socket);
+        this.setupUpdateChat(socket);
+
+        this.setTheme();
 
         this.acceptInvite(socket, this.props.user, this.props.invite);
     }
@@ -117,12 +163,13 @@ class MainPage extends React.Component {
             <React.Fragment>
                 <main className="main main_theme_day">
                     <article className="chats">
-                        <div className="chats__search">
-                            <Search />
+                        <div className="chats__controls">
+                            <Controls />
                         </div>
-                        <hr />
                         <div className="chats__list">
-                            <Chats />
+                            <div className="chats__list_wrapper">
+                                <Chats />
+                            </div>
                         </div>
                     </article>
                     <article className="dialog">
@@ -131,8 +178,12 @@ class MainPage extends React.Component {
                     <Profile />
                     <AddUser />
                     <CreateGroup />
-                    <Contacts />
                     <Loader />
+                    <div className="substrate" />
+                    <div
+                        className="theme"
+                        onClick={this.changeTheme}
+                    />
                 </main>
             </React.Fragment>
         );
@@ -146,7 +197,8 @@ MainPage.propTypes = {
     openChat: PropTypes.func,
     invite: PropTypes.string,
     updateMessage: PropTypes.func,
-    receiveChat: PropTypes.func
+    receiveChat: PropTypes.func,
+    updateChat: PropTypes.func
 };
 
 export default withRedux(makeStore,
@@ -154,7 +206,8 @@ export default withRedux(makeStore,
         receiveMessage,
         receiveChat,
         openChat,
-        updateMessage
+        updateMessage,
+        updateChat
     }
 )(MainPage);
 

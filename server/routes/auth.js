@@ -11,7 +11,9 @@ module.exports = server => {
     server.get(
         '/login/return',
         githubAuth.authenticate('github', { failureRedirect: '/' }),
-        (req, res) => res.redirect('/')
+        (req, res) => {
+            res.redirect(req.session.returnTo);
+        }
     );
 
     server.get(

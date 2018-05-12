@@ -2,8 +2,8 @@
     display: flex;
     z-index: 1;
     grid-area: 3 / 1 / 4 / 2;
-    border-top: 1px solid lightgray;
-    background: white;
+    border-top: 1px solid var(--neutral-color);
+    background-color: var(--background-color);
 }
 
 .preview {
