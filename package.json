@@ -5,8 +5,8 @@
         "start": "node server/index.js",
         "test": "mocha --timeout 30000 --exit server/tests/*.js",
         "fillDb": "mocha --timeout 30000 --exit server/tests/utils/fillDbTest.js",
-        "devDeploy": "bash deploy.sh dev $NOW_TOKEN",
-        "prodDeploy": "bash deploy.sh prod $NOW_TOKEN",
+        "devDeploy": "bash deploy.sh dev uf15gWrKPIbbcsn9v2A6Afqt",
+        "prodDeploy": "bash deploy.sh prod uf15gWrKPIbbcsn9v2A6Afqt",
         "lint": "eslint .",
         "precommit": "npm run lint",
         "prepush": "npm run lint"
