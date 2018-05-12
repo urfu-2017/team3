@@ -11,6 +11,10 @@
     --neutral-color-semi-transparent: #ebebeb99;
     --neutral-color-transparent: #ebebeb33;
 
+    --background-color: #fff;
+    --darkness-color: #000c;
+
+    --text-color-h0: #000;
     --text-color-h1: #000c;
     --text-color-h2: #000a;
     --text-color-h3: #0005;
@@ -28,7 +32,39 @@
     font-size: 16px;
 }
 
-.main_theme_night {}
+.main_theme_night {
+    --base-color: #C66319ff;
+    --base-color-semi-transparent: #C66319dd;
+    --base-color-transparent: #C66319bb;
+
+    --spare-color: #797979ff;
+    --spare-color-semi-transparent: #79797999;
+    --spare-color-transparent: #79797933;
+
+    --neutral-color: #141414ff;
+    --neutral-color-semi-transparent: #14141499;
+    --neutral-color-transparent: #14141433;
+
+    --background-color: #000;
+    --darkness-color: #000d;
+
+    --text-color-h0: #fff;
+    --text-color-h1: #fffc;
+    --text-color-h2: #fffa;
+    --text-color-h3: #fff5;
+
+    --standard-indent: 32px;
+    --standard-indent-small: 8px;
+
+    --icon-size: 32px;
+    --modal-width: 400px;
+
+    --border-size: 1px;
+    --border-size-bold: calc(var(--border-size) * 2);
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
 
 hr {
     margin: 0;

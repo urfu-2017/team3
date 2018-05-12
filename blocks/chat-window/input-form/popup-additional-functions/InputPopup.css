@@ -23,7 +23,7 @@
     height: calc(var(--icon-size) * 3 + var(--standard-indent) * 0.5 * 4);
     padding: calc(var(--standard-indent) * 0.5);
     border-radius: var(--standard-indent-small);
-    background-color: white;
+    background-color: var(--background-color);
     box-shadow: 
         0 
         0 
@@ -41,10 +41,10 @@
     height: 0;
     transform: rotate(45deg);
     border: calc(var(--icon-size) / 2) solid transparent;
-    background-color: white;
+    background-color: var(--background-color);
     box-shadow: 
-        var(--border-size) 
-        var(--border-size) 
+        var(--border-size-bold) 
+        var(--border-size-bold) 
         var(--border-size) 
         0 
         var(--spare-color);

@@ -123,9 +123,12 @@ class CreateGroup extends Component {
                     </span>
                     <div className="create-group__participants">
                         <div className="create-group__participants_wrapper">
-                            <li className="create-group__user-box">
+                            <li className="create-group__user-box create-group__user-box_creator">
                                 <div className="create-group__nickname">
                                     {user.nickname}
+                                </div>
+                                <div className="create-group__creator-hint">
+                                    — cоздатель
                                 </div>
                             </li>
                             {this.state.groupMembers.map(contact => {

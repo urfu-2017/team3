@@ -4,7 +4,8 @@
     width: var(--modal-width);
     padding: var(--standard-indent);
     border-radius: var(--standard-indent-small);
-    background: white;
+    background-color: var(--background-color);
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
 }
 
 .profile__avatar-box {
@@ -56,6 +57,7 @@
 }
 
 .profile__nickname {
+    width: calc(var(--modal-width) - var(--icon-size) * 4 - 3 * var(--standard-indent));
     overflow: hidden;
     color: var(--text-color-h1);
     font-size: 130%;
@@ -63,7 +65,6 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: calc(var(--modal-width) - var(--icon-size) * 4 - 3 * var(--standard-indent));
 }
 
 .profile__invite-link{
@@ -90,6 +91,7 @@
     height: var(--icon-size);
     margin: var(--standard-indent-small);
     border-radius: var(--standard-indent-small);
+    color: var(--text-color-h0);
 }
 
 .contacts__user-box:hover {

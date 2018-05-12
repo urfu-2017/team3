@@ -9,14 +9,16 @@
         calc(var(--icon-size) + var(--standard-indent-small) * 2);
     height: 100%;
     overflow: hidden;    
+    background-color: var(--background-color);
 }
 
 .chat-window__stub {
     grid-area: 1 / 1 / 5 / 2;
     justify-self: center;
     align-self: center;
-    height: 50vh;
+    height: 50%;
     opacity: 0.1;
+    background-color: var(--background-color);
 }
 
 .chat-header {
@@ -26,6 +28,7 @@
     grid-area: 1 / 1 / 2 / 2;
     align-items: center;
     border-bottom: var(--border-size) solid var(--neutral-color);
+    background-color: var(--background-color);
     font-size: 125%;
     font-weight: bold;
 }
@@ -44,20 +47,21 @@
 }
 
 .chat-header__name {
-    color: var(--text-color-h1);
     width: 200px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     overflow: hidden;
+    color: var(--text-color-h1);
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .messages {
     display: flex;
     flex-direction: column;
-    margin-right: -16px;
+    margin-right: -17px;
     padding: 0 calc(var(--standard-indent-small) * 2);
     overflow-x: hidden;
     overflow-y: scroll;
+    background-color: var(--background-color);
 }
 
 .messages_grid_large {
@@ -76,6 +80,7 @@
     justify-content: space-between;
     padding: var(--standard-indent-small);
     border-top: var(--border-size) solid var(--neutral-color);
+    background-color: var(--background-color);
 }
 
 .chat-input__button {
@@ -108,6 +113,7 @@
     border-radius: calc(var(--standard-indent-small) * 0.5);
     outline: none;
     background-color: var(--spare-color-transparent);
+    color: var(--text-color-h0);
 }
 
 .chat-input__write-field:focus {

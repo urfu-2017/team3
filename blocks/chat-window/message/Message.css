@@ -38,7 +38,7 @@
     );
     border: var(--border-size) solid var(--spare-color);
     border-radius: var(--standard-indent-small);
-    background-color: white;
+    background-color: var(--background-color);
 }
 
 .message:hover .message__controls {
@@ -102,6 +102,7 @@
 
 .message__content {
     margin: var(--standard-indent-small) 0;
+    color: var(--text-color-h1);
     text-decoration: none;
     word-break: break-all;
 }
@@ -179,7 +180,7 @@
     padding: var(--standard-indent-small);
     border-radius: var(--standard-indent-small);
     background: var(--text-color-h1);
-    color: white;
+    color: var(--background-color);
     font-size: 75%;
 }
 
@@ -230,7 +231,7 @@
     bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3);
     width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important;
     height: 200px;
-    background-color: white;
+    background-color: var(--background-color);
 }
 
 .message_friend + .emoji-mart {

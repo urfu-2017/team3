@@ -4,7 +4,7 @@
     margin: var(--standard-indent-small) 0;
     padding: var(--standard-indent-small);
     border-radius: var(--standard-indent-small);
-    background: white;
+    background-color: var(--background-color);
 }
 
 .profile__avatar-box_in-list {
@@ -26,11 +26,11 @@
 }
 
 .profile__nickname_in-list {
+    padding-left: var(--standard-indent);
     overflow: hidden;
     color: var(--text-color-h1);
     font-size: 120%;
     font-weight: bold;
-    padding-left: var(--standard-indent);
     text-overflow: ellipsis;
     white-space: nowrap;
 }

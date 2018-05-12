@@ -48,18 +48,18 @@
 }
 
 .chat-icon__title {
+    width: 190px;
     overflow: hidden;
     color: var(--text-color-h1);
     font-size: 90%;
     font-weight: bold;
     text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 190px; 
+    white-space: nowrap; 
 }
 
 .chat-icon__date {
+    width: 40px;
     color: var(--text-color-h3);
     font-size: 80%;
-    width: 40px;
     text-align: right;
 }
