@@ -21,6 +21,28 @@
     background-color: var(--background-color);
 }
 
+.chat-window__dragndrop-hint {
+    grid-area: 2 / 1 / 4 / 2;
+    justify-self: center;
+    align-self: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--neutral-color-transparent);
+    background-image: url(/static/drag_and_drop.svg);
+    background-size: 80%;
+    background-position: center top;
+    background-repeat: no-repeat;
+    font-size: 125%;
+    font-weight: bold;
+    color: var(--text-color-h2);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: auto;
+    text-align: center;
+    line-height: var(--icon-size);
+    padding-top: calc(var(--standard-indent) / 2);
+}
+
 .chat-header {
     --size: calc(var(--icon-size) * 1.5);
     display: flex;
@@ -123,6 +145,7 @@
 
 .chat-input__send-btn {
     background-image: url(/static/send_message.svg);
+    background-size: calc(var(--icon-size) * 0.85);
 }
 
 .chat-input__attachment-btn {
