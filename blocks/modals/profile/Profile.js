@@ -67,6 +67,12 @@ class Profile extends Component {
         this.props.changeAvatar(file, this.props.user);
     }
 
+    copiedNotify = e => {
+        this.copied.style.top = `${e.clientY}px`;
+        this.copied.style.left = `${e.clientX}px`;
+        this.copied.style.opacity = 0;
+    }
+
     render() {
         const { profile } = this.props;
 
@@ -110,11 +116,21 @@ class Profile extends Component {
                             <span className="profile__nickname">
                                 {profile.nickname}
                             </span>
-                            <CopyToClipboard text={`${window.location}invite/${profile.nickname}`}>
-                                <span className="profile__invite-link">
+                            <CopyToClipboard
+                                text={`${window.location}invite/${profile.nickname}`}
+                                >
+                                <span
+                                    className="profile__invite-link"
+                                    onClick={this.copiedNotify}
+                                    >
                                     Copy invite link
                                 </span>
                             </CopyToClipboard>
+                            <div
+                                className="profile__copied"
+                                ref={copied => { this.copied = copied; }}
+                                >Copied!
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,7 +177,14 @@ class Profile extends Component {
                         <span className="profile__nickname">
                             {displayData.nickname}
                         </span>
-                        <span>{this.inviteLink(profile)}</span>
+                        <span onClick={this.copiedNotify}>
+                            {this.inviteLink(profile)}
+                        </span>
+                        <div
+                            className="profile__copied"
+                            ref={copied => { this.copied = copied; }}
+                            >Copied!
+                        </div>
                         <ul className="contacts">
                             {profile.members
                                 ? profile.members.map(m => {
