@@ -20,4 +20,4 @@ echo 'start build'
 echo $(now --public -e NODE_ENV=production --token $nowToken --npm --dotenv=.env.production)
 echo 'start creating alias'
 newBuild=$(now ls --token $nowToken | head -5 | tail -1 | awk '{print $1}')
-echo $(now alias $newBuild $buildAlias)
+echo $(now alias --token $nowToken $newBuild $buildAlias)
