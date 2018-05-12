@@ -49,22 +49,26 @@ class ChatWindow extends Component {
         });
     }
 
+    // обработка переносимого файла
+    toggleDragOver = e => {
+        e.preventDefault();
+        console.log('over');
+        e.dataTransfer.dropEffect = 'copy';
+    };
+
+    // управление отображением области дропа
     toggleDragEnter = e => {
         e.preventDefault();
         this.setState({ isDraggable: true });
-        console.log('dragenter', e.dataTransfer);
-        e.dataTransfer.dropEffect = 'copy';
-        console.log('dragenter', e.dataTransfer);
     };
 
     toggleDragLeave = e => {
-        console.log('dragleave');
         e.preventDefault();
         this.setState({ isDraggable: false });
-    }
+    };
 
+    // обработка дропа
     toggleDrop = e => {
-        console.log('drop');
         e.preventDefault();
         const { files } = e.dataTransfer;
 
@@ -172,6 +176,7 @@ class ChatWindow extends Component {
         return (
             <section
                 className="chat-window"
+                onDragOver={this.toggleDragOver}
                 onDragEnter={this.toggleDragEnter}
                 onDragLeave={this.toggleDragLeave}
                 onDrop={this.toggleDrop}
