@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 
-import { receiveChat, openChat, updateMessage, receiveMessage } from '../actions/chats';
+import { receiveChat, openChat, updateMessage, updateChat, receiveMessage } from '../actions/chats';
 import types from '../actions/types';
 import makeStore from '../store';
 
@@ -106,6 +106,12 @@ class MainPage extends React.Component {
         });
     }
 
+    setupUpdateChat(socket) {
+        socket.on('update_chat', data => {
+            this.props.updateChat(data);
+        });
+    }
+
     componentDidMount() {
         const socket = getSocket();
 
@@ -113,6 +119,8 @@ class MainPage extends React.Component {
         this.setupReceiveMessage(socket);
         this.setupReceiveChat(socket);
         this.setupUpdateMessage(socket);
+        this.setupUpdateChat(socket);
+
         this.setTheme();
 
         this.acceptInvite(socket, this.props.user, this.props.invite);
@@ -189,7 +197,8 @@ MainPage.propTypes = {
     openChat: PropTypes.func,
     invite: PropTypes.string,
     updateMessage: PropTypes.func,
-    receiveChat: PropTypes.func
+    receiveChat: PropTypes.func,
+    updateChat: PropTypes.func
 };
 
 export default withRedux(makeStore,
@@ -197,7 +206,8 @@ export default withRedux(makeStore,
         receiveMessage,
         receiveChat,
         openChat,
-        updateMessage
+        updateMessage,
+        updateChat
     }
 )(MainPage);
 

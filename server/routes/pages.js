@@ -12,8 +12,7 @@ module.exports = (server, app) => {
     }
 
     server
-        .get('',
-            connectEnsureLogin.ensureLoggedIn('/auth'),
+        .get('', connectEnsureLogin.ensureLoggedIn('/auth'),
             (req, res) => {
                 app.render(req, res, '/index');
             })
