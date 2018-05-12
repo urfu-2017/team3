@@ -45,7 +45,7 @@ module.exports = function setupSocket(ws) {
             }
 
             if (inviteId) {
-                await addMember(inviteId, currentUser, senderCallback);
+                await addMember({ inviteId, currentUser, senderCallback, socket });
 
                 return;
             }
@@ -62,16 +62,24 @@ module.exports = function setupSocket(ws) {
         });
     });
 
-    async function addMember(inviteId, currentUser, senderCallback) {
+    async function addMember({ inviteId, currentUser, senderCallback, socket }) {
         let chat = await Chat.findOne({ inviteId });
 
         if (!chat.members.find(m => m === currentUser)) {
             chat = await Chat.findOneAndUpdate({ _id: chat.id },
                 { $push: { members: currentUser } },
-                { new: true });
+                {
+                    new: true,
+                    populate: ['members']
+                });
         }
 
         senderCallback(chat);
+        socket.to(chat._id).emit('update_chat',
+            {
+                _id: chat._id,
+                members: chat.members
+            });
     }
 
     async function createChat(socket, senderCallback, { title, members, type }) {
