@@ -52,7 +52,6 @@ class ChatWindow extends Component {
     // обработка переносимого файла
     toggleDragOver = e => {
         e.preventDefault();
-        console.log('over');
         e.dataTransfer.dropEffect = 'copy';
     };
 
