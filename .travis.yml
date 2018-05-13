@@ -3,7 +3,7 @@ node_js:
 - "node"
 cache: npm
 script:
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "true" ]; npm run devDeploy; fi'
+  - '[ "$TRAVIS_PULL_REQUEST" = "true" ] && npm run devDeploy'
 before_deploy:
   - npm install
 deploy:
