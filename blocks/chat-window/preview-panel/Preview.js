@@ -13,13 +13,19 @@ class Preview extends Component {
         this.props.deleteAttachment(parseInt(index, 10));
     }
 
+    /* eslint-disable react/no-array-index-key */
+    /* eslint-disable react/jsx-closing-bracket-location */
     previewImgs(attachments) {
         return attachments.map((attachment, i) => {
             return (
-                <FilePreview key={attachment.file.name} file={attachment.file}>
+                <FilePreview key={attachment.file.name + String(i)} file={attachment.file}>
                     {preview => {
                         return (
-                            <li key={attachment.file.name} className="preview" data-id={i}>
+                            <li
+                                key={attachment.file.name + String(i)}
+                                className="preview"
+                                data-id={i}
+                                >
                                 <img
                                     src={preview}
                                     className="preview__item"
