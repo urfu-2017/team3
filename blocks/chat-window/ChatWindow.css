@@ -17,6 +17,7 @@
     justify-self: center;
     align-self: center;
     height: 50%;
+    width: 50%;
     opacity: 0.1;
     background-color: var(--background-color);
 }
