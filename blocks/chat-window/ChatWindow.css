@@ -37,12 +37,9 @@
     background-position: center center;
     background-size: 100% 80%;
     color: var(--text-color-h2);
-    font-size: 125%;
     font-weight: bold;
     line-height: var(--icon-size);
     text-align: center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .chat-header {
