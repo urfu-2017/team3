@@ -12,6 +12,7 @@ import EmojiPicker from './EmojiToMessage';
 import './Message.css';
 
 /* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/no-array-index-key */
 
 export default class Message extends Component {
     state = {};
@@ -56,7 +57,7 @@ export default class Message extends Component {
             if (i % 2) {
                 return (
                     <Emoji
-                        key={Math.floor(Math.random() * 1000000)}
+                        key={i}
                         emoji={chunk}
                         set="emojione"
                         size={20}
@@ -67,7 +68,7 @@ export default class Message extends Component {
             return (
                 <ReactMarkdown
                     renderers={{ root: 'span', paragraph: 'span' }}
-                    key={Math.floor(Math.random() * 1000000)}
+                    key={i}
                     source={chunk}
                 />
             );
@@ -94,12 +95,12 @@ export default class Message extends Component {
 
         const newText = this.formatToEmoji(text);
 
-        const images = attachments.map(link => {
+        const images = attachments.map((link, i) => {
             return (
                 <img
                     className="message__attachment"
                     src={link}
-                    key={Math.floor(Math.random() * 10000000)}
+                    key={i}
                 />
             );
         });
@@ -116,7 +117,6 @@ export default class Message extends Component {
                 return (
                     <div className="reaction" key={r.emojiName}>
                         <Emoji
-                            key={Math.floor(Math.random() * 1000000)}
                             emoji={r.emojiName}
                             set="emojione"
                             size={16}
