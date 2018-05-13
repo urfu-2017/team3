@@ -104,11 +104,11 @@ class CreateGroup extends Component {
                     </div>
                     <div className="create-group__list">
                         <div className="create-group__list_wrapper">
-                            {this.state.mutableContacts.map((contact, i) => {
+                            {this.state.mutableContacts.map(contact => {
                                 return (
                                     <li
                                         className="create-group__user-box"
-                                        key={i}
+                                        key={contact.nickname}
                                         onClick={() => this.pushOrPopFromGroupMembers(contact)}
                                         >
                                         <div className="create-group__nickname">
@@ -132,11 +132,11 @@ class CreateGroup extends Component {
                                     — cоздатель
                                 </div>
                             </li>
-                            {this.state.groupMembers.map((contact, i) => {
+                            {this.state.groupMembers.map(contact => {
                                 return (
                                     <li
                                         className="create-group__user-box"
-                                        key={i}
+                                        key={contact.nickname}
                                         onClick={() => this.pushOrPopFromGroupMembers(contact)}
                                         >
                                         <div className="create-group__nickname">

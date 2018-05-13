@@ -66,6 +66,8 @@ class Input extends Component {
             this.setState({ isRecord: true });
 
             recognizer.onresult = e => {
+                console.log(recognizer);
+                console.log(e);
                 const index = e.resultIndex;
                 const result = e.results[index][0].transcript.trim();
 
