@@ -68,9 +68,16 @@ class Profile extends Component {
     }
 
     copiedNotify = e => {
-        this.copied.style.top = `${e.clientY}px`;
-        this.copied.style.left = `${e.clientX}px`;
-        this.copied.style.opacity = 0;
+        const infoBox = document.querySelector('.profile__info-box');
+        const copied = document.createElement('div');
+
+        copied.className = 'profile__copied';
+        copied.innerHTML = 'Copied!';
+
+        copied.style.top = `${e.clientY}px`;
+        copied.style.left = `${e.clientX}px`;
+        copied.classList.add('profile__copied-animation');
+        infoBox.appendChild(copied);
     }
 
     render() {
@@ -126,11 +133,6 @@ class Profile extends Component {
                                     Copy invite link
                                 </span>
                             </CopyToClipboard>
-                            <div
-                                className="profile__copied"
-                                ref={copied => { this.copied = copied; }}
-                                >Copied!
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,11 +182,6 @@ class Profile extends Component {
                         <span onClick={this.copiedNotify}>
                             {this.inviteLink(profile)}
                         </span>
-                        <div
-                            className="profile__copied"
-                            ref={copied => { this.copied = copied; }}
-                            >Copied!
-                        </div>
                         <ul className="contacts">
                             {profile.members
                                 ? profile.members.map(m => {
