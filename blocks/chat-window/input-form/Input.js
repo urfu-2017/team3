@@ -95,7 +95,6 @@ class Input extends Component {
 
     /* eslint-disable max-statements */
     submitMessage = () => {
-        console.log(this.props);
         const { attachments } = this.props;
 
         if (this.state.msgText.trim() || attachments.length) {
