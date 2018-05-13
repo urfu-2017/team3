@@ -1,18 +1,24 @@
 .load-preview {
     display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
     z-index: 1;
     grid-area: 3 / 1 / 4 / 2;
     border-top: 1px solid var(--neutral-color);
     background-color: var(--background-color);
+    padding: 0 calc(var(--standard-indent-small) / 2);
+    box-sizing: border-box;
 }
 
 .preview {
     display: block;
+    position: relative;
 }
 
 .preview__item {
-    height: 80px;
-    margin: 10px;
+    height: calc(100% - var(--standard-indent-small) * 2);
+    object-fit: cover;
+    margin: var(--standard-indent-small) calc(var(--standard-indent-small) / 2);
 }
 
 .preview__item_delete {
@@ -20,10 +26,21 @@
     position: absolute;
     width: var(--size);
     height: var(--size);
-    margin: 10px 0 0 calc(-1 * var(--size) - 10px);
+    margin: 
+    calc(
+        var(--standard-indent-small) + 
+        var(--standard-indent-small) / 4
+    )
+    0 
+    0 
+    calc(
+        -1 * var(--size) - 
+        var(--standard-indent-small) / 2 - 
+        var(--standard-indent-small) / 4
+    );
 }
 
 .preview__item_delete:hover {
-    transform: rotate(-15deg) scale(0.9);
+    transform: scale(1.2);
     cursor: pointer;
 }

@@ -5,7 +5,7 @@
     grid-template-rows: 
         calc(var(--icon-size) + var(--standard-indent))
         1fr
-        calc(var(--icon-size) + var(--standard-indent) * 2)
+        calc(var(--icon-size) * 2 + var(--standard-indent-small) * 2 * 2)
         calc(var(--icon-size) + var(--standard-indent-small) * 2);
     height: 100%;
     overflow: hidden;    

@@ -33,6 +33,7 @@ class Preview extends Component {
                                 <img
                                     src="/static/closeDeleteElement.svg"
                                     className="preview__item_delete"
+                                    title="Удалить элемент"
                                     onClick={this.deletePic}
                                 />
                             </li>
