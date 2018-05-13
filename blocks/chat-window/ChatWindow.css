@@ -153,6 +153,10 @@
     background-image: url(/static/attachment.svg);
 }
 
+.chat-input__record-btn {
+    background-image: url(/static/record.svg);
+}
+
 .chat-input__emoji-btn {
     background-image: url(/static/emoji.svg);
 }

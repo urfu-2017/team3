@@ -67,6 +67,19 @@ class Profile extends Component {
         this.props.changeAvatar(file, this.props.user);
     }
 
+    copiedNotify = e => {
+        const infoBox = document.querySelector('.profile__info-box');
+        const copied = document.createElement('div');
+
+        copied.className = 'profile__copied';
+        copied.innerHTML = 'Copied!';
+
+        copied.style.top = `${e.clientY}px`;
+        copied.style.left = `${e.clientX}px`;
+        copied.classList.add('profile__copied-animation');
+        infoBox.appendChild(copied);
+    }
+
     render() {
         const { profile } = this.props;
 
@@ -110,8 +123,13 @@ class Profile extends Component {
                             <span className="profile__nickname">
                                 {profile.nickname}
                             </span>
-                            <CopyToClipboard text={`${window.location}invite/${profile.nickname}`}>
-                                <span className="profile__invite-link">
+                            <CopyToClipboard
+                                text={`${window.location}invite/${profile.nickname}`}
+                                >
+                                <span
+                                    className="profile__invite-link"
+                                    onClick={this.copiedNotify}
+                                    >
                                     Copy invite link
                                 </span>
                             </CopyToClipboard>
@@ -161,7 +179,9 @@ class Profile extends Component {
                         <span className="profile__nickname">
                             {displayData.nickname}
                         </span>
-                        <span>{this.inviteLink(profile)}</span>
+                        <span onClick={this.copiedNotify}>
+                            {this.inviteLink(profile)}
+                        </span>
                         <ul className="contacts">
                             {profile.members
                                 ? profile.members.map(m => {

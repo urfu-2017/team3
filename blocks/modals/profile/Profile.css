@@ -82,6 +82,33 @@
     color: var(--text-color-h1);
 }
 
+.profile__copied {
+    position: absolute;
+    pointer-events: none;
+    font-size: 12px;
+    background: var(--text-color-h2);
+    color: var(--background-color);
+    text-align: center;
+    padding: 4px 8px;
+    margin: 4px;
+    border-radius: 24px;
+}
+
+.profile__copied-animation {
+    animation: fade linear .5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
 .contacts {
     margin: 0;
     padding: 0;
