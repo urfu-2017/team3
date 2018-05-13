@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - "node"
 cache: npm
-script: then npm run devDeploy
+script: npm run devDeploy
 before_deploy:
   - npm install
 deploy:
