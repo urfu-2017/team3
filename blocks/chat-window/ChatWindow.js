@@ -27,14 +27,7 @@ class ChatWindow extends Component {
     constructor(props) {
         super(props);
         this.state = {
-<<<<<<< HEAD
-            msgText: '',
-            isDraggable: false,
-            isRecord: false,
-            recognizer: null
-=======
             isDraggable: false
->>>>>>> input вынесен в компонент
         };
     }
 
@@ -102,37 +95,6 @@ class ChatWindow extends Component {
         }
     }
 
-    startSpeech = () => {
-        const SpeechRecognition = window.SpeechRecognition ||
-                        window.webkitSpeechRecognition;
-
-        if (SpeechRecognition) {
-            const recognizer = new SpeechRecognition();
-
-            recognizer.lang = 'ru-RU';
-
-            this.setState({ recognizer });
-
-            recognizer.start();
-            this.setState({ isRecord: true });
-
-            recognizer.onresult = e => {
-                const index = e.resultIndex;
-                const result = e.results[index][0].transcript.trim();
-
-                let nowMsgText = this.state.msgText.trim();
-
-                nowMsgText += nowMsgText ? ` ${result}` : result;
-                this.setState({ msgText: nowMsgText, isRecord: false });
-            };
-        }
-    }
-
-    stopSpeech = () => {
-        this.state.recognizer.stop();
-        this.setState({ isRecord: false });
-    }
-
     render() {
         const { activeChat, user, attachments } = this.props;
 
@@ -197,57 +159,6 @@ class ChatWindow extends Component {
                     )
                 }
                 <Preview />
-                <div className="chat-input" onClick={this.props.hideEmoji}>
-                    <input
-                        onChange={this.changeText}
-                        onKeyDown={this.keySubmitMessage}
-                        type="text"
-                        ref={input => { this.textInput = input; }}
-                        autoFocus
-                        className="chat-input__write-field"
-                        value={this.state.msgText}
-                    />
-                    {
-                        this.state.isRecord ?
-                            <label
-                                className="chat-input__record-btn chat-input__button"
-                                title="Запись"
-                                onClick={this.stopSpeech}
-                                >
-                            </label>
-                            :
-                            <label
-                                className="chat-input__audioinput-btn chat-input__button"
-                                title="Набор голосом"
-                                onClick={this.startSpeech}
-                                >
-                            </label>
-                    }
-                    <label
-                        className="chat-input__emoji-btn chat-input__button"
-                        onClick={event => event.stopPropagation()}
-                        title="Добавить emoji"
-                        >
-                        <input
-                            type="button"
-                            onClick={this.toggleEmoji}
-                            className="chat-input__input_not-visual"
-                        />
-                    </label>
-                    <label
-                        className="chat-input__burger-btn chat-input__button"
-                        onClick={this.props.showInputPopup}
-                        title="Прикрепить"
-                        >
-                    </label>
-                    <label
-                        src="/static/send_message.svg"
-                        onClick={this.submitMessage}
-                        className="chat-input__send-btn chat-input__button"
-                        title="Отправить сообщение"
-                    />
-                </div>
-                <InputPopup />
                 <Input activeChat={this.props.activeChat} />
             </section>
         );

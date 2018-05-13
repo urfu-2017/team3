@@ -26,7 +26,9 @@ class Input extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            msgText: ''
+            msgText: '',
+            isRecord: false,
+            recognizer: null
         };
     }
 
@@ -46,6 +48,39 @@ class Input extends Component {
         e.stopPropagation();
 
         this.props.showInputPopup();
+    }
+
+    // начать голосовой набор текста
+    startSpeech = () => {
+        const SpeechRecognition = window.SpeechRecognition ||
+                        window.webkitSpeechRecognition;
+
+        if (SpeechRecognition) {
+            const recognizer = new SpeechRecognition();
+
+            recognizer.lang = 'ru-RU';
+
+            this.setState({ recognizer });
+
+            recognizer.start();
+            this.setState({ isRecord: true });
+
+            recognizer.onresult = e => {
+                const index = e.resultIndex;
+                const result = e.results[index][0].transcript.trim();
+
+                let nowMsgText = this.state.msgText.trim();
+
+                nowMsgText += nowMsgText ? ` ${result}` : result;
+                this.setState({ msgText: nowMsgText, isRecord: false });
+            };
+        }
+    }
+
+    // остановить голосовой набор текста
+    stopSpeech = () => {
+        this.state.recognizer.stop();
+        this.setState({ isRecord: false });
     }
 
     // функция добавления emoji
@@ -111,11 +146,22 @@ class Input extends Component {
                         className="chat-input__write-field"
                         value={this.state.msgText}
                     />
-                    <label
-                        className="chat-input__audioinput-btn chat-input__button"
-                        title="Набор голосом"
-                        >
-                    </label>
+                    {
+                        this.state.isRecord ?
+                            <label
+                                className="chat-input__record-btn chat-input__button"
+                                title="Запись"
+                                onClick={this.stopSpeech}
+                                >
+                            </label>
+                            :
+                            <label
+                                className="chat-input__audioinput-btn chat-input__button"
+                                title="Набор голосом"
+                                onClick={this.startSpeech}
+                                >
+                            </label>
+                    }
                     <label
                         className="chat-input__emoji-btn chat-input__button"
                         onClick={event => event.stopPropagation()}

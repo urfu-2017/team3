@@ -70,8 +70,8 @@
     line-height: var(--icon-size);
 }
 
-.chat-input__audioinput-btn {
-    background-image: url(/static/microphone.svg);
+.chat-input__attachment-btn {
+    background-image: url(/static/attachment.svg);
 }
 
 .chat-input__autodestroy-btn {

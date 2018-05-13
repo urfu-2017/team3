@@ -52,8 +52,12 @@
     background-size: calc(var(--icon-size) * 0.85);
 }
 
-.chat-input__attachment-btn {
-    background-image: url(/static/attachment.svg);
+.chat-input__audioinput-btn {
+    background-image: url(/static/microphone.svg);
+}
+
+.chat-input__record-btn {
+    background-image: url(/static/record.svg);
 }
 
 .chat-input__emoji-btn {
