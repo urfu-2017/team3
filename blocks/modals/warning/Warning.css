@@ -1,0 +1,9 @@
+.warning {
+    color: var(--text-color-h0);
+    padding: 2vmin;
+    border-radius: 1vmin;
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
+    background-color: var(--background-color);
+    width: 400px;
+    font-size: 120%;
+}

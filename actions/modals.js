@@ -31,3 +31,22 @@ export const showProfile = profile => dispatch => {
 export const hideProfile = () => dispatch => {
     dispatch({ type: types.HIDE_PROFILE });
 };
+
+export const showFullSize = e => dispatch => {
+    dispatch({
+        type: types.SHOW_FULL_SIZE_IMAGE,
+        fullSizeImg: e.target.getAttribute('src')
+    });
+};
+
+export const hideFullSize = () => dispatch => {
+    dispatch({ type: types.HIDE_FULL_SIZE_IMAGE });
+};
+
+export const showWarning = text => dispatch => {
+    dispatch({ type: types.SHOW_WARNING, text });
+};
+
+export const hideWarning = () => dispatch => {
+    dispatch({ type: types.HIDE_WARNING });
+};

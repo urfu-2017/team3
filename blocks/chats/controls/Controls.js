@@ -56,6 +56,7 @@ class Controls extends Component {
                         className="control-img"
                         onClick={this.showSearch}
                         title="Поиск"
+                        draggable="false"
                     />
                 </React.Fragment>
             )
@@ -67,24 +68,28 @@ class Controls extends Component {
                         className="control-img"
                         onClick={this.showProfile}
                         title="Мой профиль"
+                        draggable="false"
                     />
                     <img
                         src="/static/controls/chat.svg"
                         className="control-img"
                         onClick={this.props.onShowAddUser}
                         title="Добавить собеседника"
+                        draggable="false"
                     />
                     <img
                         src="/static/controls/create_group_chat.svg"
                         className="control-img"
                         onClick={this.props.onShowCreateGroup}
                         title="Создать групповой чат"
+                        draggable="false"
                     />
                     <img
                         src="/static/controls/search.svg"
                         className="control-img"
                         onClick={this.showSearch}
                         title="Поиск"
+                        draggable="false"
                     />
                 </React.Fragment>
             );

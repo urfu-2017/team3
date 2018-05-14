@@ -16,7 +16,7 @@
     justify-content: space-between;
     width: calc(
         var(--icon-size) +
-        (var(--standard-indent) * 0.5) +
+        var(--standard-indent) +
         (var(--standard-indent) * 0.5 * 2) +
         (var(--icon-size) * 5)
     );
@@ -66,7 +66,7 @@
         (var(--standard-indent) * 0.5)
     );
     color: var(--text-color-h2);
-    font-size: .8rem;
+    font-size: 80%;
     line-height: var(--icon-size);
 }
 

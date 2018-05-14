@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import {
     sendMessage,
     resetAttachments,
-    addAttachments,
     showInputPopup,
     showEmoji,
     hideEmoji } from '../../../actions/activeChat';
@@ -19,8 +18,6 @@ import Emoji from './Emoji';
 import InputPopup from './popup-additional-functions/InputPopup';
 
 import './Input.css';
-
-// import './InputPopup.css';
 
 class Input extends Component {
     constructor(props) {
@@ -125,13 +122,6 @@ class Input extends Component {
         }
     };
 
-    // добавляем новые файлы в превью
-    onFilesChange = async e => {
-        const { currentTarget: { files } } = e;
-
-        await this.props.addAttachments(files);
-    }
-
     render() {
         return (
             <React.Fragment>
@@ -186,7 +176,7 @@ class Input extends Component {
                     />
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
-                <InputPopup />
+                <InputPopup checkFiles={this.props.checkFiles} />
             </React.Fragment>
         );
     }
@@ -200,10 +190,10 @@ Input.propTypes = {
     resetAttachments: PropTypes.func,
     attachments: PropTypes.array,
     showInputPopup: PropTypes.func,
-    addAttachments: PropTypes.func,
     emojiActive: PropTypes.bool,
     showEmoji: PropTypes.func,
-    hideEmoji: PropTypes.func
+    hideEmoji: PropTypes.func,
+    checkFiles: PropTypes.func
 };
 
 export default connect(
@@ -215,7 +205,6 @@ export default connect(
     }), {
         sendMessage,
         resetAttachments,
-        addAttachments,
         showEmoji,
         hideEmoji,
         showInputPopup

@@ -77,5 +77,32 @@ export default function modal(state = {}, action) {
         };
     }
 
+    if (action.type === 'SHOW_WARNING') {
+        return {
+            ...state,
+            warning: action.text
+        };
+    }
+    if (action.type === 'HIDE_WARNING') {
+        return {
+            ...state,
+            warning: ''
+        };
+    }
+
+    if (action.type === 'HIDE_FULL_SIZE_IMAGE') {
+        return {
+            ...state,
+            fullSizeImg: ''
+        };
+    }
+
+    if (action.type === 'SHOW_FULL_SIZE_IMAGE') {
+        return {
+            ...state,
+            fullSizeImg: action.fullSizeImg
+        };
+    }
+
     return state;
 }

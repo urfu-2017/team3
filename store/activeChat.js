@@ -61,5 +61,12 @@ export default function activeChat(state = null, action) {
         };
     }
 
+    if (action.type === 'ATTACHMENTS_UPLOADING') {
+        return {
+            ...state,
+            isShowAttachmentPreloader: action.isUploading
+        };
+    }
+
     return state;
 }

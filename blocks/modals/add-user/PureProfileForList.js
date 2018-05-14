@@ -24,6 +24,7 @@ class PureProfile extends Component {
                         className="profile__avatar_in-list"
                         src={user.avatar}
                         alt="avatar"
+                        draggable="false"
                     />
                 </div>
                 <div className="profile__info-box_in-list">

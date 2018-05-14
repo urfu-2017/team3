@@ -62,3 +62,7 @@ export const resetAttachments = () => dispatch => {
 export const showInputPopup = () => dispatch => {
     dispatch({ type: types.SHOW_INPUT_POPUP });
 };
+
+export const showAttachmentPreloader = isUploading => dispatch => {
+    dispatch({ type: types.ATTACHMENTS_UPLOADING, isUploading });
+};

@@ -5,16 +5,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
+import { connect } from 'react-redux';
 
 import getSocket from '../../../pages/socket';
 
+import { showFullSize } from '../../../actions/modals';
+
 import EmojiPicker from './EmojiToMessage';
+
 import './Message.css';
 
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/no-array-index-key */
 
-export default class Message extends Component {
+class Message extends Component {
     state = {};
 
     addEmoji = emoji => {
@@ -87,7 +91,7 @@ export default class Message extends Component {
                 <React.Fragment />
             ) : (
                 <a className="metadata" href={meta.url}>
-                    <img src={meta.image} className="metadata__image" />
+                    <img src={meta.image} className="metadata__image" draggable="false" />
                     <h3 className="metadata__header">{meta.title || meta.author}</h3>
                     <span className="metadata__description">{meta.description}</span>
                 </a>
@@ -101,6 +105,8 @@ export default class Message extends Component {
                     className="message__attachment"
                     src={link}
                     key={i}
+                    onClick={this.props.showFullSize}
+                    draggable="false"
                 />
             );
         });
@@ -228,5 +234,12 @@ Message.propTypes = {
     message: PropTypes.object,
     user: PropTypes.object,
     showEmojiToMsg: PropTypes.bool,
-    activeChat: PropTypes.object
+    activeChat: PropTypes.object,
+    showFullSize: PropTypes.func
 };
+
+export default connect(
+    () => ({}), {
+        showFullSize
+    }
+)(Message);

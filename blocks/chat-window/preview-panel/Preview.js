@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import './Preview.css';
 
-import { deleteAttachment } from '../../../actions/activeChat';
+import { deleteAttachment, resetAttachments } from '../../../actions/activeChat';
+import { showFullSize } from '../../../actions/modals';
 
 class Preview extends Component {
     deletePic = e => {
@@ -29,12 +30,15 @@ class Preview extends Component {
                                 <img
                                     src={preview}
                                     className="preview__item"
+                                    onClick={this.props.showFullSize}
+                                    draggable="false"
                                 />
                                 <img
                                     src="/static/closeDeleteElement.svg"
                                     className="preview__item_delete"
                                     title="Удалить элемент"
                                     onClick={this.deletePic}
+                                    draggable="false"
                                 />
                             </li>
                         );
@@ -52,8 +56,16 @@ class Preview extends Component {
         }
 
         return (
-            <div className="load-preview">
-                {this.previewImgs(attachments)}
+            <div className="preview-place">
+                <img
+                    src="/static/clear_attachments.svg"
+                    onClick={this.props.resetAttachments}
+                    draggable="false"
+                    className="preview-place_clear"
+                />
+                <div className="load-preview">
+                    {this.previewImgs(attachments)}
+                </div>
             </div>
         );
     }
@@ -61,13 +73,17 @@ class Preview extends Component {
 
 Preview.propTypes = {
     attachments: PropTypes.array,
-    deleteAttachment: PropTypes.func
+    deleteAttachment: PropTypes.func,
+    showFullSize: PropTypes.func,
+    resetAttachments: PropTypes.func
 };
 
 export default connect(
     state => ({
         attachments: state.activeChat.attachments
     }), {
-        deleteAttachment
+        deleteAttachment,
+        showFullSize,
+        resetAttachments
     }
 )(Preview);
