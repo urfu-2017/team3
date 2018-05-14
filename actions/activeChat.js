@@ -7,7 +7,7 @@ import { receiveMessage } from './chats';
 import types from './types';
 
 export const addAttachments = files => async dispatch => {
-    const attachments = await Promise.all([...files].map(async file => {
+    const attachments = await Promise.all(files.map(async file => {
         const formData = new FormData();
 
         formData.append('image', file);

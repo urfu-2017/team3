@@ -45,6 +45,7 @@ class ChatWindow extends Component {
         });
     }
 
+    /* eslint-disable max-statements */
     // проверим файлы на пригодность
     checkFiles = files => {
         const isTypeWarning = [...files].some(file => !file.type.startsWith('image'));
@@ -67,8 +68,16 @@ class ChatWindow extends Component {
             return false;
         }
 
+        if ([...files].splice(5).length) {
+            const text =
+            'Превышено максимально допустимое количество файлов (5).';
+
+            this.props.showWarning(text);
+        }
+
         return true;
     }
+    /* eslint-enable max-statements */
 
     // обработка переносимого файла
     toggleDragOver = e => {
@@ -97,7 +106,10 @@ class ChatWindow extends Component {
         const allOK = this.checkFiles(files);
 
         if (allOK) {
-            await this.props.addAttachments(files);
+            const spliceFiles = [...files];
+
+            spliceFiles.splice(5);
+            await this.props.addAttachments(spliceFiles);
         }
         this.props.showAttachmentPreloader(false);
     };
