@@ -2,11 +2,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0;
     max-width: 80%;
     max-height: 80%;
+    margin: 0;
     padding: 1vmin;
     border-radius: 1vmin;
-    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
     background-color: var(--background-color);
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
 }

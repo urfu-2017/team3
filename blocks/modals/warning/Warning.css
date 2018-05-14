@@ -1,9 +1,9 @@
 .warning {
-    color: var(--text-color-h0);
+    width: 400px;
     padding: 2vmin;
     border-radius: 1vmin;
-    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
     background-color: var(--background-color);
-    width: 400px;
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
+    color: var(--text-color-h0);
     font-size: 120%;
 }

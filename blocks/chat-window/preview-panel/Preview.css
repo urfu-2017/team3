@@ -1,29 +1,29 @@
 .preview-place {
-    position: relative;
     display: flex;
-    grid-area: 3 / 1 / 4 / 2;
+    position: relative;
     z-index: 1;
-    border-top: var(--border-size) solid var(--neutral-color);
-    background-color: var(--background-color);
     box-sizing: border-box;
+    grid-area: 3 / 1 / 4 / 2;
     align-items: center;
     overflow: hidden;
+    border-top: var(--border-size) solid var(--neutral-color);
+    background-color: var(--background-color);
 }
 
 .preview-place_clear {
     --padding: var(--standard-indent);
-    padding: var(--padding) 0;
-    height: calc(100% - var(--padding) * 2);
     position: absolute;
-    right: 0;
     z-index: 2;
+    right: 0;
+    height: calc(100% - var(--padding) * 2);
+    padding: var(--padding) 0;
     background-color: var(--neutral-color-transparent);
 }
 
 .preview-place_clear:hover {
     transform: scaleY(1.1);
-    cursor: pointer;
     background-color: var(--neutral-color-semi-transparent);
+    cursor: pointer;
 }
 
 .preview-place_clear:active {
@@ -34,10 +34,10 @@
 
 .load-preview {
     display: flex;
-    overflow-x: auto;
-    overflow-y: hidden;
     height: 100%;
     padding: 0 calc(var(--standard-indent-small) / 2);
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .preview {
@@ -47,8 +47,8 @@
 
 .preview__item {
     height: calc(100% - var(--standard-indent-small) * 2);
-    object-fit: cover;
     margin: var(--standard-indent-small) calc(var(--standard-indent-small) / 2);
+    object-fit: cover;
 }
 
 .preview__item:hover {
