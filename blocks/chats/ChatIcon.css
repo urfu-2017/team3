@@ -5,6 +5,10 @@
     cursor: pointer;
 }
 
+.chat-icon-open {
+    background: var(--neutral-color);
+}
+
 .chat-icon:hover {
     background-color: var(--neutral-color-semi-transparent);
 }

@@ -23,15 +23,21 @@ class ChatIcon extends Component {
     }
 
     render() {
-        const { chatProps, user } = this.props;
+        const { chatProps, user, activeChat } = this.props;
 
         const chat = new Chat(chatProps);
         const lastMessage = chat.getLastMessage();
         const avatar = chat.getAvatarFor(user);
         const title = chat.getTitleFor(user);
 
+        let chatClassName = 'chat-icon';
+
+        if (chatProps._id === activeChat._id) {
+            chatClassName = 'chat-icon chat-icon-open';
+        }
+
         return (
-            <div className="chat-icon" onClick={this.openChat}>
+            <div className={chatClassName} onClick={this.openChat}>
                 <div className="chat-icon__logo-box">
                     <img className="chat-icon__logo" src={avatar} />
                 </div>
@@ -57,11 +63,13 @@ class ChatIcon extends Component {
 ChatIcon.propTypes = {
     user: PropTypes.object,
     chatProps: PropTypes.object,
-    openChat: PropTypes.func
+    openChat: PropTypes.func,
+    activeChat: PropTypes.object
 };
 
 export default connect(
     state => ({
+        activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id),
         user: state.user
     }), {
         openChat
