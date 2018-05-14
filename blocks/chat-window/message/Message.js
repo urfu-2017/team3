@@ -17,12 +17,12 @@ import './Message.css';
 
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-closing-bracket-location */
 
 class Message extends Component {
     state = {};
 
     addEmoji = emoji => {
-
         const chatId = this.props.activeChat._id;
         const messageId = this.props.message._id;
 
@@ -37,6 +37,15 @@ class Message extends Component {
 
         this.setState({ showEmojiToMsg: false });
     };
+
+    instantAddEmoji = e => {
+        const id =
+        e.target.dataset.emojiName ||
+        e.target.parentElement.dataset.emojiName ||
+        e.target.parentElement.parentElement.dataset.emojiName;
+
+        this.addEmoji({ id });
+    }
 
     componentDidMount() {
         document.addEventListener('keydown', e => {
@@ -121,7 +130,12 @@ class Message extends Component {
                 });
 
                 return (
-                    <div className="reaction" key={r.emojiName}>
+                    <div
+                        className="reaction"
+                        key={r.emojiName}
+                        data-emoji-name={r.emojiName}
+                        onClick={this.instantAddEmoji}
+                        >
                         <Emoji
                             emoji={r.emojiName}
                             set="emojione"
