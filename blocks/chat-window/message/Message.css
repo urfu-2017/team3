@@ -124,9 +124,9 @@
 .message__attachment {
     display: block;
     max-width: 90%;
-    max-height: 200px;
+    height: 100px;
     margin: var(--standard-indent-small) 0;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .message__attachment:hover {
