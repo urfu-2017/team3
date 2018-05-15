@@ -42,9 +42,6 @@ class ChatWindow extends Component {
                 this.hidePopups();
             }
         });
-        document.addEventListener('DOMContentLoaded', () => {
-            this.componentDidUpdate();
-        });
     }
 
     hidePopups = () => {
