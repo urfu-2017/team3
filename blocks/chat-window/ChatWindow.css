@@ -23,7 +23,7 @@
 }
 
 .chat-window__dragndrop-hint {
-    z-index: 20;
+    z-index: 21;
     grid-area: 2 / 1 / 5 / 2;
     justify-self: center;
     align-self: center;
@@ -45,7 +45,7 @@
 .chat-header {
     --size: calc(var(--icon-size) * 1.5);
     display: flex;
-    z-index: 10;
+    z-index: 11;
     grid-area: 1 / 1 / 2 / 2;
     align-items: center;
     border-bottom: var(--border-size) solid var(--neutral-color);
@@ -78,11 +78,26 @@
 .messages {
     display: flex;
     flex-direction: column;
-    margin-right: -17px;
     padding: 0 calc(var(--standard-indent-small) * 2);
     overflow-x: hidden;
-    overflow-y: scroll;
     background-color: var(--background-color);
+}
+
+@supports not (-webkit-appearance: radio) {
+    .messages {
+        overflow-y: scroll;
+        margin-right: -17px;
+    }    
+}
+
+.messages::-webkit-scrollbar {
+    width: 4px;
+    background-color: var(--neutral-color); 
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background-color: var(--spare-color); 
+    border-radius: 2px;
 }
 
 .messages_grid_large {

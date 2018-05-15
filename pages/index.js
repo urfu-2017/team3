@@ -6,7 +6,12 @@ import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 
-import { receiveChat, openChat, updateMessage, updateChat, receiveMessage } from '../actions/chats';
+import {
+    receiveChat,
+    openChat,
+    updateMessage,
+    updateChat,
+    receiveMessage } from '../actions/chats';
 import types from '../actions/types';
 import makeStore from '../store';
 
@@ -166,10 +171,12 @@ class MainPage extends React.Component {
                         <div className="chats__controls">
                             <Controls />
                         </div>
-                        <div className="chats__list">
-                            <div className="chats__list_wrapper">
+                        <div className="chats__list_wrapper">
+                            {/* <Scrollbars style={{ width: 310, height: '100%' }}> */}
+                            <div className="chats__list">
                                 <Chats />
                             </div>
+                            {/* </Scrollbars> */}
                         </div>
                     </article>
                     <article className="dialog">

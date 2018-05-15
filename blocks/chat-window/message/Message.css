@@ -174,7 +174,7 @@
     display: flex;
     visibility: hidden;
     position: absolute;
-    z-index: 1;
+    z-index: 2;
     bottom: var(--icon-size);
     flex-direction: column;
     max-width: calc(var(--standard-indent) * 4);
