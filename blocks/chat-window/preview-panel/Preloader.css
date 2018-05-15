@@ -1,0 +1,55 @@
+.backdrop_files {
+    --interval: 0.8s;
+    z-index: 2;
+    grid-area: 3 / 1 / 4 / 2;
+    border-top: var(--border-size) solid var(--neutral-color);
+    opacity: .5;
+    background-color: var(--background-color);
+  }
+  
+.loader_files {
+    justify-content: space-evenly !important;
+    width: 100%;
+}
+
+.dot_files {
+margin: 5px;
+-webkit-animation-name: loader;
+        animation-name: loader;
+-webkit-animation-duration: calc(var(--interval) * 7);
+        animation-duration: calc(var(--interval) * 7);
+-webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+-webkit-animation-direction: alternate;
+        animation-direction: alternate;
+background-color: var(--text-color-h0);
+}
+
+.dot_files:nth-child(1) {
+-webkit-animation-delay: calc(var(--interval) * 1);
+        animation-delay: calc(var(--interval) * 1);
+}
+.dot_files:nth-child(2) {
+-webkit-animation-delay: calc(var(--interval) * 2);
+        animation-delay: calc(var(--interval) * 2);
+}
+.dot_files:nth-child(3) {
+-webkit-animation-delay: calc(var(--interval) * 3);
+        animation-delay: calc(var(--interval) * 3);
+}
+.dot_files:nth-child(4) {
+-webkit-animation-delay: calc(var(--interval) * 4);
+        animation-delay: calc(var(--interval) * 4);
+}
+.dot_files:nth-child(5) {
+-webkit-animation-delay: calc(var(--interval) * 5);
+        animation-delay: calc(var(--interval) * 5);
+}
+.dot_files:nth-child(6) {
+-webkit-animation-delay: calc(var(--interval) * 6);
+        animation-delay: calc(var(--interval) * 6);
+}
+.dot_files:nth-child(7) {
+-webkit-animation-delay: calc(var(--interval) * 7);
+        animation-delay: calc(var(--interval) * 7);
+}

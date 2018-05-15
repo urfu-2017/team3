@@ -1,0 +1,12 @@
+.full-size__img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 80%;
+    max-height: 80%;
+    margin: 0;
+    padding: 1vmin;
+    border-radius: 1vmin;
+    background-color: var(--background-color);
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
+}

@@ -101,6 +101,7 @@ class Profile extends Component {
                                     className="profile__avatar"
                                     src={profile.avatar}
                                     alt="avatar"
+                                    draggable="false"
                                 />
                             </label>
                             <label htmlFor="imginput">
@@ -109,6 +110,7 @@ class Profile extends Component {
                                         className="profile__avatar_new"
                                         src="/static/upload_avatar.svg"
                                         alt="загрузить новый аватар"
+                                        draggable="false"
                                     />
                                 </div>
                             </label>
@@ -154,6 +156,7 @@ class Profile extends Component {
                                 className="profile__avatar"
                                 src={this.getInterlocutor(profile).avatar}
                                 alt="avatar"
+                                draggable="false"
                             />
                         </div>
                         <div className="profile__info-box">
@@ -173,7 +176,12 @@ class Profile extends Component {
                     onClick={event => event.stopPropagation()}
                     >
                     <div className="profile__avatar-box">
-                        <img className="profile__avatar" src={displayData.avatar} alt="avatar" />
+                        <img
+                            className="profile__avatar"
+                            src={displayData.avatar}
+                            alt="avatar"
+                            draggable="false"
+                        />
                     </div>
                     <div className="profile__info-box">
                         <span className="profile__nickname">

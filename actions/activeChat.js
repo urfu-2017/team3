@@ -7,7 +7,7 @@ import { receiveMessage } from './chats';
 import types from './types';
 
 export const addAttachments = files => async dispatch => {
-    const attachments = await Promise.all([...files].map(async file => {
+    const attachments = await Promise.all(files.map(async file => {
         const formData = new FormData();
 
         formData.append('image', file);
@@ -61,4 +61,8 @@ export const resetAttachments = () => dispatch => {
 
 export const showInputPopup = () => dispatch => {
     dispatch({ type: types.SHOW_INPUT_POPUP });
+};
+
+export const showAttachmentPreloader = isUploading => dispatch => {
+    dispatch({ type: types.ATTACHMENTS_UPLOADING, isUploading });
 };

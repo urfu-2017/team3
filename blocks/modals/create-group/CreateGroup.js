@@ -10,6 +10,7 @@ import { createGroupChat } from '../../../actions/chats';
 
 /* eslint-disable react/jsx-no-bind */
 /* eslint-disable react/jsx-closing-bracket-location */
+/* eslint-disable react/no-array-index-key */
 
 import './CreateGroup.css';
 import Chat from '../../../models/Chat';
@@ -107,7 +108,7 @@ class CreateGroup extends Component {
                                 return (
                                     <li
                                         className="create-group__user-box"
-                                        key={Math.random()}
+                                        key={contact.nickname}
                                         onClick={() => this.pushOrPopFromGroupMembers(contact)}
                                         >
                                         <div className="create-group__nickname">
@@ -135,7 +136,7 @@ class CreateGroup extends Component {
                                 return (
                                     <li
                                         className="create-group__user-box"
-                                        key={Math.random()}
+                                        key={contact.nickname}
                                         onClick={() => this.pushOrPopFromGroupMembers(contact)}
                                         >
                                         <div className="create-group__nickname">

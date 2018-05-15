@@ -27,7 +27,7 @@
 }
 
 .adduser__list {
-    height: 100%;
+    height: calc(100% - var(--standard-indent) * 1.5);
     margin-top: calc(var(--standard-indent) * 1.5);
     margin-right: -17px;
     overflow-x: hidden;

@@ -16,7 +16,7 @@
     justify-content: space-between;
     width: calc(
         var(--icon-size) +
-        (var(--standard-indent) * 0.5) +
+        var(--standard-indent) +
         (var(--standard-indent) * 0.5 * 2) +
         (var(--icon-size) * 5)
     );
@@ -27,8 +27,8 @@
     box-shadow: 
         0 
         0 
-        calc(var(--border-size-bold)) 
-        var(--border-size) 
+        var(--border-size-bold)
+        var(--border-size-bold) 
         var(--spare-color);
 }
 
@@ -46,7 +46,7 @@
         var(--border-size-bold) 
         var(--border-size-bold) 
         var(--border-size) 
-        0 
+        0
         var(--spare-color);
 }
 
@@ -66,12 +66,12 @@
         (var(--standard-indent) * 0.5)
     );
     color: var(--text-color-h2);
-    font-size: .8rem;
+    font-size: 80%;
     line-height: var(--icon-size);
 }
 
-.chat-input__audioinput-btn {
-    background-image: url(/static/microphone.svg);
+.chat-input__attachment-btn {
+    background-image: url(/static/attachment.svg);
 }
 
 .chat-input__autodestroy-btn {

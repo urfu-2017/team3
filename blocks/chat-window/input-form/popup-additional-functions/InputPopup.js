@@ -7,7 +7,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { addAttachments, hideInputPopup } from '../../../../actions/activeChat';
+import {
+    addAttachments,
+    hideInputPopup,
+    showAttachmentPreloader } from '../../../../actions/activeChat';
 
 import './InputPopup.css';
 
@@ -16,7 +19,17 @@ class InputPopup extends Component {
     onFilesChange = async e => {
         const { currentTarget: { files } } = e;
 
-        await this.props.addAttachments(files);
+        this.props.hideInputPopup();
+        this.props.showAttachmentPreloader(true);
+        const allOK = this.props.checkFiles(files);
+
+        if (allOK) {
+            const filesToUpload = [...files];
+
+            filesToUpload.splice(5 - this.props.attachments.length);
+            await this.props.addAttachments(filesToUpload);
+        }
+        this.props.showAttachmentPreloader(false);
     }
 
     render() {
@@ -30,7 +43,7 @@ class InputPopup extends Component {
             <div className="chat-input__burger-content">
                 <label
                     className="chat-input__attachment-btn chat-input__button"
-                    title="Прикрепить файл"
+                    title="Загрузить изображение"
                     >
                     <input
                         type="file"
@@ -39,7 +52,7 @@ class InputPopup extends Component {
                         onChange={this.onFilesChange}
                     />
                     <span className="chat-input__button_description_add">
-                        Прикрепить файл
+                        Загрузить изображение
                     </span>
                 </label>
                 <label
@@ -68,14 +81,19 @@ class InputPopup extends Component {
 InputPopup.propTypes = {
     showInputPopup: PropTypes.bool,
     hideInputPopup: PropTypes.func,
-    addAttachments: PropTypes.func
+    attachments: PropTypes.array,
+    addAttachments: PropTypes.func,
+    showAttachmentPreloader: PropTypes.func,
+    checkFiles: PropTypes.func
 };
 
 export default connect(
     state => ({
-        showInputPopup: state.activeChat && state.activeChat.showInputPopup
+        showInputPopup: state.activeChat && state.activeChat.showInputPopup,
+        attachments: state.activeChat && state.activeChat.attachments
     }), {
         addAttachments,
-        hideInputPopup
+        hideInputPopup,
+        showAttachmentPreloader
     }
 )(InputPopup);
