@@ -28,6 +28,11 @@ body {
     overflow: hidden;
 }
 
+.chats__no-chats {
+    width: 310px;
+    height: 100%;
+}
+
 .chats__list {
     height: 100%;
     overflow-x: hidden;

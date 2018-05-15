@@ -172,11 +172,9 @@ class MainPage extends React.Component {
                             <Controls />
                         </div>
                         <div className="chats__list_wrapper">
-                            {/* <Scrollbars style={{ width: 310, height: '100%' }}> */}
                             <div className="chats__list">
                                 <Chats />
                             </div>
-                            {/* </Scrollbars> */}
                         </div>
                     </article>
                     <article className="dialog">
