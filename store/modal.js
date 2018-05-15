@@ -77,6 +77,13 @@ export default function modal(state = {}, action) {
         };
     }
 
+    if (action.type === 'CLEAR_FOUND_USERS') {
+        return {
+            ...state,
+            foundUsers: []
+        };
+    }
+
     if (action.type === 'SHOW_WARNING') {
         return {
             ...state,

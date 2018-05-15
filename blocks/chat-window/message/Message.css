@@ -125,6 +125,7 @@
     display: block;
     max-width: 90%;
     max-height: 200px;
+    margin: var(--standard-indent-small) 0;
     object-fit: contain;
 }
 
@@ -227,17 +228,23 @@
     margin: var(--standard-indent-small) 0;
 }
 
-.message + .emoji-mart {
-    bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3);
-    width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important;
+.message > .emoji-mart {
+    /* не буду удалять, вдруг пригодится, я это полчаса высчитывал */
+    /* bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3); */
+    top: 0;
+    /* width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important; */
+    width: 200px !important;
     height: 200px;
+    max-height: calc(100% - var(--standard-indent-small) / 2);
     background-color: var(--background-color);
 }
 
-.message_friend + .emoji-mart {
-    right: calc(1% + var(--standard-indent-small) * 2 / 2);
+.message_friend > .emoji-mart {
+    /* right: calc(1% + var(--standard-indent-small) * 2 / 2); */
+    right: -215px;
 }
 
-.message_my + .emoji-mart {
-    left: calc(1% + var(--standard-indent-small) * 2 / 2);
+.message_my > .emoji-mart {
+    /* left: calc(1% + var(--standard-indent-small) * 2 / 2); */
+    left: -215px;
 }

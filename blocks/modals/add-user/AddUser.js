@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { searchUsers, hideAddUser } from '../../../actions/modals';
+import { searchUsers, hideAddUser, clearFoundUsers } from '../../../actions/modals';
 
 import PureProfile from './PureProfileForList';
 
@@ -16,12 +16,14 @@ import './AddUser.css';
 class AddUser extends Component {
     hideAddUser = () => {
         this.props.hideAddUser();
+        this.props.clearFoundUsers();
     }
 
     componentDidMount() {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
                 this.props.hideAddUser();
+                this.props.clearFoundUsers();
             }
         });
     }
@@ -79,7 +81,8 @@ AddUser.propTypes = {
     show: PropTypes.bool,
     searchUsers: PropTypes.func,
     hideAddUser: PropTypes.func,
-    foundUsers: PropTypes.array
+    foundUsers: PropTypes.array,
+    clearFoundUsers: PropTypes.array
 };
 
 export default connect(
@@ -90,6 +93,7 @@ export default connect(
     }),
     {
         searchUsers,
-        hideAddUser
+        hideAddUser,
+        clearFoundUsers
     }
 )(AddUser);

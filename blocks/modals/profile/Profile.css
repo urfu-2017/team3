@@ -39,6 +39,7 @@
     left: calc(100% - var(--icon-size) * 0.75);
     width: var(--icon-size);
     height: var(--icon-size);
+    z-index: 10;
 }
 
 .profile__avatar-box:hover .profile__avatar-hover {

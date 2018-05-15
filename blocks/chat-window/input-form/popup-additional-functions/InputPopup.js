@@ -24,10 +24,10 @@ class InputPopup extends Component {
         const allOK = this.props.checkFiles(files);
 
         if (allOK) {
-            const spliceFiles = [...files];
+            const filesToUpload = [...files];
 
-            spliceFiles.splice(5);
-            await this.props.addAttachments(spliceFiles);
+            filesToUpload.splice(5 - this.props.attachments.length);
+            await this.props.addAttachments(filesToUpload);
         }
         this.props.showAttachmentPreloader(false);
     }
@@ -81,6 +81,7 @@ class InputPopup extends Component {
 InputPopup.propTypes = {
     showInputPopup: PropTypes.bool,
     hideInputPopup: PropTypes.func,
+    attachments: PropTypes.array,
     addAttachments: PropTypes.func,
     showAttachmentPreloader: PropTypes.func,
     checkFiles: PropTypes.func
@@ -88,7 +89,8 @@ InputPopup.propTypes = {
 
 export default connect(
     state => ({
-        showInputPopup: state.activeChat && state.activeChat.showInputPopup
+        showInputPopup: state.activeChat && state.activeChat.showInputPopup,
+        attachments: state.activeChat && state.activeChat.attachments
     }), {
         addAttachments,
         hideInputPopup,

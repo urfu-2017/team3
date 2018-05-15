@@ -16,6 +16,10 @@ export const searchUsers = substring => async dispatch => {
     dispatch({ type: types.HIDE_LOADER });
 };
 
+export const clearFoundUsers = () => dispatch => {
+    dispatch({ type: types.CLEAR_FOUND_USERS });
+};
+
 export const hideAddUser = () => dispatch => {
     dispatch({ type: types.HIDE_ADDUSER });
 };

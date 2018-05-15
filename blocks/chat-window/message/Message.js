@@ -200,8 +200,8 @@ class Message extends Component {
                         <div className="message__reactions">
                             <div className="message__reactions_to-left">{peopleEmoji}</div>
                         </div>
+                        <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
                     </div>
-                    <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
                 </React.Fragment>
             );
         }
@@ -237,8 +237,8 @@ class Message extends Component {
                     <div className="message__reactions">
                         <div className="message__reactions_to-left">{peopleEmoji}</div>
                     </div>
+                    <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
                 </div>
-                <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
             </React.Fragment>
         );
     }

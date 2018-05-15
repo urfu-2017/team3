@@ -11,6 +11,7 @@ import {
     sendMessage,
     resetAttachments,
     showInputPopup,
+    hideInputPopup,
     showEmoji,
     hideEmoji } from '../../../actions/activeChat';
 
@@ -38,13 +39,18 @@ class Input extends Component {
             this.props.hideEmoji();
         } else {
             this.props.showEmoji();
+            this.props.hideInputPopup();
         }
     };
 
-    showPopup = e => {
+    togglePopup = e => {
         e.stopPropagation();
-
-        this.props.showInputPopup();
+        if (this.props.inputPopupActive) {
+            this.props.hideInputPopup();
+        } else {
+            this.props.showInputPopup();
+            this.props.hideEmoji();
+        }
     }
 
     // начать голосовой набор текста
@@ -164,7 +170,7 @@ class Input extends Component {
                     </label>
                     <label
                         className="chat-input__burger-btn chat-input__button"
-                        onClick={this.showPopup}
+                        onClick={this.togglePopup}
                         title="Прикрепить"
                         >
                     </label>
@@ -193,12 +199,14 @@ Input.propTypes = {
     emojiActive: PropTypes.bool,
     showEmoji: PropTypes.func,
     hideEmoji: PropTypes.func,
-    checkFiles: PropTypes.func
+    checkFiles: PropTypes.func,
+    inputPopupActive: PropTypes.bool,
+    hideInputPopup: PropTypes.func
 };
 
 export default connect(
     state => ({
-        showInputPopup: state.activeChat && state.activeChat.showInputPopup,
+        inputPopupActive: state.activeChat && state.activeChat.showInputPopup,
         emojiActive: state.activeChat && state.activeChat.showEmoji,
         user: state.user,
         attachments: state.activeChat && state.activeChat.attachments
@@ -207,6 +215,7 @@ export default connect(
         resetAttachments,
         showEmoji,
         hideEmoji,
-        showInputPopup
+        showInputPopup,
+        hideInputPopup
     }
 )(Input);

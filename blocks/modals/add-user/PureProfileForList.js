@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { createChat } from '../../../actions/chats';
+import { clearFoundUsers } from '../../../actions/modals';
 
 import './PureProfileForList.css';
 
@@ -12,6 +13,7 @@ class PureProfile extends Component {
         const { myUser, user } = this.props;
 
         this.props.createChat(myUser, user);
+        this.props.clearFoundUsers();
     };
 
     render() {
@@ -38,13 +40,15 @@ class PureProfile extends Component {
 PureProfile.propTypes = {
     user: PropTypes.object,
     myUser: PropTypes.object,
-    createChat: PropTypes.func
+    createChat: PropTypes.func,
+    clearFoundUsers: PropTypes.func
 };
 
 export default connect(
     state => ({
         myUser: state.user
     }), {
-        createChat
+        createChat,
+        clearFoundUsers
     }
 )(PureProfile);

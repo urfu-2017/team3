@@ -27,8 +27,8 @@
     box-shadow: 
         0 
         0 
-        calc(var(--border-size-bold)) 
-        var(--border-size) 
+        var(--border-size-bold)
+        var(--border-size-bold) 
         var(--spare-color);
 }
 
@@ -46,7 +46,7 @@
         var(--border-size-bold) 
         var(--border-size-bold) 
         var(--border-size) 
-        0 
+        0
         var(--spare-color);
 }
 

@@ -39,10 +39,14 @@ class ChatWindow extends Component {
     componentDidMount() {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
-                this.props.hideEmoji();
-                this.props.hideInputPopup();
+                this.hidePopups();
             }
         });
+    }
+
+    hidePopups = () => {
+        this.props.hideEmoji();
+        this.props.hideInputPopup();
     }
 
     /* eslint-disable max-statements */
@@ -50,6 +54,7 @@ class ChatWindow extends Component {
     checkFiles = files => {
         const isTypeWarning = [...files].some(file => !file.type.startsWith('image'));
         const isSizeWarning = [...files].some(file => file.size >= 5242880);
+        const isMaxCountWarning = this.props.attachments.length + files.length;
 
         if (isTypeWarning) {
             const text = 'Один или несколько файлов ' +
@@ -66,11 +71,8 @@ class ChatWindow extends Component {
             this.props.showWarning(text);
 
             return false;
-        }
-
-        if ([...files].splice(5).length) {
-            const text =
-            'Превышено максимально допустимое количество файлов (5).';
+        } else if (isMaxCountWarning > 5) {
+            const text = 'Вы не можете прикрепить больше 5 вложений.';
 
             this.props.showWarning(text);
         }
@@ -106,10 +108,10 @@ class ChatWindow extends Component {
         const allOK = this.checkFiles(files);
 
         if (allOK) {
-            const spliceFiles = [...files];
+            const filesToUpload = [...files];
 
-            spliceFiles.splice(5);
-            await this.props.addAttachments(spliceFiles);
+            filesToUpload.splice(5 - this.props.attachments.length);
+            await this.props.addAttachments(filesToUpload);
         }
         this.props.showAttachmentPreloader(false);
     };
@@ -167,7 +169,7 @@ class ChatWindow extends Component {
                     onDragLeave={this.toggleDragLeave}
                     onDrop={this.toggleDrop}
                     >
-                    <div className="chat-header" onClick={this.props.hideEmoji}>
+                    <div className="chat-header" onClick={this.hidePopups}>
                         <img
                             className="chat-header__img"
                             alt="chatavatar"
@@ -194,7 +196,7 @@ class ChatWindow extends Component {
                             <div
                                 className={'messages messages_grid_' +
                                 `${attachments.length ? 'small' : 'large'}`}
-                                onClick={this.props.hideEmoji}>
+                                onClick={this.hidePopups}>
                                 {activeChat.messages.map(message => (
                                     <Message
                                         key={message._id || '0'}
