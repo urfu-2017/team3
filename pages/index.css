@@ -4,7 +4,6 @@
 
 body {
     --body-margin-side: 15%;
-    background: red;
     margin: 0 var(--body-margin-side);
 }
 
@@ -36,8 +35,8 @@ body {
 
 @supports not (-webkit-appearance: radio) {
     .chats__list {
-        overflow-y: scroll;
         margin-right: -17px;
+        overflow-y: scroll;
     }    
 }
 
@@ -46,9 +45,9 @@ body {
     background-color: var(--neutral-color); 
 }
 
-.chats__list::-webkit-scrollbar-thumb {
-    background-color: var(--spare-color); 
+.chats__list::-webkit-scrollbar-thumb { 
     border-radius: 2px;
+    background-color: var(--spare-color);
 }
 
 .dialog {

@@ -85,8 +85,8 @@
 
 @supports not (-webkit-appearance: radio) {
     .messages {
-        overflow-y: scroll;
         margin-right: -17px;
+        overflow-y: scroll;
     }    
 }
 
@@ -95,9 +95,9 @@
     background-color: var(--neutral-color); 
 }
 
-.messages::-webkit-scrollbar-thumb {
-    background-color: var(--spare-color); 
+.messages::-webkit-scrollbar-thumb { 
     border-radius: 2px;
+    background-color: var(--spare-color);
 }
 
 .messages_grid_large {
