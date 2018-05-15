@@ -8,20 +8,14 @@ import ChatIcon from './ChatIcon';
 
 class Chats extends React.Component {
 
-    endAnimaton = () => {
-        document
-            .querySelectorAll('.control-img')[1]
-            .classList
-            .remove('controls_zindex_max');
-    }
-
     componentDidMount() {
         const [, blinkImg] = document.querySelectorAll('.control-img');
 
         if (this.props.chats.length === 0) {
             blinkImg.classList.add('controls_zindex_max');
-        } else {
-            blinkImg.classList.remove('controls_zindex_max');
+            blinkImg.addEventListener('mouseup', e => {
+                e.target.classList.remove('controls_zindex_max');
+            });
         }
     }
 
@@ -36,8 +30,6 @@ class Chats extends React.Component {
                 </React.Fragment>
             );
         }
-
-        this.componentDidMount();
 
         return chats.map(chat => (
             <ChatIcon key={chat._id} chatProps={chat} />
