@@ -69,7 +69,7 @@ ChatIcon.propTypes = {
 
 export default connect(
     state => ({
-        activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id),
+        activeChatId: state.activeChat && state.activeChat.id,
         user: state.user
     }), {
         openChat
