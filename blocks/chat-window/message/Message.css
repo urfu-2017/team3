@@ -174,10 +174,10 @@
     display: flex;
     visibility: hidden;
     position: absolute;
-    z-index: 1;;
+    z-index: 1;
     bottom: var(--icon-size);
     flex-direction: column;
-    max-width: calc(var(--standard-indent) * 3);
+    max-width: calc(var(--standard-indent) * 4);
     padding: var(--standard-indent-small);
     border-radius: var(--standard-indent-small);
     background: var(--text-color-h1);
@@ -191,11 +191,11 @@
     text-overflow: ellipsis;
 }
 
-.friend .reaction__users {
+.message_friend .reaction__users {
     left: 0;
 }
 
-.my .reaction__users {
+.message_my .reaction__users {
     right: 0;
 }
 

@@ -53,6 +53,11 @@ class Message extends Component {
                 this.setState({ showEmojiToMsg: false });
             }
         });
+        document.addEventListener('click', e => {
+            if (e.target.className.indexOf('message__add-emoji') === -1) {
+                this.setState({ showEmojiToMsg: false });
+            }
+        });
     }
 
     toggleEmoji = () => {

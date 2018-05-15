@@ -82,7 +82,7 @@ AddUser.propTypes = {
     searchUsers: PropTypes.func,
     hideAddUser: PropTypes.func,
     foundUsers: PropTypes.array,
-    clearFoundUsers: PropTypes.array
+    clearFoundUsers: PropTypes.func
 };
 
 export default connect(
