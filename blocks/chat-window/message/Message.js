@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 
 import getSocket from '../../../pages/socket';
 
+import { setForward } from '../../../actions/activeChat';
+
 import { showFullSize } from '../../../actions/modals';
 
 import EmojiPicker from './EmojiToMessage';
@@ -65,6 +67,12 @@ class Message extends Component {
 
         this.setState({ showEmojiToMsg });
     };
+
+    setForward = () => {
+        const { message, user } = this.props;
+
+        this.props.setForward(message, user);
+    }
 
     componentWillMount() {
         this.setState({ showEmojiToMsg: this.props.showEmojiToMsg });
@@ -188,6 +196,7 @@ class Message extends Component {
                             />
                             <div
                                 className="message__control message__forward"
+                                onClick={this.setForward}
                                 title="Переслать"
                             />
                         </div>
@@ -227,6 +236,7 @@ class Message extends Component {
                         />
                         <div
                             className="message__control message__forward"
+                            onClick={this.setForward}
                             title="Переслать"
                         />
                     </div>
@@ -254,11 +264,13 @@ Message.propTypes = {
     user: PropTypes.object,
     showEmojiToMsg: PropTypes.bool,
     activeChat: PropTypes.object,
-    showFullSize: PropTypes.func
+    showFullSize: PropTypes.func,
+    setForward: PropTypes.func
 };
 
 export default connect(
     () => ({}), {
-        showFullSize
+        showFullSize,
+        setForward
     }
 )(Message);

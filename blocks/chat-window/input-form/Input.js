@@ -98,7 +98,11 @@ class Input extends Component {
 
     /* eslint-disable max-statements */
     submitMessage = () => {
-        const { attachments } = this.props;
+        const { attachments, forwardMessage } = this.props;
+
+        if (forwardMessage) {
+            this.props.sendMessage(this.props.activeChat._id, forwardMessage);
+        }
 
         if (this.state.msgText.trim() || attachments.length) {
             this.props.resetAttachments();
@@ -191,6 +195,7 @@ class Input extends Component {
 Input.propTypes = {
     user: PropTypes.object,
     activeChat: PropTypes.object,
+    forwardMessage: PropTypes.object,
 
     sendMessage: PropTypes.func,
     resetAttachments: PropTypes.func,
@@ -209,7 +214,8 @@ export default connect(
         inputPopupActive: state.activeChat && state.activeChat.showInputPopup,
         emojiActive: state.activeChat && state.activeChat.showEmoji,
         user: state.user,
-        attachments: state.activeChat && state.activeChat.attachments
+        attachments: state.activeChat && state.activeChat.attachments,
+        forwardMessage: state.activeChat && state.activeChat.forwardMessage
     }), {
         sendMessage,
         resetAttachments,

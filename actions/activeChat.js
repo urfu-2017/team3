@@ -66,3 +66,13 @@ export const showInputPopup = () => dispatch => {
 export const showAttachmentPreloader = isUploading => dispatch => {
     dispatch({ type: types.ATTACHMENTS_UPLOADING, isUploading });
 };
+
+export const setForward = (message, user) => dispatch => {
+    const forwardMessage = {
+        ...message,
+        author: user.nickname,
+        forwardFrom: message.author
+    };
+
+    dispatch({ type: types.SET_FORWARD, forwardMessage });
+};
