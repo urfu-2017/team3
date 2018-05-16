@@ -60,6 +60,23 @@ module.exports = function setupSocket(ws) {
 
             ws.to(chatId).emit('update_message', { chatId, message });
         });
+
+        const destructIds = {};
+
+        socket.on('destruct_message', ({ chatId, messageId, selfDestructTimer }) => {
+            if (messageId in destructIds) {
+                return;
+            }
+
+            setTimeout(async () => {
+                await Chat.update(
+                    { _id: chatId },
+                    { $pull: { messages: { _id: messageId } } });
+
+                ws.to(chatId).emit('destruct_message', { chatId, messageId });
+                delete destructIds[messageId];
+            }, selfDestructTimer);
+        });
     });
 
     async function addMember({ inviteId, currentUser, senderCallback, socket }) {
