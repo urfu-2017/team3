@@ -233,7 +233,7 @@
     /* bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3); */
     top: 0;
     /* width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important; */
-    width: 180px !important;
+    width: 165px !important;
     height: 200px;
     max-height: calc(100% - var(--standard-indent-small) / 2);
     background-color: var(--background-color);
