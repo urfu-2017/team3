@@ -10,6 +10,15 @@ class Chats extends React.Component {
     render() {
         const { chats } = this.props;
 
+        if (chats.length === 0) {
+            return (
+                <React.Fragment>
+                    <div className="darkness" />
+                    <div className="chats__no-chats" />
+                </React.Fragment>
+            );
+        }
+
         return chats.map(chat => (
             <ChatIcon key={chat._id} chatProps={chat} />
         ));

@@ -42,3 +42,28 @@
     background-color: transparent;
     box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
 }
+
+.controls_zindex_max {
+    z-index: 32;
+    background-color: var(--background-color);
+    animation: blinkButton 1s linear 0s infinite;
+}
+
+.controls_zindex_max:hover {
+    padding: var(--standard-indent-small);
+    width: calc(var(--icon-size) - var(--standard-indent-small));
+    height: calc(var(--icon-size) - var(--standard-indent-small));
+    transition: .3s;
+}
+
+@keyframes blinkButton {
+    0% {
+        background-color: var(--background-color);
+    }
+    50% {
+        background-color: var(--spare-color);
+    }
+    100% {
+        background-color: var(--background-color);
+    }
+}

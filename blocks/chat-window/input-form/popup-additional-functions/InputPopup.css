@@ -1,7 +1,7 @@
 .chat-input__burger-content {
     display: flex;
     position: absolute;
-    z-index: 5;
+    z-index: 6;
     right: calc(
         (var(--icon-size) / 2) +
         var(--standard-indent-small)
@@ -51,7 +51,7 @@
 }
 
 .chat-input__burger-content > .chat-input__button {
-    z-index: 10;
+    z-index: 11;
     box-sizing: content-box;
     width: 100%;
     padding: calc(var(--standard-indent-small) * 0.25);

@@ -72,7 +72,13 @@ class Controls extends Component {
                     />
                     <img
                         src="/static/controls/chat.svg"
-                        className="control-img"
+                        className={
+                            this.props.chats.length
+                                ?
+                                'control-img'
+                                :
+                                'control-img controls_zindex_max'
+                        }
                         onClick={this.props.onShowAddUser}
                         title="Добавить собеседника"
                         draggable="false"
@@ -98,6 +104,7 @@ class Controls extends Component {
 
 Controls.propTypes = {
     user: PropTypes.object,
+    chats: PropTypes.array,
     onUsersFound: PropTypes.func,
     onShowProfile: PropTypes.func,
     onShowAddUser: PropTypes.func,
@@ -106,7 +113,8 @@ Controls.propTypes = {
 
 export default connect(
     state => ({
-        user: state.user
+        user: state.user,
+        chats: state.chats
     }),
     dispatch => ({
         onUsersFound: users => {

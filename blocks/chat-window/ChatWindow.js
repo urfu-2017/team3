@@ -36,7 +36,7 @@ class ChatWindow extends Component {
         };
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
                 this.hidePopups();

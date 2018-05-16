@@ -10,6 +10,7 @@ import { searchUsers, hideAddUser, clearFoundUsers } from '../../../actions/moda
 import PureProfile from './PureProfileForList';
 
 /* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/jsx-closing-bracket-location */
 
 import './AddUser.css';
 
@@ -42,7 +43,16 @@ class AddUser extends Component {
         }
 
         return (
-            <div className="darkness" onClick={this.hideAddUser}>
+            <div
+                className={
+                    this.props.chats.length
+                        ?
+                        'darkness'
+                        :
+                        'darkness darkness_transparent'
+                }
+                onClick={this.hideAddUser}
+                >
                 <div className="adduser" onClick={e => e.stopPropagation()}>
                     <div className="adduser__input_wrapper">
                         <input
@@ -79,6 +89,7 @@ class AddUser extends Component {
 AddUser.propTypes = {
     user: PropTypes.object,
     show: PropTypes.bool,
+    chats: PropTypes.array,
     searchUsers: PropTypes.func,
     hideAddUser: PropTypes.func,
     foundUsers: PropTypes.array,
@@ -88,6 +99,7 @@ AddUser.propTypes = {
 export default connect(
     state => ({
         user: state.user,
+        chats: state.chats,
         show: state.modal.show,
         foundUsers: state.modal.foundUsers
     }),
