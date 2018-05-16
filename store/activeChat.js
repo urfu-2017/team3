@@ -5,9 +5,9 @@
 export default function activeChat(state = null, action) {
     if (action.type === 'OPEN_CHAT') {
         return {
-            ...state,
             id: action.id,
-            attachments: []
+            attachments: [],
+            forwardMessage: state && state.forwardMessage
         };
     }
 
@@ -65,6 +65,34 @@ export default function activeChat(state = null, action) {
         return {
             ...state,
             isShowAttachmentPreloader: action.isUploading
+        };
+    }
+
+    if (action.type === 'SET_FORWARD') {
+        return {
+            ...state,
+            forwardMessage: action.forwardMessage
+        };
+    }
+
+    if (action.type === 'DELETE_FORWARD') {
+        return {
+            ...state,
+            forwardMessage: null
+        };
+    }
+
+    if (action.type === 'SET_REPLY') {
+        return {
+            ...state,
+            replyMessage: action.replyMessage
+        };
+    }
+
+    if (action.type === 'DELETE_REPLY') {
+        return {
+            ...state,
+            replyMessage: null
         };
     }
 

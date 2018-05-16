@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 
 import getSocket from '../../../pages/socket';
 
+import { setForward, setReply } from '../../../actions/activeChat';
+
 import { showFullSize } from '../../../actions/modals';
 
 import EmojiPicker from './EmojiToMessage';
@@ -65,6 +67,18 @@ class Message extends Component {
 
         this.setState({ showEmojiToMsg });
     };
+
+    setForward = () => {
+        const { message, user } = this.props;
+
+        this.props.setForward(message, user);
+    }
+
+    setReply = () => {
+        const { message } = this.props;
+
+        this.props.setReply(message);
+    }
 
     componentWillMount() {
         this.setState({ showEmojiToMsg: this.props.showEmojiToMsg });
@@ -184,10 +198,12 @@ class Message extends Component {
                             />
                             <div
                                 className="message__control message__reply"
+                                onClick={this.setReply}
                                 title="Ответить"
                             />
                             <div
                                 className="message__control message__forward"
+                                onClick={this.setForward}
                                 title="Переслать"
                             />
                         </div>
@@ -223,10 +239,12 @@ class Message extends Component {
                         />
                         <div
                             className="message__control message__reply"
+                            onClick={this.setReply}
                             title="Ответить"
                         />
                         <div
                             className="message__control message__forward"
+                            onClick={this.setForward}
                             title="Переслать"
                         />
                     </div>
@@ -254,11 +272,15 @@ Message.propTypes = {
     user: PropTypes.object,
     showEmojiToMsg: PropTypes.bool,
     activeChat: PropTypes.object,
-    showFullSize: PropTypes.func
+    showFullSize: PropTypes.func,
+    setForward: PropTypes.func,
+    setReply: PropTypes.func
 };
 
 export default connect(
     () => ({}), {
-        showFullSize
+        showFullSize,
+        setForward,
+        setReply
     }
 )(Message);

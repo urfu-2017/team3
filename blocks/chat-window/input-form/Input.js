@@ -13,7 +13,9 @@ import {
     showInputPopup,
     hideInputPopup,
     showEmoji,
-    hideEmoji } from '../../../actions/activeChat';
+    hideEmoji,
+    deleteReply,
+    deleteForward } from '../../../actions/activeChat';
 
 import Emoji from './Emoji';
 import InputPopup from './popup-additional-functions/InputPopup';
@@ -98,7 +100,12 @@ class Input extends Component {
 
     /* eslint-disable max-statements */
     submitMessage = () => {
-        const { attachments } = this.props;
+        const { attachments, forwardMessage, replyMessage } = this.props;
+
+        if (forwardMessage) {
+            this.props.sendMessage(this.props.activeChat._id, forwardMessage);
+            this.props.deleteForward();
+        }
 
         if (this.state.msgText.trim() || attachments.length) {
             this.props.resetAttachments();
@@ -113,11 +120,17 @@ class Input extends Component {
             const message = {
                 text,
                 author: this.props.user.nickname,
-                attachments: this.props.attachments.map(a => a.url)
+                attachments: this.props.attachments.map(a => a.url),
+                replyTo: replyMessage
             };
+
             const chatId = this.props.activeChat._id;
 
             this.props.sendMessage(chatId, message);
+
+            if (replyMessage) {
+                this.props.deleteReply();
+            }
         }
     };
 
@@ -191,6 +204,8 @@ class Input extends Component {
 Input.propTypes = {
     user: PropTypes.object,
     activeChat: PropTypes.object,
+    forwardMessage: PropTypes.object,
+    replyMessage: PropTypes.object,
 
     sendMessage: PropTypes.func,
     resetAttachments: PropTypes.func,
@@ -201,21 +216,28 @@ Input.propTypes = {
     hideEmoji: PropTypes.func,
     checkFiles: PropTypes.func,
     inputPopupActive: PropTypes.bool,
-    hideInputPopup: PropTypes.func
+    hideInputPopup: PropTypes.func,
+    deleteReply: PropTypes.func,
+    deleteForward: PropTypes.func
 };
 
 export default connect(
+    /* eslint-disable-next-line complexity */
     state => ({
         inputPopupActive: state.activeChat && state.activeChat.showInputPopup,
         emojiActive: state.activeChat && state.activeChat.showEmoji,
         user: state.user,
-        attachments: state.activeChat && state.activeChat.attachments
+        attachments: state.activeChat && state.activeChat.attachments,
+        forwardMessage: state.activeChat && state.activeChat.forwardMessage,
+        replyMessage: state.activeChat && state.activeChat.replyMessage
     }), {
         sendMessage,
         resetAttachments,
         showEmoji,
         hideEmoji,
         showInputPopup,
-        hideInputPopup
+        hideInputPopup,
+        deleteReply,
+        deleteForward
     }
 )(Input);

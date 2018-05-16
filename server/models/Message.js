@@ -18,11 +18,19 @@ const mongoSchema = new mongoose.Schema({
     date: {
         type: Date,
         index: true
+    },
+    forwardFrom: {
+        type: String,
+        ref: 'User'
+    },
+    replyTo: {
+        type: {},
+        default: null
     }
 }, { minimize: false });
 
 class MessageClass {
-    static async initialize({ author, text, attachments }) {
+    static async initialize({ author, text, attachments, replyTo, forwardFrom }) {
         const meta = await extractMeta(text);
 
         return {
@@ -32,7 +40,9 @@ class MessageClass {
             meta,
             text: processMarkdownAndSanitize(text),
             reactions: [],
-            attachments: attachments || []
+            attachments: attachments || [],
+            replyTo,
+            forwardFrom
         };
     }
 }
