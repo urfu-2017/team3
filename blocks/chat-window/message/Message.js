@@ -61,9 +61,9 @@ class Message extends Component {
             }
         });
 
-        const { message, activeChat } = this.props;
+        const { message, activeChat, user } = this.props;
 
-        if (message.selfDestructTimer) {
+        if (message.selfDestructTimer && message.author !== user.nickname) {
             this.initializeSelfDestruct(message, activeChat._id);
         }
     }
@@ -74,7 +74,7 @@ class Message extends Component {
         socket.emit('destruct_message', {
             chatId,
             messageId: message._id,
-            selfDesturctTimer: message.selfDestructTimer
+            selfDestructTimer: message.selfDestructTimer
         });
     }
 

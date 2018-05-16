@@ -134,6 +134,7 @@ class MainPage extends React.Component {
         this.setupReceiveChat(socket);
         this.setupUpdateMessage(socket);
         this.setupUpdateChat(socket);
+        this.setupDestructMessage(socket);
 
         this.setTheme();
 
