@@ -23,14 +23,19 @@ const mongoSchema = new mongoose.Schema({
         type: String,
         ref: 'User'
     },
-    replyTo: {
-        type: {},
-        default: null
-    }
+    replyTo: {},
+    selfDestructTimer: Number
 }, { minimize: false });
 
 class MessageClass {
-    static async initialize({ author, text, attachments, replyTo, forwardFrom }) {
+    static async initialize({
+        author,
+        text,
+        attachments,
+        replyTo,
+        forwardFrom,
+        selfDestructTimer
+    }) {
         const meta = await extractMeta(text);
 
         return {
@@ -42,7 +47,8 @@ class MessageClass {
             reactions: [],
             attachments: attachments || [],
             replyTo,
-            forwardFrom
+            forwardFrom,
+            selfDestructTimer
         };
     }
 }

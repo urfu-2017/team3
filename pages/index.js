@@ -11,7 +11,8 @@ import {
     openChat,
     updateMessage,
     updateChat,
-    receiveMessage } from '../actions/chats';
+    receiveMessage,
+    destructMessage } from '../actions/chats';
 import types from '../actions/types';
 import makeStore from '../store';
 
@@ -117,6 +118,14 @@ class MainPage extends React.Component {
         });
     }
 
+    setupDestructMessage(socket) {
+        socket.on('destruct_message', data => {
+            const { chatId, messageId } = data;
+
+            this.props.destructMessage(chatId, messageId);
+        });
+    }
+
     componentDidMount() {
         const socket = getSocket();
 
@@ -125,6 +134,7 @@ class MainPage extends React.Component {
         this.setupReceiveChat(socket);
         this.setupUpdateMessage(socket);
         this.setupUpdateChat(socket);
+        this.setupDestructMessage(socket);
 
         this.setTheme();
 
@@ -203,7 +213,8 @@ MainPage.propTypes = {
     invite: PropTypes.string,
     updateMessage: PropTypes.func,
     receiveChat: PropTypes.func,
-    updateChat: PropTypes.func
+    updateChat: PropTypes.func,
+    destructMessage: PropTypes.func
 };
 
 export default withRedux(makeStore,
@@ -212,7 +223,8 @@ export default withRedux(makeStore,
         receiveChat,
         openChat,
         updateMessage,
-        updateChat
+        updateChat,
+        destructMessage
     }
 )(MainPage);
 

@@ -60,6 +60,22 @@ class Message extends Component {
                 this.setState({ showEmojiToMsg: false });
             }
         });
+
+        const { message, activeChat, user } = this.props;
+
+        if (message.selfDestructTimer && message.author !== user.nickname) {
+            this.initializeSelfDestruct(message, activeChat._id);
+        }
+    }
+
+    initializeSelfDestruct(message, chatId) {
+        const socket = getSocket();
+
+        socket.emit('destruct_message', {
+            chatId,
+            messageId: message._id,
+            selfDestructTimer: message.selfDestructTimer
+        });
     }
 
     toggleEmoji = () => {

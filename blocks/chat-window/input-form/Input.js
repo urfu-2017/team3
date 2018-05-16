@@ -122,6 +122,7 @@ class Input extends Component {
                 author: this.props.user.nickname,
                 attachments: this.props.attachments.map(a => a.url),
                 replyTo: replyMessage
+                // selfDestructTimer: 5000 <- сюда фигануть реальный таймер
             };
 
             const chatId = this.props.activeChat._id;
