@@ -1,7 +1,7 @@
 .message {
     position: relative;
     min-width: 20%;
-    max-width: 65%;
+    max-width: calc(100% - 200px);
     margin-top: calc(var(--standard-indent-small) * 2);
 }
 
@@ -233,7 +233,7 @@
     /* bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3); */
     top: 0;
     /* width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important; */
-    width: 200px !important;
+    width: 180px !important;
     height: 200px;
     max-height: calc(100% - var(--standard-indent-small) / 2);
     background-color: var(--background-color);
@@ -241,10 +241,10 @@
 
 .message_friend > .emoji-mart {
     /* right: calc(1% + var(--standard-indent-small) * 2 / 2); */
-    right: -215px;
+    right: -190px;
 }
 
 .message_my > .emoji-mart {
     /* left: calc(1% + var(--standard-indent-small) * 2 / 2); */
-    left: -215px;
+    left: -190px;
 }
