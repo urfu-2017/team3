@@ -76,3 +76,7 @@ export const setForward = (message, user) => dispatch => {
 
     dispatch({ type: types.SET_FORWARD, forwardMessage });
 };
+
+export const deleteForward = () => dispatch => {
+    dispatch({ type: types.DELETE_FORWARD });
+};

@@ -75,5 +75,12 @@ export default function activeChat(state = null, action) {
         };
     }
 
+    if (action.type === 'DELETE_FORWARD') {
+        return {
+            ...state,
+            forwardMessage: null
+        };
+    }
+
     return state;
 }
