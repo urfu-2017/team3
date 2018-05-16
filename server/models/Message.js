@@ -23,7 +23,10 @@ const mongoSchema = new mongoose.Schema({
         type: String,
         ref: 'User'
     },
-    replyTo: mongoose.Schema.Types.ObjectId
+    replyTo: {
+        type: {},
+        default: null
+    }
 }, { minimize: false });
 
 class MessageClass {

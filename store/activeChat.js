@@ -82,5 +82,19 @@ export default function activeChat(state = null, action) {
         };
     }
 
+    if (action.type === 'SET_REPLY') {
+        return {
+            ...state,
+            replyMessage: action.replyMessage
+        };
+    }
+
+    if (action.type === 'DELETE_REPLY') {
+        return {
+            ...state,
+            replyMessage: null
+        };
+    }
+
     return state;
 }

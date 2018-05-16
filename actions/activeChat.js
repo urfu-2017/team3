@@ -80,3 +80,16 @@ export const setForward = (message, user) => dispatch => {
 export const deleteForward = () => dispatch => {
     dispatch({ type: types.DELETE_FORWARD });
 };
+
+export const setReply = message => dispatch => {
+    const replyMessage = {
+        ...message,
+        replyTo: null
+    };
+
+    dispatch({ type: types.SET_REPLY, replyMessage });
+};
+
+export const deleteReply = () => dispatch => {
+    dispatch({ type: types.DELETE_REPLY });
+};
