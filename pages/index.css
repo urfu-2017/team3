@@ -73,6 +73,10 @@ body {
     background-color: var(--darkness-color);
 }
 
+.darkness_transparent {
+    background-color: transparent;
+}
+
 .substrate {
     position: fixed;
     z-index: -1;
