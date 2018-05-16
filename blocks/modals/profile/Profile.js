@@ -9,7 +9,7 @@ import '../../../pages/global-const.css';
 import './Profile.css';
 import { connect } from 'react-redux';
 
-import { hideProfile } from '../../../actions/modals';
+import { hideProfile, showFullSize } from '../../../actions/modals';
 import { changeAvatar } from '../../../actions/user';
 import { createChat } from '../../../actions/chats';
 
@@ -80,6 +80,11 @@ class Profile extends Component {
         infoBox.appendChild(copied);
     }
 
+    showImgHideProfile = e => {
+        this.props.hideProfile();
+        this.props.showFullSize(e);
+    }
+
     render() {
         const { profile } = this.props;
 
@@ -142,8 +147,8 @@ class Profile extends Component {
         }
 
         const displayData = this.whoIsMyInterlocutor(profile);
-        // туду отделить профиль пользователя от группы
 
+        // ЕСЛИ ПРОФИЛЬ ЮЗЕРА
         if (profile.type === 'private') {
             return (
                 <div className="darkness" onClick={this.hideProfile}>
@@ -156,6 +161,7 @@ class Profile extends Component {
                                 className="profile__avatar"
                                 src={this.getInterlocutor(profile).avatar}
                                 alt="avatar"
+                                onClick={this.showImgHideProfile}
                                 draggable="false"
                             />
                         </div>
@@ -169,6 +175,7 @@ class Profile extends Component {
             );
         }
 
+        // ЕСЛИ ИНФОРМАЦИЯ О ГРУППЕ
         return (
             <div className="darkness" onClick={this.hideProfile}>
                 <div
@@ -180,6 +187,7 @@ class Profile extends Component {
                             className="profile__avatar"
                             src={displayData.avatar}
                             alt="avatar"
+                            onClick={this.showImgHideProfile}
                             draggable="false"
                         />
                     </div>
@@ -241,7 +249,8 @@ Profile.propTypes = {
     user: PropTypes.object,
     hideProfile: PropTypes.func,
     changeAvatar: PropTypes.func,
-    createChat: PropTypes.func
+    createChat: PropTypes.func,
+    showFullSize: PropTypes.func
 };
 
 export default connect(
@@ -251,6 +260,7 @@ export default connect(
     }), {
         hideProfile,
         changeAvatar,
-        createChat
+        createChat,
+        showFullSize
     }
 )(Profile);
