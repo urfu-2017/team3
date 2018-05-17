@@ -1,7 +1,7 @@
 .message {
     position: relative;
     min-width: 20%;
-    max-width: calc(100% - 200px);
+    max-width: calc(100% - 190px);
     margin-top: calc(var(--standard-indent-small) * 2);
 }
 
