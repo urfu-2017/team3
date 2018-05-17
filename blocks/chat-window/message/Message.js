@@ -94,7 +94,6 @@ class Message extends Component {
 
     setReply = () => {
         const { message } = this.props;
-        console.log(message);
 
         this.props.setReply(message);
     }

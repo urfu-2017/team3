@@ -120,8 +120,6 @@ class Input extends Component {
                 // selfDestructTimer: 5000 <- сюда фигануть реальный таймер
             };
 
-            console.log(message);
-
             const chatId = this.props.activeChat._id;
 
             this.props.sendMessage(chatId, message);
@@ -132,7 +130,6 @@ class Input extends Component {
         }
 
         if (forwardMessage) {
-            console.log(forwardMessage);
             this.props.sendMessage(this.props.activeChat._id, forwardMessage);
             this.props.deleteForward();
         }
