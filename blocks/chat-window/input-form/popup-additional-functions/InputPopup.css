@@ -8,7 +8,7 @@
     );
     bottom: calc(
         var(--icon-size) +
-        (var(--standard-indent-small) * 3) +
+        (var(--standard-indent-small) * 2) +
         (var(--icon-size) / 2)
     );
     box-sizing: border-box;
@@ -20,7 +20,6 @@
         (var(--standard-indent) * 0.5 * 2) +
         (var(--icon-size) * 5)
     );
-    height: calc(var(--icon-size) * 3 + var(--standard-indent) * 0.5 * 4);
     padding: calc(var(--standard-indent) * 0.5);
     border-radius: var(--standard-indent-small);
     background-color: var(--background-color);
@@ -30,6 +29,14 @@
         var(--border-size-bold)
         var(--border-size-bold) 
         var(--spare-color);
+}
+
+.chat-input__burger-content_private {
+    height: calc(var(--icon-size) * 3 + var(--standard-indent) * 0.5 * 4);
+}
+
+.chat-input__burger-content_group {
+    height: calc(var(--icon-size) * 2 + var(--standard-indent) * 0.5 * 3);
 }
 
 .chat-input__burger-content::after {
@@ -75,7 +82,7 @@
 }
 
 .chat-input__autodestroy-btn {
-    background-image: url(/static/autodestroy_message.svg);
+    /* background-image: url(/static/autodestroy_message.svg); */
 }
 
 .chat-input__geolocation-btn {

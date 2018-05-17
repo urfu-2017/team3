@@ -12,6 +12,8 @@ import {
     hideInputPopup,
     showAttachmentPreloader } from '../../../../actions/activeChat';
 
+import TimerSetting from './timer/TimerSetting';
+
 import './InputPopup.css';
 
 class InputPopup extends Component {
@@ -36,11 +38,17 @@ class InputPopup extends Component {
         const { showInputPopup } = this.props;
 
         if (!showInputPopup) {
-            return <div />;
+            return null;
         }
 
         return (
-            <div className="chat-input__burger-content">
+            <div className={'chat-input__burger-content ' +
+            `${this.props.activeChat.type === 'private'
+                ?
+                'chat-input__burger-content_private'
+                :
+                'chat-input__burger-content_group'}`}
+                >
                 <label
                     className="chat-input__attachment-btn chat-input__button"
                     title="Загрузить изображение"
@@ -56,15 +64,6 @@ class InputPopup extends Component {
                     </span>
                 </label>
                 <label
-                    className="chat-input__autodestroy-btn chat-input__button"
-                    onClick={this.props.hideInputPopup}
-                    title="Секретное сообщение"
-                    >
-                    <span className="chat-input__button_description_add">
-                        Секретное сообщение
-                    </span>
-                </label>
-                <label
                     className="chat-input__geolocation-btn chat-input__button"
                     onClick={this.props.hideInputPopup}
                     title="Местоположение"
@@ -73,18 +72,36 @@ class InputPopup extends Component {
                         Местоположение
                     </span>
                 </label>
+                {
+                    this.props.activeChat.type === 'private'
+                        ?
+                        (
+                            <label
+                                className="chat-input__autodestroy-btn chat-input__button"
+                                title="Секретное сообщение"
+                                >
+                                <TimerSetting
+                                    submitMessage={this.props.submitMessage}
+                                />
+                            </label>
+                        )
+                        :
+                        null
+                }
             </div>
         );
     }
 }
 
 InputPopup.propTypes = {
+    activeChat: PropTypes.object,
     showInputPopup: PropTypes.bool,
     hideInputPopup: PropTypes.func,
     attachments: PropTypes.array,
     addAttachments: PropTypes.func,
     showAttachmentPreloader: PropTypes.func,
-    checkFiles: PropTypes.func
+    checkFiles: PropTypes.func,
+    submitMessage: PropTypes.func
 };
 
 export default connect(

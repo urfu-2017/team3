@@ -14,7 +14,9 @@ import {
     hideEmoji,
     addAttachments,
     hideInputPopup,
-    showAttachmentPreloader } from '../../actions/activeChat';
+    showAttachmentPreloader,
+    deleteForward,
+    deleteReply } from '../../actions/activeChat';
 
 import Chat from '../../models/Chat';
 
@@ -116,6 +118,11 @@ class ChatWindow extends Component {
         this.props.showAttachmentPreloader(false);
     };
 
+    deleteForwarding = () => {
+        this.props.deleteForward();
+        this.props.deleteReply();
+    }
+
     showProfile = profile => {
         this.props.showProfile(profile);
     };
@@ -148,7 +155,12 @@ class ChatWindow extends Component {
     /* eslint-disable complexity */
     /* eslint-disable no-nested-ternary */
     render() {
-        const { activeChat, user, attachments, forwardMessage, replyMessage } = this.props;
+        const { activeChat,
+            user,
+            attachments,
+            forwardMessage,
+            replyMessage
+        } = this.props;
 
         if (!activeChat) {
             return (
@@ -250,8 +262,19 @@ class ChatWindow extends Component {
                                         }:
                                     </div>
                                     <div className="current-forward__text">
-                                        пересланное сообщение
+                                        {forwardMessage
+                                            ?
+                                            forwardMessage.text
+                                            :
+                                            replyMessage.text
+                                        }
                                     </div>
+                                    <img
+                                        src="/static/closeDeleteElement.svg"
+                                        onClick={this.deleteForwarding}
+                                        draggable="false"
+                                        className="current-forward_clear"
+                                    />
                                 </div>
                             )
                             :
@@ -277,7 +300,9 @@ ChatWindow.propTypes = {
     hideInputPopup: PropTypes.func,
     hideEmoji: PropTypes.func,
     showAttachmentPreloader: PropTypes.func,
-    showWarning: PropTypes.func
+    showWarning: PropTypes.func,
+    deleteForward: PropTypes.func,
+    deleteReply: PropTypes.func
 };
 
 export default connect(
@@ -293,6 +318,8 @@ export default connect(
         hideInputPopup,
         hideEmoji,
         showAttachmentPreloader,
-        showWarning
+        showWarning,
+        deleteForward,
+        deleteReply
     }
 )(ChatWindow);

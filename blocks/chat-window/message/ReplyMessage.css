@@ -4,17 +4,17 @@
     background-color: var(--neutral-color);
     font-size: 90%; 
     border-left: var(--border-size-bold) solid var(--spare-color-semi-transparent);
+    min-width: 80px;
 }
 
 .reply__data {
     display: flex;
     /* flex-direction: column; */
-    justify-content: space-between;
     color: var(--text-color-h3);
 }
 
-.reply__date {
-    text-align: right;
+.reply__sender {
+    margin-right: 10px;
 }
 
 .reply__content {

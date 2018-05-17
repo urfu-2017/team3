@@ -14,7 +14,7 @@ body {
     height: calc(100vh - var(--standard-indent-small));
     margin: 0 0 var(--standard-indent-small);
     border: var(--border-size) solid var(--neutral-color);
-    border-radius: 1vmin;
+    border-radius: 2px;
     font-family: 'Noto Sans', sans-serif;
 }
 

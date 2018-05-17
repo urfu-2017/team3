@@ -15,7 +15,8 @@ import {
     showEmoji,
     hideEmoji,
     deleteReply,
-    deleteForward } from '../../../actions/activeChat';
+    deleteForward,
+    resetSelfDestructTimer } from '../../../actions/activeChat';
 
 import Emoji from './Emoji';
 import InputPopup from './popup-additional-functions/InputPopup';
@@ -99,8 +100,18 @@ class Input extends Component {
     };
 
     /* eslint-disable max-statements */
-    submitMessage = () => {
-        const { attachments, forwardMessage, replyMessage, user } = this.props;
+    /* eslint-disable complexity */
+    submitMessage = isDestruct => {
+        const { attachments,
+            forwardMessage,
+            replyMessage,
+            user,
+            selfDestructTimer } = this.props;
+
+        const destructTimer = isDestruct ?
+            selfDestructTimer && Number(selfDestructTimer) * 1000
+            :
+            null;
 
         if (this.state.msgText.trim() || attachments.length) {
             this.props.resetAttachments();
@@ -116,9 +127,11 @@ class Input extends Component {
                 text,
                 author: this.props.user.nickname,
                 attachments: this.props.attachments.map(a => a.url),
-                replyTo: replyMessage
-                // selfDestructTimer: 5000 <- сюда фигануть реальный таймер
+                replyTo: replyMessage,
+                selfDestructTimer: destructTimer
             };
+
+            this.props.resetSelfDestructTimer();
 
             const chatId = this.props.activeChat._id;
 
@@ -133,7 +146,8 @@ class Input extends Component {
             const message = {
                 author: user.nickname,
                 forwardFrom: forwardMessage,
-                text: ''
+                text: '',
+                selfDestructTimer: destructTimer
             };
 
             this.props.sendMessage(this.props.activeChat._id, message);
@@ -144,7 +158,7 @@ class Input extends Component {
     // прослушка отправки на Enter
     keySubmitMessage = e => {
         if (e.keyCode === 13) {
-            this.submitMessage();
+            this.submitMessage(null);
         }
     };
 
@@ -203,13 +217,18 @@ class Input extends Component {
                     </label>
                     <label
                         src="/static/send_message.svg"
-                        onClick={this.submitMessage}
+                        onClick={() => this.submitMessage(null)}
                         className="chat-input__send-btn chat-input__button"
                         title="Отправить сообщение"
                     />
+                    <InputPopup
+                        checkFiles={this.props.checkFiles}
+                        selfDestructTimer={this.state.selfDestructTimer}
+                        submitMessage={this.submitMessage}
+                        activeChat={this.props.activeChat}
+                    />
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
-                <InputPopup checkFiles={this.props.checkFiles} />
             </React.Fragment>
         );
     }
@@ -233,6 +252,8 @@ Input.propTypes = {
     hideInputPopup: PropTypes.func,
     deleteReply: PropTypes.func,
     deleteForward: PropTypes.func,
+    resetSelfDestructTimer: PropTypes.func,
+    selfDestructTimer: PropTypes.number,
 
     isForward: PropTypes.bool
 };
@@ -245,7 +266,8 @@ export default connect(
         user: state.user,
         attachments: state.activeChat && state.activeChat.attachments,
         forwardMessage: state.activeChat && state.activeChat.forwardMessage,
-        replyMessage: state.activeChat && state.activeChat.replyMessage
+        replyMessage: state.activeChat && state.activeChat.replyMessage,
+        selfDestructTimer: state.activeChat && state.activeChat.selfDestructTimer
     }), {
         sendMessage,
         resetAttachments,
@@ -254,6 +276,7 @@ export default connect(
         showInputPopup,
         hideInputPopup,
         deleteReply,
-        deleteForward
+        deleteForward,
+        resetSelfDestructTimer
     }
 )(Input);

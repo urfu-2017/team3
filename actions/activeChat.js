@@ -87,6 +87,14 @@ export const deleteReply = () => dispatch => {
     dispatch({ type: types.DELETE_REPLY });
 };
 
+export const setSelfDestructTimer = timer => dispatch => {
+    dispatch({ type: types.SET_SELF_DESTRUCT, timer });
+};
+
+export const resetSelfDestructTimer = () => dispatch => {
+    dispatch({ type: types.RESET_SELF_DESTRUCT });
+};
+
 function getPayload(message) {
     const payload = message.forwardFrom
         ? { ...message.forwardFrom }
