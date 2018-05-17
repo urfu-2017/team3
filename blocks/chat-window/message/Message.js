@@ -186,7 +186,7 @@ class Message extends Component {
 
         return { newText, images, goodDate, peopleEmoji, metadata };
     }
-    
+
     /* eslint-disable react/jsx-closing-tag-location */
     /* eslint-disable complexity */
     render() {

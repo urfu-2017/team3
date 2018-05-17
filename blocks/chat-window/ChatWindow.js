@@ -302,7 +302,7 @@ ChatWindow.propTypes = {
     showAttachmentPreloader: PropTypes.func,
     showWarning: PropTypes.func,
     deleteForward: PropTypes.func,
-    deleteReply: PropTypes.func,
+    deleteReply: PropTypes.func
 };
 
 export default connect(

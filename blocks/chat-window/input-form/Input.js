@@ -101,7 +101,7 @@ class Input extends Component {
 
     /* eslint-disable max-statements */
     /* eslint-disable complexity */
-    submitMessage = () => {
+    submitMessage = isDestruct => {
         const { attachments, forwardMessage, replyMessage, user, selfDestructTimer } = this.props;
 
         if (this.state.msgText.trim() || attachments.length) {
@@ -111,6 +111,10 @@ class Input extends Component {
             });
             const input = document.querySelector('.chat-input__write-field');
             const text = input.value;
+            const destrcutTimer = isDestruct ?
+                selfDestructTimer && Number(selfDestructTimer) * 1000
+                :
+                null;
 
             input.value = '';
 
@@ -119,7 +123,7 @@ class Input extends Component {
                 author: this.props.user.nickname,
                 attachments: this.props.attachments.map(a => a.url),
                 replyTo: replyMessage,
-                selfDestructTimer: selfDestructTimer && Number(selfDestructTimer) * 1000
+                selfDestructTimer: destrcutTimer
             };
 
             this.props.resetSelfDestructTimer();
@@ -148,7 +152,7 @@ class Input extends Component {
     // прослушка отправки на Enter
     keySubmitMessage = e => {
         if (e.keyCode === 13) {
-            this.submitMessage();
+            this.submitMessage(null);
         }
     };
 
@@ -207,17 +211,17 @@ class Input extends Component {
                     </label>
                     <label
                         src="/static/send_message.svg"
-                        onClick={this.submitMessage}
+                        onClick={() => this.submitMessage(null)}
                         className="chat-input__send-btn chat-input__button"
                         title="Отправить сообщение"
                     />
+                    <InputPopup
+                        checkFiles={this.props.checkFiles}
+                        selfDestructTimer={this.state.selfDestructTimer}
+                        submitMessage={this.submitMessage}
+                    />
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
-                <InputPopup
-                    checkFiles={this.props.checkFiles}
-                    selfDestructTimer={this.state.selfDestructTimer}
-                    submitMessage={this.submitMessage}
-                />
             </React.Fragment>
         );
     }

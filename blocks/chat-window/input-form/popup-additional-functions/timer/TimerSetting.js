@@ -8,13 +8,7 @@ import { setSelfDestructTimer,
     resetSelfDestructTimer } from '../../../../../actions/activeChat';
 
 class TimerSetting extends Component {
-    /* eslint-disable react/no-array-index-key */
-    /* eslint-disable react/jsx-closing-bracket-location */
-    /* eslint-disable prefer-template */
     /* eslint-disable react/jsx-no-bind */
-    state = {
-        secondsTimer: 0
-    }
 
     prettyTime = seconds => moment.utc(seconds * 1000).format('mm:ss');
 
@@ -28,6 +22,10 @@ class TimerSetting extends Component {
         }
     }
 
+    componentDidMount = () => {
+        this.setState({ secondsTimer: 0 });
+    }
+
     render() {
         return (
             <div className="timer-setting" onClick={e => e.stopPropagation()}>
@@ -37,7 +35,7 @@ class TimerSetting extends Component {
                 <img
                     src="/static/send_message.svg"
                     className="timer-setting__button"
-                    onClick={this.props.submitMessage}
+                    onClick={() => this.props.submitMessage(this.state.secondsTimer)}
                 />
                 <input
                     min="0"
@@ -46,6 +44,7 @@ class TimerSetting extends Component {
                     type="range"
                     className="timer-setting__range"
                     onChange={this.setTimer}
+                    value={this.state.secondsTimer}
                 />
                 <div className="timer-setting__current-value">
                     {this.prettyTime(this.state.secondsTimer)}

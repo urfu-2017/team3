@@ -122,7 +122,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    width: calc((100vw * 0.7 - 230px) * 0.7);
+    width: calc((100vw * 0.7 - 310px) * 0.7);
 }
 
 .current-forward_clear {

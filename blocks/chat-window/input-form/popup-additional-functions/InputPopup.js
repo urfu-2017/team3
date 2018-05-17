@@ -38,7 +38,7 @@ class InputPopup extends Component {
         const { showInputPopup } = this.props;
 
         if (!showInputPopup) {
-            return <div />;
+            return null;
         }
 
         return (
