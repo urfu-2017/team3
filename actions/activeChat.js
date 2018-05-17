@@ -93,6 +93,7 @@ function getPayload(message) {
         : { ...message };
 
     delete payload.replyTo;
+    delete payload.forwardFrom;
 
     return payload;
 }
