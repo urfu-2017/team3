@@ -5,7 +5,8 @@ import './TimerSetting.css';
 import moment from 'moment';
 
 import { setSelfDestructTimer,
-    resetSelfDestructTimer } from '../../../../../actions/activeChat';
+    resetSelfDestructTimer,
+    hideInputPopup } from '../../../../../actions/activeChat';
 
 class TimerSetting extends Component {
     /* eslint-disable react/jsx-no-bind */
@@ -29,6 +30,11 @@ class TimerSetting extends Component {
         this.props.setSelfDestructTimer(15);
     }
 
+    submitMessageAndClosePopup = () => {
+        this.props.submitMessage(this.state.secondsTimer || 15)
+        this.props.hideInputPopup();
+    }
+
     render() {
         return (
             <div className="timer-setting" onClick={e => e.stopPropagation()}>
@@ -38,7 +44,7 @@ class TimerSetting extends Component {
                 <img
                     src="/static/send_message.svg"
                     className="timer-setting__button"
-                    onClick={() => this.props.submitMessage(this.state.secondsTimer || 15)}
+                    onClick={this.submitMessageAndClosePopup}
                 />
                 <input
                     min="15"
@@ -60,12 +66,14 @@ class TimerSetting extends Component {
 TimerSetting.propTypes = {
     setSelfDestructTimer: PropTypes.func,
     resetSelfDestructTimer: PropTypes.func,
-    submitMessage: PropTypes.func
+    submitMessage: PropTypes.func,
+    hideInputPopup: PropTypes.func
 };
 
 export default connect(
     () => ({}), {
         setSelfDestructTimer,
-        resetSelfDestructTimer
+        resetSelfDestructTimer,
+        hideInputPopup
     }
 )(TimerSetting);
