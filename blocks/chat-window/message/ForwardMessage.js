@@ -77,11 +77,12 @@ class ForwardMessage extends Component {
             return null;
         }
 
-        const { author, date, text, meta, attachments, forwardFrom } = this.props.message;
-        const newText = this.formatText(text);
-        const goodDate = this.prettyDate(date);
-        const metadata = this.formatMeta(meta);
-        const images = this.formatImages(attachments);
+        const { author, forwardFrom, date } = this.props.message;
+        const messageDate = this.prettyDate(date);
+        const forwardText = this.formatText(forwardFrom.text);
+        const forwardDate = this.prettyDate(forwardFrom.date);
+        const forwardMetadata = this.formatMeta(forwardFrom.meta);
+        const forwardImages = this.formatImages(forwardFrom.attachments);
 
         return (
             <div className={'message__body message__body_' +
@@ -89,18 +90,18 @@ class ForwardMessage extends Component {
                 >
                 <div className="message__data">
                     <span className="message__sender">{author}</span>
-                    <span className="message__date">{goodDate}</span>
+                    <span className="message__date">{messageDate}</span>
                 </div>
                 <div className="message__forward_content">
                     <div className="message__data">
-                        <span className="message__sender">{forwardFrom}</span>
-                        <span className="message__date">{goodDate}</span>
+                        <span className="message__sender">{forwardFrom.author}</span>
+                        <span className="message__date">{forwardDate}</span>
                     </div>
-                    <div className="message__content">{newText}</div>
+                    <div className="message__content">{forwardText}</div>
                     <div className="message__attachments">
-                        {images}
+                        {forwardImages}
                     </div>
-                    {metadata}
+                    {forwardMetadata}
                 </div>
             </div>
         );

@@ -19,10 +19,7 @@ const mongoSchema = new mongoose.Schema({
         type: Date,
         index: true
     },
-    forwardFrom: {
-        type: String,
-        ref: 'User'
-    },
+    forwardFrom: {},
     replyTo: {},
     selfDestructTimer: Number
 }, { minimize: false });
