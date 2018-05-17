@@ -116,9 +116,13 @@ class Input extends Component {
                 text,
                 author: this.props.user.nickname,
                 attachments: this.props.attachments.map(a => a.url),
-                replyTo: replyMessage
-                // selfDestructTimer: 5000 <- сюда фигануть реальный таймер
+                replyTo: replyMessage,
+                selfDestructTimer: 5000
             };
+
+            // this.props.selfDestructTimer = null;
+
+            console.log(message);
 
             const chatId = this.props.activeChat._id;
 
@@ -209,7 +213,10 @@ class Input extends Component {
                     />
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
-                <InputPopup checkFiles={this.props.checkFiles} />
+                <InputPopup
+                    checkFiles={this.props.checkFiles}
+                    selfDestructTimer={this.state.selfDestructTimer}
+                />
             </React.Fragment>
         );
     }
@@ -233,6 +240,7 @@ Input.propTypes = {
     hideInputPopup: PropTypes.func,
     deleteReply: PropTypes.func,
     deleteForward: PropTypes.func,
+    selfDestructTimer: PropTypes.object || PropTypes.number,
 
     isForward: PropTypes.bool
 };
@@ -245,7 +253,8 @@ export default connect(
         user: state.user,
         attachments: state.activeChat && state.activeChat.attachments,
         forwardMessage: state.activeChat && state.activeChat.forwardMessage,
-        replyMessage: state.activeChat && state.activeChat.replyMessage
+        replyMessage: state.activeChat && state.activeChat.replyMessage,
+        selfDestructTimer: state.activeChat && state.activeChat.selfDestructTimer
     }), {
         sendMessage,
         resetAttachments,

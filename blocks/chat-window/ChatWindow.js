@@ -16,12 +16,14 @@ import {
     hideInputPopup,
     showAttachmentPreloader,
     deleteForward,
-    deleteReply } from '../../actions/activeChat';
+    deleteReply,
+    hideTimerSetting } from '../../actions/activeChat';
 
 import Chat from '../../models/Chat';
 
 import FullSize from '../modals/full-size-attachment/FullSize';
 import Warning from '../modals/warning/Warning';
+import TimerSetting from '../modals/timer/TimerSetting';
 
 import Input from './input-form/Input';
 import Message from './message/Message';
@@ -49,6 +51,7 @@ class ChatWindow extends Component {
     hidePopups = () => {
         this.props.hideEmoji();
         this.props.hideInputPopup();
+        this.props.hideTimerSetting();
     }
 
     /* eslint-disable max-statements */
@@ -155,7 +158,13 @@ class ChatWindow extends Component {
     /* eslint-disable complexity */
     /* eslint-disable no-nested-ternary */
     render() {
-        const { activeChat, user, attachments, forwardMessage, replyMessage } = this.props;
+        const { activeChat,
+            user,
+            attachments,
+            forwardMessage,
+            replyMessage,
+            isShowTimerSetting
+        } = this.props;
 
         if (!activeChat) {
             return (
@@ -208,7 +217,7 @@ class ChatWindow extends Component {
                             <div
                                 className={
                                     'messages grid_' +
-                                    `${isImages
+                                    `${isImages || isShowTimerSetting
                                         ?
                                         isForward
                                             ?
@@ -278,6 +287,7 @@ class ChatWindow extends Component {
                 </section>
                 <FullSize />
                 <Warning />
+                <TimerSetting />
             </React.Fragment>
         );
     }
@@ -297,7 +307,8 @@ ChatWindow.propTypes = {
     showAttachmentPreloader: PropTypes.func,
     showWarning: PropTypes.func,
     deleteForward: PropTypes.func,
-    deleteReply: PropTypes.func
+    deleteReply: PropTypes.func,
+    hideTimerSetting: PropTypes.func
 };
 
 export default connect(
@@ -315,6 +326,7 @@ export default connect(
         showAttachmentPreloader,
         showWarning,
         deleteForward,
-        deleteReply
+        deleteReply,
+        hideTimerSetting
     }
 )(ChatWindow);

@@ -10,7 +10,8 @@ import { connect } from 'react-redux';
 import {
     addAttachments,
     hideInputPopup,
-    showAttachmentPreloader } from '../../../../actions/activeChat';
+    showAttachmentPreloader,
+    showTimerSetting } from '../../../../actions/activeChat';
 
 import './InputPopup.css';
 
@@ -30,6 +31,12 @@ class InputPopup extends Component {
             await this.props.addAttachments(filesToUpload);
         }
         this.props.showAttachmentPreloader(false);
+    }
+
+    // настраиваем сообщению самоуничтожение
+    onSelfDestruct = () => {
+        this.props.hideInputPopup();
+        this.props.showTimerSetting();
     }
 
     render() {
@@ -57,7 +64,7 @@ class InputPopup extends Component {
                 </label>
                 <label
                     className="chat-input__autodestroy-btn chat-input__button"
-                    onClick={this.props.hideInputPopup}
+                    onClick={this.onSelfDestruct}
                     title="Секретное сообщение"
                     >
                     <span className="chat-input__button_description_add">
@@ -84,16 +91,19 @@ InputPopup.propTypes = {
     attachments: PropTypes.array,
     addAttachments: PropTypes.func,
     showAttachmentPreloader: PropTypes.func,
-    checkFiles: PropTypes.func
+    checkFiles: PropTypes.func,
+    showTimerSetting: PropTypes.func
 };
 
 export default connect(
     state => ({
         showInputPopup: state.activeChat && state.activeChat.showInputPopup,
-        attachments: state.activeChat && state.activeChat.attachments
+        attachments: state.activeChat && state.activeChat.attachments,
+        isShowTimerSetting: state.activeChat && state.activeChat.isShowTimerSetting
     }), {
         addAttachments,
         hideInputPopup,
-        showAttachmentPreloader
+        showAttachmentPreloader,
+        showTimerSetting
     }
 )(InputPopup);

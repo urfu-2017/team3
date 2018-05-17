@@ -7,7 +7,8 @@ export default function activeChat(state = null, action) {
         return {
             id: action.id,
             attachments: [],
-            forwardMessage: state && state.forwardMessage
+            forwardMessage: state && state.forwardMessage,
+            selfDestructTimer: null
         };
     }
 
@@ -95,6 +96,34 @@ export default function activeChat(state = null, action) {
         return {
             ...state,
             replyMessage: null
+        };
+    }
+
+    if (action.type === 'SET_SELF_DESTRUCT') {
+        return {
+            ...state,
+            selfDestructTimer: action.timer
+        };
+    }
+
+    if (action.type === 'RESET_SELF_DESTRUCT') {
+        return {
+            ...state,
+            selfDestructTimer: null
+        };
+    }
+
+    if (action.type === 'SHOW_TIMER_SETTING') {
+        return {
+            ...state,
+            isShowTimerSetting: true
+        };
+    }
+
+    if (action.type === 'HIDE_TIMER_SETTING') {
+        return {
+            ...state,
+            isShowTimerSetting: false
         };
     }
 
