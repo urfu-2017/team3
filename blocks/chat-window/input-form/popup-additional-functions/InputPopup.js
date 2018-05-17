@@ -42,7 +42,13 @@ class InputPopup extends Component {
         }
 
         return (
-            <div className="chat-input__burger-content">
+            <div className={'chat-input__burger-content ' +
+            `${this.props.activeChat.type === 'private'
+                ?
+                'chat-input__burger-content_private'
+                :
+                'chat-input__burger-content_group'}`}
+                >
                 <label
                     className="chat-input__attachment-btn chat-input__button"
                     title="Загрузить изображение"
@@ -66,20 +72,29 @@ class InputPopup extends Component {
                         Местоположение
                     </span>
                 </label>
-                <label
-                    className="chat-input__autodestroy-btn chat-input__button"
-                    title="Секретное сообщение"
-                    >
-                    <TimerSetting
-                        submitMessage={this.props.submitMessage}
-                    />
-                </label>
+                {
+                    this.props.activeChat.type === 'private'
+                        ?
+                        (
+                            <label
+                                className="chat-input__autodestroy-btn chat-input__button"
+                                title="Секретное сообщение"
+                                >
+                                <TimerSetting
+                                    submitMessage={this.props.submitMessage}
+                                />
+                            </label>
+                        )
+                        :
+                        null
+                }
             </div>
         );
     }
 }
 
 InputPopup.propTypes = {
+    activeChat: PropTypes.object,
     showInputPopup: PropTypes.bool,
     hideInputPopup: PropTypes.func,
     attachments: PropTypes.array,

@@ -25,9 +25,9 @@ class TimerSetting extends Component {
         }
     }
 
-    // componentDidMount = () => {
-    //     this.setState({ secondsTimer: 15 });
-    // }
+    componentDidMount() {
+        this.props.setSelfDestructTimer(15);
+    }
 
     render() {
         return (
@@ -38,7 +38,7 @@ class TimerSetting extends Component {
                 <img
                     src="/static/send_message.svg"
                     className="timer-setting__button"
-                    onClick={() => this.props.submitMessage(this.state.secondsTimer)}
+                    onClick={() => this.props.submitMessage(this.state.secondsTimer || 15)}
                 />
                 <input
                     min="15"

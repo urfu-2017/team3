@@ -102,7 +102,16 @@ class Input extends Component {
     /* eslint-disable max-statements */
     /* eslint-disable complexity */
     submitMessage = isDestruct => {
-        const { attachments, forwardMessage, replyMessage, user, selfDestructTimer } = this.props;
+        const { attachments,
+            forwardMessage,
+            replyMessage,
+            user,
+            selfDestructTimer } = this.props;
+
+        const destructTimer = isDestruct ?
+            selfDestructTimer && Number(selfDestructTimer) * 1000
+            :
+            null;
 
         if (this.state.msgText.trim() || attachments.length) {
             this.props.resetAttachments();
@@ -111,10 +120,6 @@ class Input extends Component {
             });
             const input = document.querySelector('.chat-input__write-field');
             const text = input.value;
-            const destrcutTimer = isDestruct ?
-                selfDestructTimer && Number(selfDestructTimer) * 1000
-                :
-                null;
 
             input.value = '';
 
@@ -123,7 +128,7 @@ class Input extends Component {
                 author: this.props.user.nickname,
                 attachments: this.props.attachments.map(a => a.url),
                 replyTo: replyMessage,
-                selfDestructTimer: destrcutTimer
+                selfDestructTimer: destructTimer
             };
 
             this.props.resetSelfDestructTimer();
@@ -141,7 +146,8 @@ class Input extends Component {
             const message = {
                 author: user.nickname,
                 forwardFrom: forwardMessage,
-                text: ''
+                text: '',
+                selfDestructTimer: destructTimer
             };
 
             this.props.sendMessage(this.props.activeChat._id, message);
@@ -219,6 +225,7 @@ class Input extends Component {
                         checkFiles={this.props.checkFiles}
                         selfDestructTimer={this.state.selfDestructTimer}
                         submitMessage={this.submitMessage}
+                        activeChat={this.props.activeChat}
                     />
                 </div>
                 <Emoji addEmoji={this.addEmoji} />
@@ -246,7 +253,7 @@ Input.propTypes = {
     deleteReply: PropTypes.func,
     deleteForward: PropTypes.func,
     resetSelfDestructTimer: PropTypes.func,
-    selfDestructTimer: PropTypes.string,
+    selfDestructTimer: PropTypes.number,
 
     isForward: PropTypes.bool
 };

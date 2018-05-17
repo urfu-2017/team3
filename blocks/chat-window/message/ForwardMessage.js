@@ -86,7 +86,12 @@ class ForwardMessage extends Component {
 
         return (
             <div className={'message__body message__body_' +
-                `${this.props.my ? 'my' : 'friend'}`}
+                `${this.props.my ? 'my' : 'friend'}` +
+                `${this.props.message.selfDestructTimer
+                    ?
+                    ' message_blink'
+                    :
+                    ''}`}
                 >
                 <div className="message__data">
                     <span className="message__sender">{author}</span>
