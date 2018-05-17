@@ -9,6 +9,9 @@ import { setSelfDestructTimer,
 
 class TimerSetting extends Component {
     /* eslint-disable react/jsx-no-bind */
+    state = {
+        secondsTimer: 15
+    }
 
     prettyTime = seconds => moment.utc(seconds * 1000).format('mm:ss');
 
@@ -22,9 +25,9 @@ class TimerSetting extends Component {
         }
     }
 
-    componentDidMount = () => {
-        this.setState({ secondsTimer: 0 });
-    }
+    // componentDidMount = () => {
+    //     this.setState({ secondsTimer: 15 });
+    // }
 
     render() {
         return (
@@ -38,7 +41,7 @@ class TimerSetting extends Component {
                     onClick={() => this.props.submitMessage(this.state.secondsTimer)}
                 />
                 <input
-                    min="0"
+                    min="15"
                     max="300"
                     step="15"
                     type="range"
