@@ -67,12 +67,8 @@ export const showAttachmentPreloader = isUploading => dispatch => {
     dispatch({ type: types.ATTACHMENTS_UPLOADING, isUploading });
 };
 
-export const setForward = (message, user) => dispatch => {
-    const forwardMessage = {
-        ...message,
-        author: user.nickname,
-        forwardFrom: message.author
-    };
+export const setForward = message => dispatch => {
+    const forwardMessage = getPayload(message);
 
     dispatch({ type: types.SET_FORWARD, forwardMessage });
 };
@@ -82,10 +78,7 @@ export const deleteForward = () => dispatch => {
 };
 
 export const setReply = message => dispatch => {
-    const replyMessage = {
-        ...message,
-        replyTo: null
-    };
+    const replyMessage = getPayload(message);
 
     dispatch({ type: types.SET_REPLY, replyMessage });
 };
@@ -93,3 +86,13 @@ export const setReply = message => dispatch => {
 export const deleteReply = () => dispatch => {
     dispatch({ type: types.DELETE_REPLY });
 };
+
+function getPayload(message) {
+    const payload = message.forwardFrom
+        ? { ...message.forwardFrom }
+        : { ...message };
+
+    delete payload.replyTo;
+
+    return payload;
+}

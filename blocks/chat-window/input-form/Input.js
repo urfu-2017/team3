@@ -100,7 +100,7 @@ class Input extends Component {
 
     /* eslint-disable max-statements */
     submitMessage = () => {
-        const { attachments, forwardMessage, replyMessage } = this.props;
+        const { attachments, forwardMessage, replyMessage, user } = this.props;
 
         if (this.state.msgText.trim() || attachments.length) {
             this.props.resetAttachments();
@@ -130,7 +130,13 @@ class Input extends Component {
         }
 
         if (forwardMessage) {
-            this.props.sendMessage(this.props.activeChat._id, forwardMessage);
+            const message = {
+                author: user.nickname,
+                forwardFrom: forwardMessage,
+                text: ''
+            };
+
+            this.props.sendMessage(this.props.activeChat._id, message);
             this.props.deleteForward();
         }
     };

@@ -244,7 +244,7 @@ class ChatWindow extends Component {
                                     <div className="current-forward__author">
                                         {forwardMessage
                                             ?
-                                            forwardMessage.forwardFrom
+                                            forwardMessage.author
                                             :
                                             replyMessage.author
                                         }:
