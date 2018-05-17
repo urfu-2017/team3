@@ -31,7 +31,7 @@ class TimerSetting extends Component {
     }
 
     submitMessageAndClosePopup = () => {
-        this.props.submitMessage(this.state.secondsTimer || 15)
+        this.props.submitMessage(this.state.secondsTimer || 15);
         this.props.hideInputPopup();
     }
 
