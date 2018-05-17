@@ -113,19 +113,5 @@ export default function activeChat(state = null, action) {
         };
     }
 
-    if (action.type === 'SHOW_TIMER_SETTING') {
-        return {
-            ...state,
-            isShowTimerSetting: true
-        };
-    }
-
-    if (action.type === 'HIDE_TIMER_SETTING') {
-        return {
-            ...state,
-            isShowTimerSetting: false
-        };
-    }
-
     return state;
 }

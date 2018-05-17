@@ -95,14 +95,6 @@ export const resetSelfDestructTimer = () => dispatch => {
     dispatch({ type: types.RESET_SELF_DESTRUCT });
 };
 
-export const showTimerSetting = () => dispatch => {
-    dispatch({ type: types.SHOW_TIMER_SETTING });
-};
-
-export const hideTimerSetting = () => dispatch => {
-    dispatch({ type: types.HIDE_TIMER_SETTING });
-};
-
 function getPayload(message) {
     const payload = message.forwardFrom
         ? { ...message.forwardFrom }

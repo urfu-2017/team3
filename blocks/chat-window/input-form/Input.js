@@ -216,6 +216,7 @@ class Input extends Component {
                 <InputPopup
                     checkFiles={this.props.checkFiles}
                     selfDestructTimer={this.state.selfDestructTimer}
+                    submitMessage={this.submitMessage}
                 />
             </React.Fragment>
         );
@@ -241,7 +242,7 @@ Input.propTypes = {
     deleteReply: PropTypes.func,
     deleteForward: PropTypes.func,
     resetSelfDestructTimer: PropTypes.func,
-    selfDestructTimer: PropTypes.number,
+    selfDestructTimer: PropTypes.string,
 
     isForward: PropTypes.bool
 };

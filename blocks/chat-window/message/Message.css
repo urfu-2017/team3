@@ -85,6 +85,11 @@
     border-bottom-left-radius: 0;
 }
 
+.message_blink {
+    box-shadow: 0 0 var(--border-size-bold) var(--border-size) var(--spare-color);
+    animation: blink_body 1s linear 0s infinite;
+}
+
 .message__data {
     display: flex;
     justify-content: space-between;
@@ -288,5 +293,17 @@
     }
     100% {
         color: var(--text-color-h0);
+    }
+}
+
+@keyframes blink_body {
+    0% {
+        box-shadow: 0 0 var(--border-size-bold) var(--border-size) var(--spare-color);
+    }
+    50% {
+        box-shadow: 0 0 var(--border-size-bold) var(--border-size) var(--neutral-color-semi-transparent);
+    }
+    100% {
+        box-shadow: 0 0 var(--border-size-bold) var(--border-size) var(--spare-color);
     }
 }

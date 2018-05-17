@@ -10,8 +10,9 @@ import { connect } from 'react-redux';
 import {
     addAttachments,
     hideInputPopup,
-    showAttachmentPreloader,
-    showTimerSetting } from '../../../../actions/activeChat';
+    showAttachmentPreloader } from '../../../../actions/activeChat';
+
+import TimerSetting from './timer/TimerSetting';
 
 import './InputPopup.css';
 
@@ -31,12 +32,6 @@ class InputPopup extends Component {
             await this.props.addAttachments(filesToUpload);
         }
         this.props.showAttachmentPreloader(false);
-    }
-
-    // настраиваем сообщению самоуничтожение
-    onSelfDestruct = () => {
-        this.props.hideInputPopup();
-        this.props.showTimerSetting();
     }
 
     render() {
@@ -63,15 +58,6 @@ class InputPopup extends Component {
                     </span>
                 </label>
                 <label
-                    className="chat-input__autodestroy-btn chat-input__button"
-                    onClick={this.onSelfDestruct}
-                    title="Секретное сообщение"
-                    >
-                    <span className="chat-input__button_description_add">
-                        Секретное сообщение
-                    </span>
-                </label>
-                <label
                     className="chat-input__geolocation-btn chat-input__button"
                     onClick={this.props.hideInputPopup}
                     title="Местоположение"
@@ -79,6 +65,14 @@ class InputPopup extends Component {
                     <span className="chat-input__button_description_add">
                         Местоположение
                     </span>
+                </label>
+                <label
+                    className="chat-input__autodestroy-btn chat-input__button"
+                    title="Секретное сообщение"
+                    >
+                    <TimerSetting
+                        submitMessage={this.props.submitMessage}
+                    />
                 </label>
             </div>
         );
@@ -92,18 +86,16 @@ InputPopup.propTypes = {
     addAttachments: PropTypes.func,
     showAttachmentPreloader: PropTypes.func,
     checkFiles: PropTypes.func,
-    showTimerSetting: PropTypes.func
+    submitMessage: PropTypes.func
 };
 
 export default connect(
     state => ({
         showInputPopup: state.activeChat && state.activeChat.showInputPopup,
-        attachments: state.activeChat && state.activeChat.attachments,
-        isShowTimerSetting: state.activeChat && state.activeChat.isShowTimerSetting
+        attachments: state.activeChat && state.activeChat.attachments
     }), {
         addAttachments,
         hideInputPopup,
-        showAttachmentPreloader,
-        showTimerSetting
+        showAttachmentPreloader
     }
 )(InputPopup);

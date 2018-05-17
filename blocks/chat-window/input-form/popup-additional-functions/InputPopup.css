@@ -75,7 +75,7 @@
 }
 
 .chat-input__autodestroy-btn {
-    background-image: url(/static/autodestroy_message.svg);
+    /* background-image: url(/static/autodestroy_message.svg); */
 }
 
 .chat-input__geolocation-btn {

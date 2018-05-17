@@ -16,14 +16,12 @@ import {
     hideInputPopup,
     showAttachmentPreloader,
     deleteForward,
-    deleteReply,
-    hideTimerSetting } from '../../actions/activeChat';
+    deleteReply } from '../../actions/activeChat';
 
 import Chat from '../../models/Chat';
 
 import FullSize from '../modals/full-size-attachment/FullSize';
 import Warning from '../modals/warning/Warning';
-import TimerSetting from '../modals/timer/TimerSetting';
 
 import Input from './input-form/Input';
 import Message from './message/Message';
@@ -51,7 +49,6 @@ class ChatWindow extends Component {
     hidePopups = () => {
         this.props.hideEmoji();
         this.props.hideInputPopup();
-        this.props.hideTimerSetting();
     }
 
     /* eslint-disable max-statements */
@@ -162,8 +159,7 @@ class ChatWindow extends Component {
             user,
             attachments,
             forwardMessage,
-            replyMessage,
-            isShowTimerSetting
+            replyMessage
         } = this.props;
 
         if (!activeChat) {
@@ -217,7 +213,7 @@ class ChatWindow extends Component {
                             <div
                                 className={
                                     'messages grid_' +
-                                    `${isImages || isShowTimerSetting
+                                    `${isImages
                                         ?
                                         isForward
                                             ?
@@ -287,7 +283,6 @@ class ChatWindow extends Component {
                 </section>
                 <FullSize />
                 <Warning />
-                <TimerSetting />
             </React.Fragment>
         );
     }
@@ -308,7 +303,6 @@ ChatWindow.propTypes = {
     showWarning: PropTypes.func,
     deleteForward: PropTypes.func,
     deleteReply: PropTypes.func,
-    hideTimerSetting: PropTypes.func
 };
 
 export default connect(
@@ -326,7 +320,6 @@ export default connect(
         showAttachmentPreloader,
         showWarning,
         deleteForward,
-        deleteReply,
-        hideTimerSetting
+        deleteReply
     }
 )(ChatWindow);
