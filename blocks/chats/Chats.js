@@ -5,10 +5,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import ChatIcon from './ChatIcon';
+import SearchMessageIcon from './SearchMessageIcon';
 
 class Chats extends React.Component {
     render() {
-        const { chats } = this.props;
+        const { chats, searchMessages, showSearchMessages } = this.props;
 
         if (chats.length === 0) {
             return (
@@ -19,6 +20,20 @@ class Chats extends React.Component {
             );
         }
 
+        if (showSearchMessages) {
+            if (!(searchMessages && searchMessages.length)) {
+                return (
+                    <div className="chats__empty-search">
+                        Введите текст для поиска
+                    </div>
+                );
+            }
+
+            return searchMessages.map(message => {
+                return <SearchMessageIcon key={message._id} message={message} />;
+            });
+        }
+
         return chats.map(chat => (
             <ChatIcon key={chat._id} chatProps={chat} />
         ));
@@ -26,11 +41,15 @@ class Chats extends React.Component {
 }
 
 Chats.propTypes = {
-    chats: PropTypes.array
+    chats: PropTypes.array,
+    showSearchMessages: PropTypes.bool,
+    searchMessages: PropTypes.array
 };
 
 export default connect(
     state => ({
-        chats: state.chats
+        chats: state.chats,
+        searchMessages: state.searchMessages.messages,
+        showSearchMessages: state.searchMessages.show
     })
 )(Chats);

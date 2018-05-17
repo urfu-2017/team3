@@ -1,0 +1,71 @@
+.searchmsg-icon {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+}
+
+.searchmsg-icon-open {
+    background: var(--neutral-color);
+}
+
+.searchmsg-icon:hover {
+    background-color: var(--neutral-color-semi-transparent);
+}
+
+.searchmsg-icon:active {
+    background-color: var(--neutral-color);
+}
+
+.searchmsg-icon__logo-box {
+    height: 100%;
+    padding: var(--standard-indent-small);
+    background-color: transparent;
+}
+
+.searchmsg-icon__logo {
+    width: calc((var(--standard-indent) - var(--standard-indent-small)) * 2);
+    height: calc((var(--standard-indent) - var(--standard-indent-small)) * 2);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.searchmsg-icon__info-box {
+    display: flex;
+    flex-direction: column;
+    padding: var(--standard-indent-small);
+}
+
+.searchmsg-icon__upper-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.searchmsg-icon__lastmsg {
+    width: 230px;
+    overflow: hidden;
+    color: var(--text-color-h3);
+    font-size: 90%;
+    text-overflow: ellipsis;
+}
+
+.searchmsg-icon__who {
+    display: inline;
+    font-weight: bold;
+}
+
+.searchmsg-icon__title {
+    width: 190px;
+    overflow: hidden;
+    color: var(--text-color-h1);
+    font-size: 90%;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    white-space: nowrap; 
+}
+
+.searchmsg-icon__date {
+    width: 40px;
+    color: var(--text-color-h3);
+    font-size: 80%;
+    text-align: right;
+}
