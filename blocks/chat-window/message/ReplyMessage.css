@@ -17,6 +17,10 @@
     text-align: right;
 }
 
+.reply__sender {
+    margin-right: var(--standard-indent-small);
+}
+
 .reply__content {
     margin: var(--standard-indent-small) 0;
     color: var(--text-color-h1);
