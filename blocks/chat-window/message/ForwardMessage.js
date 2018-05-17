@@ -78,9 +78,9 @@ class ForwardMessage extends Component {
         }
 
         const { author, forwardFrom, date } = this.props.message;
+        const messageDate = this.prettyDate(date);
         const forwardText = this.formatText(forwardFrom.text);
         const forwardDate = this.prettyDate(forwardFrom.date);
-        const messageDate = this.prettyDate(date);
         const forwardMetadata = this.formatMeta(forwardFrom.meta);
         const forwardImages = this.formatImages(forwardFrom.attachments);
 
