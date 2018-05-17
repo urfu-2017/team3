@@ -26,7 +26,6 @@ class TimerSetting extends Component {
     }
 
     setTimer = e => {
-        // console.log(e.target.value);
         if (e.target.value === 0) {
             this.setState({ secondsTimer: e.target.value });
             this.props.resetSelfDestructTimer();
@@ -36,7 +35,7 @@ class TimerSetting extends Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
                 this.props.hideTimerSetting();

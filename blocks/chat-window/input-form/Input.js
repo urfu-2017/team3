@@ -15,7 +15,8 @@ import {
     showEmoji,
     hideEmoji,
     deleteReply,
-    deleteForward } from '../../../actions/activeChat';
+    deleteForward,
+    resetSelfDestructTimer } from '../../../actions/activeChat';
 
 import Emoji from './Emoji';
 import InputPopup from './popup-additional-functions/InputPopup';
@@ -99,8 +100,9 @@ class Input extends Component {
     };
 
     /* eslint-disable max-statements */
+    /* eslint-disable complexity */
     submitMessage = () => {
-        const { attachments, forwardMessage, replyMessage, user } = this.props;
+        const { attachments, forwardMessage, replyMessage, user, selfDestructTimer } = this.props;
 
         if (this.state.msgText.trim() || attachments.length) {
             this.props.resetAttachments();
@@ -117,12 +119,10 @@ class Input extends Component {
                 author: this.props.user.nickname,
                 attachments: this.props.attachments.map(a => a.url),
                 replyTo: replyMessage,
-                selfDestructTimer: 5000
+                selfDestructTimer: selfDestructTimer && Number(selfDestructTimer) * 1000
             };
 
-            // this.props.selfDestructTimer = null;
-
-            console.log(message);
+            this.props.resetSelfDestructTimer();
 
             const chatId = this.props.activeChat._id;
 
@@ -240,7 +240,8 @@ Input.propTypes = {
     hideInputPopup: PropTypes.func,
     deleteReply: PropTypes.func,
     deleteForward: PropTypes.func,
-    selfDestructTimer: PropTypes.object || PropTypes.number,
+    resetSelfDestructTimer: PropTypes.func,
+    selfDestructTimer: PropTypes.number,
 
     isForward: PropTypes.bool
 };
@@ -263,6 +264,7 @@ export default connect(
         showInputPopup,
         hideInputPopup,
         deleteReply,
-        deleteForward
+        deleteForward,
+        resetSelfDestructTimer
     }
 )(Input);

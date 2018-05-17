@@ -8,17 +8,8 @@
 
 .reply__data {
     display: flex;
-    /* flex-direction: column; */
-    justify-content: space-between;
+    flex-direction: column;
     color: var(--text-color-h3);
-}
-
-.reply__date {
-    text-align: right;
-}
-
-.reply__sender {
-    margin-right: var(--standard-indent-small);
 }
 
 .reply__content {
