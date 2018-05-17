@@ -61,6 +61,7 @@ class AddUser extends Component {
                             placeholder="Найти пользователя"
                             onKeyPress={this.searchUsers}
                             ref={input => { this.nameInput = input; }}
+                            autoFocus
                         />
                     </div>
                     <div className="adduser__list">

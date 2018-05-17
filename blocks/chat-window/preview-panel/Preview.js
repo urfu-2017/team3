@@ -56,7 +56,14 @@ class Preview extends Component {
         }
 
         return (
-            <div className="preview-place">
+            <div className={
+                'preview-place grid_' +
+                `${this.props.isForward
+                    ?
+                    '3_5'
+                    :
+                    '4_6'}`
+            }>
                 <img
                     src="/static/clear_attachments.svg"
                     onClick={this.props.resetAttachments}
@@ -75,7 +82,9 @@ Preview.propTypes = {
     attachments: PropTypes.array,
     deleteAttachment: PropTypes.func,
     showFullSize: PropTypes.func,
-    resetAttachments: PropTypes.func
+    resetAttachments: PropTypes.func,
+
+    isForward: PropTypes.bool
 };
 
 export default connect(

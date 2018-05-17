@@ -102,11 +102,6 @@ class Input extends Component {
     submitMessage = () => {
         const { attachments, forwardMessage, replyMessage } = this.props;
 
-        if (forwardMessage) {
-            this.props.sendMessage(this.props.activeChat._id, forwardMessage);
-            this.props.deleteForward();
-        }
-
         if (this.state.msgText.trim() || attachments.length) {
             this.props.resetAttachments();
             this.setState({
@@ -133,6 +128,11 @@ class Input extends Component {
                 this.props.deleteReply();
             }
         }
+
+        if (forwardMessage) {
+            this.props.sendMessage(this.props.activeChat._id, forwardMessage);
+            this.props.deleteForward();
+        }
     };
 
     // прослушка отправки на Enter
@@ -145,7 +145,14 @@ class Input extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="chat-input">
+                <div className={
+                    'chat-input grid_' +
+                    `${this.props.isForward
+                        ?
+                        '5_6'
+                        :
+                        '6_7'}`
+                }>
                     <input
                         onChange={this.changeText}
                         onKeyDown={this.keySubmitMessage}
@@ -219,7 +226,9 @@ Input.propTypes = {
     inputPopupActive: PropTypes.bool,
     hideInputPopup: PropTypes.func,
     deleteReply: PropTypes.func,
-    deleteForward: PropTypes.func
+    deleteForward: PropTypes.func,
+
+    isForward: PropTypes.bool
 };
 
 export default connect(
