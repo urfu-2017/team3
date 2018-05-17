@@ -1,6 +1,6 @@
 .emoji-mart {
     position: absolute;
-    z-index: 3;
+    z-index: 4;
     right: calc(
         (var(--icon-size) / 2) +
         var(--standard-indent-small)

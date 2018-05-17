@@ -1,7 +1,7 @@
 .message {
     position: relative;
     min-width: 20%;
-    max-width: 65%;
+    max-width: calc(100% - 200px);
     margin-top: calc(var(--standard-indent-small) * 2);
 }
 
@@ -93,7 +93,7 @@
 }
 
 .message__sender {
-    margin-right: var(--standard-indent-small);
+    margin-right: calc(var(--standard-indent-small) * 1.5);
 }
 
 .message__date {
@@ -108,6 +108,7 @@
 }
 
 .message__content a {
+    color: var(--base-color);
     text-decoration: none;
 }
 
@@ -118,14 +119,15 @@
 .message__attachments {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .message__attachment {
     display: block;
     max-width: 90%;
-    max-height: 200px;
-    object-fit: contain;
+    height: 100px;
+    margin: var(--standard-indent-small) 0;
+    object-fit: cover;
 }
 
 .message__attachment:hover {
@@ -173,10 +175,10 @@
     display: flex;
     visibility: hidden;
     position: absolute;
-    z-index: 1;;
+    z-index: 2;
     bottom: var(--icon-size);
     flex-direction: column;
-    max-width: calc(var(--standard-indent) * 3);
+    max-width: calc(var(--standard-indent) * 4);
     padding: var(--standard-indent-small);
     border-radius: var(--standard-indent-small);
     background: var(--text-color-h1);
@@ -190,11 +192,11 @@
     text-overflow: ellipsis;
 }
 
-.friend .reaction__users {
+.message_friend .reaction__users {
     left: 0;
 }
 
-.my .reaction__users {
+.message_my .reaction__users {
     right: 0;
 }
 
@@ -227,17 +229,42 @@
     margin: var(--standard-indent-small) 0;
 }
 
-.message + .emoji-mart {
-    bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3);
-    width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important;
+.message > .emoji-mart {
+    /* не буду удалять, вдруг пригодится, я это полчаса высчитывал */
+    /* bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3); */
+    top: 0;
+    /* width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important; */
+    width: 165px !important;
     height: 200px;
+    max-height: calc(100% - var(--standard-indent-small) / 2);
     background-color: var(--background-color);
 }
 
-.message_friend + .emoji-mart {
-    right: calc(1% + var(--standard-indent-small) * 2 / 2);
+.message_friend > .emoji-mart {
+    /* right: calc(1% + var(--standard-indent-small) * 2 / 2); */
+    right: -190px;
 }
 
-.message_my + .emoji-mart {
-    left: calc(1% + var(--standard-indent-small) * 2 / 2);
+.message_my > .emoji-mart {
+    /* left: calc(1% + var(--standard-indent-small) * 2 / 2); */
+    left: -190px;
+}
+
+.disabled:hover {
+    background-color: transparent;
+    cursor: default;
+}
+
+.message__forward_content {
+    margin-top: var(--standard-indent-small);
+    margin-right: var(--standard-indent-small);
+    margin-left: calc(var(--standard-indent-small) * 2);
+    padding: var(--standard-indent-small);
+    border-radius: calc(var(--standard-indent-small) / 4);
+    font-size: 95%;
+    background-color: var(--spare-color-transparent);
+}
+
+.message__forward_content > .message__data {
+    justify-content: flex-start;
 }

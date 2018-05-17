@@ -33,6 +33,10 @@ export default function chats(state = [], action) {
         return updateChat(state, action.chat);
     }
 
+    if (action.type === 'DESTRUCT_MESSAGE') {
+        return destructMessage(state, action.chatId, action.messageId);
+    }
+
     return state;
 }
 
@@ -64,6 +68,15 @@ function updateChat(oldChats, updatedChat) {
         return {
             ...oldChat,
             ...updatedChat };
+    });
+}
+
+function destructMessage(oldChats, chatId, messageId) {
+    return updateChatImmutable(oldChats, chatId, oldChat => {
+        return {
+            ...oldChat,
+            messages: oldChat.messages.filter(m => m._id !== messageId)
+        };
     });
 }
 

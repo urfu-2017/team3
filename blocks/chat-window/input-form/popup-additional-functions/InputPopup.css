@@ -1,7 +1,7 @@
 .chat-input__burger-content {
     display: flex;
     position: absolute;
-    z-index: 5;
+    z-index: 6;
     right: calc(
         (var(--icon-size) / 2) +
         var(--standard-indent-small)
@@ -16,7 +16,7 @@
     justify-content: space-between;
     width: calc(
         var(--icon-size) +
-        (var(--standard-indent) * 0.5) +
+        var(--standard-indent) +
         (var(--standard-indent) * 0.5 * 2) +
         (var(--icon-size) * 5)
     );
@@ -27,8 +27,8 @@
     box-shadow: 
         0 
         0 
-        calc(var(--border-size-bold)) 
-        var(--border-size) 
+        var(--border-size-bold)
+        var(--border-size-bold) 
         var(--spare-color);
 }
 
@@ -46,12 +46,12 @@
         var(--border-size-bold) 
         var(--border-size-bold) 
         var(--border-size) 
-        0 
+        0
         var(--spare-color);
 }
 
 .chat-input__burger-content > .chat-input__button {
-    z-index: 10;
+    z-index: 11;
     box-sizing: content-box;
     width: 100%;
     padding: calc(var(--standard-indent-small) * 0.25);
@@ -66,12 +66,12 @@
         (var(--standard-indent) * 0.5)
     );
     color: var(--text-color-h2);
-    font-size: .8rem;
+    font-size: 80%;
     line-height: var(--icon-size);
 }
 
-.chat-input__audioinput-btn {
-    background-image: url(/static/microphone.svg);
+.chat-input__attachment-btn {
+    background-image: url(/static/attachment.svg);
 }
 
 .chat-input__autodestroy-btn {

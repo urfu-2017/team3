@@ -7,7 +7,7 @@ import { receiveMessage } from './chats';
 import types from './types';
 
 export const addAttachments = files => async dispatch => {
-    const attachments = await Promise.all([...files].map(async file => {
+    const attachments = await Promise.all(files.map(async file => {
         const formData = new FormData();
 
         formData.append('image', file);
@@ -61,4 +61,35 @@ export const resetAttachments = () => dispatch => {
 
 export const showInputPopup = () => dispatch => {
     dispatch({ type: types.SHOW_INPUT_POPUP });
+};
+
+export const showAttachmentPreloader = isUploading => dispatch => {
+    dispatch({ type: types.ATTACHMENTS_UPLOADING, isUploading });
+};
+
+export const setForward = (message, user) => dispatch => {
+    const forwardMessage = {
+        ...message,
+        author: user.nickname,
+        forwardFrom: message.author
+    };
+
+    dispatch({ type: types.SET_FORWARD, forwardMessage });
+};
+
+export const deleteForward = () => dispatch => {
+    dispatch({ type: types.DELETE_FORWARD });
+};
+
+export const setReply = message => dispatch => {
+    const replyMessage = {
+        ...message,
+        replyTo: null
+    };
+
+    dispatch({ type: types.SET_REPLY, replyMessage });
+};
+
+export const deleteReply = () => dispatch => {
+    dispatch({ type: types.DELETE_REPLY });
 };

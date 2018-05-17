@@ -1,4 +1,5 @@
 .backdrop {
+  --interval: 0.12s;
   display: flex;
   box-sizing: border-box;
   align-items: center;
@@ -18,8 +19,8 @@
   margin: 5px;
   -webkit-animation-name: loader;
           animation-name: loader;
-  -webkit-animation-duration: 0.6s;
-          animation-duration: 0.6s;
+  -webkit-animation-duration: calc(var(--interval) * 5);
+          animation-duration: calc(var(--interval) * 5);
   -webkit-animation-iteration-count: infinite;
           animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
@@ -28,24 +29,24 @@
 }
 
 .dot:nth-child(1) {
-  -webkit-animation-delay: 0.12s;
-          animation-delay: 0.12s;
+  -webkit-animation-delay: calc(var(--interval) * 1);
+          animation-delay: calc(var(--interval) * 1);
 }
 .dot:nth-child(2) {
-  -webkit-animation-delay: 0.24s;
-          animation-delay: 0.24s;
+  -webkit-animation-delay: calc(var(--interval) * 2);
+          animation-delay: calc(var(--interval) * 2);
 }
 .dot:nth-child(3) {
-  -webkit-animation-delay: 0.36s;
-          animation-delay: 0.36s;
+  -webkit-animation-delay: calc(var(--interval) * 3);
+          animation-delay: calc(var(--interval) * 3);
 }
 .dot:nth-child(4) {
-  -webkit-animation-delay: 0.48s;
-          animation-delay: 0.48s;
+  -webkit-animation-delay: calc(var(--interval) * 4);
+          animation-delay: calc(var(--interval) * 4);
 }
 .dot:nth-child(5) {
-  -webkit-animation-delay: 0.6s;
-          animation-delay: 0.6s;
+  -webkit-animation-delay: calc(var(--interval) * 5);
+          animation-delay: calc(var(--interval) * 5);
 }
 
 @-webkit-keyframes loader {

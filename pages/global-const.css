@@ -37,13 +37,13 @@
     --base-color-semi-transparent: #C66319dd;
     --base-color-transparent: #C66319bb;
 
-    --spare-color: #797979ff;
-    --spare-color-semi-transparent: #79797999;
-    --spare-color-transparent: #79797933;
+    --spare-color: #bbbf;
+    --spare-color-semi-transparent: #bbb9;
+    --spare-color-transparent: #bbb3;
 
-    --neutral-color: #141414ff;
-    --neutral-color-semi-transparent: #14141499;
-    --neutral-color-transparent: #14141433;
+    --neutral-color: #242424ff;
+    --neutral-color-semi-transparent: #24242499;
+    --neutral-color-transparent: #24242433;
 
     --background-color: #000;
     --darkness-color: #000d;

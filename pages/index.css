@@ -23,17 +23,36 @@ body {
     background-color: var(--background-color);
 }
 
-.chats__list {
-    width: 100%;
+.chats__list_wrapper {
     height: calc(100% - var(--standard-indent) * 2);
     overflow: hidden;
 }
 
-.chats__list_wrapper {
+.chats__no-chats {
+    width: 310px;
     height: 100%;
-    margin-right: -17px;
+}
+
+.chats__list {
+    height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
+}
+
+@supports not (-webkit-appearance: radio) {
+    .chats__list {
+        margin-right: -17px;
+        overflow-y: scroll;
+    }    
+}
+
+.chats__list::-webkit-scrollbar {
+    width: 4px;
+    background-color: var(--neutral-color); 
+}
+
+.chats__list::-webkit-scrollbar-thumb { 
+    border-radius: 2px;
+    background-color: var(--spare-color);
 }
 
 .dialog {
@@ -43,7 +62,7 @@ body {
 .darkness {
     display: flex;
     position: absolute;
-    z-index: 30;
+    z-index: 31;
     top: 0;
     left: 0;
     align-items: center;
@@ -52,6 +71,10 @@ body {
     height: 100%;
     margin: auto;
     background-color: var(--darkness-color);
+}
+
+.darkness_transparent {
+    background-color: transparent;
 }
 
 .substrate {

@@ -39,7 +39,7 @@ class ChatIcon extends Component {
         return (
             <div className={chatClassName} onClick={this.openChat}>
                 <div className="chat-icon__logo-box">
-                    <img className="chat-icon__logo" src={avatar} />
+                    <img className="chat-icon__logo" src={avatar} draggable="false" />
                 </div>
                 <div className="chat-icon__info-box">
                     <div className="chat-icon__upper-box">

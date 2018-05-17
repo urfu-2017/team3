@@ -5,23 +5,26 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { searchUsers, hideAddUser } from '../../../actions/modals';
+import { searchUsers, hideAddUser, clearFoundUsers } from '../../../actions/modals';
 
 import PureProfile from './PureProfileForList';
 
 /* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/jsx-closing-bracket-location */
 
 import './AddUser.css';
 
 class AddUser extends Component {
     hideAddUser = () => {
         this.props.hideAddUser();
+        this.props.clearFoundUsers();
     }
 
     componentDidMount() {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
                 this.props.hideAddUser();
+                this.props.clearFoundUsers();
             }
         });
     }
@@ -40,7 +43,16 @@ class AddUser extends Component {
         }
 
         return (
-            <div className="darkness" onClick={this.hideAddUser}>
+            <div
+                className={
+                    this.props.chats.length
+                        ?
+                        'darkness'
+                        :
+                        'darkness darkness_transparent'
+                }
+                onClick={this.hideAddUser}
+                >
                 <div className="adduser" onClick={e => e.stopPropagation()}>
                     <div className="adduser__input_wrapper">
                         <input
@@ -49,6 +61,7 @@ class AddUser extends Component {
                             placeholder="Найти пользователя"
                             onKeyPress={this.searchUsers}
                             ref={input => { this.nameInput = input; }}
+                            autoFocus
                         />
                     </div>
                     <div className="adduser__list">
@@ -77,19 +90,23 @@ class AddUser extends Component {
 AddUser.propTypes = {
     user: PropTypes.object,
     show: PropTypes.bool,
+    chats: PropTypes.array,
     searchUsers: PropTypes.func,
     hideAddUser: PropTypes.func,
-    foundUsers: PropTypes.array
+    foundUsers: PropTypes.array,
+    clearFoundUsers: PropTypes.func
 };
 
 export default connect(
     state => ({
         user: state.user,
+        chats: state.chats,
         show: state.modal.show,
         foundUsers: state.modal.foundUsers
     }),
     {
         searchUsers,
-        hideAddUser
+        hideAddUser,
+        clearFoundUsers
     }
 )(AddUser);

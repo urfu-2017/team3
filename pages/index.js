@@ -6,7 +6,13 @@ import PropTypes from 'prop-types';
 import withRedux from 'next-redux-wrapper';
 import Router from 'next/router';
 
-import { receiveChat, openChat, updateMessage, updateChat, receiveMessage } from '../actions/chats';
+import {
+    receiveChat,
+    openChat,
+    updateMessage,
+    updateChat,
+    receiveMessage,
+    destructMessage } from '../actions/chats';
 import types from '../actions/types';
 import makeStore from '../store';
 
@@ -112,6 +118,14 @@ class MainPage extends React.Component {
         });
     }
 
+    setupDestructMessage(socket) {
+        socket.on('destruct_message', data => {
+            const { chatId, messageId } = data;
+
+            this.props.destructMessage(chatId, messageId);
+        });
+    }
+
     componentDidMount() {
         const socket = getSocket();
 
@@ -120,6 +134,7 @@ class MainPage extends React.Component {
         this.setupReceiveChat(socket);
         this.setupUpdateMessage(socket);
         this.setupUpdateChat(socket);
+        this.setupDestructMessage(socket);
 
         this.setTheme();
 
@@ -166,8 +181,8 @@ class MainPage extends React.Component {
                         <div className="chats__controls">
                             <Controls />
                         </div>
-                        <div className="chats__list">
-                            <div className="chats__list_wrapper">
+                        <div className="chats__list_wrapper">
+                            <div className="chats__list">
                                 <Chats />
                             </div>
                         </div>
@@ -198,7 +213,8 @@ MainPage.propTypes = {
     invite: PropTypes.string,
     updateMessage: PropTypes.func,
     receiveChat: PropTypes.func,
-    updateChat: PropTypes.func
+    updateChat: PropTypes.func,
+    destructMessage: PropTypes.func
 };
 
 export default withRedux(makeStore,
@@ -207,7 +223,8 @@ export default withRedux(makeStore,
         receiveChat,
         openChat,
         updateMessage,
-        updateChat
+        updateChat,
+        destructMessage
     }
 )(MainPage);
 

@@ -5,19 +5,28 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
+import { connect } from 'react-redux';
 
 import getSocket from '../../../pages/socket';
 
+import { setForward, setReply } from '../../../actions/activeChat';
+
+import { showFullSize } from '../../../actions/modals';
+
 import EmojiPicker from './EmojiToMessage';
+import ReplyMessage from './ReplyMessage';
+import ForwardMessage from './ForwardMessage';
+
 import './Message.css';
 
 /* eslint-disable react/jsx-no-bind */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-closing-bracket-location */
 
-export default class Message extends Component {
+class Message extends Component {
     state = {};
 
     addEmoji = emoji => {
-
         const chatId = this.props.activeChat._id;
         const messageId = this.props.message._id;
 
@@ -33,11 +42,41 @@ export default class Message extends Component {
         this.setState({ showEmojiToMsg: false });
     };
 
+    instantAddEmoji = e => {
+        const id =
+        e.target.dataset.emojiName ||
+        e.target.parentElement.dataset.emojiName ||
+        e.target.parentElement.parentElement.dataset.emojiName;
+
+        this.addEmoji({ id });
+    }
+
     componentDidMount() {
         document.addEventListener('keydown', e => {
             if (e.keyCode === 27) {
                 this.setState({ showEmojiToMsg: false });
             }
+        });
+        document.addEventListener('click', e => {
+            if (e.target.className.indexOf('message__add-emoji') === -1) {
+                this.setState({ showEmojiToMsg: false });
+            }
+        });
+
+        const { message, activeChat, user } = this.props;
+
+        if (message.selfDestructTimer && message.author !== user.nickname) {
+            this.initializeSelfDestruct(message, activeChat._id);
+        }
+    }
+
+    initializeSelfDestruct(message, chatId) {
+        const socket = getSocket();
+
+        socket.emit('destruct_message', {
+            chatId,
+            messageId: message._id,
+            selfDestructTimer: message.selfDestructTimer
         });
     }
 
@@ -46,6 +85,18 @@ export default class Message extends Component {
 
         this.setState({ showEmojiToMsg });
     };
+
+    setForward = () => {
+        const { message, user } = this.props;
+
+        this.props.setForward(message, user);
+    }
+
+    setReply = () => {
+        const { message } = this.props;
+
+        this.props.setReply(message);
+    }
 
     componentWillMount() {
         this.setState({ showEmojiToMsg: this.props.showEmojiToMsg });
@@ -56,7 +107,7 @@ export default class Message extends Component {
             if (i % 2) {
                 return (
                     <Emoji
-                        key={Math.floor(Math.random() * 1000000)}
+                        key={i}
                         emoji={chunk}
                         set="emojione"
                         size={20}
@@ -67,7 +118,7 @@ export default class Message extends Component {
             return (
                 <ReactMarkdown
                     renderers={{ root: 'span', paragraph: 'span' }}
-                    key={Math.floor(Math.random() * 1000000)}
+                    key={i}
                     source={chunk}
                 />
             );
@@ -86,7 +137,7 @@ export default class Message extends Component {
                 <React.Fragment />
             ) : (
                 <a className="metadata" href={meta.url}>
-                    <img src={meta.image} className="metadata__image" />
+                    <img src={meta.image} className="metadata__image" draggable="false" />
                     <h3 className="metadata__header">{meta.title || meta.author}</h3>
                     <span className="metadata__description">{meta.description}</span>
                 </a>
@@ -94,12 +145,14 @@ export default class Message extends Component {
 
         const newText = this.formatToEmoji(text);
 
-        const images = attachments.map(link => {
+        const images = attachments.map((link, i) => {
             return (
                 <img
                     className="message__attachment"
                     src={link}
-                    key={Math.floor(Math.random() * 10000000)}
+                    key={i}
+                    onClick={this.props.showFullSize}
+                    draggable="false"
                 />
             );
         });
@@ -114,9 +167,13 @@ export default class Message extends Component {
                 });
 
                 return (
-                    <div className="reaction" key={r.emojiName}>
+                    <div
+                        className="reaction"
+                        key={r.emojiName}
+                        data-emoji-name={r.emojiName}
+                        onClick={this.instantAddEmoji}
+                        >
                         <Emoji
-                            key={Math.floor(Math.random() * 1000000)}
                             emoji={r.emojiName}
                             set="emojione"
                             size={16}
@@ -132,7 +189,7 @@ export default class Message extends Component {
 
     render() {
         const { message, user } = this.props;
-        const { text, author, date, meta, attachments } = message;
+        const { text, author, date, meta, attachments, replyTo, forwardFrom } = message;
         const { showEmojiToMsg } = this.state;
 
         const reactions = message.reactions || {};
@@ -159,29 +216,45 @@ export default class Message extends Component {
                             />
                             <div
                                 className="message__control message__reply"
+                                onClick={this.setReply}
                                 title="Ответить"
                             />
                             <div
                                 className="message__control message__forward"
+                                onClick={this.setForward}
                                 title="Переслать"
                             />
                         </div>
-                        <div className="message__body message__body_my">
-                            <div className="message__data">
-                                <span className="message__sender">{author}</span>
-                                <span className="message__date">{goodDate}</span>
-                            </div>
-                            <div className="message__content">{newText}</div>
-                            <div className="message__attachments">
-                                {images}
-                            </div>
-                            {metadata}
-                        </div>
+                        {
+                            forwardFrom
+                                ?
+                                (
+                                    <ForwardMessage
+                                        message={message}
+                                        my={user.id === author}
+                                    />
+                                )
+                                :
+                                (
+                                    <div className="message__body message__body_my">
+                                        <div className="message__data">
+                                            <span className="message__sender">{author}</span>
+                                            <span className="message__date">{goodDate}</span>
+                                        </div>
+                                        <ReplyMessage message={replyTo} />
+                                        <div className="message__content">{newText}</div>
+                                        <div className="message__attachments">
+                                            {images}
+                                        </div>
+                                        {metadata}
+                                    </div>
+                                )
+                        }
                         <div className="message__reactions">
                             <div className="message__reactions_to-left">{peopleEmoji}</div>
                         </div>
+                        <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
                     </div>
-                    <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
                 </React.Fragment>
             );
         }
@@ -198,27 +271,45 @@ export default class Message extends Component {
                         />
                         <div
                             className="message__control message__reply"
+                            onClick={this.setReply}
                             title="Ответить"
                         />
                         <div
                             className="message__control message__forward"
+                            onClick={this.setForward}
                             title="Переслать"
                         />
                     </div>
-                    <div className="message__body message__body_friend">
-                        <div className="message__data">
-                            <span className="message__sender">{author}</span>
-                            <span className="message__date">{goodDate}</span>
-                        </div>
-                        <div className="message__content">{newText}</div>
-                        {images}
-                        {metadata}
-                    </div>
+                    {
+                        forwardFrom
+                            ?
+                            (
+                                <ForwardMessage
+                                    message={message}
+                                    my={user.id === author}
+                                />
+                            )
+                            :
+                            (
+                                <div className="message__body message__body_friend">
+                                    <div className="message__data">
+                                        <span className="message__sender">{author}</span>
+                                        <span className="message__date">{goodDate}</span>
+                                    </div>
+                                    <ReplyMessage message={replyTo} />
+                                    <div className="message__content">{newText}</div>
+                                    <div className="message__attachments">
+                                        {images}
+                                    </div>
+                                    {metadata}
+                                </div>
+                            )
+                    }
                     <div className="message__reactions">
                         <div className="message__reactions_to-left">{peopleEmoji}</div>
                     </div>
+                    <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
                 </div>
-                <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
             </React.Fragment>
         );
     }
@@ -228,5 +319,16 @@ Message.propTypes = {
     message: PropTypes.object,
     user: PropTypes.object,
     showEmojiToMsg: PropTypes.bool,
-    activeChat: PropTypes.object
+    activeChat: PropTypes.object,
+    showFullSize: PropTypes.func,
+    setForward: PropTypes.func,
+    setReply: PropTypes.func
 };
+
+export default connect(
+    () => ({}), {
+        showFullSize,
+        setForward,
+        setReply
+    }
+)(Message);
