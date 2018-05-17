@@ -35,7 +35,7 @@
     outline: none;
     background-color: var(--spare-color-transparent);
     color: var(--text-color-h0);
-    font-size: 100%;
+    font-size: 12px;
 }
 
 .chats__search-input:focus {

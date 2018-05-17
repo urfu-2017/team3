@@ -12,6 +12,11 @@ class Controls extends Component {
     showSearch = () => {
         const { isSearchString } = this.state;
 
+        if (isSearchString) {
+            this.props.onHideSearchMessages();
+        } else {
+            this.props.onShowSearchMessages();
+        }
         this.setState({ isSearchString: !isSearchString });
     }
 
@@ -32,6 +37,41 @@ class Controls extends Component {
         }
     }
 
+    messageSearch = e => {
+        if (e.which === 13) {
+            const { user, chats } = this.props;
+
+            const searchMessages = [];
+
+            chats.forEach(chat => {
+                chat.messages.forEach(message => {
+                    // вот ОНО - регулярка поиска сообщений
+                    const regexp = new RegExp(e.target.value.trim(), 'i');
+
+                    if (message.text.match(regexp) && e.target.value.trim().length) {
+                        // ID чата для открытия в будущем
+                        message.chatId = chat._id;
+                        // Если группа, то аватар сообщения и название группы
+                        if (chat.type === 'group') {
+                            message.avatar = chat.avatar;
+                            message.group = chat.title;
+                        } else { // Если личка, то аватар и ник того, с кем чат
+                            chat.members.forEach(member => {
+                                if (member.nickname !== user.nickname) {
+                                    message.avatar = member.avatar;
+                                    message.ls = member.nickname;
+                                }
+                            });
+                        }
+                        searchMessages.push(message);
+                    }
+                });
+            });
+
+            this.props.updateSearchMessages(searchMessages);
+        }
+    }
+
     showProfile = () => {
         const { user } = this.props;
 
@@ -48,7 +88,8 @@ class Controls extends Component {
                     <input
                         type="text"
                         className="chats__search-input"
-                        placeholder="Найти пользователя"
+                        onKeyPress={this.messageSearch}
+                        placeholder="Поиск по сообщениям"
                         autoFocus
                     />
                     <img
@@ -108,7 +149,10 @@ Controls.propTypes = {
     onUsersFound: PropTypes.func,
     onShowProfile: PropTypes.func,
     onShowAddUser: PropTypes.func,
-    onShowCreateGroup: PropTypes.func
+    onShowCreateGroup: PropTypes.func,
+    updateSearchMessages: PropTypes.func,
+    onShowSearchMessages: PropTypes.func,
+    onHideSearchMessages: PropTypes.func
 };
 
 export default connect(
@@ -128,6 +172,15 @@ export default connect(
         },
         onShowCreateGroup: () => {
             dispatch({ type: 'SHOW_CREATEGROUP' });
+        },
+        updateSearchMessages: messages => {
+            dispatch({ type: 'UPDATE_SEARCHMESSAGES', messages });
+        },
+        onShowSearchMessages: () => {
+            dispatch({ type: 'SHOW_SEARCHMESSAGES' });
+        },
+        onHideSearchMessages: () => {
+            dispatch({ type: 'HIDE_SEARCHMESSAGES' });
         }
     })
 )(Controls);

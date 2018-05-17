@@ -9,13 +9,15 @@ import activeChat from './activeChat';
 import user from './user';
 import modal from './modal';
 import loader from './loader';
+import searchMessages from './searchMessages';
 
 const reducer = combineReducers({
     chats,
     activeChat,
     user,
     modal,
-    loader
+    loader,
+    searchMessages
 });
 
 export default function makeStore(initialState) {
