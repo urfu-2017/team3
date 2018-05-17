@@ -145,8 +145,10 @@ class ChatWindow extends Component {
         }
     }
 
+    /* eslint-disable complexity */
+    /* eslint-disable no-nested-ternary */
     render() {
-        const { activeChat, user, attachments } = this.props;
+        const { activeChat, user, attachments, forwardMessage, replyMessage } = this.props;
 
         if (!activeChat) {
             return (
@@ -160,6 +162,9 @@ class ChatWindow extends Component {
         const avatar = chat.getAvatarFor(user);
         const title = chat.getTitleFor(user);
 
+        const isForward = Boolean(forwardMessage || replyMessage);
+        const isImages = Boolean(attachments.length);
+
         return (
             <React.Fragment>
                 <section
@@ -169,7 +174,7 @@ class ChatWindow extends Component {
                     onDragLeave={this.toggleDragLeave}
                     onDrop={this.toggleDrop}
                     >
-                    <div className="chat-header" onClick={this.hidePopups}>
+                    <div className="chat-header grid_1_2" onClick={this.hidePopups}>
                         <img
                             className="chat-header__img"
                             alt="chatavatar"
@@ -180,7 +185,7 @@ class ChatWindow extends Component {
                         />
                         <span
                             className="chat-header__name"
-                            title="Посмотреть информацию"
+                            title={title}
                             onClick={() => this.showProfile(activeChat)}
                             >
                             {title}
@@ -194,8 +199,22 @@ class ChatWindow extends Component {
                         :
                         (
                             <div
-                                className={'messages messages_grid_' +
-                                `${attachments.length ? 'small' : 'large'}`}
+                                className={
+                                    'messages grid_' +
+                                    `${isImages
+                                        ?
+                                        isForward
+                                            ?
+                                            '2_3'
+                                            :
+                                            '2_4'
+                                        :
+                                        isForward
+                                            ?
+                                            '2_5'
+                                            :
+                                            '2_6'}`
+                                }
                                 onClick={this.hidePopups}>
                                 {activeChat.messages.map(message => (
                                     <Message
@@ -210,12 +229,34 @@ class ChatWindow extends Component {
                             </div>
                         )
                     }
-                    <Preloader />
-                    <Preview />
+                    <Preloader isForward={isForward} />
+                    <Preview isForward={isForward} />
                     <Input
                         activeChat={this.props.activeChat}
                         checkFiles={this.checkFiles}
+                        isForward={isForward}
                     />
+                    {
+                        isForward
+                            ?
+                            (
+                                <div className="current-forward grid_6_7">
+                                    <div className="current-forward__author">
+                                        {forwardMessage
+                                            ?
+                                            forwardMessage.forwardFrom
+                                            :
+                                            replyMessage.author
+                                        }:
+                                    </div>
+                                    <div className="current-forward__text">
+                                        пересланное сообщение
+                                    </div>
+                                </div>
+                            )
+                            :
+                            null
+                    }
                 </section>
                 <FullSize />
                 <Warning />
@@ -227,6 +268,8 @@ class ChatWindow extends Component {
 ChatWindow.propTypes = {
     user: PropTypes.object,
     activeChat: PropTypes.object,
+    forwardMessage: PropTypes.object,
+    replyMessage: PropTypes.object,
 
     showProfile: PropTypes.func,
     attachments: PropTypes.array,
@@ -241,7 +284,9 @@ export default connect(
     state => ({
         user: state.user,
         activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id),
-        attachments: state.activeChat && state.activeChat.attachments
+        attachments: state.activeChat && state.activeChat.attachments,
+        forwardMessage: state.activeChat && state.activeChat.forwardMessage,
+        replyMessage: state.activeChat && state.activeChat.replyMessage
     }), {
         showProfile,
         addAttachments,

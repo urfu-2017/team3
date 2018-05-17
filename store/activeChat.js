@@ -71,7 +71,8 @@ export default function activeChat(state = null, action) {
     if (action.type === 'SET_FORWARD') {
         return {
             ...state,
-            forwardMessage: action.forwardMessage
+            forwardMessage: action.forwardMessage,
+            replyMessage: null
         };
     }
 
@@ -85,7 +86,8 @@ export default function activeChat(state = null, action) {
     if (action.type === 'SET_REPLY') {
         return {
             ...state,
-            replyMessage: action.replyMessage
+            replyMessage: action.replyMessage,
+            forwardMessage: null
         };
     }
 

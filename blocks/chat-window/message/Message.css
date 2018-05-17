@@ -93,7 +93,7 @@
 }
 
 .message__sender {
-    margin-right: var(--standard-indent-small);
+    margin-right: calc(var(--standard-indent-small) * 1.5);
 }
 
 .message__date {
@@ -108,6 +108,7 @@
 }
 
 .message__content a {
+    color: var(--base-color);
     text-decoration: none;
 }
 
@@ -118,7 +119,7 @@
 .message__attachments {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .message__attachment {
@@ -247,4 +248,23 @@
 .message_my > .emoji-mart {
     /* left: calc(1% + var(--standard-indent-small) * 2 / 2); */
     left: -190px;
+}
+
+.disabled:hover {
+    background-color: transparent;
+    cursor: default;
+}
+
+.message__forward_content {
+    margin-top: var(--standard-indent-small);
+    margin-right: var(--standard-indent-small);
+    margin-left: calc(var(--standard-indent-small) * 2);
+    padding: var(--standard-indent-small);
+    border-radius: calc(var(--standard-indent-small) / 4);
+    font-size: 95%;
+    background-color: var(--spare-color-transparent);
+}
+
+.message__forward_content > .message__data {
+    justify-content: flex-start;
 }

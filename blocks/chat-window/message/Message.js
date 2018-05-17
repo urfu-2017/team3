@@ -14,6 +14,8 @@ import { setForward, setReply } from '../../../actions/activeChat';
 import { showFullSize } from '../../../actions/modals';
 
 import EmojiPicker from './EmojiToMessage';
+import ReplyMessage from './ReplyMessage';
+import ForwardMessage from './ForwardMessage';
 
 import './Message.css';
 
@@ -92,6 +94,7 @@ class Message extends Component {
 
     setReply = () => {
         const { message } = this.props;
+        console.log(message);
 
         this.props.setReply(message);
     }
@@ -187,7 +190,7 @@ class Message extends Component {
 
     render() {
         const { message, user } = this.props;
-        const { text, author, date, meta, attachments } = message;
+        const { text, author, date, meta, attachments, replyTo, forwardFrom } = message;
         const { showEmojiToMsg } = this.state;
 
         const reactions = message.reactions || {};
@@ -223,17 +226,31 @@ class Message extends Component {
                                 title="Переслать"
                             />
                         </div>
-                        <div className="message__body message__body_my">
-                            <div className="message__data">
-                                <span className="message__sender">{author}</span>
-                                <span className="message__date">{goodDate}</span>
-                            </div>
-                            <div className="message__content">{newText}</div>
-                            <div className="message__attachments">
-                                {images}
-                            </div>
-                            {metadata}
-                        </div>
+                        {
+                            forwardFrom
+                                ?
+                                (
+                                    <ForwardMessage
+                                        message={message}
+                                        my={user.id === author}
+                                    />
+                                )
+                                :
+                                (
+                                    <div className="message__body message__body_my">
+                                        <div className="message__data">
+                                            <span className="message__sender">{author}</span>
+                                            <span className="message__date">{goodDate}</span>
+                                        </div>
+                                        <ReplyMessage message={replyTo} />
+                                        <div className="message__content">{newText}</div>
+                                        <div className="message__attachments">
+                                            {images}
+                                        </div>
+                                        {metadata}
+                                    </div>
+                                )
+                        }
                         <div className="message__reactions">
                             <div className="message__reactions_to-left">{peopleEmoji}</div>
                         </div>
@@ -264,15 +281,31 @@ class Message extends Component {
                             title="Переслать"
                         />
                     </div>
-                    <div className="message__body message__body_friend">
-                        <div className="message__data">
-                            <span className="message__sender">{author}</span>
-                            <span className="message__date">{goodDate}</span>
-                        </div>
-                        <div className="message__content">{newText}</div>
-                        {images}
-                        {metadata}
-                    </div>
+                    {
+                        forwardFrom
+                            ?
+                            (
+                                <ForwardMessage
+                                    message={message}
+                                    my={user.id === author}
+                                />
+                            )
+                            :
+                            (
+                                <div className="message__body message__body_friend">
+                                    <div className="message__data">
+                                        <span className="message__sender">{author}</span>
+                                        <span className="message__date">{goodDate}</span>
+                                    </div>
+                                    <ReplyMessage message={replyTo} />
+                                    <div className="message__content">{newText}</div>
+                                    <div className="message__attachments">
+                                        {images}
+                                    </div>
+                                    {metadata}
+                                </div>
+                            )
+                    }
                     <div className="message__reactions">
                         <div className="message__reactions_to-left">{peopleEmoji}</div>
                     </div>
