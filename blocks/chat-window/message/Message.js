@@ -263,6 +263,11 @@ class Message extends Component {
                 <React.Fragment>
                     <div className="message message_my">
                         {this.getMessageControls(message)}
+                        <EmojiPicker
+                            addEmoji={this.addEmoji}
+                            showEmojiToMsg={showEmojiToMsg}
+                            hideEmoji={this.hideEmoji}
+                        />
                         {
                             forwardFrom
                                 ?
@@ -297,11 +302,6 @@ class Message extends Component {
                         <div className="message__reactions">
                             <div className="message__reactions_to-left">{peopleEmoji}</div>
                         </div>
-                        <EmojiPicker
-                            addEmoji={this.addEmoji}
-                            showEmojiToMsg={showEmojiToMsg}
-                            hideEmoji={this.hideEmoji}
-                        />
                     </div>
                 </React.Fragment>
             );
@@ -312,6 +312,11 @@ class Message extends Component {
             <React.Fragment>
                 <div className="message message_friend">
                     {this.getMessageControls(message)}
+                    <EmojiPicker
+                        addEmoji={this.addEmoji}
+                        showEmojiToMsg={showEmojiToMsg}
+                        hideEmoji={this.hideEmoji}
+                    />
                     {
                         forwardFrom
                             ?
@@ -346,7 +351,6 @@ class Message extends Component {
                     <div className="message__reactions">
                         <div className="message__reactions_to-left">{peopleEmoji}</div>
                     </div>
-                    <EmojiPicker addEmoji={this.addEmoji} showEmojiToMsg={showEmojiToMsg} />
                 </div>
             </React.Fragment>
         );

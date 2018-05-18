@@ -317,3 +317,7 @@
         box-shadow: 0 0 var(--border-size-bold) var(--border-size) var(--spare-color);
     }
 }
+
+/* .emoji_wrapper {
+    position: absolute;
+} */
