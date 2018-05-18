@@ -131,6 +131,60 @@ class Message extends Component {
             .format('LT');
     }
 
+    getMessageControls = (message, isLong) => (
+        <div className={'message__controls' +
+            `${isLong
+                ?
+                ' message__controls_bottom'
+                :
+                ' message__controls_top'}`}
+            >
+            <div
+                className="message__control message__add-emoji"
+                title="Добавить реакцию"
+                onClick={this.toggleEmoji}
+            />
+            {
+                message.selfDestructTimer
+                    ?
+                    (
+                        <React.Fragment>
+                            <div
+                                className="message__control
+                                message__reply
+                                disabled"
+                                title="Ответить"
+                            />
+                            <div
+                                className="message__control
+                                message__forward
+                                disabled"
+                                title="Переслать"
+                            />
+                            <div className="message__live-time">
+                                {message.selfDestructTimer / 1000}s
+                            </div>
+                        </React.Fragment>
+                    )
+                    :
+                    (
+                        <React.Fragment>
+                            <div
+                                className="message__control message__reply"
+                                onClick={this.setReply}
+                                title="Ответить"
+                            />
+                            <div
+                                className="message__control message__forward"
+                                onClick={this.setForward}
+                                title="Переслать"
+                            />
+                        </React.Fragment>
+                    )
+            }
+        </div>
+    );
+
     formatting({ text, attachments, date, reactions, meta }) {
         const metadata =
             Object.keys(meta || {}).length === 0 ? (
@@ -204,56 +258,14 @@ class Message extends Component {
             meta
         });
 
+        const isLong = attachments.length || text.length > 450;
+
         // Если сообщение свое
         if (user.id === author) {
             return (
                 <React.Fragment>
                     <div className="message message_my">
-                        <div className="message__controls">
-                            <div
-                                className="message__control message__add-emoji"
-                                title="Добавить реакцию"
-                                onClick={this.toggleEmoji}
-                            />
-                            {
-                                message.selfDestructTimer
-                                    ?
-                                    (
-                                        <React.Fragment>
-                                            <div
-                                                className="message__control
-                                                message__reply
-                                                disabled"
-                                                title="Ответить"
-                                            />
-                                            <div
-                                                className="message__control
-                                                message__forward
-                                                disabled"
-                                                title="Переслать"
-                                            />
-                                            <div className="message__live-time">
-                                                {message.selfDestructTimer / 1000}s
-                                            </div>
-                                        </React.Fragment>
-                                    )
-                                    :
-                                    (
-                                        <React.Fragment>
-                                            <div
-                                                className="message__control message__reply"
-                                                onClick={this.setReply}
-                                                title="Ответить"
-                                            />
-                                            <div
-                                                className="message__control message__forward"
-                                                onClick={this.setForward}
-                                                title="Переслать"
-                                            />
-                                        </React.Fragment>
-                                    )
-                            }
-                        </div>
+                        {this.getMessageControls(message)}
                         {
                             forwardFrom
                                 ?
@@ -282,6 +294,7 @@ class Message extends Component {
                                             {images}
                                         </div>
                                         {metadata}
+                                        {this.getMessageControls(message, isLong)}
                                     </div>
                                 )
                         }
@@ -298,51 +311,7 @@ class Message extends Component {
         return (
             <React.Fragment>
                 <div className="message message_friend">
-                    <div className="message__controls">
-                        <div
-                            className="message__control message__add-emoji"
-                            title="Добавить реакцию"
-                            onClick={this.toggleEmoji}
-                        />
-                        {
-                            message.selfDestructTimer
-                                ?
-                                (
-                                    <React.Fragment>
-                                        <div
-                                            className="message__control
-                                            message__reply
-                                            disabled"
-                                            title="Ответить"
-                                        />
-                                        <div
-                                            className="message__control
-                                            message__forward
-                                            disabled"
-                                            title="Переслать"
-                                        />
-                                        <div className="message__live-time">
-                                            {message.selfDestructTimer / 1000}s
-                                        </div>
-                                    </React.Fragment>
-                                )
-                                :
-                                (
-                                    <React.Fragment>
-                                        <div
-                                            className="message__control message__reply"
-                                            onClick={this.setReply}
-                                            title="Ответить"
-                                        />
-                                        <div
-                                            className="message__control message__forward"
-                                            onClick={this.setForward}
-                                            title="Переслать"
-                                        />
-                                    </React.Fragment>
-                                )
-                        }
-                    </div>
+                    {this.getMessageControls(message)}
                     {
                         forwardFrom
                             ?
