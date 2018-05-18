@@ -32,7 +32,7 @@ module.exports = server => {
         .get(dbController.getUser)
         .post(dbController.createUser);
 
-    server.get('/api/search/users/:nickname', dbController.getUsers);
+    server.get(['/api/search/users/:nickname', '/api/search/users'], dbController.getUsers);
 
     server.patch(
         '/api/users/:nickname/avatar',

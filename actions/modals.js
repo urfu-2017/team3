@@ -1,5 +1,7 @@
 'use strict';
 
+import Chat from '../models/Chat';
+
 import types from './types';
 
 export const searchUsers = substring => async dispatch => {
@@ -11,8 +13,14 @@ export const searchUsers = substring => async dispatch => {
     if (response.status === 200) {
         const users = await response.json();
 
-        dispatch({ type: types.FOUND_USERS, foundUsers: users });
+        dispatch({
+            type: types.FOUND_USERS,
+            foundUsers: users.sort((a, b) => a.nickname.localeCompare(b.nickname))
+        });
+    } else {
+        dispatch({ type: types.FOUND_USERS, foundUsers: [] });
     }
+
     dispatch({ type: types.HIDE_LOADER });
 };
 
@@ -20,8 +28,30 @@ export const clearFoundUsers = () => dispatch => {
     dispatch({ type: types.CLEAR_FOUND_USERS });
 };
 
+export const showAddUser = () => dispatch => {
+    dispatch({ type: types.SHOW_ADDUSER });
+};
+
 export const hideAddUser = () => dispatch => {
     dispatch({ type: types.HIDE_ADDUSER });
+    dispatch(clearFoundUsers());
+};
+
+export const showCreateGroup = () => (dispatch, getState) => {
+    const { chats, user } = getState();
+
+    const availableUsers = chats
+        .map(chat => new Chat(chat).getContactFor(user))
+        .filter(contact => contact)
+        .sort((a, b) => a.nickname.localeCompare(b.nickname));
+
+    const groupMembers = [];
+
+    dispatch({
+        type: types.SHOW_CREATEGROUP,
+        availableUsers,
+        groupMembers
+    });
 };
 
 export const hideCreateGroup = () => dispatch => {
@@ -53,4 +83,16 @@ export const showWarning = text => dispatch => {
 
 export const hideWarning = () => dispatch => {
     dispatch({ type: types.HIDE_WARNING });
+};
+
+export const setFoundUsers = foundUsers => dispatch => {
+    dispatch({ type: types.FOUND_USERS, foundUsers });
+};
+
+export const includeInNewGroup = user => dispatch => {
+    dispatch({ type: types.INCLUDE_IN_NEW_GROUP, user });
+};
+
+export const excludeFromNewGroup = user => dispatch => {
+    dispatch({ type: types.EXCLUDE_FROM_NEW_GROUP, user });
 };

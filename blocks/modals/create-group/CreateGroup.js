@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import { hideCreateGroup } from '../../../actions/modals';
+import { hideCreateGroup, includeInNewGroup, excludeFromNewGroup } from '../../../actions/modals';
 import { createGroupChat } from '../../../actions/chats';
 
 /* eslint-disable react/jsx-no-bind */
@@ -13,29 +13,23 @@ import { createGroupChat } from '../../../actions/chats';
 /* eslint-disable react/no-array-index-key */
 
 import './CreateGroup.css';
-import Chat from '../../../models/Chat';
 
 class CreateGroup extends Component {
     state = {
-        groupMembers: [],
-        groupTitle: 'group',
-        mutableContacts: this.props.contacts.slice()
+        groupTitle: 'group'
     }
 
     createChat = () => {
-        const { groupMembers, groupTitle } = this.state;
-        const myUser = this.props.user;
+        const { groupTitle } = this.state;
+        const { user, groupMembers } = this.props;
 
-        this.props.createGroupChat(myUser, groupMembers, groupTitle);
-        this.setState({
-            groupMembers: [],
-            groupTitle: 'group',
-            mutableContacts: this.props.contacts.slice()
-        });
+        this.props.createGroupChat(user, groupMembers, groupTitle);
+        this.setState({ groupTitle: 'group' });
     }
 
     hideCreateGroup = () => {
         this.props.hideCreateGroup();
+        this.setState({ groupTitle: 'group' });
     }
 
     componentDidMount() {
@@ -46,41 +40,8 @@ class CreateGroup extends Component {
         });
     }
 
-    /* eslint-disable max-statements */
-    /* eslint-disable complexity */
-    pushOrPopFromGroupMembers(member) {
-        const { groupMembers, mutableContacts } = this.state;
-        let indexInMembers = -1;
-        let indexInContacts = -1;
-
-        for (let i = 0; i < groupMembers.length; i += 1) {
-            if (groupMembers[i].nickname === member.nickname) {
-                indexInMembers = i;
-            }
-        }
-
-        for (let i = 0; i < mutableContacts.length; i += 1) {
-            if (mutableContacts[i].nickname === member.nickname) {
-                indexInContacts = i;
-            }
-        }
-
-        if (indexInMembers === -1) {
-            groupMembers.push(member);
-            mutableContacts.splice(indexInContacts, 1);
-        } else {
-            mutableContacts.push(member);
-            groupMembers.splice(indexInMembers, 1);
-        }
-
-        this.setState({ groupMembers, mutableContacts });
-    }
-    /* eslint-enable complexity */
-    /* eslint-enable max-statements */
-
     render() {
-        const { user, showCG } = this.props;
-        const { groupMembers } = this.state;
+        const { availableUsers, groupMembers, user, showCG } = this.props;
 
         if (!showCG) {
             return <div />;
@@ -104,12 +65,12 @@ class CreateGroup extends Component {
                     </div>
                     <div className="create-group__list">
                         <div className="create-group__list_wrapper">
-                            {this.state.mutableContacts.map(contact => {
+                            {availableUsers.map(contact => {
                                 return (
                                     <li
                                         className="create-group__user-box"
                                         key={contact.nickname}
-                                        onClick={() => this.pushOrPopFromGroupMembers(contact)}
+                                        onClick={() => this.props.includeInNewGroup(contact)}
                                         >
                                         <div className="create-group__nickname">
                                             {contact.nickname}
@@ -132,12 +93,12 @@ class CreateGroup extends Component {
                                     — cоздатель
                                 </div>
                             </li>
-                            {this.state.groupMembers.map(contact => {
+                            {groupMembers.map(contact => {
                                 return (
                                     <li
                                         className="create-group__user-box"
                                         key={contact.nickname}
-                                        onClick={() => this.pushOrPopFromGroupMembers(contact)}
+                                        onClick={() => this.props.excludeFromNewGroup(contact)}
                                         >
                                         <div className="create-group__nickname">
                                             {contact.nickname}
@@ -162,21 +123,25 @@ class CreateGroup extends Component {
 
 CreateGroup.propTypes = {
     user: PropTypes.object,
+    availableUsers: PropTypes.array,
+    groupMembers: PropTypes.array,
     showCG: PropTypes.bool,
-    contacts: PropTypes.array,
     hideCreateGroup: PropTypes.func,
-    createGroupChat: PropTypes.func
+    createGroupChat: PropTypes.func,
+    includeInNewGroup: PropTypes.func,
+    excludeFromNewGroup: PropTypes.func
 };
 
 export default connect(
     state => ({
         user: state.user,
-        contacts: state.chats
-            .map(chat => new Chat(chat).getContactFor(state.user))
-            .filter(contact => contact),
+        groupMembers: state.modal.groupMembers,
+        availableUsers: state.modal.availableUsers,
         showCG: state.modal.showCG
     }), {
         hideCreateGroup,
-        createGroupChat
+        createGroupChat,
+        includeInNewGroup,
+        excludeFromNewGroup
     }
 )(CreateGroup);
