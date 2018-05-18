@@ -21,10 +21,18 @@ class Chats extends React.Component {
         }
 
         if (showSearchMessages) {
-            if (!(searchMessages && searchMessages.length)) {
+            if (!searchMessages) {
                 return (
                     <div className="chats__empty-search">
                         Введите текст для поиска
+                    </div>
+                );
+            }
+
+            if (!searchMessages.length) {
+                return (
+                    <div className="chats__empty-search">
+                        Ничего не найдено
                     </div>
                 );
             }

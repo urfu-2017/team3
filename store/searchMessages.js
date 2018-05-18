@@ -2,7 +2,7 @@ export default function searchMessages(state = { messages: null, show: false }, 
     if (action.type === 'UPDATE_SEARCHMESSAGES') {
         return {
             ...state,
-            messages: action.messages.sort(compareByLastMessage)
+            messages: action.messages.sort(compareMessages)
         };
     }
 
@@ -23,14 +23,6 @@ export default function searchMessages(state = { messages: null, show: false }, 
     return state;
 }
 
-function compareByLastMessage(a, b) {
-    const aMessage = a;
-    const bMessage = b;
-
-    if (bMessage && aMessage) {
-        return new Date(bMessage.date) - new Date(aMessage.date);
-    }
-
-    // чатик в котором есть сообщение всегда раньше
-    return aMessage ? -1 : 1;
+function compareMessages(a, b) {
+    return new Date(b.date) - new Date(a.date);
 }

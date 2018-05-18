@@ -9,6 +9,7 @@ import {
 } from '../../../actions/modals';
 
 import './Controls.css';
+import Chat from '../../../models/Chat';
 
 /* туду переделать на поиск по сообщениям */
 class Controls extends Component {
@@ -43,17 +44,28 @@ class Controls extends Component {
     }
 
     messageSearch = e => {
-        if (e.which === 13) {
+        /* eslint complexity: 0 */
+        /* eslint max-statements: 0 */
+        if (e.which === 13 && e.target.value.trim()) {
             const { user, chats } = this.props;
 
             const searchMessages = [];
 
+            // вот ОНО - регулярка поиска сообщений
+            const value = e.target.value.trim();
+            const regexp = new RegExp(value, 'i');
+
             chats.forEach(chat => {
                 chat.messages.forEach(message => {
-                    // вот ОНО - регулярка поиска сообщений
-                    const regexp = new RegExp(e.target.value.trim(), 'i');
+                    let whereFind = '';
 
-                    if (message.text.match(regexp) && e.target.value.trim().length) {
+                    if (message.text) {
+                        whereFind = message.text;
+                    } else if (message.forwardFrom) {
+                        whereFind = message.forwardFrom;
+                    }
+
+                    if (whereFind.match(regexp) && value.length) {
                         // ID чата для открытия в будущем
                         message.chatId = chat._id;
                         // Если группа, то аватар сообщения и название группы
@@ -61,12 +73,10 @@ class Controls extends Component {
                             message.avatar = chat.avatar;
                             message.group = chat.title;
                         } else { // Если личка, то аватар и ник того, с кем чат
-                            chat.members.forEach(member => {
-                                if (member.nickname !== user.nickname) {
-                                    message.avatar = member.avatar;
-                                    message.ls = member.nickname;
-                                }
-                            });
+                            const interlocator = new Chat(chat).getInterlocutorFor(user);
+
+                            message.avatar = interlocator.avatar;
+                            message.ls = interlocator.nickname;
                         }
                         searchMessages.push(message);
                     }
