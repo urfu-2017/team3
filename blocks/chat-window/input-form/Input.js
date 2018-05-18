@@ -33,6 +33,13 @@ class Input extends Component {
         };
     }
 
+    componentDidMount() {
+        this.props.onRef(this);
+    }
+    componentWillUnmount() {
+        this.props.onRef(null);
+    }
+
     // при вводе добавляем с state
     changeText = e => this.setState({ msgText: e.target.value });
 
@@ -98,6 +105,12 @@ class Input extends Component {
         this.setState({ msgText: currentValue });
         this.textInput.focus();
     };
+
+    clear() {
+        this.setState({
+            msgText: ''
+        });
+    }
 
     /* eslint-disable max-statements */
     /* eslint-disable complexity */
@@ -240,6 +253,7 @@ Input.propTypes = {
     forwardMessage: PropTypes.object,
     replyMessage: PropTypes.object,
 
+    onRef: PropTypes.func,
     sendMessage: PropTypes.func,
     resetAttachments: PropTypes.func,
     attachments: PropTypes.array,
