@@ -239,7 +239,7 @@
     margin: var(--standard-indent-small) 0;
 }
 
-.message > .emoji-mart {
+.message .emoji-mart {
     /* не буду удалять, вдруг пригодится, я это полчаса высчитывал */
     /* bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3); */
     bottom: calc(100% - 62px);
@@ -250,17 +250,17 @@
     background-color: var(--background-color);
 }
 
-.message > .emoji-mart > .emoji-mart-scroll {
+.message .emoji-mart > .emoji-mart-scroll {
     min-height: 200px;
     max-height: calc(100% - var(--standard-indent-small) / 2);
 }
 
-.message_friend > .emoji-mart {
+.message_friend .emoji-mart {
     /* right: calc(1% + var(--standard-indent-small) * 2 / 2); */
     right: -190px;
 }
 
-.message_my > .emoji-mart {
+.message_my .emoji-mart {
     /* left: calc(1% + var(--standard-indent-small) * 2 / 2); */
     left: -190px;
 }

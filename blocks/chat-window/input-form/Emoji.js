@@ -25,6 +25,7 @@ class Emoji extends Component {
                     showSkinTones={false}
                     include={['people']}
                     emojiSize={20}
+                    sheetSize={32}
                     autoFocus
                 />
             </div>
