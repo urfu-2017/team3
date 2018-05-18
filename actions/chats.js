@@ -1,5 +1,6 @@
 'use strict';
 
+import { notifyMessage } from '../utils/notification';
 import getSocket from '../pages/socket';
 
 import types from './types';
@@ -52,8 +53,18 @@ export const receiveChat = chat => dispatch => {
     dispatch({ type: types.CREATE_CHAT, chat });
 };
 
-export const receiveMessage = (chatId, message) => dispatch => {
+export const receiveMessage = (chatId, message) => (dispatch, getState) => {
+    const { user, chats, activeChat } = getState();
+    const chat = chats.find(c => c._id === chatId);
+
     dispatch({ type: types.RECEIVE_MESSAGE, chatId, message });
+
+    const onclick = () => {
+        window.focus();
+        dispatch(openChat(chat._id));
+    };
+
+    notifyMessage({ message, chat, user, activeChat, onclick });
 };
 
 export const updateMessage = (chatId, message) => dispatch => {

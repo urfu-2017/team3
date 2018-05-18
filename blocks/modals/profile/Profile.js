@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { hideProfile, showFullSize } from '../../../actions/modals';
 import { changeAvatar } from '../../../actions/user';
 import { createChat } from '../../../actions/chats';
+import Chat from '../../../models/Chat';
 
 function getGroupInviteLink(url, id) {
     return `${url}invite/g_${id}`;
@@ -20,6 +21,8 @@ function getGroupInviteLink(url, id) {
 /* eslint-disable react/jsx-closing-bracket-location */
 
 class Profile extends Component {
+    state = {}
+
     hideProfile = () => {
         this.props.hideProfile();
     };
@@ -42,6 +45,16 @@ class Profile extends Component {
                 this.props.hideProfile();
             }
         });
+    }
+
+    static getDerivedStateFromProps(newProps) {
+        if (newProps.profile) {
+            return {
+                notificationsEnabled: new Chat(newProps.profile).settings.notificationsEnabled()
+            };
+        }
+
+        return null;
     }
 
     whoIsMyInterlocutor(profile) {
@@ -83,6 +96,14 @@ class Profile extends Component {
     showImgHideProfile = e => {
         this.props.hideProfile();
         this.props.showFullSize(e);
+    }
+
+    toggleNotifications = () => {
+        const toggledValue = !this.state.notificationsEnabled;
+
+        this.setState({ notificationsEnabled: toggledValue });
+
+        new Chat(this.props.profile).settings.switchNotifications(toggledValue);
     }
 
     render() {
@@ -198,6 +219,12 @@ class Profile extends Component {
                         <span onClick={this.copiedNotify}>
                             {this.inviteLink(profile)}
                         </span>
+                        <label>Notifications
+                            <input
+                                type="checkbox"
+                                onChange={this.toggleNotifications}
+                                checked={this.state.notificationsEnabled} />
+                        </label>
                         <ul className="contacts">
                             {profile.members
                                 ? profile.members.map(m => {

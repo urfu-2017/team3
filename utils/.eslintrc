@@ -1,0 +1,10 @@
+{
+    "extends": "iddqd/es6",
+    "parser": "babel-eslint",
+    "rules": {
+        "capitalized-comments": 0
+    },
+    "env": {
+        "browser": true
+    }
+}
