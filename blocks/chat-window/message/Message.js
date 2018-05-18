@@ -7,6 +7,7 @@ import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 
+import Map from '../../map/Map';
 import getSocket from '../../../pages/socket';
 
 import { setForward, setReply, showContacts } from '../../../actions/activeChat';
@@ -291,7 +292,11 @@ class Message extends Component {
                                         <ReplyMessage message={replyTo} />
                                         <div className="message__content">{newText}</div>
                                         <div className="message__attachments">
-                                            {images}
+                                            {
+                                                message.location.lattitude
+                                                    ? <Map location={message.location} />
+                                                    : images
+                                            }
                                         </div>
                                         {metadata}
                                     </div>
@@ -342,7 +347,11 @@ class Message extends Component {
                                     <ReplyMessage message={replyTo} />
                                     <div className="message__content">{newText}</div>
                                     <div className="message__attachments">
-                                        {images}
+                                        {
+                                            message.location.lattitude
+                                                ? <Map location={message.location} />
+                                                : images
+                                        }
                                     </div>
                                     {metadata}
                                 </div>

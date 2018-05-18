@@ -10,7 +10,8 @@ import { connect } from 'react-redux';
 import {
     addAttachments,
     hideInputPopup,
-    showAttachmentPreloader } from '../../../../actions/activeChat';
+    showAttachmentPreloader,
+    sendMessage } from '../../../../actions/activeChat';
 
 import TimerSetting from './timer/TimerSetting';
 
@@ -32,6 +33,32 @@ class InputPopup extends Component {
             await this.props.addAttachments(filesToUpload);
         }
         this.props.showAttachmentPreloader(false);
+    }
+
+    sendLocation = () => {
+        if ('geolocation' in navigator) {
+            const { chatId, author } = this.props;
+
+            // туду: показать сообщение 'Пытаемся вас найти'
+            navigator.geolocation.getCurrentPosition(position => {
+                const location = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude
+                };
+
+                // туду: скрыть сообщение
+
+                this.props.sendMessage(chatId, {
+                    author,
+                    location,
+                    text: ''
+                });
+            });
+        } else {
+            // туду: показать сообщение 'Навигация не доступна'
+        }
+
+        this.props.hideInputPopup();
     }
 
     render() {
@@ -65,7 +92,7 @@ class InputPopup extends Component {
                 </label>
                 <label
                     className="chat-input__geolocation-btn chat-input__button"
-                    onClick={this.props.hideInputPopup}
+                    onClick={this.sendLocation}
                     title="Местоположение"
                     >
                     <span className="chat-input__button_description_add">
@@ -101,16 +128,22 @@ InputPopup.propTypes = {
     addAttachments: PropTypes.func,
     showAttachmentPreloader: PropTypes.func,
     checkFiles: PropTypes.func,
-    submitMessage: PropTypes.func
+    submitMessage: PropTypes.func,
+    sendMessage: PropTypes.func,
+    chatId: PropTypes.string,
+    author: PropTypes.string
 };
 
 export default connect(
     state => ({
+        chatId: state.activeChat.id,
+        author: state.user.nickname,
         showInputPopup: state.activeChat && state.activeChat.showInputPopup,
         attachments: state.activeChat && state.activeChat.attachments
     }), {
         addAttachments,
         hideInputPopup,
-        showAttachmentPreloader
+        showAttachmentPreloader,
+        sendMessage
     }
 )(InputPopup);
