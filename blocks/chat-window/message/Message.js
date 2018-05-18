@@ -131,14 +131,8 @@ class Message extends Component {
             .format('LT');
     }
 
-    getMessageControls = (message, isLong) => (
-        <div className={'message__controls' +
-            `${isLong
-                ?
-                ' message__controls_bottom'
-                :
-                ' message__controls_top'}`}
-            >
+    getMessageControls = message => (
+        <div className="message__controls">
             <div
                 className="message__control message__add-emoji"
                 title="Добавить реакцию"
@@ -258,8 +252,6 @@ class Message extends Component {
             meta
         });
 
-        const isLong = attachments.length || text.length > 450;
-
         // Если сообщение свое
         if (user.id === author) {
             return (
@@ -294,7 +286,6 @@ class Message extends Component {
                                             {images}
                                         </div>
                                         {metadata}
-                                        {this.getMessageControls(message, isLong)}
                                     </div>
                                 )
                         }
