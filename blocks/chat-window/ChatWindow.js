@@ -133,6 +133,12 @@ class ChatWindow extends Component {
         }
     };
 
+    clearInput = () => {
+        if (this.input) {
+            this.input.clear();
+        }
+    }
+
     activeChatId = '0';
     messagesCount = 0;
     componentDidUpdate() {
@@ -143,6 +149,7 @@ class ChatWindow extends Component {
         }
 
         if (activeChat._id !== this.activeChatId) {
+            this.clearInput();
             this.scrollToBottom();
             this.activeChatId = activeChat._id;
             this.messagesCount = activeChat.messages.length;
@@ -247,6 +254,7 @@ class ChatWindow extends Component {
                         activeChat={this.props.activeChat}
                         checkFiles={this.checkFiles}
                         isForward={isForward}
+                        onRef={ref => (this.input = ref)}
                     />
                     {
                         isForward

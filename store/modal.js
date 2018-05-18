@@ -45,7 +45,9 @@ export default function modal(state = {}, action) {
     if (action.type === 'SHOW_CREATEGROUP') {
         return {
             ...state,
-            showCG: true
+            showCG: true,
+            availableUsers: action.availableUsers,
+            groupMembers: action.groupMembers
         };
     }
 
@@ -56,17 +58,20 @@ export default function modal(state = {}, action) {
         };
     }
 
-    if (action.type === 'SHOW_CONTACTS') {
+    if (action.type === 'INCLUDE_IN_NEW_GROUP') {
         return {
             ...state,
-            showContacts: true
+            availableUsers: state.availableUsers.filter(u => u.nickname !== action.user.nickname),
+            groupMembers: [...state.groupMembers, action.user]
         };
     }
 
-    if (action.type === 'HIDE_CONTACTS') {
+    if (action.type === 'EXCLUDE_FROM_NEW_GROUP') {
         return {
             ...state,
-            showContacts: false
+            availableUsers: [...state.availableUsers, action.user]
+                .sort((a, b) => a.nickname.localeCompare(b.nickname)),
+            groupMembers: state.groupMembers.filter(u => u.nickname !== action.user.nickname)
         };
     }
 

@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'node-fetch';
 import { connect } from 'react-redux';
+
+import {
+    showCreateGroup,
+    showAddUser,
+    showProfile
+} from '../../../actions/modals';
 
 import './Controls.css';
 
@@ -15,27 +20,10 @@ class Controls extends Component {
         this.setState({ isSearchString: !isSearchString });
     }
 
-    findUsers = async pressEvent => {
-        if (pressEvent.keyCode !== 13 || pressEvent.target.value === '') {
-            return;
-        }
-
-        const response = await fetch(`/api/users/${pressEvent.target.value}`, {
-            credentials: 'include',
-            method: 'GET'
-        });
-
-        if (response.status === 200) {
-            const users = await response.json();
-
-            this.props.onUsersFound([users]);
-        }
-    }
-
     showProfile = () => {
         const { user } = this.props;
 
-        this.props.onShowProfile(user);
+        this.props.showProfile(user);
     }
 
     render() {
@@ -79,14 +67,14 @@ class Controls extends Component {
                                 :
                                 'control-img controls_zindex_max'
                         }
-                        onClick={this.props.onShowAddUser}
+                        onClick={this.props.showAddUser}
                         title="Добавить собеседника"
                         draggable="false"
                     />
                     <img
                         src="/static/controls/create_group_chat.svg"
                         className="control-img"
-                        onClick={this.props.onShowCreateGroup}
+                        onClick={this.props.showCreateGroup}
                         title="Создать групповой чат"
                         draggable="false"
                     />
@@ -105,29 +93,18 @@ class Controls extends Component {
 Controls.propTypes = {
     user: PropTypes.object,
     chats: PropTypes.array,
-    onUsersFound: PropTypes.func,
-    onShowProfile: PropTypes.func,
-    onShowAddUser: PropTypes.func,
-    onShowCreateGroup: PropTypes.func
+    showProfile: PropTypes.func,
+    showAddUser: PropTypes.func,
+    showCreateGroup: PropTypes.func
 };
 
 export default connect(
     state => ({
         user: state.user,
         chats: state.chats
-    }),
-    dispatch => ({
-        onUsersFound: users => {
-            dispatch({ type: 'FOUND_USERS', foundUsers: users });
-        },
-        onShowProfile: profile => {
-            dispatch({ type: 'SHOW_PROFILE', profile });
-        },
-        onShowAddUser: () => {
-            dispatch({ type: 'SHOW_ADDUSER' });
-        },
-        onShowCreateGroup: () => {
-            dispatch({ type: 'SHOW_CREATEGROUP' });
-        }
-    })
+    }), {
+        showProfile,
+        showAddUser,
+        showCreateGroup
+    }
 )(Controls);
