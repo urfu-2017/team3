@@ -1,7 +1,7 @@
 .profile {
     display: flex;
     box-sizing: border-box;
-    width: var(--modal-width);
+    width: calc(var(--modal-width) * 1.1);
     padding: var(--standard-indent);
     border-radius: var(--standard-indent-small);
     background-color: var(--background-color);
@@ -59,7 +59,7 @@
 }
 
 .profile__nickname {
-    width: calc(var(--modal-width) - var(--icon-size) * 4 - 3 * var(--standard-indent));
+    width: calc(var(--modal-width) * 1.1 - var(--icon-size) * 4 - 3 * var(--standard-indent));
     overflow: hidden;
     color: var(--text-color-h1);
     font-size: 130%;
@@ -69,19 +69,54 @@
     white-space: nowrap;
 }
 
-.profile__invite-link{
+.profile__control {
     display: block;
-    margin-top: calc(var(--standard-indent-small) * 2);
     color: var(--text-color-h2);
+    font-size: 85%;
 }
 
-.profile__invite-link:hover {
+.profile__control:hover {
     color: var(--text-color-h3);
     cursor: pointer;
 }
 
-.profile__invite-link:active {
+.profile__control:active {
     color: var(--text-color-h1);
+}
+
+.profile__notification_hidden {
+    display: none;
+}
+
+.profile__notification {
+    box-sizing: border-box;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    margin: var(--standard-indent-small) 0 0;
+    border: var(--border-size) solid transparent;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: var(--icon-size);
+    cursor: pointer;
+    background-image: url('/static/notifications_on.svg');
+}
+
+.profile__notification_description_add {
+    padding-left: calc(
+        var(--icon-size) +
+        (var(--standard-indent) * 0.5)
+    );
+    width: calc(var(--modal-width) * 1.1 - var(--icon-size) * 5 - 3.5 * var(--standard-indent));
+    line-height: var(--icon-size);
+}
+
+.profile__notification_hidden:not(:checked) + .profile__notification {
+    background-image: url('/static/notifications_off.svg');
+}
+
+.profile__invite-link {
+    margin-top: calc(var(--standard-indent-small) * 2);
 }
 
 .profile__copied {
@@ -114,7 +149,7 @@
 }
 
 .contacts {
-    margin: 0;
+    margin: var(--standard-indent-small) 0 0;
     padding: 0;
 }
 

@@ -27,6 +27,8 @@
             var(--standard-indent-small) * 0.25 * 2
         ) / -1.5
     );
+    /* bottom: calc(
+            var(--standard-indent-small) * -1.5); */
     right: calc(var(--standard-indent-small) * 1.5);
     align-items: center;
     justify-content: space-evenly;
@@ -50,7 +52,7 @@
     height: calc(var(--icon-size) * 0.75);
     margin: calc(var(--standard-indent-small) / 4) 0;
     border-radius: 50%;
-    background-size: 24px;
+    background-size: calc(var(--icon-size) * 0.75);;
 }
 
 .message__control:hover {
@@ -71,7 +73,10 @@
 }
 
 .message__body {
-    padding: calc(var(--standard-indent-small) * 2);
+    padding: 
+        calc(var(--standard-indent-small) + 2px) 
+        calc(var(--standard-indent-small) * 2);
+        /* calc(var(--standard-indent-small) / 2); */
     border-radius: var(--standard-indent-small);
     background-color: var(--neutral-color);
     font-size: 90%; 
@@ -106,7 +111,7 @@
 }
 
 .message__content {
-    margin: var(--standard-indent-small) 0;
+    margin: calc(var(--standard-indent-small) / 2) 0;
     color: var(--text-color-h1);
     text-decoration: none;
     word-break: break-all;
@@ -237,12 +242,17 @@
 .message > .emoji-mart {
     /* не буду удалять, вдруг пригодится, я это полчаса высчитывал */
     /* bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3); */
-    top: 0;
+    bottom: 0;
     /* width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important; */
     width: 165px !important;
-    height: 200px;
+    min-height: 200px;
     max-height: calc(100% - var(--standard-indent-small) / 2);
     background-color: var(--background-color);
+}
+
+.message > .emoji-mart > .emoji-mart-scroll {
+    min-height: 200px;
+    max-height: calc(100% - var(--standard-indent-small) / 2);
 }
 
 .message_friend > .emoji-mart {
