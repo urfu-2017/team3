@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 
 import moment from 'moment';
 
+import { openChat } from '../../actions/chats';
+
 import './SearchMessageIcon.css';
 
 class SearchMessageIcon extends Component {
@@ -73,9 +75,7 @@ export default connect(
         user: state.user,
         searchMessages: state.searchMessages.messages
     }),
-    dispatch => ({
-        openChat: id => {
-            dispatch({ type: 'OPEN_CHAT', id });
-        }
-    })
+    {
+        openChat
+    }
 )(SearchMessageIcon);
