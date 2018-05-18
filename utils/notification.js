@@ -5,25 +5,20 @@ import Chat from '../models/Chat';
 const NEWMSG_SOUND_URL = '/static/newmsg.wav';
 const NEWMSG_VIBRATION_PATTERN = [100, 100];
 
-/* eslint-disable-next-line */
-export const notifyMessage = ({ message, chat, user, onclick }) => {
+/* eslint-disable-next-line import/prefer-default-export */
+export const notifyMessage = ({ message, chat, user, activeChat, onclick }) => {
     chat = new Chat(chat);
 
-    if (!chat.settings.notificationEnabled()) {
+    if (!needNotifyAboutMessage({ message, chat, user, activeChat })) {
         return;
     }
-
-    const chatInfo = chat.type === 'group' ? ` in ${chat.title}` : '';
-    const title = `@${message.author}${chatInfo}`;
-    const body = message.forwardFrom
-        ? message.forwardFrom.text
-        : message.text;
-    const icon = chat.getAvatarFor(user).replace('.svg', '.png');
 
     notifySound(NEWMSG_SOUND_URL);
     notifyVibration(NEWMSG_VIBRATION_PATTERN);
     if (document.hidden) {
-        notifyScreen({ title, body, icon, onclick });
+        const options = prepareNotificationOptions({ message, chat, user });
+
+        notifyScreen({ ...options, onclick });
     }
 };
 
@@ -54,4 +49,34 @@ function notifyScreen({ title, body, icon, onclick }) {
             notification.onclick = () => onclick();
         }
     });
+}
+
+function prepareNotificationOptions({ chat, message, user }) {
+    const chatInfo = chat.type === 'group' ? ` in ${chat.title}` : '';
+    const title = `@${message.author}${chatInfo}`;
+    const body = message.forwardFrom
+        ? message.forwardFrom.text
+        : message.text;
+    const icon = chat.getAvatarFor(user).replace('.svg', '.png');
+
+    return { title, body, icon };
+}
+
+/* eslint-disable-next-line complexity */
+function needNotifyAboutMessage({ chat, message, user, activeChat }) {
+    if (!chat.settings.notificationsEnabled()) {
+        return false;
+    }
+
+    // Не реагируем на свои сообщения
+    if (message.author === user.nickname) {
+        return false;
+    }
+
+    // Если наша вкладка и сообщение пришло в текущий чат, то не нужно уведомлять
+    if (!document.hidden && activeChat && activeChat.id === chat._id) {
+        return false;
+    }
+
+    return true;
 }

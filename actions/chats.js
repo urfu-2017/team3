@@ -54,7 +54,7 @@ export const receiveChat = chat => dispatch => {
 };
 
 export const receiveMessage = (chatId, message) => (dispatch, getState) => {
-    const { user, chats } = getState();
+    const { user, chats, activeChat } = getState();
     const chat = chats.find(c => c._id === chatId);
 
     dispatch({ type: types.RECEIVE_MESSAGE, chatId, message });
@@ -64,7 +64,7 @@ export const receiveMessage = (chatId, message) => (dispatch, getState) => {
         dispatch(openChat(chat._id));
     };
 
-    notifyMessage({ message, chat, user, dispatch, onclick });
+    notifyMessage({ message, chat, user, activeChat, onclick });
 };
 
 export const updateMessage = (chatId, message) => dispatch => {
