@@ -1,8 +1,11 @@
 'use strict';
 
+import { ChatSettings } from '../utils/user-settings-local';
+
 export default class Chat {
     constructor(chat) {
         Object.assign(this, chat);
+        this.settings = new ChatSettings(this._id);
     }
 
     getLastMessage() {

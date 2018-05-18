@@ -1,6 +1,6 @@
 'use strict';
 
-export default class ChatSettings {
+export class ChatSettings {
     constructor(chatId) {
         this.chatId = chatId;
     }
@@ -10,7 +10,9 @@ export default class ChatSettings {
     }
 
     notificationsEnabled() {
-        return get(this.chatId, 'notifications') === '1';
+        const value = get(this.chatId, 'notifications');
+
+        return !value || value === '1'; // default is on
     }
 }
 

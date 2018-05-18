@@ -8,6 +8,11 @@ const NEWMSG_VIBRATION_PATTERN = [100, 100];
 /* eslint-disable-next-line */
 export const notifyMessage = ({ message, chat, user, onclick }) => {
     chat = new Chat(chat);
+
+    if (!chat.settings.notificationEnabled()) {
+        return;
+    }
+
     const chatInfo = chat.type === 'group' ? ` in ${chat.title}` : '';
     const title = `@${message.author}${chatInfo}`;
     const body = message.forwardFrom
