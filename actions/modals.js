@@ -5,6 +5,10 @@ import Chat from '../models/Chat';
 import types from './types';
 
 export const searchUsers = substring => async dispatch => {
+    if (!substring || !substring.trim()) {
+        return;
+    }
+
     dispatch({ type: types.SHOW_LOADER });
     const response = await fetch(`/api/search/users/${substring}`, {
         credentials: 'include'

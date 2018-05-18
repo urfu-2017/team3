@@ -131,7 +131,7 @@ async function getUser(req, res) {
 async function getUsers(req, res) {
     try {
         const users = await User
-            .find({ _id: { $regex: `.*${req.params.nickname || ''}.*`, $options: 'i' } });
+            .find({ _id: { $regex: `.*${req.params.nickname}.*`, $options: 'i' } });
 
         if (!users) {
             res.sendStatus(404);
