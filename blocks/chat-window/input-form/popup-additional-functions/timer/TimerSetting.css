@@ -31,6 +31,7 @@
 	bottom: -4px;
 	right: 0;
 	color: var(--text-color-h0);
+	font-size: 90%;
 }
 
 .timer-setting__range {

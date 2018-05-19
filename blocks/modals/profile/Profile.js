@@ -9,7 +9,7 @@ import '../../../pages/global-const.css';
 import './Profile.css';
 import { connect } from 'react-redux';
 
-import { hideProfile, showFullSize } from '../../../actions/modals';
+import { hideProfile, showFullSize, showWarning } from '../../../actions/modals';
 import { changeAvatar } from '../../../actions/user';
 import { createChat } from '../../../actions/chats';
 import Chat from '../../../models/Chat';
@@ -103,8 +103,30 @@ class Profile extends Component {
         return null;
     };
 
+    /* eslint-disable max-statements */
     onFileChange = e => {
         const [file] = e.target.files;
+
+        const isTypeWarning = !file.type.startsWith('image');
+        const isSizeWarning = file.size >= 5242880;
+
+        if (isTypeWarning) {
+            const text = 'Аватар не доступен для загрузки в указанном формате. ' +
+            'Попробуйте загрузить другой аватар.';
+
+            this.hideProfile();
+            this.props.showWarning(text);
+
+            return false;
+        } else if (isSizeWarning) {
+            const text = 'Размер аватара ' +
+            'превышает 5МБ. Попробуйте загрузить файл меньшего размера.';
+
+            this.hideProfile();
+            this.props.showWarning(text);
+
+            return false;
+        }
 
         this.props.changeAvatar(file, this.props.user);
     }
@@ -363,7 +385,8 @@ Profile.propTypes = {
     changeAvatar: PropTypes.func,
     createChat: PropTypes.func,
     showFullSize: PropTypes.func,
-    activeChat: PropTypes.object
+    activeChat: PropTypes.object,
+    showWarning: PropTypes.func
 };
 
 export default connect(
@@ -375,6 +398,7 @@ export default connect(
         hideProfile,
         changeAvatar,
         createChat,
-        showFullSize
+        showFullSize,
+        showWarning
     }
 )(Profile);

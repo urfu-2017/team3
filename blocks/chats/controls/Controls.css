@@ -3,9 +3,10 @@
     box-sizing: border-box;
     align-items: center;
     justify-content: space-between;
-    height: calc(var(--standard-indent) * 2);
+    height: 52px;
     padding: var(--standard-indent-small) var(--standard-indent);
     border-bottom: var(--border-size) solid var(--neutral-color);
+    width: 310px;
 }
 
 .control-img {
@@ -13,27 +14,42 @@
     height: var(--icon-size);
     padding: calc(var(--standard-indent-small) / 2);
     border: var(--border-size) solid var(--neutral-color);
-    border-radius: var(--standard-indent-small);
+    padding: 5px 13px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 0 rgba(0,0,0,.15);
 }
 
-.control-img:hover {
+/* .control-img:hover {
     background-color: var(--spare-color-transparent);
+    cursor: pointer;
+} */
+
+.control-img:hover {
+    background-color: var(--neutral-color-semi-transparent);
+    box-shadow: 0 1px 0 rgba(0,0,0,.05);
+    cursor: pointer;
+}
+
+.control-img:active {
+    background-color: var(--neutral-color);
+    box-shadow: 0 1px 0 rgba(0,0,0,.075);
     cursor: pointer;
 }
 
 .chats__search-input {
     box-sizing: border-box;
-    width: calc((100% * 2 + var(--icon-size)) / 3);
+    width: calc((100% * 2 + var(--icon-size)) / 2.6);
     height: calc(
         var(--icon-size) + 
-        var(--standard-indent-small) / 2 * 2 + 
+        var(--standard-indent-small) / 2 + 
         var(--border-size) * 2
     );
     padding: calc(var(--standard-indent-small) / 2);
     border-width: 0;
     border-radius: 3px;
     outline: none;
-    background-color: var(--spare-color-transparent);
+    margin-left: -6px;
+    background-color: var(--neutral-color-transparent);
     color: var(--text-color-h0);
     font-size: 12px;
     font-family: "Noto Sans", sans-serif;

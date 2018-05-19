@@ -6,4 +6,5 @@
     box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
     color: var(--text-color-h0);
     font-size: 120%;
+    z-index: 50;
 }

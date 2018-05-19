@@ -26,6 +26,7 @@ import Profile from '../blocks/modals/profile/Profile';
 import AddUser from '../blocks/modals/add-user/AddUser';
 import CreateGroup from '../blocks/modals/create-group/CreateGroup';
 import Loader from '../blocks/modals/loader/Loader';
+import Warning from '../blocks/modals/warning/Warning';
 
 import 'isomorphic-fetch';
 import './global-const.css';
@@ -225,6 +226,7 @@ class MainPage extends React.Component {
                     <AddUser />
                     <CreateGroup />
                     <Loader />
+                    <Warning />
                     <div className="substrate" />
                     <div
                         className="theme"

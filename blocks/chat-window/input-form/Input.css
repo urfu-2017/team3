@@ -1,5 +1,4 @@
 .chat-input {
-    --icon-size: var(--standard-indent);
     display: flex;
     box-sizing: border-box;
     grid-area: 4 / 1 / 5 / 2;
