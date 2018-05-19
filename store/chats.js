@@ -37,6 +37,21 @@ export default function chats(state = [], action) {
         return destructMessage(state, action.chatId, action.messageId);
     }
 
+    if (action.type === 'UPDATE_BATTERY_LEVEL') {
+        return state.map(chat => {
+            return {
+                ...chat,
+                members: chat.members.map(member => {
+                    if (member.nickname !== action.userNickname) {
+                        return member;
+                    }
+
+                    return { ...member, battery: action.battery };
+                })
+            };
+        });
+    }
+
     return state;
 }
 

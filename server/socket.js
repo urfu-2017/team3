@@ -3,6 +3,7 @@
 const Message = require('./models/Message');
 const Reaction = require('./models/Reaction');
 const Chat = require('./models/Chat');
+const User = require('./models/User');
 
 module.exports = function setupSocket(ws) {
     ws.on('connection', socket => {
@@ -51,6 +52,15 @@ module.exports = function setupSocket(ws) {
             }
 
             await createChat(socket, senderCallback, { title, members, type });
+        });
+
+        socket.on('battery', async ({ userNickname, battery }) => {
+            await User.findOneAndUpdate(
+                { _id: userNickname },
+                { $set: { battery } }
+            );
+
+            socket.broadcast.emit('battery', { userNickname, battery });
         });
 
         socket.on('reaction', async data => {

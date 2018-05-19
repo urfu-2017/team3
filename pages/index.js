@@ -12,7 +12,9 @@ import {
     updateMessage,
     updateChat,
     receiveMessage,
-    destructMessage } from '../actions/chats';
+    destructMessage,
+    updateBatteryLevel } from '../actions/chats';
+
 import types from '../actions/types';
 import makeStore from '../store';
 
@@ -126,9 +128,35 @@ class MainPage extends React.Component {
         });
     }
 
+    setupRecieveBatteryLevel(socket) {
+        socket.on('battery', data => {
+            const { userNickname, battery } = data;
+
+            this.props.updateBatteryLevel(userNickname, battery);
+        });
+    }
+
+    async setupBatteryMonitoring(socket) {
+        if (!navigator.getBattery) {
+            return;
+        }
+
+        const battery = await navigator.getBattery();
+
+        battery.onlevelchange = () => {
+            socket.emit('battery', {
+                userNickname: this.props.user.nickname,
+                battery: { level: battery.level, isCharging: battery.charging }
+            });
+        };
+    }
+
+    /* eslint-disable max-statements */
     componentDidMount() {
         const socket = getSocket();
 
+        this.setupBatteryMonitoring(socket);
+        this.setupRecieveBatteryLevel(socket);
         this.connectToRooms(socket);
         this.setupReceiveMessage(socket);
         this.setupReceiveChat(socket);
@@ -214,11 +242,13 @@ MainPage.propTypes = {
     updateMessage: PropTypes.func,
     receiveChat: PropTypes.func,
     updateChat: PropTypes.func,
-    destructMessage: PropTypes.func
+    destructMessage: PropTypes.func,
+    updateBatteryLevel: PropTypes.func
 };
 
 export default withRedux(makeStore,
     state => state, {
+        updateBatteryLevel,
         receiveMessage,
         receiveChat,
         openChat,
