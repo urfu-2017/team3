@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 import getSocket from '../../../pages/socket';
 
-import { setForward, setReply } from '../../../actions/activeChat';
+import { setForward, setReply, showContacts } from '../../../actions/activeChat';
 
 import { showFullSize } from '../../../actions/modals';
 
@@ -93,6 +93,9 @@ class Message extends Component {
 
     setForward = () => {
         const { message, user } = this.props;
+console.log(this.props.isShowContacts);
+this.props.showContacts();
+console.log(this.props.isShowContacts);
 
         this.props.setForward(message, user);
     }
@@ -364,13 +367,18 @@ Message.propTypes = {
     activeChat: PropTypes.object,
     showFullSize: PropTypes.func,
     setForward: PropTypes.func,
-    setReply: PropTypes.func
+    setReply: PropTypes.func,
+    showContacts: PropTypes.func,
+    isShowContacts: PropTypes.bool
 };
 
 export default connect(
-    () => ({}), {
+    state => ({
+        isShowContacts: state.activeChat && state.activeChat.isShowContacts
+    }), {
         showFullSize,
         setForward,
-        setReply
+        setReply,
+        showContacts
     }
 )(Message);

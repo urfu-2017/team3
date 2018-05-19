@@ -95,6 +95,14 @@ export const resetSelfDestructTimer = () => dispatch => {
     dispatch({ type: types.RESET_SELF_DESTRUCT });
 };
 
+export const showContacts = () => dispatch => {
+    dispatch({ type: types.SHOW_CONTACTS_TO_FORWARD });
+};
+
+export const hideContacts = () => dispatch => {
+    dispatch({ type: types.HIDE_CONTACTS_TO_FORWARD });
+};
+
 function getPayload(message) {
     const payload = message.forwardFrom
         ? { ...message.forwardFrom }

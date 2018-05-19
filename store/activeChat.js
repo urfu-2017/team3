@@ -113,5 +113,19 @@ export default function activeChat(state = null, action) {
         };
     }
 
+    if (action.type === 'SHOW_CONTACTS_TO_FORWARD') {
+        return {
+            ...state,
+            isShowContacts: true
+        };
+    }
+
+    if (action.type === 'HIDE_CONTACTS_TO_FORWARD') {
+        return {
+            ...state,
+            isShowContacts: false
+        };
+    }
+
     return state;
 }

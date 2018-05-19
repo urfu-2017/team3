@@ -22,6 +22,7 @@ import Chat from '../../models/Chat';
 
 import FullSize from '../modals/full-size-attachment/FullSize';
 import Warning from '../modals/warning/Warning';
+import ForwardTo from '../modals/forwardTo/ForwardTo';
 
 import Input from './input-form/Input';
 import Message from './message/Message';
@@ -291,6 +292,7 @@ class ChatWindow extends Component {
                 </section>
                 <FullSize />
                 <Warning />
+                <ForwardTo />
             </React.Fragment>
         );
     }
