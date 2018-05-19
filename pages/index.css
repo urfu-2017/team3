@@ -117,11 +117,16 @@ body {
     border-color: #727272;
 }
 
-
-/* @media screen and (max-width: 10000px) 
+@media screen and (max-width: 576px) 
 {
     body {
         margin: 0;
+    }
+
+    .main {
+        height: 100vh;
+        position: fixed;
+        top: 52px;
     }
     
     .theme,
@@ -134,6 +139,12 @@ body {
         top: 0;
         width: 100vw;
         z-index: 50;
+        height: 52px;
+        background-color: white;
     }
-} */
+
+    .chats {
+        width: 100vw;
+    }
+}
 
