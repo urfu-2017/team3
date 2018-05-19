@@ -47,7 +47,7 @@
 .chat-header {
     --size: calc(var(--icon-size) * 1.5);
     display: flex;
-    z-index: 11;
+    z-index: 1;
     align-items: center;
     border-bottom: var(--border-size) solid var(--neutral-color);
     background-color: var(--background-color);

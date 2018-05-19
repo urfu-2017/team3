@@ -194,6 +194,7 @@
     background: var(--text-color-h1);
     color: var(--background-color);
     font-size: 75%;
+    white-space: nowrap;
 }
 
 .reaction__users > span {
