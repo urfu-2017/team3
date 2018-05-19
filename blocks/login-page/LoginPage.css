@@ -1,6 +1,7 @@
 body {
     overflow: hidden;
 }
+
 .log-in,
 .authorized-page {
     --height: 40vh;
@@ -11,6 +12,7 @@ body {
     margin: auto;
     margin: calc(50vh - var(--height) / 2) auto;
     border-radius: 10px;
+    font-family: "Noto Sans", sans-serif;
 
 }
 
@@ -33,8 +35,8 @@ body {
     width: 0%;
     height: 100%;
     transition: all 0ms ease;
-    border-radius: 15px;
-    background: #008000;
+    background: #1f771f; 
+    border-radius: 10px; 
 }
 
 .log-in__github-link:focus {
