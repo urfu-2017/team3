@@ -90,3 +90,7 @@ export const showSearchMessages = () => dispatch => {
 export const hideSearchMessages = () => dispatch => {
     dispatch({ type: 'HIDE_SEARCHMESSAGES' });
 };
+
+export const updateBatteryLevel = (userNickname, battery) => dispatch => {
+    dispatch({ type: types.UPDATE_BATTERY_LEVEL, userNickname, battery });
+};

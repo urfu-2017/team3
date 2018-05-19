@@ -12,8 +12,9 @@ import {
     updateMessage,
     updateChat,
     receiveMessage,
-    destructMessage } from '../actions/chats';
-import { updateBatteryLevel } from '../actions/activeChat';
+    destructMessage,
+    updateBatteryLevel } from '../actions/chats';
+
 import types from '../actions/types';
 import makeStore from '../store';
 
