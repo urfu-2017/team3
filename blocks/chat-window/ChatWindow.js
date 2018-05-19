@@ -21,7 +21,6 @@ import {
 import Chat from '../../models/Chat';
 
 import FullSize from '../modals/full-size-attachment/FullSize';
-import Warning from '../modals/warning/Warning';
 import ForwardTo from '../modals/forwardTo/ForwardTo';
 
 import Input from './input-form/Input';
@@ -133,8 +132,7 @@ class ChatWindow extends Component {
             return (
                 <span
                     className="chat-header__battery"
-                    title={`Пользователь ${lowestChargeUser.nickname} имеет ` +
-                    `${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
+                    title={`${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
                     `${lowestChargeUser.battery.isCharging
                         ?
                         ', заряжается'
@@ -142,8 +140,7 @@ class ChatWindow extends Component {
                         ''
                     }`}
                     >
-                    {`Пользователь ${lowestChargeUser.nickname} имеет ` +
-                    `${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
+                    {`${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
                     `${lowestChargeUser.battery.isCharging
                         ?
                         ', заряжается'
@@ -208,10 +205,11 @@ class ChatWindow extends Component {
             );
         }
 
-        const [lowestChargeUser] = activeChat && activeChat.members
+        const lowestChargeUser = activeChat &&
+        activeChat.type === 'private' &&
+        activeChat.members
             .filter(member => member.nickname !== this.props.user.nickname)
-            .filter(member => member.battery)
-            .sort((m1, m2) => m1.battery.level > m2.battery.level);
+            .filter(member => member.battery);
 
         const chat = new Chat(activeChat);
         const avatar = chat.getAvatarFor(user);
@@ -245,7 +243,7 @@ class ChatWindow extends Component {
                             >
                             {title}
                         </span>
-                        {this.getChargeBattery(lowestChargeUser)}
+                        {this.getChargeBattery(lowestChargeUser[0])}
                     </div>
                     {this.state.isDraggable
                         ?
@@ -297,7 +295,12 @@ class ChatWindow extends Component {
                         isForward
                             ?
                             (
-                                <div className="current-forward grid_6_7">
+                                <div className={'current-forward grid_6_7' +
+                                    `${forwardMessage
+                                        ?
+                                        ' current-forward_forward'
+                                        :
+                                        ' current-forward_reply'}`}>
                                     <div className="current-forward__author">
                                         {forwardMessage
                                             ?
@@ -327,7 +330,6 @@ class ChatWindow extends Component {
                     }
                 </section>
                 <FullSize />
-                <Warning />
                 <ForwardTo />
             </React.Fragment>
         );

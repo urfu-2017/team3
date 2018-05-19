@@ -47,7 +47,7 @@
 .chat-header {
     --size: calc(var(--icon-size) * 1.5);
     display: flex;
-    z-index: 11;
+    z-index: 1;
     align-items: center;
     border-bottom: var(--border-size) solid var(--neutral-color);
     background-color: var(--background-color);
@@ -125,6 +125,20 @@
     line-height: var(--icon-size);
     position: relative;
     color: var(--text-color-h0);
+    padding-left: calc(
+        var(--icon-size) +
+        (var(--standard-indent) * 0.5)
+    );
+    background-position: calc(var(--standard-indent-small) * 1.5);
+    background-repeat: no-repeat;
+}
+
+.current-forward_forward {
+    background-image: url(/static/forward.svg);
+}
+
+.current-forward_reply {
+    background-image: url(/static/reply.svg);
 }
 
 .current-forward__author {
@@ -137,7 +151,10 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    width: calc((100vw * 0.7 - 310px) * 0.7);
+    width: calc((100vw * 0.7 - 310px) * 0.7 -
+        var(--icon-size) -
+        (var(--standard-indent) * 0.5)
+    );
 }
 
 .current-forward_clear {
@@ -147,7 +164,6 @@
     height: calc(var(--icon-size) / 2);
     width: calc(var(--icon-size) / 2);
     padding: var(--standard-indent-small);
-    background-color: var(--neutral-color-transparent);
     opacity: .6;
 }
 

@@ -2,6 +2,7 @@
     display: flex;
     box-sizing: border-box;
     width: calc(var(--modal-width) * 1.1);
+    max-height: 80%;
     padding: var(--standard-indent);
     border-radius: var(--standard-indent-small);
     background-color: var(--background-color);
@@ -56,6 +57,8 @@
     flex-direction: column;
     flex-grow: 3;
     margin-left: var(--standard-indent);
+    margin-top: 25px;
+    position: relative;
 }
 
 .profile__nickname {
@@ -64,9 +67,12 @@
     color: var(--text-color-h1);
     font-size: 130%;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: default;
+    position: absolute;
+    top: -25px;
 }
 
 .profile__control {
@@ -148,14 +154,25 @@
     }
 }
 
+.contacts_wrapper {
+    overflow: hidden;
+    margin-top: var(--standard-indent-small);
+    border-top: var(--border-size) solid var(--neutral-color);
+    height: 80%;
+}
+
 .contacts {
-    margin: var(--standard-indent-small) 0 0;
+    margin: 0;
+    margin-right: -17px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
     padding: 0;
 }
 
 .contacts__user-box {
     display: block;
-    height: var(--icon-size);
+    height: calc(var(--icon-size) * 2);
     margin: var(--standard-indent-small);
     border-radius: var(--standard-indent-small);
     color: var(--text-color-h0);
@@ -171,4 +188,16 @@
     padding-left: var(--standard-indent-small);
     font-weight: bold;
     line-height: var(--icon-size);
+}
+
+.contacts__battery {
+    margin: 0 var(--standard-indent-small);
+    color: var(--text-color-h2);
+    font-size: 80%;
+    font-weight: normal;
+    width: 350px;
+    white-space: nowrap;
+    word-wrap: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

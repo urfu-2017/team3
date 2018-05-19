@@ -9,7 +9,7 @@ import '../../../pages/global-const.css';
 import './Profile.css';
 import { connect } from 'react-redux';
 
-import { hideProfile, showFullSize } from '../../../actions/modals';
+import { hideProfile, showFullSize, showWarning } from '../../../actions/modals';
 import { changeAvatar } from '../../../actions/user';
 import { createChat } from '../../../actions/chats';
 import Chat from '../../../models/Chat';
@@ -74,8 +74,66 @@ class Profile extends Component {
         return members[0];
     }
 
+    getChargeBattery = nickname => {
+        const user = this.props.activeChat.members.find(member => member.nickname === nickname);
+
+        if (user.battery) {
+            return (
+                <span
+                    className="contacts__battery"
+                    title={`${Math.floor(user.battery.level * 100)}% заряда батареи` +
+                    `${user.battery.isCharging
+                        ?
+                        ', заряжается'
+                        :
+                        ''
+                    }`}
+                    >
+                    {`${Math.floor(user.battery.level * 100)}% заряда батареи` +
+                    `${user.battery.isCharging
+                        ?
+                        ', заряжается'
+                        :
+                        ''
+                    }`}
+                </span>
+            );
+        }
+
+        return (
+            <span
+                className="contacts__battery"
+                title="Нет данных"
+                >
+                не удалось вычислить по айпи
+            </span>
+        );
+    };
+
+    /* eslint-disable max-statements */
     onFileChange = e => {
         const [file] = e.target.files;
+
+        const isTypeWarning = !file.type.startsWith('image');
+        const isSizeWarning = file.size >= 5242880;
+
+        if (isTypeWarning) {
+            const text = 'Аватар не доступен для загрузки в указанном формате. ' +
+            'Попробуйте загрузить другой аватар.';
+
+            this.hideProfile();
+            this.props.showWarning(text);
+
+            return false;
+        } else if (isSizeWarning) {
+            const text = 'Размер аватара ' +
+            'превышает 5МБ. Попробуйте загрузить файл меньшего размера.';
+
+            this.hideProfile();
+            this.props.showWarning(text);
+
+            return false;
+        }
 
         this.props.changeAvatar(file, this.props.user);
     }
@@ -149,7 +207,10 @@ class Profile extends Component {
                             />
                         </div>
                         <div className="profile__info-box">
-                            <span className="profile__nickname">
+                            <span
+                                className="profile__nickname"
+                                title={profile.nickname}
+                                >
                                 {profile.nickname}
                             </span>
                             <CopyToClipboard
@@ -188,7 +249,10 @@ class Profile extends Component {
                             />
                         </div>
                         <div className="profile__info-box">
-                            <span className="profile__nickname">
+                            <span
+                                className="profile__nickname"
+                                title={this.getInterlocutor(profile).nickname}
+                                >
                                 {this.getInterlocutor(profile).nickname}
                             </span>
                             <input
@@ -238,7 +302,10 @@ class Profile extends Component {
                         />
                     </div>
                     <div className="profile__info-box profile__info-box_group">
-                        <span className="profile__nickname">
+                        <span
+                            className="profile__nickname"
+                            title={displayData.nickname}
+                            >
                             {displayData.nickname}
                         </span>
                         <span
@@ -271,30 +338,33 @@ class Profile extends Component {
                                     'Уведомления отключены'}
                             </span>
                         </label>
-                        <ul className="contacts">
-                            {profile.members
-                                ? profile.members.map(m => {
-                                    return (
-                                        <li
-                                            className="contacts__user-box"
-                                            key={m.nickname}
-                                            onClick={() => {
-                                                const { nickname } = this.props.user;
+                        <div className="contacts_wrapper">
+                            <ul className="contacts">
+                                {profile.members
+                                    ? profile.members.map(m => {
+                                        return (
+                                            <li
+                                                className="contacts__user-box"
+                                                key={m.nickname}
+                                                onClick={() => {
+                                                    const { nickname } = this.props.user;
 
-                                                if (m.nickname !== nickname) {
-                                                    this.hideProfile();
-                                                    this.props.createChat(this.props.user, m);
-                                                }
-                                            }}
-                                            >
-                                            <div className="contacts__nickname">
-                                                {m.nickname}
-                                            </div>
-                                        </li>
-                                    );
-                                })
-                                : null}
-                        </ul>
+                                                    if (m.nickname !== nickname) {
+                                                        this.hideProfile();
+                                                        this.props.createChat(this.props.user, m);
+                                                    }
+                                                }}
+                                                >
+                                                <div className="contacts__nickname">
+                                                    {m.nickname}
+                                                </div>
+                                                {this.getChargeBattery(m.nickname)}
+                                            </li>
+                                        );
+                                    })
+                                    : null}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -323,17 +393,21 @@ Profile.propTypes = {
     hideProfile: PropTypes.func,
     changeAvatar: PropTypes.func,
     createChat: PropTypes.func,
-    showFullSize: PropTypes.func
+    showFullSize: PropTypes.func,
+    activeChat: PropTypes.object,
+    showWarning: PropTypes.func
 };
 
 export default connect(
     state => ({
         profile: state.modal.profile,
-        user: state.user
+        user: state.user,
+        activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id)
     }), {
         hideProfile,
         changeAvatar,
         createChat,
-        showFullSize
+        showFullSize,
+        showWarning
     }
 )(Profile);
