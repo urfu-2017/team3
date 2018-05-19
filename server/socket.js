@@ -110,6 +110,12 @@ module.exports = function setupSocket(ws) {
     }
 
     async function createChat(socket, senderCallback, { title, members, type }) {
+        const membersFromDb = await User.find({ _id: { $in: members } });
+
+        if (membersFromDb.length !== members.length) {
+            return;
+        }
+
         const chat = await Chat.create({ title, members, type });
         const [, ...other] = members;
 
