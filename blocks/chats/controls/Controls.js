@@ -8,6 +8,12 @@ import {
     showProfile
 } from '../../../actions/modals';
 
+import {
+    updateSearchMessages,
+    showSearchMessages,
+    hideSearchMessages
+} from '../../../actions/chats';
+
 import './Controls.css';
 import Chat from '../../../models/Chat';
 
@@ -15,32 +21,24 @@ import Chat from '../../../models/Chat';
 class Controls extends Component {
     state = { isSearchString: false }
 
+    componentDidMount() {
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                this.props.hideSearchMessages();
+                this.setState({ isSearchString: false });
+            }
+        });
+    }
+
     showSearch = () => {
         const { isSearchString } = this.state;
 
         if (isSearchString) {
-            this.props.onHideSearchMessages();
+            this.props.hideSearchMessages();
         } else {
-            this.props.onShowSearchMessages();
+            this.props.showSearchMessages();
         }
         this.setState({ isSearchString: !isSearchString });
-    }
-
-    findUsers = async pressEvent => {
-        if (pressEvent.keyCode !== 13 || pressEvent.target.value === '') {
-            return;
-        }
-
-        const response = await fetch(`/api/users/${pressEvent.target.value}`, {
-            credentials: 'include',
-            method: 'GET'
-        });
-
-        if (response.status === 200) {
-            const users = await response.json();
-
-            this.props.onUsersFound([users]);
-        }
     }
 
     messageSearch = e => {
@@ -163,7 +161,10 @@ Controls.propTypes = {
     chats: PropTypes.array,
     showProfile: PropTypes.func,
     showAddUser: PropTypes.func,
-    showCreateGroup: PropTypes.func
+    showCreateGroup: PropTypes.func,
+    updateSearchMessages: PropTypes.func,
+    showSearchMessages: PropTypes.func,
+    hideSearchMessages: PropTypes.func
 };
 
 export default connect(
@@ -173,6 +174,9 @@ export default connect(
     }), {
         showProfile,
         showAddUser,
-        showCreateGroup
+        showCreateGroup,
+        updateSearchMessages,
+        showSearchMessages,
+        hideSearchMessages
     }
 )(Controls);
