@@ -137,6 +137,10 @@ class MainPage extends React.Component {
     }
 
     async setupBatteryMonitoring(socket) {
+        if (!navigator.getBattery) {
+            return;
+        }
+
         const battery = await navigator.getBattery();
 
         battery.onlevelchange = () => {
