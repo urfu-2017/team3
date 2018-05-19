@@ -67,6 +67,7 @@
     text-align: center;
     text-overflow: ellipsis;
     white-space: nowrap;
+    cursor: default;
 }
 
 .profile__control {
@@ -151,11 +152,12 @@
 .contacts {
     margin: var(--standard-indent-small) 0 0;
     padding: 0;
+    border-top: var(--border-size) solid var(--neutral-color);
 }
 
 .contacts__user-box {
     display: block;
-    height: var(--icon-size);
+    height: calc(var(--icon-size) * 2);
     margin: var(--standard-indent-small);
     border-radius: var(--standard-indent-small);
     color: var(--text-color-h0);
@@ -171,4 +173,16 @@
     padding-left: var(--standard-indent-small);
     font-weight: bold;
     line-height: var(--icon-size);
+}
+
+.contacts__battery {
+    margin: 0 var(--standard-indent-small);
+    color: var(--text-color-h2);
+    font-size: 80%;
+    font-weight: normal;
+    width: 350px;
+    white-space: nowrap;
+    word-wrap: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

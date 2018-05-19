@@ -74,6 +74,35 @@ class Profile extends Component {
         return members[0];
     }
 
+    getChargeBattery = nickname => {
+        const user = this.props.activeChat.members.find(member => member.nickname === nickname);
+
+        if (user.battery) {
+            return (
+                <span
+                    className="contacts__battery"
+                    title={`${Math.floor(user.battery.level * 100)}% заряда батареи` +
+                    `${user.battery.isCharging
+                        ?
+                        ', заряжается'
+                        :
+                        ''
+                    }`}
+                    >
+                    {`${Math.floor(user.battery.level * 100)}% заряда батареи` +
+                    `${user.battery.isCharging
+                        ?
+                        ', заряжается'
+                        :
+                        ''
+                    }`}
+                </span>
+            );
+        }
+
+        return null;
+    };
+
     onFileChange = e => {
         const [file] = e.target.files;
 
@@ -149,7 +178,10 @@ class Profile extends Component {
                             />
                         </div>
                         <div className="profile__info-box">
-                            <span className="profile__nickname">
+                            <span
+                                className="profile__nickname"
+                                title={profile.nickname}
+                                >
                                 {profile.nickname}
                             </span>
                             <CopyToClipboard
@@ -188,7 +220,10 @@ class Profile extends Component {
                             />
                         </div>
                         <div className="profile__info-box">
-                            <span className="profile__nickname">
+                            <span
+                                className="profile__nickname"
+                                title={this.getInterlocutor(profile).nickname}
+                                >
                                 {this.getInterlocutor(profile).nickname}
                             </span>
                             <input
@@ -238,7 +273,10 @@ class Profile extends Component {
                         />
                     </div>
                     <div className="profile__info-box profile__info-box_group">
-                        <span className="profile__nickname">
+                        <span
+                            className="profile__nickname"
+                            title={displayData.nickname}
+                            >
                             {displayData.nickname}
                         </span>
                         <span
@@ -290,6 +328,7 @@ class Profile extends Component {
                                             <div className="contacts__nickname">
                                                 {m.nickname}
                                             </div>
+                                            {this.getChargeBattery(m.nickname)}
                                         </li>
                                     );
                                 })
@@ -323,13 +362,15 @@ Profile.propTypes = {
     hideProfile: PropTypes.func,
     changeAvatar: PropTypes.func,
     createChat: PropTypes.func,
-    showFullSize: PropTypes.func
+    showFullSize: PropTypes.func,
+    activeChat: PropTypes.object
 };
 
 export default connect(
     state => ({
         profile: state.modal.profile,
-        user: state.user
+        user: state.user,
+        activeChat: state.chats.find(c => state.activeChat && c._id === state.activeChat.id)
     }), {
         hideProfile,
         changeAvatar,

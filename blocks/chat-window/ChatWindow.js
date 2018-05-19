@@ -208,10 +208,11 @@ class ChatWindow extends Component {
             );
         }
 
-        const [lowestChargeUser] = activeChat && activeChat.members
+        const lowestChargeUser = activeChat &&
+        activeChat.type === 'private' &&
+        activeChat.members
             .filter(member => member.nickname !== this.props.user.nickname)
-            .filter(member => member.battery)
-            .sort((m1, m2) => m1.battery.level > m2.battery.level);
+            .filter(member => member.battery);
 
         const chat = new Chat(activeChat);
         const avatar = chat.getAvatarFor(user);
@@ -245,7 +246,7 @@ class ChatWindow extends Component {
                             >
                             {title}
                         </span>
-                        {this.getChargeBattery(lowestChargeUser)}
+                        {this.getChargeBattery(lowestChargeUser[0])}
                     </div>
                     {this.state.isDraggable
                         ?
