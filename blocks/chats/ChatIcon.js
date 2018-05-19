@@ -45,7 +45,7 @@ class ChatIcon extends Component {
                     <div className="chat-icon__upper-box">
                         <div className="chat-icon__title">{title}</div>
                         <div className="chat-icon__date">
-                            {lastMessage && this.prettyDate(lastMessage.date)}
+                            {this.prettyDate(chat.getDate())}
                         </div>
                     </div>
                     <div className="chat-icon__lower-box">

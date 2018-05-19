@@ -28,6 +28,16 @@ export default class Chat {
         return interlocutor || user;
     }
 
+    getDate() {
+        const lastMessage = this.getLastMessage();
+
+        if (lastMessage) {
+            return lastMessage.date;
+        }
+
+        return this.createdAt || new Date(0).toString();
+    }
+
     getContactFor(user) {
         if (this.type !== 'private') {
             return null;
