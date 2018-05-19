@@ -12,6 +12,13 @@ export default function activeChat(state = null, action) {
         };
     }
 
+    if (action.type === 'UPDATE_BATTERY_LEVEL') {
+        return {
+            ...state,
+            chats: action.chats
+        };
+    }
+
     if (action.type === 'SHOW_EMOJI') {
         return {
             ...state,

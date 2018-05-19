@@ -113,3 +113,21 @@ function getPayload(message) {
 
     return payload;
 }
+
+export const updateBatteryLevel = (userNickname, battery) => (dispatch, getState) => {
+    const { activeChat, chats } = getState();
+
+    if (!activeChat) {
+        return;
+    }
+
+    const chat = chats.find(x => x._id === activeChat.id);
+
+    for (let i = 0; i < chat.members.length; i += 1) {
+        if (chat.members[i].nickname === userNickname) {
+            chat.members[i].battery = battery;
+        }
+    }
+
+    dispatch({ type: types.UPDATE_BATTERY_LEVEL, chats });
+};

@@ -9,8 +9,9 @@ const mongoSchema = new mongoose.Schema({
         type: String,
         alias: 'nickname'
     },
-    avatar: String
-}, { toJSON: { virtuals: true } });
+    avatar: String,
+    battery: {}
+}, { minimize: false, toJSON: { virtuals: true } });
 
 class UserClass {
     /* eslint-disable camelcase */
