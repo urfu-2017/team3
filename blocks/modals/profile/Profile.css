@@ -2,6 +2,7 @@
     display: flex;
     box-sizing: border-box;
     width: calc(var(--modal-width) * 1.1);
+    max-height: 80%;
     padding: var(--standard-indent);
     border-radius: var(--standard-indent-small);
     background-color: var(--background-color);
@@ -149,10 +150,20 @@
     }
 }
 
-.contacts {
-    margin: var(--standard-indent-small) 0 0;
-    padding: 0;
+.contacts_wrapper {
+    overflow: hidden;
+    margin-top: var(--standard-indent-small);
     border-top: var(--border-size) solid var(--neutral-color);
+    height: 80%;
+}
+
+.contacts {
+    margin: 0;
+    margin-right: -17px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    padding: 0;
 }
 
 .contacts__user-box {

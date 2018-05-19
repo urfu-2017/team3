@@ -100,7 +100,14 @@ class Profile extends Component {
             );
         }
 
-        return null;
+        return (
+            <span
+                className="contacts__battery"
+                title="Нет данных"
+                >
+                не удалось вычислить по айпи
+            </span>
+        );
     };
 
     /* eslint-disable max-statements */
@@ -331,31 +338,33 @@ class Profile extends Component {
                                     'Уведомления отключены'}
                             </span>
                         </label>
-                        <ul className="contacts">
-                            {profile.members
-                                ? profile.members.map(m => {
-                                    return (
-                                        <li
-                                            className="contacts__user-box"
-                                            key={m.nickname}
-                                            onClick={() => {
-                                                const { nickname } = this.props.user;
+                        <div className="contacts_wrapper">
+                            <ul className="contacts">
+                                {profile.members
+                                    ? profile.members.map(m => {
+                                        return (
+                                            <li
+                                                className="contacts__user-box"
+                                                key={m.nickname}
+                                                onClick={() => {
+                                                    const { nickname } = this.props.user;
 
-                                                if (m.nickname !== nickname) {
-                                                    this.hideProfile();
-                                                    this.props.createChat(this.props.user, m);
-                                                }
-                                            }}
-                                            >
-                                            <div className="contacts__nickname">
-                                                {m.nickname}
-                                            </div>
-                                            {this.getChargeBattery(m.nickname)}
-                                        </li>
-                                    );
-                                })
-                                : null}
-                        </ul>
+                                                    if (m.nickname !== nickname) {
+                                                        this.hideProfile();
+                                                        this.props.createChat(this.props.user, m);
+                                                    }
+                                                }}
+                                                >
+                                                <div className="contacts__nickname">
+                                                    {m.nickname}
+                                                </div>
+                                                {this.getChargeBattery(m.nickname)}
+                                            </li>
+                                        );
+                                    })
+                                    : null}
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
