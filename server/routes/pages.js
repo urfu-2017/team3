@@ -24,9 +24,10 @@ module.exports = (server, app) => {
             (req, res) => {
                 app.render(req, res, '/index');
             })
-        .get('/auth', (req, res) => {
-            app.render(req, res, '/auth');
-        })
+        .get('/auth', connectEnsureLogin.ensureLoggedOut('/'),
+            (req, res) => {
+                app.render(req, res, '/auth');
+            })
         .get('/_next/*', handleRequest)
         .get('/static/*', handleRequest);
 };
