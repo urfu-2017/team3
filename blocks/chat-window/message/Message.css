@@ -241,13 +241,10 @@
 }
 
 .message .emoji-mart {
-    /* не буду удалять, вдруг пригодится, я это полчаса высчитывал */
-    /* bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3); */
-    bottom: calc(100% - 62px);
-    /* width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important; */
+    /* bottom: calc(100% - 62px); */
+    top: 0;
     width: 165px !important;
     height: 150px;
-    /* max-height: calc(100% - var(--standard-indent-small) / 2); */
     background-color: var(--background-color);
 }
 
@@ -257,12 +254,10 @@
 }
 
 .message_friend .emoji-mart {
-    /* right: calc(1% + var(--standard-indent-small) * 2 / 2); */
     right: -190px;
 }
 
 .message_my .emoji-mart {
-    /* left: calc(1% + var(--standard-indent-small) * 2 / 2); */
     left: -190px;
 }
 
