@@ -33,11 +33,12 @@
     height: 100%;
     padding: 0 calc(var(--standard-indent-small) * 2);
     border-width: 0;
-    border-radius: var(--standard-indent-small);
+    border-radius: 3px;
     outline: none;
     background-color: var(--neutral-color);
     color: var(--text-color-h0);
     font-size: 120%;
+    font-family: "Noto Sans", sans-serif;
 }
 
 .create-group__list {
@@ -115,7 +116,7 @@
     height: 100%;
     margin-right: 10%;
     border: none;
-    border-radius: var(--standard-indent-small);
+    border-radius: 3px;
     background: none;
     color: var(--text-color-h0);
     font-size: 110%;
