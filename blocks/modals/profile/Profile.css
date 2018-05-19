@@ -158,7 +158,7 @@
     overflow: hidden;
     margin-top: var(--standard-indent-small);
     border-top: var(--border-size) solid var(--neutral-color);
-    /* height: 50%; */
+    height: 80%;
 }
 
 .contacts {

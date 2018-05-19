@@ -116,3 +116,24 @@ body {
     background-color: #737373;
     border-color: #727272;
 }
+
+
+/* @media screen and (max-width: 10000px) 
+{
+    body {
+        margin: 0;
+    }
+    
+    .theme,
+    .chat-input__audioinput-btn {
+        visibility: hidden;
+    }
+
+    .chats__controls {
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        z-index: 50;
+    }
+} */
+
