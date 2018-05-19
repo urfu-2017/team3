@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 
 class Emoji extends Component {
     hideEmoji = () => {
-        console.log('fwefewfwefwef');
         this.props.hideEmoji();
     }
 

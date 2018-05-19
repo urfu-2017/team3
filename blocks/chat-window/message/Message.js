@@ -57,11 +57,6 @@ class Message extends Component {
                 this.setState({ showEmojiToMsg: false });
             }
         });
-        // document.addEventListener('click', e => {
-        //     if (e.target.className.indexOf('message__add-emoji') === -1) {
-        //         this.setState({ showEmojiToMsg: false });
-        //     }
-        // });
 
         const { message, activeChat, user } = this.props;
 
@@ -93,10 +88,8 @@ class Message extends Component {
 
     setForward = () => {
         const { message, user } = this.props;
-console.log(this.props.isShowContacts);
-this.props.showContacts();
-console.log(this.props.isShowContacts);
 
+        this.props.showContacts();
         this.props.setForward(message, user);
     }
 
@@ -368,14 +361,11 @@ Message.propTypes = {
     showFullSize: PropTypes.func,
     setForward: PropTypes.func,
     setReply: PropTypes.func,
-    showContacts: PropTypes.func,
-    isShowContacts: PropTypes.bool
+    showContacts: PropTypes.func
 };
 
 export default connect(
-    state => ({
-        isShowContacts: state.activeChat && state.activeChat.isShowContacts
-    }), {
+    () => ({}), {
         showFullSize,
         setForward,
         setReply,
