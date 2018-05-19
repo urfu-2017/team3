@@ -4,7 +4,7 @@ import Chat from '../models/Chat';
 import Message from '../models/Message';
 
 const NEWMSG_SOUND_URL = '/static/newmsg.wav';
-const NEWMSG_VIBRATION_PATTERN = [100, 100];
+const NEWMSG_VIBRATION_PATTERN = [100, 100, 100];
 
 /* eslint-disable-next-line import/prefer-default-export */
 export const notifyMessage = ({ message, chat, user, activeChat, onclick }) => {
