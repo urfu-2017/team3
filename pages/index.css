@@ -117,23 +117,118 @@ body {
     border-color: #727272;
 }
 
-
-/* @media screen and (max-width: 10000px) 
+@media screen and (max-width: 576px) 
 {
     body {
         margin: 0;
     }
-    
+
+    .main {
+        height: 100vh;
+        position: fixed;
+        top: 52px;
+        display: block;
+    }
+
+    .log-in__github-link {
+        margin-left: -52px;
+    }
+
+    .chat-header__battery,
+    .chat-input__burger-content,
+    .chat-input__burger-btn,
     .theme,
     .chat-input__audioinput-btn {
-        visibility: hidden;
+        display: none;
     }
 
     .chats__controls {
         position: fixed;
         top: 0;
-        width: 100vw;
-        z-index: 50;
+        right: 0;
+        padding: 0;
+        width: 50vw;
+        z-index: 1;
+        height: 52px;
+        background-color: transparent;
+        border-bottom: none;
+        justify-content: space-around;
     }
-} */
+
+    .control-img:nth-child(4) {
+        display: none;
+    }
+
+    .chats {
+        width: 100vw;
+        z-index: 1;
+    }
+
+    .chats__list {
+        display: flex;
+        flex-direction: row;
+        overflow-x: scroll;
+    }
+
+    .chat-icon {
+        width: 100vw;
+    }
+
+    .chats__empty-search {
+        height: 56px;
+        padding-top: 0;
+    }
+    
+    .dialog {
+        width: 100%;
+        height: calc(100vh - 108px);
+        position: fixed;
+        top: 108px;
+        z-index: 10;
+        background-color: var(--background-color);
+    }
+
+    .chat-window {
+        height: 100%;
+        grid-template-rows: 
+        48px
+        1fr
+        40px
+        48px;
+        width: 100vw;
+    }
+
+    .chat-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding-left: 0;
+        padding-right: 0;
+        width: 50vw;
+        z-index: 50;
+        height: 52px;
+        background-color: var(--background-color);
+        border-bottom: none;
+    }
+
+    .messages {
+        grid-area: 1 / 1 / 4 / 2;
+        margin: calc(var(--standard-indent-small) / 4) 0;
+        border-top: var(--border-size) solid var(--neutral-color);
+    }
+
+    .current-forward {
+        grid-area: 3 / 1 / 4 / 2;
+        width: 100vw;
+    }
+
+    .chat-input {
+        grid-area: 4 / 1 / 5 / 2;
+        width: 100vw;
+    }
+
+    .chat-input__write-field {
+        width: 90%;
+    }
+}
 

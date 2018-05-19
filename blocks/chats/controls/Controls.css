@@ -61,13 +61,6 @@
     animation: blinkButton 1s linear 0s infinite;
 }
 
-.controls_zindex_max:hover {
-    padding: var(--standard-indent-small);
-    width: calc(var(--icon-size) - var(--standard-indent-small));
-    height: calc(var(--icon-size) - var(--standard-indent-small));
-    transition: .3s;
-}
-
 @keyframes blinkButton {
     0% {
         background-color: var(--background-color);

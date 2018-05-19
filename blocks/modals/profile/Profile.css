@@ -126,7 +126,7 @@
 }
 
 .profile__copied {
-    position: absolute;
+    position: fixed;
     margin: calc(var(--standard-indent-small) / 2);
     padding: calc(var(--standard-indent-small) / 2) var(--standard-indent-small);
     border-radius: 24px;
