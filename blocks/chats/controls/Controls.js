@@ -59,8 +59,8 @@ class Controls extends Component {
 
                     if (message.text) {
                         whereFind = message.text;
-                    } else if (message.forwardFrom) {
-                        whereFind = message.forwardFrom;
+                    } else if (message.forwardFrom && message.forwardFrom.text) {
+                        whereFind = message.forwardFrom.text;
                     }
 
                     if (whereFind.match(regexp) && value.length) {
