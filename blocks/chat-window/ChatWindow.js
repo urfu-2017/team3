@@ -297,7 +297,12 @@ class ChatWindow extends Component {
                         isForward
                             ?
                             (
-                                <div className="current-forward grid_6_7">
+                                <div className={'current-forward grid_6_7' +
+                                    `${forwardMessage
+                                        ?
+                                        ' current-forward_forward'
+                                        :
+                                        ' current-forward_reply'}`}>
                                     <div className="current-forward__author">
                                         {forwardMessage
                                             ?

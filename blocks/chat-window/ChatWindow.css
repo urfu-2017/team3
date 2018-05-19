@@ -125,6 +125,20 @@
     line-height: var(--icon-size);
     position: relative;
     color: var(--text-color-h0);
+    padding-left: calc(
+        var(--icon-size) +
+        (var(--standard-indent) * 0.5)
+    );
+    background-position: calc(var(--standard-indent-small) * 1.5);
+    background-repeat: no-repeat;
+}
+
+.current-forward_forward {
+    background-image: url(/static/forward.svg);
+}
+
+.current-forward_reply {
+    background-image: url(/static/reply.svg);
 }
 
 .current-forward__author {
@@ -137,7 +151,10 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    width: calc((100vw * 0.7 - 310px) * 0.7);
+    width: calc((100vw * 0.7 - 310px) * 0.7 -
+        var(--icon-size) -
+        (var(--standard-indent) * 0.5)
+    );
 }
 
 .current-forward_clear {
