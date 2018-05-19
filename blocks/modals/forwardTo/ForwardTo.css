@@ -1,0 +1,18 @@
+.forward-chooser_wrapper {
+    box-sizing: border-box;
+    width: 330px;
+    height: 80%;
+    overflow: hidden;
+    border-radius: var(--standard-indent-small);
+    background-color: var(--background-color);
+    box-shadow: 0 0 var(--border-size) var(--border-size) var(--spare-color);
+}
+
+.forward-chooser {
+    height: 100%;
+    padding: 0 10px;
+    margin: 10px 0;
+    margin-right: -17px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

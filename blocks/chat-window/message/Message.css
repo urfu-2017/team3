@@ -2,7 +2,7 @@
     position: relative;
     min-width: 20%;
     max-width: calc(100% - 190px);
-    margin-top: calc(var(--standard-indent-small) * 2);
+    margin: var(--standard-indent-small) 0;
 }
 
 .message:first-child {
@@ -25,7 +25,7 @@
         (
             var(--icon-size) * 0.75 + 
             var(--standard-indent-small) * 0.25 * 2
-        ) / -1.5
+        ) / -1.7
     );
     right: calc(var(--standard-indent-small) * 1.5);
     align-items: center;
@@ -39,6 +39,7 @@
     border: var(--border-size) solid var(--spare-color);
     border-radius: var(--standard-indent-small);
     background-color: var(--background-color);
+    z-index: 1;
 }
 
 .message:hover .message__controls {
@@ -50,7 +51,7 @@
     height: calc(var(--icon-size) * 0.75);
     margin: calc(var(--standard-indent-small) / 4) 0;
     border-radius: 50%;
-    background-size: 24px;
+    background-size: calc(var(--icon-size) * 0.75);;
 }
 
 .message__control:hover {
@@ -71,10 +72,14 @@
 }
 
 .message__body {
-    padding: calc(var(--standard-indent-small) * 2);
+    padding: 
+        calc(var(--standard-indent-small) + 2px) 
+        calc(var(--standard-indent-small) * 2);
+        /* calc(var(--standard-indent-small) / 2); */
     border-radius: var(--standard-indent-small);
     background-color: var(--neutral-color);
     font-size: 90%; 
+    position: relative;
 }
 
 .message__body_my {
@@ -106,7 +111,7 @@
 }
 
 .message__content {
-    margin: var(--standard-indent-small) 0;
+    margin: calc(var(--standard-indent-small) / 2) 0;
     color: var(--text-color-h1);
     text-decoration: none;
     word-break: break-all;
@@ -142,7 +147,7 @@
 .message__reactions {
     display: flex;
     flex-wrap: wrap;
-    margin: 0 0 calc(var(--standard-indent-small) / 2);
+    margin: 0;
 }
 
 .message__reactions_to-left {
@@ -234,23 +239,28 @@
     margin: var(--standard-indent-small) 0;
 }
 
-.message > .emoji-mart {
+.message .emoji-mart {
     /* не буду удалять, вдруг пригодится, я это полчаса высчитывал */
     /* bottom: calc(var(--icon-size) + var(--standard-indent-small) * 3); */
-    top: 0;
+    bottom: calc(100% - 62px);
     /* width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important; */
     width: 165px !important;
     height: 200px;
-    max-height: calc(100% - var(--standard-indent-small) / 2);
+    /* max-height: calc(100% - var(--standard-indent-small) / 2); */
     background-color: var(--background-color);
 }
 
-.message_friend > .emoji-mart {
+.message .emoji-mart > .emoji-mart-scroll {
+    min-height: 200px;
+    max-height: calc(100% - var(--standard-indent-small) / 2);
+}
+
+.message_friend .emoji-mart {
     /* right: calc(1% + var(--standard-indent-small) * 2 / 2); */
     right: -190px;
 }
 
-.message_my > .emoji-mart {
+.message_my .emoji-mart {
     /* left: calc(1% + var(--standard-indent-small) * 2 / 2); */
     left: -190px;
 }

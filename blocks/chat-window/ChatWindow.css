@@ -110,6 +110,7 @@
     display: flex;
     line-height: var(--icon-size);
     position: relative;
+    color: var(--text-color-h0);
 }
 
 .current-forward__author {

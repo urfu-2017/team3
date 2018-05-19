@@ -106,6 +106,7 @@ class Profile extends Component {
         new Chat(this.props.profile).settings.switchNotifications(toggledValue);
     }
 
+    /* eslint-disable complexity */
     render() {
         const { profile } = this.props;
 
@@ -155,10 +156,10 @@ class Profile extends Component {
                                 text={`${window.location}invite/${profile.nickname}`}
                                 >
                                 <span
-                                    className="profile__invite-link"
+                                    className="profile__invite-link profile__control"
                                     onClick={this.copiedNotify}
                                     >
-                                    Copy invite link
+                                    Получить ссылку-приглашение
                                 </span>
                             </CopyToClipboard>
                         </div>
@@ -190,6 +191,30 @@ class Profile extends Component {
                             <span className="profile__nickname">
                                 {this.getInterlocutor(profile).nickname}
                             </span>
+                            <input
+                                type="checkbox"
+                                id="profile__notification_hidden"
+                                className="profile__notification_hidden"
+                                onChange={this.toggleNotifications}
+                                checked={this.state.notificationsEnabled} />
+                            <label
+                                htmlFor="profile__notification_hidden"
+                                className="profile__notification"
+                                title={this.state.notificationsEnabled
+                                    ?
+                                    'Отключить уведомления'
+                                    :
+                                    'Включить уведомления'}
+                                >
+                                <span className="profile__notification_description_add
+                                profile__control">
+                                    {this.state.notificationsEnabled
+                                        ?
+                                        'Уведомления включены'
+                                        :
+                                        'Уведомления отключены'}
+                                </span>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -212,18 +237,39 @@ class Profile extends Component {
                             draggable="false"
                         />
                     </div>
-                    <div className="profile__info-box">
+                    <div className="profile__info-box profile__info-box_group">
                         <span className="profile__nickname">
                             {displayData.nickname}
                         </span>
-                        <span onClick={this.copiedNotify}>
+                        <span
+                            onClick={this.copiedNotify}
+                            className="profile__invite-link_wrapper"
+                            >
                             {this.inviteLink(profile)}
                         </span>
-                        <label>Notifications
-                            <input
-                                type="checkbox"
-                                onChange={this.toggleNotifications}
-                                checked={this.state.notificationsEnabled} />
+                        <input
+                            type="checkbox"
+                            id="profile__notification_hidden"
+                            className="profile__notification_hidden"
+                            onChange={this.toggleNotifications}
+                            checked={this.state.notificationsEnabled} />
+                        <label
+                            htmlFor="profile__notification_hidden"
+                            className="profile__notification"
+                            title={this.state.notificationsEnabled
+                                ?
+                                'Отключить уведомления'
+                                :
+                                'Включить уведомления'}
+                            >
+                            <span className="profile__notification_description_add
+                                profile__control">
+                                {this.state.notificationsEnabled
+                                    ?
+                                    'Уведомления включены'
+                                    :
+                                    'Уведомления отключены'}
+                            </span>
                         </label>
                         <ul className="contacts">
                             {profile.members
@@ -261,8 +307,8 @@ class Profile extends Component {
         if (profile.inviteId) {
             return (
                 <CopyToClipboard text={groupInviteLink}>
-                    <span className="profile__invite-link">
-                        Copy invite link
+                    <span className="profile__invite-link profile__control">
+                        Получить ссылку-приглашение
                     </span>
                 </CopyToClipboard>);
         }
