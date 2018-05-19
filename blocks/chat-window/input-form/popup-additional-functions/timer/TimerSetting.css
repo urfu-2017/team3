@@ -13,7 +13,8 @@
         var(--icon-size) +
         (var(--standard-indent) * 0.5)
     );
-    top: -4px;
+	top: -4px;
+	margin-bottom: 4px;
 }
 
 .timer-setting__button {
@@ -34,8 +35,10 @@
 
 .timer-setting__range {
 	-webkit-appearance: none;
+	position: absolute;
+	bottom: -4px;
 	margin-left: calc(var(--standard-indent) * 0.5);
-	/* width: 60%; */
+	width: 60%;
 }
 
 .timer-setting__range:focus {
@@ -51,11 +54,11 @@
 }
 
 .timer-setting__range::-moz-range-track {
-    height: 8px;
+	height: 4px;
 	cursor: pointer;
 	transition: 0.2s;
 	border: var(--border-size) solid var(--neutral-color);
-	background: var(--base-color);
+	background: var(--spare-color-semi-transparent);
 }
 
 .timer-setting__range::-webkit-slider-thumb {
