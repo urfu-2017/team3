@@ -7,6 +7,8 @@ import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 
+import Map from '../../map/Map';
+
 import { showFullSize } from '../../../actions/modals';
 
 import './ReplyMessage.css';
@@ -76,7 +78,7 @@ class ReplyMessage extends Component {
             return null;
         }
 
-        const { author, date, text, meta, attachments } = this.props.message;
+        const { author, date, text, meta, attachments, location } = this.props.message;
         const newText = this.formatText(text);
         const goodDate = this.prettyDate(date);
         const metadata = this.formatMeta(meta);
@@ -90,7 +92,11 @@ class ReplyMessage extends Component {
                 </div>
                 <div className="reply__content">{newText}</div>
                 <div className="reply__attachments">
-                    {images}
+                    {
+                        location && location.latitude
+                            ? <Map location={location} />
+                            : images
+                    }
                 </div>
                 {metadata}
             </div>

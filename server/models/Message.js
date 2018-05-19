@@ -21,7 +21,11 @@ const mongoSchema = new mongoose.Schema({
     },
     forwardFrom: {},
     replyTo: {},
-    selfDestructTimer: Number
+    selfDestructTimer: Number,
+    location: {
+        latitude: Number,
+        longitude: Number
+    }
 }, { minimize: false });
 
 class MessageClass {
@@ -31,7 +35,8 @@ class MessageClass {
         attachments,
         replyTo,
         forwardFrom,
-        selfDestructTimer
+        selfDestructTimer,
+        location
     }) {
         const meta = await extractMeta(text);
 
@@ -45,7 +50,8 @@ class MessageClass {
             attachments: attachments || [],
             replyTo,
             forwardFrom,
-            selfDestructTimer
+            selfDestructTimer,
+            location
         };
     }
 }
