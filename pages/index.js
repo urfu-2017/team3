@@ -17,6 +17,7 @@ import {
 
 import types from '../actions/types';
 import makeStore from '../store';
+import { initNotifications } from '../utils/notification';
 
 import Chats from '../blocks/chats/Chats';
 import ChatWindow from '../blocks/chat-window/ChatWindow';
@@ -165,6 +166,8 @@ class MainPage extends React.Component {
         this.setupDestructMessage(socket);
 
         this.setTheme();
+
+        initNotifications();
 
         this.acceptInvite(socket, this.props.user, this.props.invite);
     }
