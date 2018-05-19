@@ -164,7 +164,6 @@
     height: calc(var(--icon-size) / 2);
     width: calc(var(--icon-size) / 2);
     padding: var(--standard-indent-small);
-    background-color: var(--neutral-color-transparent);
     opacity: .6;
 }
 
