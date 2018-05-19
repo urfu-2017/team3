@@ -245,7 +245,7 @@
     bottom: calc(100% - 62px);
     /* width: calc((100% - var(--standard-indent-small) * 2 * 2) * 0.33) !important; */
     width: 165px !important;
-    height: 200px;
+    height: 150px;
     /* max-height: calc(100% - var(--standard-indent-small) / 2); */
     background-color: var(--background-color);
 }

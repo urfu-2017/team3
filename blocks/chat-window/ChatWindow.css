@@ -48,17 +48,11 @@
     --size: calc(var(--icon-size) * 1.5);
     display: flex;
     z-index: 11;
-    grid-area: 1 / 1 / 2 / 2;
     align-items: center;
     border-bottom: var(--border-size) solid var(--neutral-color);
     background-color: var(--background-color);
     font-size: 125%;
     font-weight: bold;
-}
-
-.chat-header:hover {
-    text-shadow: 0 0 var(--border-size) var(--text-color-h3);
-    cursor: pointer;
 }
 
 .chat-header__img {
@@ -75,6 +69,26 @@
     color: var(--text-color-h1);
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.chat-header__img:hover,
+.chat-header__name:hover {
+    text-shadow: 0 0 var(--border-size) var(--text-color-h3);
+    cursor: pointer;
+}
+
+.chat-header__battery {
+    margin: 0 var(--standard-indent-small);
+    color: var(--text-color-h2);
+    font-size: 70%;
+    font-weight: normal;
+    width: 350px;
+    white-space: nowrap;
+    word-wrap: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: blink_battery 1s linear 0s infinite;
+    cursor: default;
 }
 
 .messages {
@@ -180,4 +194,16 @@
 
 .grid_6_7 {
     grid-area: 6 / 1 / 7 / 2
+}
+
+@keyframes blink_battery {
+    0% {
+        color: var(--text-color-h1);
+    }
+    50% {
+        color: var(--text-color-h3);
+    }
+    100% {
+        color: var(--text-color-h1);
+    }
 }
