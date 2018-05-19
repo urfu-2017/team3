@@ -25,6 +25,7 @@
 
 .create-group__hint {
     color: var(--text-color-h2);
+    font-size: 85%;
 }
 
 .create-group__name {
@@ -37,7 +38,7 @@
     outline: none;
     background-color: var(--neutral-color);
     color: var(--text-color-h0);
-    font-size: 120%;
+    font-size: 90%;
     font-family: "Noto Sans", sans-serif;
 }
 
@@ -93,6 +94,7 @@
     align-self: center;
     font-size: 110%;
     text-align: center;
+    font-size: 85%;
 }
 
 .create-group__participants {

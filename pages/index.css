@@ -37,6 +37,8 @@ body {
     width: 302px;
     text-align: center;
     padding: 16px 0 0 0;
+    font-size: 90%;
+    color: var(--spare-color);
 }
 
 .chats__list {
@@ -97,14 +99,20 @@ body {
     position: fixed;
     top: 4px;
     right: 4px;
-    width: 24px;
-    height: 24px;
     padding: 4px;
-    border: 2px solid var(--neutral-color);
-    border-radius: 8px;
     background-image: url(/static/theme.svg);
     background-repeat: no-repeat;
-    background-position: 4px 4px;
     background-size: 24px;
     cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    border: 1px solid var(--neutral-color);
+    background-position: center;
+}
+
+.theme:hover {
+    background-image: url(http://nibach.ru/theme.svg);
+    background-color: #737373;
+    border-color: #727272;
 }
