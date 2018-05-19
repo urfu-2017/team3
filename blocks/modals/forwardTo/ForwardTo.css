@@ -11,6 +11,7 @@
 .forward-chooser {
     height: 100%;
     padding: 0 10px;
+    margin: 10px 0;
     margin-right: -17px;
     overflow-x: hidden;
     overflow-y: scroll;
