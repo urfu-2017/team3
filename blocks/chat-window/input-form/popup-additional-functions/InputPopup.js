@@ -13,6 +13,8 @@ import {
     showAttachmentPreloader,
     sendMessage } from '../../../../actions/activeChat';
 
+import { showWarning } from '../../../../actions/modals';
+
 import TimerSetting from './timer/TimerSetting';
 
 import './InputPopup.css';
@@ -41,6 +43,10 @@ class InputPopup extends Component {
 
             // туду: показать сообщение 'Пытаемся вас найти'
             navigator.geolocation.getCurrentPosition(position => {
+                if (!position) {
+                    this.props.showWarning('Геолокация недоступна');
+                }
+
                 const location = {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
@@ -51,11 +57,11 @@ class InputPopup extends Component {
                 this.props.sendMessage(chatId, {
                     author,
                     location,
-                    text: ''
+                    text: 'Я тут!'
                 });
             });
         } else {
-            // туду: показать сообщение 'Навигация не доступна'
+            this.props.showWarning('Геолокация недоступна');
         }
 
         this.props.hideInputPopup();
@@ -131,7 +137,8 @@ InputPopup.propTypes = {
     submitMessage: PropTypes.func,
     sendMessage: PropTypes.func,
     chatId: PropTypes.string,
-    author: PropTypes.string
+    author: PropTypes.string,
+    showWarning: PropTypes.func
 };
 
 export default connect(
@@ -144,6 +151,7 @@ export default connect(
         addAttachments,
         hideInputPopup,
         showAttachmentPreloader,
-        sendMessage
+        sendMessage,
+        showWarning
     }
 )(InputPopup);

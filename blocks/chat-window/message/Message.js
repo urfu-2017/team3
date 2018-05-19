@@ -293,7 +293,7 @@ class Message extends Component {
                                         <div className="message__content">{newText}</div>
                                         <div className="message__attachments">
                                             {
-                                                message.location.lattitude
+                                                message.location && message.location.latitude
                                                     ? <Map location={message.location} />
                                                     : images
                                             }
@@ -348,7 +348,7 @@ class Message extends Component {
                                     <div className="message__content">{newText}</div>
                                     <div className="message__attachments">
                                         {
-                                            message.location.lattitude
+                                            message.location && message.location.latitude
                                                 ? <Map location={message.location} />
                                                 : images
                                         }

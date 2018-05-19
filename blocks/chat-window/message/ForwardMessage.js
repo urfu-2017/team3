@@ -7,6 +7,8 @@ import { Emoji } from 'emoji-mart';
 import ReactMarkdown from 'react-markdown';
 import { connect } from 'react-redux';
 
+import Map from '../../map/Map';
+
 import { showFullSize } from '../../../actions/modals';
 
 import './ReplyMessage.css';
@@ -72,6 +74,7 @@ class ForwardMessage extends Component {
         );
     }
 
+    /* eslint-disable complexity */
     render() {
         if (!this.props.message) {
             return null;
@@ -83,6 +86,7 @@ class ForwardMessage extends Component {
         const forwardDate = this.prettyDate(forwardFrom.date);
         const forwardMetadata = this.formatMeta(forwardFrom.meta);
         const forwardImages = this.formatImages(forwardFrom.attachments);
+        const forwardLocation = forwardFrom.location;
 
         return (
             <div className={'message__body message__body_' +
@@ -104,7 +108,11 @@ class ForwardMessage extends Component {
                     </div>
                     <div className="message__content">{forwardText}</div>
                     <div className="message__attachments">
-                        {forwardImages}
+                        {
+                            forwardLocation && forwardLocation.latitude
+                                ? <Map location={forwardLocation} />
+                                : forwardImages
+                        }
                     </div>
                     {forwardMetadata}
                 </div>
