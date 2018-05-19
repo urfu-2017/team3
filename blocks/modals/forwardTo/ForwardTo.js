@@ -7,10 +7,11 @@ import { connect } from 'react-redux';
 
 import { hideContacts } from '../../../actions/activeChat';
 
-// import PureProfile from './PureProfileForList';
 import ChatIcon from '../../chats/ChatIcon';
 
 import './ForwardTo.css';
+
+/* eslint-disable react/jsx-closing-bracket-location */
 
 class ForwardTo extends Component {
     hideContacts = () => {
@@ -39,7 +40,6 @@ class ForwardTo extends Component {
                 >
                 <div
                     className="forward-chooser_wrapper"
-                    onClick={e => e.stopPropagation()}
                     >
                     <div className="forward-chooser">
                         { chats.map(contact => {
