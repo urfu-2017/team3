@@ -33,6 +33,12 @@ body {
     height: 100%;
 }
 
+.chats__empty-search {
+    width: 302px;
+    text-align: center;
+    padding: 16px 0 0 0;
+}
+
 .chats__list {
     height: 100%;
     overflow-x: hidden;

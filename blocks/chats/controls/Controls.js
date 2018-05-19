@@ -8,16 +8,81 @@ import {
     showProfile
 } from '../../../actions/modals';
 
+import {
+    updateSearchMessages,
+    showSearchMessages,
+    hideSearchMessages
+} from '../../../actions/chats';
+
 import './Controls.css';
+import Chat from '../../../models/Chat';
 
 /* туду переделать на поиск по сообщениям */
 class Controls extends Component {
     state = { isSearchString: false }
 
+    componentDidMount() {
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 27) {
+                this.props.hideSearchMessages();
+                this.setState({ isSearchString: false });
+            }
+        });
+    }
+
     showSearch = () => {
         const { isSearchString } = this.state;
 
+        if (isSearchString) {
+            this.props.hideSearchMessages();
+        } else {
+            this.props.showSearchMessages();
+        }
         this.setState({ isSearchString: !isSearchString });
+    }
+
+    messageSearch = e => {
+        /* eslint complexity: 0 */
+        /* eslint max-statements: 0 */
+        if (e.which === 13 && e.target.value.trim()) {
+            const { user, chats } = this.props;
+
+            const searchMessages = [];
+
+            // вот ОНО - регулярка поиска сообщений
+            const value = e.target.value.trim();
+            const regexp = new RegExp(value, 'i');
+
+            chats.forEach(chat => {
+                chat.messages.forEach(message => {
+                    let whereFind = '';
+
+                    if (message.text) {
+                        whereFind = message.text;
+                    } else if (message.forwardFrom) {
+                        whereFind = message.forwardFrom;
+                    }
+
+                    if (whereFind.match(regexp) && value.length) {
+                        // ID чата для открытия в будущем
+                        message.chatId = chat._id;
+                        // Если группа, то аватар сообщения и название группы
+                        if (chat.type === 'group') {
+                            message.avatar = chat.avatar;
+                            message.group = chat.title;
+                        } else { // Если личка, то аватар и ник того, с кем чат
+                            const interlocator = new Chat(chat).getInterlocutorFor(user);
+
+                            message.avatar = interlocator.avatar;
+                            message.ls = interlocator.nickname;
+                        }
+                        searchMessages.push(message);
+                    }
+                });
+            });
+
+            this.props.updateSearchMessages(searchMessages);
+        }
     }
 
     showProfile = () => {
@@ -36,7 +101,8 @@ class Controls extends Component {
                     <input
                         type="text"
                         className="chats__search-input"
-                        placeholder="Найти пользователя"
+                        onKeyPress={this.messageSearch}
+                        placeholder="Поиск по сообщениям"
                         autoFocus
                     />
                     <img
@@ -95,7 +161,10 @@ Controls.propTypes = {
     chats: PropTypes.array,
     showProfile: PropTypes.func,
     showAddUser: PropTypes.func,
-    showCreateGroup: PropTypes.func
+    showCreateGroup: PropTypes.func,
+    updateSearchMessages: PropTypes.func,
+    showSearchMessages: PropTypes.func,
+    hideSearchMessages: PropTypes.func
 };
 
 export default connect(
@@ -105,6 +174,9 @@ export default connect(
     }), {
         showProfile,
         showAddUser,
-        showCreateGroup
+        showCreateGroup,
+        updateSearchMessages,
+        showSearchMessages,
+        hideSearchMessages
     }
 )(Controls);

@@ -78,3 +78,15 @@ export const updateChat = chat => dispatch => {
 export const destructMessage = (chatId, messageId) => dispatch => {
     dispatch({ type: types.DESTRUCT_MESSAGE, chatId, messageId });
 };
+
+export const updateSearchMessages = messages => dispatch => {
+    dispatch({ type: 'UPDATE_SEARCHMESSAGES', messages });
+};
+
+export const showSearchMessages = () => dispatch => {
+    dispatch({ type: 'SHOW_SEARCHMESSAGES' });
+};
+
+export const hideSearchMessages = () => dispatch => {
+    dispatch({ type: 'HIDE_SEARCHMESSAGES' });
+};
