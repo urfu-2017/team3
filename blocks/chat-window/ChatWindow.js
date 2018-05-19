@@ -132,8 +132,7 @@ class ChatWindow extends Component {
             return (
                 <span
                     className="chat-header__battery"
-                    title={`Пользователь ${lowestChargeUser.nickname} имеет ` +
-                    `${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
+                    title={`${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
                     `${lowestChargeUser.battery.isCharging
                         ?
                         ', заряжается'
@@ -141,8 +140,7 @@ class ChatWindow extends Component {
                         ''
                     }`}
                     >
-                    {`Пользователь ${lowestChargeUser.nickname} имеет ` +
-                    `${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
+                    {`${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
                     `${lowestChargeUser.battery.isCharging
                         ?
                         ', заряжается'
