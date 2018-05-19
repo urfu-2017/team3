@@ -128,6 +128,25 @@ class ChatWindow extends Component {
         this.props.showProfile(profile);
     };
 
+    getChargeBattery = lowestChargeUser => {
+        if (lowestChargeUser) {
+            return (
+                <span className="chat-header__battery">
+                    Пользователь {lowestChargeUser.nickname} имеет
+                    {lowestChargeUser.battery.level * 100}% заряда
+                    {lowestChargeUser.battery.isCharging
+                        ?
+                        ', заряжается'
+                        :
+                        ''
+                    }
+                </span>
+            );
+        }
+
+        return null;
+    };
+
     scrollToBottom = () => {
         if (this.messagesEnd) {
             this.messagesEnd.scrollIntoView();
@@ -140,6 +159,9 @@ class ChatWindow extends Component {
         }
     }
 
+    /* eslint-disable complexity */
+    /* eslint-disable max-statements */
+    /* eslint-disable no-nested-ternary */
     activeChatId = '0';
     messagesCount = 0;
     componentDidUpdate() {
@@ -160,8 +182,6 @@ class ChatWindow extends Component {
         }
     }
 
-    /* eslint-disable complexity */
-    /* eslint-disable no-nested-ternary */
     render() {
         const { activeChat,
             user,
@@ -177,6 +197,13 @@ class ChatWindow extends Component {
                 </section>
             );
         }
+
+        const [lowestChargeUser] = activeChat && activeChat.members
+            .filter(member => member.nickname !== this.props.user.nickname)
+            .filter(member => member.battery)
+            .sort((m1, m2) => m1.battery.level > m2.battery.level);
+
+        console.log(lowestChargeUser);
 
         const chat = new Chat(activeChat);
         const avatar = chat.getAvatarFor(user);
@@ -210,6 +237,7 @@ class ChatWindow extends Component {
                             >
                             {title}
                         </span>
+                        {this.getChargeBattery(lowestChargeUser)}
                     </div>
                     {this.state.isDraggable
                         ?
