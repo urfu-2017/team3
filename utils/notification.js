@@ -6,7 +6,6 @@ import Message from '../models/Message';
 const NEWMSG_SOUND_URL = '/static/newmsg.wav';
 const NEWMSG_VIBRATION_PATTERN = [150, 100, 150];
 
-/* eslint-disable-next-line import/prefer-default-export */
 export const notifyMessage = ({ message, chat, user, activeChat, onclick }) => {
     chat = new Chat(chat);
     message = new Message(message);
@@ -21,6 +20,16 @@ export const notifyMessage = ({ message, chat, user, activeChat, onclick }) => {
         const options = prepareNotificationOptions({ message, chat, user });
 
         notifyScreen({ ...options, onclick });
+    }
+};
+
+export const initNotifications = () => {
+    if ('Notification' in window) {
+        Notification.requestPermission();
+    }
+
+    if ('navigator' in window && navigator.vibrate) {
+        navigator.vibrate([0]);
     }
 };
 
