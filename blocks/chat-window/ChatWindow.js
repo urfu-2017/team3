@@ -131,15 +131,25 @@ class ChatWindow extends Component {
     getChargeBattery = lowestChargeUser => {
         if (lowestChargeUser) {
             return (
-                <span className="chat-header__battery">
-                    Пользователь {lowestChargeUser.nickname} имеет
-                    {lowestChargeUser.battery.level * 100}% заряда
-                    {lowestChargeUser.battery.isCharging
+                <span
+                    className="chat-header__battery"
+                    title={`Пользователь ${lowestChargeUser.nickname} имеет ` +
+                    `${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
+                    `${lowestChargeUser.battery.isCharging
                         ?
                         ', заряжается'
                         :
                         ''
-                    }
+                    }`}
+                    >
+                    {`Пользователь ${lowestChargeUser.nickname} имеет ` +
+                    `${Math.floor(lowestChargeUser.battery.level * 100)}% заряда батареи` +
+                    `${lowestChargeUser.battery.isCharging
+                        ?
+                        ', заряжается'
+                        :
+                        ''
+                    }`}
                 </span>
             );
         }
