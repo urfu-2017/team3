@@ -213,8 +213,6 @@ class ChatWindow extends Component {
             .filter(member => member.battery)
             .sort((m1, m2) => m1.battery.level > m2.battery.level);
 
-        console.log(lowestChargeUser);
-
         const chat = new Chat(activeChat);
         const avatar = chat.getAvatarFor(user);
         const title = chat.getTitleFor(user);

@@ -27,7 +27,7 @@ class Emoji extends Component {
         }
 
         return (
-            <div className="emoji_wrapper" onBlur={this.hideEmoji} tabIndex="0">
+            <div className="emoji_wrapper" tabIndex="0">
                 <Picker
                     set="emojione"
                     onSelect={addEmoji}

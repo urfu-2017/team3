@@ -1,6 +1,6 @@
 .emoji-mart {
     position: absolute;
-    z-index: 4;
+    z-index: 400;
     right: calc(
         (var(--icon-size) / 2) +
         var(--standard-indent-small)
@@ -15,12 +15,13 @@
     overflow: hidden;
     border-radius: var(--standard-indent-small);
     background-color: var(--background-color);
-    box-shadow: 
+    /* border: var(--border-size) solid var(--neutral-color); */
+    /* box-shadow: 
         0 
         0 
         calc(var(--border-size-bold)) 
         var(--border-size) 
-        var(--spare-color);
+        var(--spare-color); */
 }
 
 .emoji_input {
