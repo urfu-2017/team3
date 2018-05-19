@@ -290,6 +290,24 @@
     justify-content: flex-start;
 }
 
+.fire {
+    animation: fire .5s linear;
+}
+
+@keyframes fire {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+        background: var(--spare-color-semi-transparent);
+    }
+    100% {
+        transform: scale(1);
+        background-color: var(--neutral-color);
+    }
+}
+
 @keyframes blink_timer {
     0% {
         color: var(--text-color-h0);

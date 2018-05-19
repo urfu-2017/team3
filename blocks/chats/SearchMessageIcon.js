@@ -10,6 +10,8 @@ import { openChat } from '../../actions/chats';
 
 import './SearchMessageIcon.css';
 
+/* eslint-disable react/jsx-closing-bracket-location */
+
 class SearchMessageIcon extends Component {
     prettyDate(date) {
         return moment(date)
@@ -17,8 +19,22 @@ class SearchMessageIcon extends Component {
             .format('LT');
     }
 
-    openChat = id => {
-        this.props.openChat(id);
+    /* eslint-disable max-statements */
+    openChat = (chatId, messageId) => {
+        this.props.openChat(chatId);
+        setTimeout(() => {
+            const elem = document.getElementById(`id${messageId}`);
+
+            if (elem) {
+                elem.scrollIntoView();
+                elem.classList.add('fire');
+
+                setTimeout(() => {
+                    elem.classList.remove('fire');
+                }, 500);
+            }
+        }, 0);
+
     }
 
     render() {
@@ -40,7 +56,10 @@ class SearchMessageIcon extends Component {
         }
 
         return (
-            <div className="searchmsg-icon" onClick={() => this.openChat(message.chatId)}>
+            <div
+                className="searchmsg-icon"
+                onClick={() => this.openChat(message.chatId, message._id)}
+                >
                 <div className="searchmsg-icon__logo-box">
                     <img className="searchmsg-icon__logo" src={message.avatar} draggable="false" />
                 </div>

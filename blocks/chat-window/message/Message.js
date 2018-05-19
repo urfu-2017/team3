@@ -275,12 +275,14 @@ class Message extends Component {
                                 )
                                 :
                                 (
-                                    <div className={
-                                        message.selfDestructTimer
-                                            ?
-                                            'message__body message__body_my message_blink'
-                                            :
-                                            'message__body message__body_my'}
+                                    <div
+                                        id={`id${message._id}`}
+                                        className={
+                                            message.selfDestructTimer
+                                                ?
+                                                'message__body message__body_my message_blink'
+                                                :
+                                                'message__body message__body_my'}
                                         >
                                         <div className="message__data">
                                             <span className="message__sender">{author}</span>
@@ -324,12 +326,14 @@ class Message extends Component {
                             )
                             :
                             (
-                                <div className={
-                                    message.selfDestructTimer
-                                        ?
-                                        'message__body message__body_friend message_blink'
-                                        :
-                                        'message__body message__body_friend'}
+                                <div
+                                    id={`id${message._id}`}
+                                    className={
+                                        message.selfDestructTimer
+                                            ?
+                                            'message__body message__body_friend message_blink'
+                                            :
+                                            'message__body message__body_friend'}
                                     >
                                     <div className="message__data">
                                         <span className="message__sender">{author}</span>

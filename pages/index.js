@@ -185,7 +185,7 @@ class MainPage extends React.Component {
                     type: 'group',
                     currentUser: user.nickname
                 });
-            } else {
+            } else if (invite !== user.nickname) {
                 this.acceptInviteInternal(socket, {
                     members: [user.nickname, invite],
                     type: 'private'

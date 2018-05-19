@@ -68,14 +68,16 @@ class AddUser extends Component {
                         {foundUsers
                             ?
                                 <div className="adduser__found-users">
-                                    { foundUsers.map(foundUser => {
-                                        return (
-                                            <PureProfile
-                                                key={user.nickname}
-                                                user={foundUser}
-                                            />
-                                        );
-                                    })}
+                                    { foundUsers
+                                        .filter(u => u.nickname !== user.nickname)
+                                        .map(foundUser => {
+                                            return (
+                                                <PureProfile
+                                                    key={user.nickname}
+                                                    user={foundUser}
+                                                />
+                                            );
+                                        })}
                                 </div>
                             :
                             null

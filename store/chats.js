@@ -22,7 +22,7 @@ export default function chats(state = [], action) {
             return state;
         }
 
-        return [...state, action.chat];
+        return [...state, action.chat].sort(compareByLastMessage);
     }
 
     if (action.type === 'UPDATE_MESSAGE') {
@@ -107,17 +107,8 @@ function updateChatImmutable(oldChats, chatId, getNewChat) {
 }
 
 function compareByLastMessage(a, b) {
-    const aLastMessage = new Chat(a).getLastMessage();
-    const bLastMessage = new Chat(b).getLastMessage();
+    const aDate = new Chat(a).getDate();
+    const bDate = new Chat(b).getDate();
 
-    if (!aLastMessage && !bLastMessage) {
-        return b._id.localeCompare(a._id);
-    }
-
-    if (bLastMessage && aLastMessage) {
-        return new Date(bLastMessage.date) - new Date(aLastMessage.date);
-    }
-
-    // чатик в котором есть сообщение всегда раньше
-    return aLastMessage ? -1 : 1;
+    return new Date(bDate) - new Date(aDate);
 }
