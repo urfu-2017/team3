@@ -5,11 +5,16 @@
 	height: 100%;
 }
 
+.chat-input__autodestroy-btn:hover {
+	background-color: transparent !important;
+	cursor: default !important;
+}
+
 .timer-setting__description {
     position: absolute;
     color: var(--text-color-h2);
     font-size: 80%;
-    padding-left: calc(
+    margin-left: calc(
         var(--icon-size) +
         (var(--standard-indent) * 0.5)
     );
@@ -20,10 +25,11 @@
 .timer-setting__button {
 	width: var(--icon-size);
 	border-radius: 50%;
+	background-color: var(--spare-color-transparent);
 }
 
 .timer-setting__button:hover {
-	background-color: var(--spare-color-transparent);
+	cursor: pointer;
 }
 
 .timer-setting__current-value {

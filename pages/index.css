@@ -112,7 +112,7 @@ body {
 }
 
 .theme:hover {
-    background-image: url(http://nibach.ru/theme.svg);
+    background-image: url(/static/theme_.svg);
     background-color: #737373;
     border-color: #727272;
 }
