@@ -11,7 +11,7 @@ export default function chats(state = [], action) {
     }
 
     if (action.type === 'RECEIVE_MESSAGE') {
-        return pushMessage(state, action.chatId, action.message)
+        return pushMessage(state, action.chatId, action.message, action.addToNotReaded)
             .sort(compareByLastMessage);
     }
 
@@ -55,11 +55,13 @@ export default function chats(state = [], action) {
     return state;
 }
 
-function pushMessage(oldChats, chatId, message) {
+/* eslint-disable */
+function pushMessage(oldChats, chatId, message, addToNotReaded) {
     return updateChatImmutable(oldChats, chatId, oldChat => {
         return {
             ...oldChat,
-            messages: [...oldChat.messages, message]
+            messages: [...oldChat.messages, message],
+            notReadedCount: (oldChat.notReadedCount || 0) + addToNotReaded
         };
     });
 }

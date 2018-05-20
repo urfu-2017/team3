@@ -67,7 +67,9 @@ export const receiveMessage = (chatId, message) => (dispatch, getState) => {
     const { user, chats, activeChat } = getState();
     const chat = chats.find(c => c._id === chatId);
 
-    dispatch({ type: types.RECEIVE_MESSAGE, chatId, message });
+    const addToNotReaded = !activeChat || activeChat.id !== chatId ? 1 : 0;
+
+    dispatch({ type: types.RECEIVE_MESSAGE, chatId, message, addToNotReaded });
 
     const onclick = () => {
         window.focus();
@@ -75,13 +77,6 @@ export const receiveMessage = (chatId, message) => (dispatch, getState) => {
     };
 
     notifyMessage({ message, chat, user, activeChat, onclick });
-
-    if (!activeChat || activeChat.id !== chatId) {
-        dispatch(updateChat({
-            ...chat,
-            notReadedCount: (chat.notReadedCount || 0) + 1
-        }));
-    }
 };
 
 export const updateMessage = (chatId, message) => dispatch => {
