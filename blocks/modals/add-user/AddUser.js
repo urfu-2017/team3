@@ -73,7 +73,7 @@ class AddUser extends Component {
                                         .map(foundUser => {
                                             return (
                                                 <PureProfile
-                                                    key={user.nickname}
+                                                    key={foundUser.nickname}
                                                     user={foundUser}
                                                 />
                                             );
