@@ -36,6 +36,10 @@ class ChatIcon extends Component {
             chatClassName = 'chat-icon chat-icon-open';
         }
 
+        const notReadedCount = chatProps.notReadedCount
+            ? `(${chatProps.notReadedCount}) `
+            : '';
+
         return (
             <div className={chatClassName} onClick={this.openChat}>
                 <div className="chat-icon__logo-box">
@@ -43,7 +47,7 @@ class ChatIcon extends Component {
                 </div>
                 <div className="chat-icon__info-box">
                     <div className="chat-icon__upper-box">
-                        <div className="chat-icon__title">{title}</div>
+                        <div className="chat-icon__title">{`${notReadedCount}${title}`}</div>
                         <div className="chat-icon__date">
                             {this.prettyDate(chat.getDate())}
                         </div>

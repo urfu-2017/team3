@@ -5,6 +5,19 @@ import getSocket from '../pages/socket';
 
 import types from './types';
 
+export const updateChat = chat => dispatch => {
+    dispatch({ type: types.UPDATE_CHAT, chat });
+};
+
+export const openChat = id => dispatch => {
+    dispatch(updateChat({
+        _id: id,
+        notReadedCount: 0
+    }));
+
+    dispatch({ type: types.OPEN_CHAT, id });
+};
+
 export const createChat = (myUser, user) => dispatch => { // туду private
     const socket = getSocket();
 
@@ -17,10 +30,10 @@ export const createChat = (myUser, user) => dispatch => { // туду private
     }, (chat, existsChatId) => {
         if (chat) {
             dispatch({ type: types.CREATE_CHAT, chat });
-            dispatch({ type: types.OPEN_CHAT, id: chat._id });
+            dispatch(openChat(chat._id));
             socket.emit('join', [chat._id]);
         } else {
-            dispatch({ type: types.OPEN_CHAT, id: existsChatId });
+            dispatch(openChat(existsChatId));
         }
         dispatch({ type: types.HIDE_LOADER });
     });
@@ -38,6 +51,7 @@ export const createGroupChat = (myUser, otherMembers, groupTitle) => dispatch =>
         type: 'group'
     }, chat => {
         dispatch({ type: types.CREATE_CHAT, chat });
+        dispatch(openChat(chat._id));
         dispatch({ type: types.OPEN_CHAT, id: chat._id });
         dispatch({ type: types.HIDE_LOADER });
 
@@ -45,12 +59,8 @@ export const createGroupChat = (myUser, otherMembers, groupTitle) => dispatch =>
     });
 };
 
-export const openChat = id => dispatch => {
-    dispatch({ type: types.OPEN_CHAT, id });
-};
-
 export const receiveChat = chat => dispatch => {
-    dispatch({ type: types.CREATE_CHAT, chat });
+    dispatch({ type: types.CREATE_CHAT, chat: { ...chat, notReadedCount: 0 } });
 };
 
 export const receiveMessage = (chatId, message) => (dispatch, getState) => {
@@ -65,14 +75,17 @@ export const receiveMessage = (chatId, message) => (dispatch, getState) => {
     };
 
     notifyMessage({ message, chat, user, activeChat, onclick });
+
+    if (!activeChat || activeChat.id !== chatId) {
+        dispatch(updateChat({
+            ...chat,
+            notReadedCount: (chat.notReadedCount || 0) + 1
+        }));
+    }
 };
 
 export const updateMessage = (chatId, message) => dispatch => {
     dispatch({ type: types.UPDATE_MESSAGE, chatId, message });
-};
-
-export const updateChat = chat => dispatch => {
-    dispatch({ type: types.UPDATE_CHAT, chat });
 };
 
 export const destructMessage = (chatId, messageId) => dispatch => {
