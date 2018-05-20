@@ -40,6 +40,10 @@ class Input extends Component {
         this.props.onRef(null);
     }
 
+    componentDidUpdate() {
+        this.textInput.focus();
+    }
+
     // при вводе добавляем с state
     changeText = e => this.setState({ msgText: e.target.value });
 
